@@ -20,6 +20,7 @@ hs_err_pid*
 # temporary files
 *.tmp
 ~$*
-/Software/Monitoring_System/Monitoring_System-ejb/target/
-/Software/Monitoring_System/Monitoring_System-web/target/
-/Software/Monitoring_System/Monitoring_System-ear/target/
+
+/Monitoring_System/Monitoring_System-ear/target/
+/Monitoring_System/Monitoring_System-ejb/target/
+/Monitoring_System/Monitoring_System-web/target/
