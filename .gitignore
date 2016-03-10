@@ -1,0 +1,26 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+target/*
+nbproject/private/*
+private.properties
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+/build/
+/dist/
+
+# temporary files
+*.tmp
+~$*
+
+/Monitoring_System/Monitoring_System-ear/target/
+/Monitoring_System/Monitoring_System-ejb/target/
+/Monitoring_System/Monitoring_System-web/target/
