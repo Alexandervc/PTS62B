@@ -1,0 +1,39 @@
+{"ride":[
+    {"timestamp":"2016-03-13T19:12:24.102Z", "coordinates":"[38.100884, -8.633256]", "road":"N120", "km":"0"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:16:24.102Z", "coordinates":"[38.072820, -8.650456]", "road":"IC33", "km":"3,9"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:18:24.102Z", "coordinates":"[38.066488, -8.694728]", "road":"IC33", "km":"4,0"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:20:24.102Z", "coordinates":"[38.050800, -8.730747]", "road":"IC33", "km":"3,7"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:23:24.102Z", "coordinates":"[38.032715, -8.723768]", "road":"N261", "km":"3,2"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:25:24.102Z", "coordinates":"[38.021943, -8.705310]", "road":"N261", "km":"2,0"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:26:24.102Z", "coordinates":"[38.017813, -8.697021]", "road":"N261", "km":"1,0"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:29:24.102Z", "coordinates":"[38.018685, -8.692413]", "road":"Rua Eng. Costa Serrão", "km":"0,9"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:29:24.102Z", "coordinates":"[38.018685, -8.692413]", "road":"Rua Eng. Costa Serrão", "km":"0,3"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-13T19:31:24.102Z", "coordinates":"[38.019394, -8.688844]", "road":"Rua de pousada, "km":"0,5"}
+]}
