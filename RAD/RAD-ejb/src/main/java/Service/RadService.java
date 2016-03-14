@@ -5,10 +5,15 @@
  */
 package Service;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
 /**
  *
  * @author Linda
  */
+@Stateless
+@LocalBean
 public class RadService {
     
 }
