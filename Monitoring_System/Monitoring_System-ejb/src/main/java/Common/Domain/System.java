@@ -36,8 +36,11 @@ public class System implements Serializable {
     @Column(name = "DESCRIPTION")
     private String description;
     
-    @Column(name = "WEBURL")
-    private String webURL;
+    @Column(name = "IP")
+    private String IP;
+    
+    @Column(name = "PORT")
+    private int port;
     
     @OneToMany
     private List<Test> tests;
@@ -66,12 +69,20 @@ public class System implements Serializable {
         this.description = description;
     }
 
-    public String getWebURL() {
-        return webURL;
+    public String getIP() {
+        return IP;
     }
 
-    public void setWebURL(String webURL) {
-        this.webURL = webURL;
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+    
+    public int getPort() {
+        return port;
+    }
+    
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public List<Test> getTests() {
