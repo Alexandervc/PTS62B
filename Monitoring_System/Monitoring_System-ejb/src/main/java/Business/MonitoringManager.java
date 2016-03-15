@@ -3,28 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Service;
+package Business;
 
+import Data.SystemDao;
+import Data.TestDao;
 import java.util.List;
-import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
+import javax.inject.Inject;
 
 /**
- * The service that contains methods concerning the monitoring of servers
+ *
  * @author Edwin
  */
-@Stateless
-@LocalBean
-public class MonitoringService {
-
-
+public class MonitoringManager {
+    
+    @Inject SystemDao systemDao;
+    @Inject TestDao testDao;
+    
+    
     /**
-     * Retrieves a list of servers that are currently part of the RRA
+     * Retrieves a list of Systems that are currently part of the RRA
      * application.
      * @return A list of servers.
      */
-    public List<Object> retrieveServers() {
-        return null;       
+    public List<System> getSystems() {
+        return systemDao.getSystems();
     }
     
     /**
@@ -35,6 +37,4 @@ public class MonitoringService {
     public List<Object> generateServerStatus(Object server) {
         return null;
     }
-
-    
 }

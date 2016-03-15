@@ -24,3 +24,6 @@ hs_err_pid*
 /Monitoring_System/Monitoring_System-ear/target/
 /Monitoring_System/Monitoring_System-ejb/target/
 /Monitoring_System/Monitoring_System-web/target/
+/Software/Kwetter_SingleProjectVersion/nbproject/
+/Software/Kwetter_SingleProjectVersion/target/
+/Monitoring_System/Monitoring_System-ejb/nbproject/
