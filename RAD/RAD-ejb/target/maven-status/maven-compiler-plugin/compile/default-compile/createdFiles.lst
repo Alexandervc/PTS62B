@@ -1,1 +1,9 @@
 Service\RadService.class
+Domain\Bill.class
+DAO\BillDAO.class
+DAO\PersonDAO.class
+Domain\Bill_.class
+DAO\PersonDAOJPAImp.class
+Domain\Person.class
+DAO\BillDAOJPAImp.class
+Domain\Person_.class
