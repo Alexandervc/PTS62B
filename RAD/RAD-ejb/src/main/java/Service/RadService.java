@@ -5,11 +5,10 @@
  */
 package Service;
 
-import DAO.BillDAO;
 import DAO.BillDAOJPAImp;
-import DAO.PersonDAO;
 import DAO.PersonDAOJPAImp;
 import Domain.Bill;
+import Domain.Person;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -32,26 +31,39 @@ import javax.persistence.PersistenceContext;
 @Startup
 public class RadService {
 
-    private final BillDAO bill;
-    private final PersonDAO person;
+    @PersistenceContext(unitName = "RADpu")
+    private EntityManager em;
+    private final BillDAOJPAImp billDAO;
+    private final PersonDAOJPAImp personDAO;
 
+    @PostConstruct
+    public void init() {
+        Bill b = new Bill(20.35);
+        persistBill(b);
+        
+        Person p = new Person("Linda");
+        persistPerson(p);
+    }
+    
     public RadService() {
-        bill = new BillDAOJPAImp();
-        person = new PersonDAOJPAImp();
+        billDAO = new BillDAOJPAImp();
+        personDAO = new PersonDAOJPAImp();
     }
 
-    public void persistBill(Bill object) {
+    public void persistBill(Bill b) {
         try {
-            bill.create(object);
+            billDAO.setEntityManager(em);
+            billDAO.create(b);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);
         }
     }
-    
-    public void persistBill(Object object) {
+
+    public void persistPerson(Person p) {
         try {
-            //person.create(object);
+            personDAO.setEntityManager(em);
+            personDAO.create(p);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);

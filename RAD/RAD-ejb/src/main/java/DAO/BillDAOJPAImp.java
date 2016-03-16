@@ -7,6 +7,7 @@ package DAO;
 
 import Domain.Bill;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,14 +16,18 @@ import javax.persistence.criteria.CriteriaQuery;
  *
  * @author Linda
  */
+@Stateless
 public class BillDAOJPAImp implements BillDAO {
-
     @PersistenceContext(unitName ="RADpu")
-    private final EntityManager em;
-    
-    public BillDAOJPAImp(){
-        
+    private  EntityManager em;
+
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
     }
+    
+    public BillDAOJPAImp() {
+    }
+    
     
     @Override
     public void create(Bill bill) {
@@ -34,5 +39,7 @@ public class BillDAOJPAImp implements BillDAO {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Bill.class));
         return em.createQuery(cq).getResultList();    }
+
+    
     
 }
