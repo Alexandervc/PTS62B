@@ -6,6 +6,7 @@
 
 import DAO.BillDAOJPAImp;
 import Domain.Bill;
+import Service.RadService;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -23,17 +24,16 @@ import static org.junit.Assert.*;
 public class TestDAOBill {
     
     private BillDAOJPAImp billDAO;
-    private EntityManagerFactory emf = 
-            Persistence.createEntityManagerFactory("RADpu");
-    private EntityManager em;
+    private RadService service;
+    //private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("RADpu");
     
     public TestDAOBill() {
-        em = emf.createEntityManager();
+        
     }
     
     @Before
     public void setUp() {
-        
+        service = new RadService();
     }
     
     @After
@@ -47,11 +47,8 @@ public class TestDAOBill {
     // public void hello() {}
     @Test
     public void addBill(){
-        if(!em.getTransaction().isActive()){
-            em.getTransaction().begin();
-        }
-        Bill bill = new Bill(10.25);
-        billDAO = new BillDAOJPAImp(em);
-        billDAO.create(bill);
+        //EntityManager em = emf.createEntityManager();
+        Bill b = new Bill(20.35);
+        service.persistBill(b);
     }
 }

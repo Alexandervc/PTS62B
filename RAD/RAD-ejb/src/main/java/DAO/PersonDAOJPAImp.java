@@ -8,6 +8,7 @@ package DAO;
 import Domain.Person;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
@@ -16,10 +17,10 @@ import javax.persistence.criteria.CriteriaQuery;
  */
 public class PersonDAOJPAImp implements PersonDAO {
 
+    @PersistenceContext(unitName ="RADpu")
     private final EntityManager em;
     
-    public PersonDAOJPAImp(EntityManager em){
-        this.em = em;
+    public PersonDAOJPAImp(){
     }
     
     @Override

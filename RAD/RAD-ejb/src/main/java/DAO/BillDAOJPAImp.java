@@ -8,6 +8,7 @@ package DAO;
 import Domain.Bill;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
@@ -16,10 +17,11 @@ import javax.persistence.criteria.CriteriaQuery;
  */
 public class BillDAOJPAImp implements BillDAO {
 
+    @PersistenceContext(unitName ="RADpu")
     private final EntityManager em;
     
-    public BillDAOJPAImp(EntityManager em){
-        this.em = em;
+    public BillDAOJPAImp(){
+        
     }
     
     @Override
