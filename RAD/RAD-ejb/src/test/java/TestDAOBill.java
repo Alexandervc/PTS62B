@@ -23,11 +23,10 @@ import static org.junit.Assert.*;
  * @author Linda
  */
 public class TestDAOBill {
-    
-    private BillDAOJPAImp billDAO;
+        
     @EJB  
     private RadService service;
-    //private EntityManagerFactory emf = Persistence.createEntityManagerFactory("RADpu");
+    
     
     public TestDAOBill() {
         
