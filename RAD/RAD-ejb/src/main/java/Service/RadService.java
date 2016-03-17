@@ -30,21 +30,21 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 @Startup
 public class RadService {
-
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
-    private final BillDAOJPAImp billDAO;
-    private final PersonDAOJPAImp personDAO;
+    
+    private BillDAOJPAImp billDAO;
+    private PersonDAOJPAImp personDAO;
 
     @PostConstruct
     public void init() {
-        Bill b = new Bill(20.35);
+        Bill b = new Bill(20.39);
         persistBill(b);
-        
-        Person p = new Person("Linda");
+
+        Person p = new Person("Test");
         persistPerson(p);
     }
-    
+
     public RadService() {
         billDAO = new BillDAOJPAImp();
         personDAO = new PersonDAOJPAImp();

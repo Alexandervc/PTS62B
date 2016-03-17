@@ -7,6 +7,7 @@ package DAO;
 
 import Domain.Person;
 import java.util.List;
+import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +17,6 @@ import javax.persistence.criteria.CriteriaQuery;
  *
  * @author Linda
  */
-@Stateless
 public class PersonDAOJPAImp implements PersonDAO {
 
     @PersistenceContext(unitName ="RADpu")

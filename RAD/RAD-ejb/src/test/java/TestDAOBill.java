@@ -7,33 +7,37 @@
 import DAO.BillDAOJPAImp;
 import Domain.Bill;
 import Service.RadService;
-import javax.ejb.EJB;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  *
  * @author Linda
  */
+@RunWith(MockitoJUnitRunner.class)
 public class TestDAOBill {
         
-    @EJB  
+     
     private RadService service;
     
-    
-    public TestDAOBill() {
+    @Mock
+    private BillDAOJPAImp dao;
         
+    public TestDAOBill() {
     }
     
     @Before
     public void setUp() {
+        service = new RadService();
+        //service.setBillDAO(dao);
+        
     }
     
     @After
@@ -48,6 +52,5 @@ public class TestDAOBill {
     @Test
     public void addBill(){
         Bill b = new Bill(20.59);
-        service.persistBill(b);
     }
 }

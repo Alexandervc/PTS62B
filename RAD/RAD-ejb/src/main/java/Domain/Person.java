@@ -17,6 +17,7 @@ import javax.persistence.Id;
  */
 @Entity (name = "Person")
 public class Person implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
