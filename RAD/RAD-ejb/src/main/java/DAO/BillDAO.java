@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
  * @author Linda
  */
 public interface BillDAO {
+    void setEntityManager(EntityManager em);
     
     void create(Bill bill);
     

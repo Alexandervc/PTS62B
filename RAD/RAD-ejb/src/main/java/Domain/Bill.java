@@ -6,10 +6,16 @@
 package Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  *
@@ -22,12 +28,22 @@ public class Bill implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     
-    private double price;
+    @Transient
+    private List<RoadUsage> roadUsages;
+    
+    @Column(name ="Paid")
+    private boolean paid;
+    
+    @Column(name ="TotalPrice")
+    private double totalPrice;
     
     public Bill(){
-        
+        this.paid = false;
+        this.totalPrice = 13.89;
+        this.roadUsages = new ArrayList<RoadUsage>();
     }
-    public Bill(double price){
-        this.price = price;
+    
+    public void setRoadUsage(List<RoadUsage> roadUsage) {
+        this.roadUsages = roadUsage;
     }
 }

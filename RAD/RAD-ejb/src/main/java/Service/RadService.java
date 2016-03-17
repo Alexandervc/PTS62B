@@ -5,10 +5,16 @@
  */
 package Service;
 
+import DAO.BillDAO;
 import DAO.BillDAOJPAImp;
+import DAO.PersonDAO;
 import DAO.PersonDAOJPAImp;
 import Domain.Bill;
 import Domain.Person;
+import Domain.RoadType;
+import Domain.RoadUsage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -17,6 +23,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Model;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -30,15 +43,21 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 @Startup
 public class RadService {
-//    @PersistenceContext(unitName = "RADpu")
-//    private EntityManager em;
+    @PersistenceContext(unitName = "RADpu")
+    private EntityManager em;
     
-    private BillDAOJPAImp billDAO;
-    private PersonDAOJPAImp personDAO;
+    @Inject //@Named("billRepo")
+    private BillDAO billDAO;
+    @Inject //@Named("personRepo")
+    private PersonDAO personDAO;
 
     @PostConstruct
     public void init() {
-        Bill b = new Bill(20.39);
+        Bill b = new Bill();
+        RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
+        List<RoadUsage> roads = new ArrayList<>();
+        roads.add(road);
+        b.setRoadUsage(roads);
         persistBill(b);
 
         Person p = new Person("Test");
@@ -46,13 +65,11 @@ public class RadService {
     }
 
     public RadService() {
-        billDAO = new BillDAOJPAImp();
-        personDAO = new PersonDAOJPAImp();
     }
 
     public void persistBill(Bill b) {
         try {
-            //billDAO.setEntityManager(em);
+            billDAO.setEntityManager(em);
             billDAO.create(b);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
@@ -62,7 +79,7 @@ public class RadService {
 
     public void persistPerson(Person p) {
         try {
-            //personDAO.setEntityManager(em);
+            personDAO.setEntityManager(em);
             personDAO.create(p);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);

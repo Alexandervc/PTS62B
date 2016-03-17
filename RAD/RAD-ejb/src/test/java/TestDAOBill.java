@@ -51,6 +51,6 @@ public class TestDAOBill {
     // public void hello() {}
     @Test
     public void addBill(){
-        Bill b = new Bill(20.59);
+        Bill b = new Bill();
     }
 }
