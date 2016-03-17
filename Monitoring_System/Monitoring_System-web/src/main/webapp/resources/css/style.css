@@ -5800,38 +5800,10 @@ button.close {
   .hidden-print {
     display: none !important; } }
 /* 
-    Created on : 25-nov-2015, 19:24:08
-    Author     : Melanie
-*/
-@font-face {
-  font-family: Redressed;
-  src: url("../fonts/Redressed.ttf"); }
-@font-face {
-  font-family: Droid Serif;
-  src: url("../fonts/DroidSerif-Regular.ttf");
-  font-style: normal;
-  font-weight: normal; }
-@font-face {
-  font-family: Droid Serif;
-  src: url("../fonts/DroidSerif-Italic.ttf");
-  font-style: italic;
-  font-weight: normal; }
-@font-face {
-  font-family: Droid Serif;
-  src: url("../fonts/DroidSerif-Bold.ttf");
-  font-style: normal;
-  font-weight: bold; }
-@font-face {
-  font-family: Droid Serif;
-  src: url("../fonts/DroidSerif-BoldItalic.ttf");
-  font-style: italic;
-  font-weight: bold; }
-/* 
     Created on : 4-nov-2015, 18:13:58
     Author     : Melanie
 */
 /* -------------------------------- Buttons -------------------------------- */
-/*Overall style*/
 /* 
     Created on : 4-nov-2015, 18:14:12
     Author     : Melanie
@@ -5843,44 +5815,61 @@ html {
 
 body {
   font-family: Calibri, sans-serif;
-  background-image: url("../images/bg.jpg");
-  background-repeat: repeat;
+  background: url("../javax.faces.resource/images/bg.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   /* For sticky footer, margin bottom by footer height */
   margin-bottom: 40px; }
 
-/* -------------------------------- Buttons -------------------------------- */
-.btn-blog {
-  color: #fff;
-  background-color: #ff0000;
-  border-color: #ff0000;
-  border: 0px; }
-  .btn-blog:focus, .btn-blog.focus {
-    color: #fff;
-    background-color: #cc0000;
-    border-color: maroon; }
-  .btn-blog:hover {
-    color: #fff;
-    background-color: #cc0000;
-    border-color: #c20000; }
-  .btn-blog:active, .btn-blog.active, .open > .btn-blog.dropdown-toggle {
-    color: #fff;
-    background-color: #cc0000;
-    border-color: #c20000; }
-    .btn-blog:active:hover, .btn-blog:active:focus, .btn-blog:active.focus, .btn-blog.active:hover, .btn-blog.active:focus, .btn-blog.active.focus, .open > .btn-blog.dropdown-toggle:hover, .open > .btn-blog.dropdown-toggle:focus, .open > .btn-blog.dropdown-toggle.focus {
-      color: #fff;
-      background-color: #a80000;
-      border-color: maroon; }
-  .btn-blog:active, .btn-blog.active, .open > .btn-blog.dropdown-toggle {
-    background-image: none; }
-  .btn-blog.disabled, .btn-blog.disabled:hover, .btn-blog.disabled:focus, .btn-blog.disabled.focus, .btn-blog.disabled:active, .btn-blog.disabled.active, .btn-blog[disabled], .btn-blog[disabled]:hover, .btn-blog[disabled]:focus, .btn-blog[disabled].focus, .btn-blog[disabled]:active, .btn-blog[disabled].active, fieldset[disabled] .btn-blog, fieldset[disabled] .btn-blog:hover, fieldset[disabled] .btn-blog:focus, fieldset[disabled] .btn-blog.focus, fieldset[disabled] .btn-blog:active, fieldset[disabled] .btn-blog.active {
-    background-color: #ff0000;
-    border-color: #ff0000; }
-  .btn-blog .badge {
-    color: #ff0000;
-    background-color: #fff; }
+/* -------------------------------- Header -------------------------------- */
+header {
+  width: 100%;
+  height: 120px;
+  text-align: center;
+  background-color: #fff;
+  margin-bottom: 20px; }
 
-table .btn {
-  margin: 0 10px 10px 0; }
+.fixed {
+  top: 0;
+  z-index: 1;
+  position: fixed;
+  opacity: 0.8; }
+
+.top {
+  margin-top: 140px; }
+
+/* -------------------------------- Buttons -------------------------------- */
+.btn-ride {
+  color: #fff;
+  background-color: #8BD4A7;
+  border-color: #8BD4A7;
+  border: 0px; }
+  .btn-ride:focus, .btn-ride.focus {
+    color: #fff;
+    background-color: #66c68b;
+    border-color: #3ca364; }
+  .btn-ride:hover {
+    color: #fff;
+    background-color: #66c68b;
+    border-color: #5ec385; }
+  .btn-ride:active, .btn-ride.active, .open > .btn-ride.dropdown-toggle {
+    color: #fff;
+    background-color: #66c68b;
+    border-color: #5ec385; }
+    .btn-ride:active:hover, .btn-ride:active:focus, .btn-ride:active.focus, .btn-ride.active:hover, .btn-ride.active:focus, .btn-ride.active.focus, .open > .btn-ride.dropdown-toggle:hover, .open > .btn-ride.dropdown-toggle:focus, .open > .btn-ride.dropdown-toggle.focus {
+      color: #fff;
+      background-color: #4cbd77;
+      border-color: #3ca364; }
+  .btn-ride:active, .btn-ride.active, .open > .btn-ride.dropdown-toggle {
+    background-image: none; }
+  .btn-ride.disabled, .btn-ride.disabled:hover, .btn-ride.disabled:focus, .btn-ride.disabled.focus, .btn-ride.disabled:active, .btn-ride.disabled.active, .btn-ride[disabled], .btn-ride[disabled]:hover, .btn-ride[disabled]:focus, .btn-ride[disabled].focus, .btn-ride[disabled]:active, .btn-ride[disabled].active, fieldset[disabled] .btn-ride, fieldset[disabled] .btn-ride:hover, fieldset[disabled] .btn-ride:focus, fieldset[disabled] .btn-ride.focus, fieldset[disabled] .btn-ride:active, fieldset[disabled] .btn-ride.active {
+    background-color: #8BD4A7;
+    border-color: #8BD4A7; }
+  .btn-ride .badge {
+    color: #8BD4A7;
+    background-color: #fff; }
 
 /* -------------------------------- Layers -------------------------------- */
 .layer1 {
@@ -5896,57 +5885,26 @@ table .btn {
   padding: 20px;
   margin-bottom: 20px; }
 
-hr {
-  border-width: 2px; }
-
-/* -------------------------------- Top -------------------------------- */
-#top {
-  background-color: #fff;
-  margin-bottom: 20px;
-  text-align: center; }
-  #top img {
-    width: 250px;
-    padding: 10px; }
-
-.btn-view {
-  text-align: right; }
-  .btn-view button, .btn-view a {
-    margin-bottom: 20px; }
-
-/* -------------------------------- Left column -------------------------------- */
-.col-left {
-  text-align: center; }
-
 /* -------------------------------- Images -------------------------------- */
-.col-left .img-fit {
-  max-width: 250px;
+.img-fit {
+  max-width: 350px;
   width: 100%;
   padding: 10px 0 20px 0; }
-.col-left .pictures .img-fit {
-  max-width: 150px;
-  width: 48%;
-  padding: 5px; }
 
 /* -------------------------------- Links -------------------------------- */
 .refs a {
-  color: #ff0000; }
+  color: #8BD4A7; }
   .refs a:hover {
-    color: #cc0000; }
+    color: #66c68b; }
 
 /* -------------------------------- Forms -------------------------------- */
-.form-item {
-  overflow: hidden; }
-  .form-item .form-control {
-    margin-bottom: 10px; }
-  .form-item p {
-    padding-top: 10px;
-    text-align: right; }
-  .form-item .btn {
-    margin-right: 10px;
-    margin-bottom: 5px; }
-
 textarea {
   resize: none; }
+
+/* -------------------------------- Charts -------------------------------- */
+.chart {
+  width: 100%;
+  height: 175px; }
 
 /* -------------------------------- Footer -------------------------------- */
 footer {
@@ -5958,12 +5916,5 @@ footer {
   text-align: center;
   padding-top: 10px;
   border-top: 1px solid rgba(0, 0, 0, 0.12); }
-
-/* -------------------------------- 404 page -------------------------------- */
-.error404 {
-  text-align: center;
-  font-size: 18px; }
-  .error404 img {
-    padding: 20px; }
 
 /*# sourceMappingURL=style.css.map */

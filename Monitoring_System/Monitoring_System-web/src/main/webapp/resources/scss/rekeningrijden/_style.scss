@@ -9,25 +9,44 @@ html {
     position: relative;
     min-height: 100%;
 }
+
 body {
     font-family: $standard-font;
-    background-image: $background-image;
-    background-repeat: repeat;
+    background: $background-image no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     /* For sticky footer, margin bottom by footer height */
     margin-bottom: 40px;
 }
 
-/* -------------------------------- Buttons -------------------------------- */
+/* -------------------------------- Header -------------------------------- */
 
-.btn-blog {
-    @include button-variant($btn-color, $btn-bg, $btn-bg);
-    border: 0px;
+header {
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    background-color: $white;
+    margin-bottom: 20px;
 }
 
-table {
-    .btn {
-        margin: 0 10px 10px 0;
-    }
+.fixed {
+    top: 0;
+    z-index: 1;
+    position: fixed;
+    opacity: 0.8;
+}
+
+.top {
+    margin-top: 140px;
+}
+
+/* -------------------------------- Buttons -------------------------------- */
+
+.btn-ride {
+    @include button-variant($btn-color, $btn-bg, $btn-bg);
+    border: 0px;
 }
 
 /* -------------------------------- Layers -------------------------------- */
@@ -49,55 +68,14 @@ table {
     margin-bottom: 20px;
 }
 
-hr {
-    border-width: 2px;
-}
-
-/* -------------------------------- Top -------------------------------- */
-
-#top {
-    background-color: $white;
-    margin-bottom: 20px;
-    text-align: center;
-    
-    img {        
-        width: 250px;
-        padding: 10px;
-    }
-}
-
-.btn-view {
-    text-align: right;
-    
-    button, a {
-        margin-bottom: 20px;
-    }
-}
-
-/* -------------------------------- Left column -------------------------------- */
-
-.col-left {
-    text-align: center;
-}
-
 /* -------------------------------- Images -------------------------------- */
 
-.col-left {
-    .img-fit {
-        max-width: 250px;
-        width: 100%;
-        padding: 10px 0 20px 0;
-    }
-    
-    .pictures {
-        .img-fit {
-            max-width: 150px;
-            width: 48%;
-            padding: 5px;
-        }
-    }
+.img-fit {
+    max-width: 350px;
+    width: 100%;
+    padding: 10px 0 20px 0;
 }
-
+    
 /* -------------------------------- Links -------------------------------- */
 
 .refs {
@@ -112,26 +90,15 @@ hr {
 
 /* -------------------------------- Forms -------------------------------- */
 
-.form-item {
-    overflow: hidden;
-    
-    .form-control {
-        margin-bottom: 10px;
-    }
-    
-    p {
-        padding-top: 10px;
-        text-align: right;
-    }
-    
-    .btn {
-        margin-right: 10px;
-        margin-bottom: 5px;
-    }
-}
-
 textarea {
     resize: none;
+}
+
+/* -------------------------------- Charts -------------------------------- */
+
+.chart {
+    width: 100%;
+    height: 175px;
 }
 
 /* -------------------------------- Footer -------------------------------- */
@@ -145,15 +112,4 @@ footer {
     text-align: center;
     padding-top: 10px;
     border-top: 1px solid rgba(0,0,0,0.12);
-}
-
-/* -------------------------------- 404 page -------------------------------- */
-
-.error404 {
-    text-align: center;
-    font-size: 18px;
-    
-    img {
-        padding: 20px;
-    }
 }
