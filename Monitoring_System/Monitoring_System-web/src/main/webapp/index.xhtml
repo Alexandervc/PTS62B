@@ -6,9 +6,24 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" >
     
     <h:body>    	
-    	<ui:composition template="templates/main.xhtml">
+    	<ui:composition template="templates/template.xhtml">
             <ui:define name="content">
-    		<h1>Hello world</h1>
+                
+                <div class="row">
+                    <div class="col-sm-12 meme layer1">
+                        <h1>Monitor</h1>
+                        
+                        <div id="timeline1" class="chart"></div>
+                    </div>                    
+                </div>
+    		
+                <!--
+                <h:form>
+                    <h:inputText value="#{testBean.input}"/>
+                    <h:commandButton value="Submit" action="#{testBean.submit()}"/>
+                </h:form>
+                <h:outputText value="#{testBean.output}"/>
+                -->
             </ui:define>
     	</ui:composition>    	
     </h:body>
