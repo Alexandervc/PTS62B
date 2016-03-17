@@ -30,8 +30,8 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 @Startup
 public class RadService {
-    @PersistenceContext(unitName = "RADpu")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "RADpu")
+//    private EntityManager em;
     
     private BillDAOJPAImp billDAO;
     private PersonDAOJPAImp personDAO;
@@ -52,7 +52,7 @@ public class RadService {
 
     public void persistBill(Bill b) {
         try {
-            billDAO.setEntityManager(em);
+            //billDAO.setEntityManager(em);
             billDAO.create(b);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
@@ -62,7 +62,7 @@ public class RadService {
 
     public void persistPerson(Person p) {
         try {
-            personDAO.setEntityManager(em);
+            //personDAO.setEntityManager(em);
             personDAO.create(p);
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);

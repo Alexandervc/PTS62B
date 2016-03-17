@@ -22,11 +22,11 @@ public class PersonDAOJPAImp implements PersonDAO {
     @PersistenceContext(unitName ="RADpu")
     private EntityManager em;
     
-    public void setEntityManager(EntityManager em){
-        this.em = em;
+    public PersonDAOJPAImp(){
     }
     
-    public PersonDAOJPAImp(){
+    public void setEntityManager(EntityManager em){
+        this.em = em;
     }
     
     @Override
