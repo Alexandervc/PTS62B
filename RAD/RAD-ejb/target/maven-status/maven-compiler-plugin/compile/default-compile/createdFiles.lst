@@ -1,0 +1,14 @@
+DAO\PersonDAO.class
+Domain\Bill_.class
+DAO\BillDAOJPAImp.class
+Domain\RoadUsage.class
+Service\RadService.class
+Domain\Bill.class
+DAO\BillDAO.class
+DAO\PersonDAOJPAImp.class
+Domain\Person.class
+Domain\Person_.class
+NotUsed\Road.class
+NotUsed\CarPosition.class
+Domain\RoadType.class
+Service\DataStorage.class
