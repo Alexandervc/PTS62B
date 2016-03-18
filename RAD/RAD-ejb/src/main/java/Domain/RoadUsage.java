@@ -14,24 +14,36 @@ import javax.persistence.Id;
  *
  * @author Linda
  */
-@Entity (name = "RoadUsage")
 public class RoadUsage implements Serializable {
-    @Id
+    
+    // fields
     private Long id;
-    
-    @Column(name ="RoadName")
     private String name;
-    
-    @Column(name ="RoadType")
     private RoadType type;
-    
-    @Column(name ="Distance")
     private double km;
 
+    // constructor
     public RoadUsage(Long id, String name, RoadType type, double km) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.km = km;
+    }
+    
+    // getters
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public RoadType getType() {
+        return type;
+    }
+
+    public double getKm() {
+        return km;
     }
 }

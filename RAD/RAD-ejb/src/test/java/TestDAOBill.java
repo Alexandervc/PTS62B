@@ -4,53 +4,46 @@
  * and open the template in the editor.
  */
 
-import DAO.BillDAOJPAImp;
-import Domain.Bill;
 import Service.RadService;
-import javax.persistence.EntityManager;
+import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import static org.mockito.Mockito.verify;
-import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  *
  * @author Linda
  */
-@RunWith(MockitoJUnitRunner.class)
 public class TestDAOBill {
         
-     
+    @Inject
     private RadService service;
     
-    @Mock
-    private BillDAOJPAImp dao;
-        
     public TestDAOBill() {
     }
     
     @Before
     public void setUp() {
-        service = new RadService();
-        //service.setBillDAO(dao);
         
     }
     
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    
     @Test
     public void addBill(){
-        Bill b = new Bill();
+//        Bill b = new Bill();
+//        RoadUsage road = new RoadUsage(9L, "AutoWeg", RoadType.A, 36.96);
+//        List<RoadUsage> roads = new ArrayList<>();
+//        roads.add(road);
+//        b.setRoadUsage(roads);        
+//        service.persistBill(b);
+//        
+//        Person p = new Person();
+//        p.setName("nieuw");
+//        p.setCartracker(3L);
+//        p.addBill(b);
+//        service.persistPerson(p);
     }
 }

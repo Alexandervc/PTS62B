@@ -11,3 +11,4 @@ Domain\Person_.class
 NotUsed\Road.class
 NotUsed\CarPosition.class
 Domain\RoadType.class
+Service\DataStorage.class
