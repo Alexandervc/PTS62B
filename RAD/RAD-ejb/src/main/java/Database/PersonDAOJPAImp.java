@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DAO;
+package Database;
 
+import DAO.PersonDAO;
 import Domain.Person;
 import java.util.List;
 import javax.ejb.Stateless;
