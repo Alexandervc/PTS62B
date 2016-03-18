@@ -5,10 +5,17 @@
  */
 package service;
 
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.inject.Inject;
 
 /**
  *
@@ -17,43 +24,45 @@ import javax.ejb.Startup;
 @Singleton
 @Startup
 public class RmiServer {
+
     private static final int portnumber = 1099;
-    private static final String bindingname = "VS";
-    
-    private static Registry registry;
-    
-    
-    
+
+    private Registry registry;
+
+    // TODO?
+    private static final String bindingname = "VS_MovementService";
+    // @Inject
+    private IMovementService movementService;
+
     @PostConstruct
     private void start() {
-    
-    /*
-    
-    public ServerController() {
         try {
             System.out.println("Server: portnumber " + portnumber);
+
+            // TODO inject!!!
+            this.registry = LocateRegistry.getRegistry("localhost", portnumber);
+            //System.out.println(this.registry.list());
+            if (registry == null) {
+            System.out.println("------------------------------------------------------------------ Create registry");
+                this.registry = LocateRegistry.createRegistry(portnumber);
+             
             
-            this.admin = Administratie.getAdministratie();
-            
-            this.registry = LocateRegistry.createRegistry(portnumber);
-            if(this.registry != null){
-                this.registry.rebind(bindingname, admin);
+                if (this.registry != null) {
+                    movementService = new MovementService();
+                    //this.registry.unbind(bindingname);
+                    System.out.println("----------------------------------------------------------------------- bind service");
+                    this.registry.rebind(bindingname, movementService);
+                }}
+            else {
+                System.out.println("---------------------------------------------------- registry already exists");
             }
-        } catch (IOException ex) {
+        } catch (RemoteException ex) {
+            // ExportException niet erg??
             ex.printStackTrace();
-        }
+        } 
     }
-    
-    
-    }
-    
-    public static void main(String[] args) {
-        System.out.println("SERVER UITSTAPJESAPPLICATIE");
-        printIPadresses();
-        new ServerController();
-    }*/
-    }
-/*
+
+    /*
 private static void printIPadresses() {
         try {
             InetAddress localhost = InetAddress.getLocalHost();

@@ -5,15 +5,15 @@
  */
 package service;
 
-import domain.RoadType;
-import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
  * @author Alexander
  */
-public class RoadUsage implements Serializable{
-    private String name;
-    private RoadType type;
-    private Double km;
+public class NewClass extends UnicastRemoteObject implements INewClass {
+    public NewClass() throws RemoteException {
+        
+    }
 }

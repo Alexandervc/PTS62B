@@ -5,15 +5,12 @@
  */
 package service;
 
-import domain.RoadType;
-import java.io.Serializable;
+import java.rmi.Remote;
 
 /**
  *
  * @author Alexander
  */
-public class RoadUsage implements Serializable{
-    private String name;
-    private RoadType type;
-    private Double km;
+public interface INewClass extends Remote {
+    
 }

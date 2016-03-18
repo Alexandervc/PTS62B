@@ -5,13 +5,36 @@
  */
 package service;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author Alexander
  */
-public interface MovementService {
-    List<RoadUsage> generateRoadUsages();
+@Stateless
+public class MovementService extends UnicastRemoteObject implements IMovementService {
+
+    public MovementService() throws RemoteException {
+        
+    }
+    
     // TODO
+    /**
+     *
+     * @param cartrackerId
+     * @param begin
+     * @param end
+     * @return
+     * @throws RemoteException
+     */
+    @Override
+    public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) throws RemoteException {
+        System.out.println("Tessssssssstttttttttttjejeejejejejejejejejejjejejejejejejejjej");
+        return null;
+    }
+    
 }

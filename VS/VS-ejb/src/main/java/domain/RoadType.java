@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Alexander
