@@ -5,9 +5,19 @@
  */
 package Service;
 
+import Business.MonitoringManager;
+import Common.Domain.Test;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.enterprise.concurrent.LastExecution;
+import javax.enterprise.concurrent.ManagedScheduledExecutorService;
+import javax.enterprise.concurrent.Trigger;
+import javax.inject.Inject;
 
 /**
  * The service that contains methods concerning the monitoring of servers
@@ -17,24 +27,57 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class MonitoringService {
 
+    @PostConstruct
+    public void init() {
+        runJob();
+    }
+    
+    @Inject MonitoringManager manager;
+
+    @Resource
+    ManagedScheduledExecutorService executor;
+ 
+    public void runJob() {
+        executor.schedule(new Scheduler(), new Trigger() {
+ 
+            @Override
+            public Date getNextRunTime(LastExecution lastExecutionInfo, Date taskScheduledTime) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(taskScheduledTime);
+                cal.add(Calendar.MINUTE, 15);
+                return (Date) cal.getTime();
+            }
+ 
+            @Override
+            public boolean skipRun(LastExecution lastExecutionInfo, Date scheduledRunTime) {
+                return null == lastExecutionInfo;
+            }
+        });
+    }
+ 
+    public void cancelJob() {
+        executor.shutdown();
+    }
 
     /**
-     * Retrieves a list of servers that are currently part of the RRA
+     * Retrieves a list of Systems that are currently part of the RRA
      * application.
-     * @return A list of servers.
+     * @return A list of systems.
      */
-    public List<Object> retrieveServers() {
-        return null;       
+    public List<Common.Domain.System> retrieveSystems() {
+        return manager.getSystems();
     }
     
     /**
      * Generates the status of the server
-     * @param server the Server object where the status will be generated for.
+     * @param system the Server object where the status will be generated for.
      * @return A list
      */
-    public List<Object> generateServerStatus(Object server) {
-        return null;
+    public List<Test> generateServerStatus(Common.Domain.System system) {
+        return this.manager.generateServerStatus(system);
     }
-
     
+    public List<Test> retrieveLatestTests(Common.Domain.System system) {
+        return this.manager.retrieveLatestTests(system);
+    }
 }

@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Common.Domain;
+package Data;
+
+import java.rmi.RemoteException;
 
 /**
  *
  * @author Edwin
  */
-public enum TestType {
-    STATUS,
-    ENDPOINTS,
-    FUNCTIONAL
+public interface VSinterface {
+    
+    public void test() throws RemoteException;
 }

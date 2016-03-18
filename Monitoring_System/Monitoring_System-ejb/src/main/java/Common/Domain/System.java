@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,7 +23,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(query = "select * from System", name = "get systems")
+@NamedQuery(query = "select s from System s", name = "get systems")
 })
 public class System implements Serializable {
 
@@ -43,8 +44,18 @@ public class System implements Serializable {
     private int port;
     
     @OneToMany
+    @JoinColumn(name="SYSTEM")
+    private List<ConnectionClient> clients;
+    
+    @OneToMany
+    @JoinColumn(name="SYSTEM_ID", referencedColumnName="ID")
     private List<Test> tests;
 
+    public System() {
+    }
+
+    
+    
     public Long getId() {
         return id;
     }
@@ -92,5 +103,14 @@ public class System implements Serializable {
     public void setTests(List<Test> tests) {
         this.tests = tests;
     }
+
+    public List<ConnectionClient> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<ConnectionClient> clients) {
+        this.clients = clients;
+    }
+    
     
 }

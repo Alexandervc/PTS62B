@@ -20,12 +20,8 @@ public class RMI_Client {
 
     // References to registry and student administration
     private Registry registry = null;
-    private IMonitoring monitoring = null;
-
     // Constructor
-    public RMI_Client(String ipAddress, int portNumber, String bindingName) {
-        this.bindingName = bindingName;
-
+    public RMI_Client(String ipAddress, int portNumber) {
         // Print IP address and port number for registry
         System.out.println("Client: IP Address: " + ipAddress);
         System.out.println("Client: Port number " + portNumber);
@@ -46,22 +42,37 @@ public class RMI_Client {
             System.out.println("Client: Cannot locate registry");
             System.out.println("Client: Registry is null pointer");
         }
-        
-        if (registry != null) {
-            try {
-                monitoring = (IMonitoring) registry.lookup(bindingName);
-            } catch (RemoteException ex) {
-                System.out.println("Client: RemoteException: " + ex.getMessage());
-                monitoring = null;
-            } catch (NotBoundException ex) {
-                System.out.println("Client: NotBoundException: " + ex.getMessage());
-                monitoring = null;
-            }
-        }
+
     }
     
-    public IMonitoring getMonitoringClient() {
-        return this.monitoring;
+    public IMonitoring getMonitoringClient(String bindingName) {
+        if (registry != null) {
+            try {
+                return (IMonitoring) registry.lookup(bindingName);
+            } catch (RemoteException ex) {
+                System.out.println("Client: RemoteException: " + ex.getMessage());
+                return null;
+            } catch (NotBoundException ex) {
+                System.out.println("Client: NotBoundException: " + ex.getMessage());
+                return null;
+            }
+        }
+        return null;
+    }
+    
+    public VSinterface getVSClient(String bindingName) {
+        if (registry != null) {
+            try {
+                return (VSinterface) registry.lookup(bindingName);
+            } catch (RemoteException ex) {
+                System.out.println("Client: RemoteException: " + ex.getMessage());
+                return null;
+            } catch (NotBoundException ex) {
+                System.out.println("Client: NotBoundException: " + ex.getMessage());
+                return null;
+            }
+        }
+        return null;
     }
 
 }

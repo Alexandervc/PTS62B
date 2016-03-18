@@ -14,12 +14,17 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Edwin
  */
 @Entity
+@NamedQueries({
+@NamedQuery(query = "select t from Test t where t.systemID = :systemId AND t.testType = :type ORDER BY t.date DESC", name = "get latest test for system with type")
+})
 public class Test implements Serializable {
 
     @Id
@@ -36,8 +41,20 @@ public class Test implements Serializable {
     @Column(name = "RESULT")
     private Boolean result;
     
+    @Column(name="SYSTEM_ID")
+    private Long systemID;
+    
     public Long getId() {
         return id;
+    }
+
+    public Test() {
+    }
+
+    public Test(TestType testType, Date date, Boolean result) {
+        this.testType = testType;
+        this.date = date;
+        this.result = result;
     }
 
     public void setId(Long id) {

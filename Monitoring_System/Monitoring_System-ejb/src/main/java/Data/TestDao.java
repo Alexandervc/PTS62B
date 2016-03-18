@@ -6,6 +6,7 @@
 package Data;
 
 import Common.Domain.Test;
+import Common.Domain.TestType;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,15 @@ public class TestDao extends AbstractDao {
 
     public TestDao() {
         super(Test.class);
+    }
+    
+    public Test retrieveLatestTestForTypeForSystem(Common.Domain.System system
+            , TestType type) {
+        Query query = this.em.createNamedQuery("get latest test for system with type");
+        query.setParameter("systemId", system.getId());
+        query.setParameter("type", type);
+        query.setMaxResults(1);
+        return (Test) query.getSingleResult();
     }
 
   
