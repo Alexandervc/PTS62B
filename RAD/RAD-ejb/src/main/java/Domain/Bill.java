@@ -22,7 +22,7 @@ import javax.persistence.Transient;
  * @author Linda
  */
 @Entity(name = "Bill")
-public class Bill implements Serializable {
+public class Bill {
 
     // fields
     @Id

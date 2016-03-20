@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Linda
  */
-public enum RoadType implements Serializable{
+public enum RoadType{
     A,
     B,
     C

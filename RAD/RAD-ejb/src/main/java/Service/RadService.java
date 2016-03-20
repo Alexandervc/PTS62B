@@ -23,80 +23,74 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import DAO.IBillDAO;
 import DAO.IPersonDAO;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
  * @author Linda
  */
 @Stateless
-public class RadService extends UnicastRemoteObject implements IRadService {
+@LocalBean
+public class RadService {
 
     @Inject
     private IBillDAO billDAO;
     @Inject
     private IPersonDAO personDAO;
 
-    public RadService() throws RemoteException {
-
+    public RadService() {
+        
     }
 
-//    @Override
-//    public void test() {
-////        Bill b = new Bill();
-////        RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
-////        List<RoadUsage> roads = new ArrayList<>();
-////        roads.add(road);
-////        b.setRoadUsage(roads);
-////        persistBill(b);
-////
-////        Person p = new Person();
-////        p.setName("Test");
-////        p.setCartracker(9L);
-////        p.addBill(b);
-////        persistPerson(p);
-//    }
+    public void test(){
+        Bill b = new Bill();
+        RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
+        List<RoadUsage> roads = new ArrayList<>();
+        roads.add(road);
+        b.setRoadUsage(roads);        
+        persistBill(b);
+        
+        Person p = new Person();
+        p.setName("Test");
+        p.setCartracker(9L);
+        p.addBill(b);
+        persistPerson(p);
+    }
+    
+    public void persistBill(Bill b) {
+        try {
+            billDAO.create(b);
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
 
-//    @Override
-//    public void persistBill(Bill b) {
-//        try {
-//            billDAO.create(b);
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    @Override
-//    public List<Bill> findAllBill() {
-//        try {
-//            List<Bill> bills = billDAO.findAll();
-//            return bills;
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    @Override
-//    public void persistPerson(Person p) {
-//        try {
-//            personDAO.create(p);
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    @Override
-//    public List<Person> findAllPerson() {
-//        try {
-//            List<Person> persons = personDAO.findAll();
-//            return persons;
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public List<Bill> findAllBill() {
+        try {
+            List<Bill> bills = billDAO.findAll();
+            return bills;
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void persistPerson(Person p) {
+        try {
+            personDAO.create(p);
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Person> findAllPerson() {
+        try {
+            List<Person> persons = personDAO.findAll();
+            return persons;
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
 }

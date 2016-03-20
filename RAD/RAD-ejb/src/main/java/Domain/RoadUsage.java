@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Linda
  */
-public class RoadUsage implements Serializable {
+public class RoadUsage{
     
     // fields
     private Long id;

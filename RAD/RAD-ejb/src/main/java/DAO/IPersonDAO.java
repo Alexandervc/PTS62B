@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
  *
  * @author Linda
  */
-public interface IPersonDAO extends Remote {
+public interface IPersonDAO {
     void setEntityManager(EntityManager em);
     
     void create(Person person);

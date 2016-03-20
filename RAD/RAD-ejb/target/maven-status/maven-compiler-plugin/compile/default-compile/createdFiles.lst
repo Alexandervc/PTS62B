@@ -1,10 +1,6 @@
 Domain\Bill_.class
-Service\IRadService.class
-Service\RmiServer.class
-Business\RadManager.class
 DAO\IPersonDAO.class
 Domain\RoadUsage.class
-Service\RmiClient.class
 Business\DataStorage.class
 Service\RadService.class
 Domain\Bill.class
