@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Domain;
-
-import java.io.Serializable;
+package Business;
 
 /**
  *
  * @author Linda
  */
-public enum RoadType implements Serializable{
-    A,
-    B,
-    C
+public class RadManager {
     
 }

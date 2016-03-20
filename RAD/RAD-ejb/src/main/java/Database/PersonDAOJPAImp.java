@@ -5,25 +5,27 @@
  */
 package Database;
 
-import DAO.PersonDAO;
 import Domain.Person;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
+import DAO.IPersonDAO;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
  * @author Linda
  */
 @Stateless
-public class PersonDAOJPAImp implements PersonDAO {
+public class PersonDAOJPAImp extends UnicastRemoteObject implements IPersonDAO {
 
     @PersistenceContext(unitName ="RADpu")
     private EntityManager em;
     
-    public PersonDAOJPAImp(){
+    public PersonDAOJPAImp() throws RemoteException{
     }
     
     @Override

@@ -6,6 +6,7 @@
 package DAO;
 
 import Domain.Person;
+import java.rmi.Remote;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -13,7 +14,7 @@ import javax.persistence.EntityManager;
  *
  * @author Linda
  */
-public interface PersonDAO {
+public interface IPersonDAO extends Remote {
     void setEntityManager(EntityManager em);
     
     void create(Person person);
