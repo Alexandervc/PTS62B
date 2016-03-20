@@ -12,27 +12,25 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import DAO.IBillDAO;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
  * @author Linda
  */
 @Stateless
-public class BillDAOJPAImp extends UnicastRemoteObject implements IBillDAO {
+public class BillDAOJPAImp implements IBillDAO  {
 
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
 
-    public BillDAOJPAImp() throws RemoteException {
+    public BillDAOJPAImp() {
     }
 
     @Override
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }
-
+    
     @Override
     public void create(Bill bill) {
         em.persist(bill);

@@ -20,12 +20,12 @@ import java.rmi.server.UnicastRemoteObject;
  * @author Linda
  */
 @Stateless
-public class PersonDAOJPAImp extends UnicastRemoteObject implements IPersonDAO {
+public class PersonDAOJPAImp implements IPersonDAO {
 
     @PersistenceContext(unitName ="RADpu")
     private EntityManager em;
     
-    public PersonDAOJPAImp() throws RemoteException{
+    public PersonDAOJPAImp(){
     }
     
     @Override
