@@ -1,6 +1,6 @@
-package DAO;
+package dao;
 
-import Domain.Rate;
+import domain.Rate;
 import java.util.List;
 
 /**

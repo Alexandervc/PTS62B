@@ -1,4 +1,4 @@
-package NotUsed;
+package notused;
 
 import java.util.Date;
 

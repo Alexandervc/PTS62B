@@ -1,6 +1,6 @@
-package NotUsed;
+package notused;
 
-import Domain.RoadType;
+import domain.RoadType;
 
 /**
  *
