@@ -2,12 +2,14 @@ package business;
 
 import dao.PersonDAO;
 import domain.Person;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
  *
  * @author Melanie
  */
+@Stateless
 public class PersonManager {
     @Inject
     private PersonDAO personDAO;

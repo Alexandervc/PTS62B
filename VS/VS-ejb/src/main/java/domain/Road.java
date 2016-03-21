@@ -26,7 +26,7 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     
 })
-public class Road implements Serializable {
+public class Road implements Serializable, Comparable<Road> {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id; 
@@ -39,6 +39,7 @@ public class Road implements Serializable {
     @Enumerated(EnumType.STRING)
     private RoadType roadType;
     
+    @Deprecated
     public Road() {
         
     }
@@ -87,5 +88,19 @@ public class Road implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof Road)) {
+            return false;
+        }
+        Road other = (Road) o;
+        return this.getId().equals(other.getId());
+    }
+
+    @Override
+    public int compareTo(Road o) {
+        return this.getId().compareTo(o.getId());
     }
 }
