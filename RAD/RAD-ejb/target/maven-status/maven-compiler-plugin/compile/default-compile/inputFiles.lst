@@ -1,12 +1,12 @@
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Service\RadService.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAO.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\RoadUsage.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Service\DataStorage.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\Road.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\RoadType.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAOJPAImp.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAOJPAImp.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAO.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\CarPosition.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\Bill.java
-E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\Person.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Domain\Person.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Domain\Bill.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAO.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Domain\RoadUsage.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\Road.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Business\DataStorage.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Service\RadService.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAO.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\CarPosition.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Database\BillDAOJPAImp.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Database\PersonDAOJPAImp.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\Domain\RoadType.java
