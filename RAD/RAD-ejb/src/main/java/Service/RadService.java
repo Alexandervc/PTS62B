@@ -7,7 +7,14 @@ import domain.Bill;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
+import java.rmi.RemoteException;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -16,9 +23,7 @@ import javax.inject.Inject;
  * @author Linda
  */
 @Stateless
-@LocalBean
-public class RadService {    
-    private Person person;
+public class RadService  {    
     
     @Inject
     private PersonManager personManager;
@@ -28,11 +33,20 @@ public class RadService {
     
     @Inject
     private RateManager rateManager;
+    
+    @Inject
+    private RmiClient rmiClient;
 
+    /*
     public RadService() {
         //Huidige gebruiker (mock voor inlogsysteem)
         person = personManager.addPerson("Melanie");
-    }  
+    }  */
+    
+    @PostConstruct
+    public void start() {
+        personManager.addPerson("Melanie");
+    }
     
     public void addRate(double rate, RoadType type) {
         rateManager.addRate(rate, type);
@@ -52,4 +66,13 @@ public class RadService {
         billDAO.create(b);        
     }
     */
+
+    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+        try {
+            return rmiClient.generateRoadUsages(cartrackerId, begin, end);
+        } catch (RemoteException ex) {
+            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

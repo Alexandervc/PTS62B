@@ -3,12 +3,14 @@ package business;
 import dao.RateDAO;
 import domain.Rate;
 import domain.RoadType;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
  *
  * @author Melanie
  */
+@Stateless
 public class RateManager {
     @Inject
     private RateDAO rateDAO;
