@@ -1,0 +1,31 @@
+{"ride":[
+    {"timestamp":"2016-03-14T10:25:43.511Z", "coordinates":"[37.127921, -8.295380]", "road":"N125", "km":"0"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:26:43.511Z", "coordinates":"[37.128892, -8.283432]", "road":"N125", "km":"1,1"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:28:43.511Z", "coordinates":"[37.128541, -8.266944]", "road":"N125", "km":"1,5"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:30:43.511Z", "coordinates":"[37.117255, -8.247246]", "road":"Estrada de Ferreiras", "km":"2,4"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:33:43.511Z", "coordinates":"[37.098086, -8.256493]", "road":"Estrada de Ferreiras", "km":"2,4"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:33:43.511Z", "coordinates":"[37.098086, -8.256493]", "road":"Estrada de Ferreiras", "km":"2,41"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:36:43.511Z", "coordinates":"[37.090980, -8.244256]", "road":"Avenida dos Descobrimentos", "km":"1,9"}
+]}
+
+{"ride":[
+    {"timestamp":"2016-03-14T10:38:43.511Z", "coordinates":"[37.089126, -8.241773]", "road":"Rua do Atlântico", "km":"0,8"}
+]}

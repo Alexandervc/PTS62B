@@ -26,6 +26,7 @@ import javax.inject.Inject;
 @Stateless
 @LocalBean
 public class MonitoringService {
+    //Test
 
     @PostConstruct
     public void init() {
