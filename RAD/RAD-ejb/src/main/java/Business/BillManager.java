@@ -1,7 +1,7 @@
-package Business;
+package business;
 
-import DAO.BillDAO;
-import Domain.Person;
+import dao.BillDAO;
+import domain.Person;
 import javax.inject.Inject;
 
 /**

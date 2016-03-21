@@ -1,7 +1,7 @@
-package DAO;
+package dao;
 
-import Domain.RoadType;
-import Service.RadService;
+import domain.RoadType;
+import service.RadService;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;

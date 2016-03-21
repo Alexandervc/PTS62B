@@ -1,8 +1,8 @@
-package Business;
+package business;
 
-import DAO.RateDAO;
-import Domain.Rate;
-import Domain.RoadType;
+import dao.RateDAO;
+import domain.Rate;
+import domain.RoadType;
 import javax.inject.Inject;
 
 /**

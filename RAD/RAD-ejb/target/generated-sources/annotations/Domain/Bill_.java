@@ -1,6 +1,7 @@
 package Domain;
 
-import Domain.Person;
+import Domain1.Bill;
+import Domain1.Person;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;

@@ -1,6 +1,6 @@
-package DAO;
+package dao;
 
-import Domain.Person;
+import domain.Person;
 import java.io.Serializable;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
