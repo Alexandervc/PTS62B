@@ -5,7 +5,11 @@
  */
 package dao;
 
+import domain.CarPosition;
 import domain.Cartracker;
+import domain.Road;
+import domain.RoadType;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -18,18 +22,26 @@ import javax.inject.Inject;
 @Singleton
 @Startup
 public class DataStorage {
+
     @Inject
     private CarPositionDao carPositionDao;
-    
+
     @Inject
     private CartrackerDao cartrackerDao;
-    
+
     @Inject
     private RoadDao roadDao;
-    
+
     @PostConstruct
     public void start() {
         System.out.println("start datastorage");
-        cartrackerDao.create(new Cartracker(1L));
+        if (cartrackerDao.find(1L) == null) {
+            Cartracker cartracker = new Cartracker(1L);
+            cartrackerDao.create(cartracker);
+            Road road = new Road("A1", RoadType.A);
+            roadDao.create(road);
+            CarPosition cp = new CarPosition(cartracker, new Date(), 1.0, 1.0, road, 1.0);
+            carPositionDao.create(cp);
+        }
     }
 }

@@ -24,6 +24,7 @@ public class Cartracker implements Serializable {
     @OneToMany (mappedBy = "cartracker")
     private List<CarPosition> positions;
     
+    @Deprecated
     public Cartracker() {
         
     }
