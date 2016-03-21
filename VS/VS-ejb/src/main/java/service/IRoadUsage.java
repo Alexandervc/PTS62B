@@ -5,10 +5,15 @@
  */
 package service;
 
+import domain.RoadType;
+
 /**
  *
  * @author Alexander
  */
 public interface IRoadUsage {
-    
+    String getName();
+    Double getKm();
+    String getRoadName();
+    RoadType getRoadType();
 }
