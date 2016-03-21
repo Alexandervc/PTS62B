@@ -3,6 +3,7 @@ package dao;
 import domain.RoadType;
 import service.RadService;
 import javax.annotation.PostConstruct;
+import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;

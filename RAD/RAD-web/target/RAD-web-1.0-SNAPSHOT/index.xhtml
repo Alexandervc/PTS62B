@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" >
-    
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
     <h:body>    	
-    	<ui:composition template="templates/template.xhtml">
+        <ui:composition template="templates/template.xhtml">
             <ui:define name="content">
-                
+
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
-                        <h1>Administratie</h1>
-                        <p>Tekst</p>
+                        <h1>Factuur</h1>
+                        <h3>Alexander van Cuijk</h3>
+                        <div class="table-responsive">
+                            <table class="table-striped">
+                                <thead>
+                                    <th>RoadName</th>
+                                    <th>RoadType</th>
+                                    <th>Km</th>
+                                    <th>Price/km</th>
+                                    <th>TotalPrice</th>
+                                </thead>
+                                <c:forEach var="ru" items="#{billBean.roadUsages}">
+
+                                    <tr>
+                                        <td>#{ru.roadName}</td>
+                                        <td>#{ru.roadType}</td>
+                                        <td>#{ru.km}</td>
+                                        <td>€ 1</td>
+                                        <td>€ #{ru.km}</td>
+                                    </tr>
+
+                                </c:forEach>
+                            </table>
+                        </div>
                     </div>                    
                 </div>
-    		
+
                 <!--
                 <h:form>
                     <h:inputText value="#{testBean.input}"/>
@@ -24,6 +47,6 @@
                 <h:outputText value="#{testBean.output}"/>
                 -->
             </ui:define>
-    	</ui:composition>    	
+        </ui:composition>    	
     </h:body>
 </html>
