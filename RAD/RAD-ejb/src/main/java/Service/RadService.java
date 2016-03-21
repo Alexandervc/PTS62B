@@ -1,12 +1,12 @@
-package Service;
+package service;
 
-import Business.BillManager;
-import Business.PersonManager;
-import Business.RateManager;
-import Domain.Bill;
-import Domain.Person;
-import Domain.Rate;
-import Domain.RoadType;
+import business.BillManager;
+import business.PersonManager;
+import business.RateManager;
+import domain.Bill;
+import domain.Person;
+import domain.Rate;
+import domain.RoadType;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
