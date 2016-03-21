@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
  * @author Linda
  */
 @Entity (name = "Person")
-public class Person implements Serializable {
+public class Person{
 
     // fields
     @Id

@@ -6,6 +6,7 @@
 package DAO;
 
 import Domain.Bill;
+import java.rmi.Remote;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -13,7 +14,7 @@ import javax.persistence.EntityManager;
  *
  * @author Linda
  */
-public interface BillDAO {
+public interface IBillDAO extends Remote{
     void setEntityManager(EntityManager em);
     
     void create(Bill bill);

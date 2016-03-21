@@ -5,8 +5,6 @@
  */
 package Service;
 
-import DAO.BillDAO;
-import DAO.PersonDAO;
 import Domain.Bill;
 import Domain.Person;
 import Domain.RoadType;
@@ -23,6 +21,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import DAO.IBillDAO;
+import DAO.IPersonDAO;
 
 /**
  *
@@ -33,9 +33,9 @@ import javax.persistence.PersistenceContext;
 public class RadService {
 
     @Inject
-    private BillDAO billDAO;
+    private IBillDAO billDAO;
     @Inject
-    private PersonDAO personDAO;
+    private IPersonDAO personDAO;
 
     public RadService() {
         

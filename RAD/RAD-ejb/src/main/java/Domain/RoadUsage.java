@@ -6,15 +6,12 @@
 package Domain;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 /**
  *
  * @author Linda
  */
-public class RoadUsage implements Serializable {
+public class RoadUsage{
     
     // fields
     private Long id;
