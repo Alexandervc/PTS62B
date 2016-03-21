@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Domain;
 
 import java.io.Serializable;
@@ -23,13 +18,11 @@ import javax.persistence.Transient;
  */
 @Entity(name = "Bill")
 public class Bill implements Serializable {
-
-    // fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade= CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Person person;
 
     @Transient
@@ -41,15 +34,13 @@ public class Bill implements Serializable {
     @Column(name = "TotalPrice")
     private double totalPrice;
 
-    // constructor
     public Bill() {
         this.paid = false;
         this.totalPrice = 13.89;
-        this.roadUsages = new ArrayList<RoadUsage>();
+        this.roadUsages = new ArrayList<>();
         this.person = new Person();
     }
 
-    // getters en setters
     public Long getId() {
         return id;
     }
