@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package business;
 
-import java.rmi.Remote;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author Alexander
  */
-public interface INewClass extends Remote {
+@Stateless
+public class MovementManager {
     
 }

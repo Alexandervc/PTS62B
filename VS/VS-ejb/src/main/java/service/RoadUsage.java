@@ -12,8 +12,50 @@ import java.io.Serializable;
  *
  * @author Alexander
  */
-public class RoadUsage implements Serializable{
+public class RoadUsage implements IRoadUsage, Serializable{
     private String name;
-    private RoadType type;
+    private String roadName;
+    private RoadType roadType;
     private Double km;
+    
+    public RoadUsage(String name, String roadName, RoadType type, Double km) {
+        this.name = name;
+        this.roadName = roadName;
+        this.roadType = type;
+        this.km = km;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getKm() {
+        return km;
+    }
+
+    public void setKm(Double km) {
+        this.km = km;
+    }
+
+    public String getRoadName() {
+        return roadName;
+    }
+
+    public void setRoadName(String roadName) {
+        this.roadName = roadName;
+    }
+
+    public RoadType getRoadType() {
+        return roadType;
+    }
+
+    public void setRoadType(RoadType roadType) {
+        this.roadType = roadType;
+    }
+    
+    
 }

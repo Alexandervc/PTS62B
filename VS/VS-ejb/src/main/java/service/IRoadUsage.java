@@ -5,15 +5,10 @@
  */
 package service;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 /**
  *
  * @author Alexander
  */
-public class NewClass extends UnicastRemoteObject implements INewClass {
-    public NewClass() throws RemoteException {
-        
-    }
+public interface IRoadUsage {
+    
 }

@@ -34,6 +34,7 @@ public class MovementService extends UnicastRemoteObject implements IMovementSer
     @Override
     public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) throws RemoteException {
         System.out.println("Tessssssssstttttttttttjejeejejejejejejejejejjejejejejejejejjej");
+        
         return null;
     }
     

@@ -21,7 +21,7 @@ public class Cartracker implements Serializable {
     @Id
     private long id;
     
-    @OneToMany
+    @OneToMany (mappedBy = "cartracker")
     private List<CarPosition> positions;
     
     public Cartracker() {

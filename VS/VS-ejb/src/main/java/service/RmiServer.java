@@ -10,9 +10,13 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.ejb.BeforeCompletion;
+import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -23,6 +27,7 @@ import javax.inject.Inject;
  */
 @Singleton
 @Startup
+@DependsOn("DataStorage")
 public class RmiServer {
 
     private static final int portnumber = 1099;
@@ -40,7 +45,6 @@ public class RmiServer {
             System.out.println("Server: portnumber " + portnumber);
 
             // TODO inject!!!
-            this.registry = LocateRegistry.getRegistry("localhost", portnumber);
             //System.out.println(this.registry.list());
             if (registry == null) {
             System.out.println("------------------------------------------------------------------ Create registry");
@@ -53,13 +57,27 @@ public class RmiServer {
                     System.out.println("----------------------------------------------------------------------- bind service");
                     this.registry.rebind(bindingname, movementService);
                 }}
-            else {
-                System.out.println("---------------------------------------------------- registry already exists");
-            }
         } catch (RemoteException ex) {
             // ExportException niet erg??
             ex.printStackTrace();
         } 
+    }
+    
+    @PreDestroy
+    public void stop() {
+        try {
+            this.registry = LocateRegistry.getRegistry("localhost", portnumber);
+            if(registry != null) {
+                UnicastRemoteObject.unexportObject(registry, true);
+                this.registry.unbind(bindingname);
+                this.registry = null;
+                System.out.println("unexport");
+            }
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        } catch (NotBoundException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /*

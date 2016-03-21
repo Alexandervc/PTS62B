@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,6 +23,14 @@ import javax.persistence.TemporalType;
  * @author Alexander
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="CarPosition.getPositionsBetween", query = "SELECT cp "
+            + "FROM CarPosition cp "
+            + "WHERE cp.moment >= :begin "
+            + "AND cp.moment <= :end "
+            + "AND cp.cartracker.id = :cartrackerId "
+            + "ORDER BY cp.road.roadType")
+})
 public class CarPosition implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,19 +46,26 @@ public class CarPosition implements Serializable {
     @ManyToOne
     private Road road;
     
+    @ManyToOne
+    private Cartracker cartracker;
+    
     public CarPosition(){
         
     }
     
     /**
      * 
+     * @param cartracker
      * @param moment cannot be null
      * @param xCoordinate
      * @param yCoordinate
      * @param road cannot be null
      * @param km cannto be negative
      */
-    public CarPosition(Date moment, Double xCoordinate, Double yCoordinate, Road road, Double km) {
+    public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, Double yCoordinate, Road road, Double km) {
+        if(cartracker == null) {
+            throw new IllegalArgumentException("cartracker null");
+        }
         if(moment == null){
             throw new IllegalArgumentException("timestamp null");
         }
@@ -58,6 +75,7 @@ public class CarPosition implements Serializable {
         if(km < 0) {
             throw new IllegalArgumentException("km negative");
         }
+        this.cartracker = cartracker;
         this.moment = moment;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
@@ -73,12 +91,20 @@ public class CarPosition implements Serializable {
         this.id = id;
     }
 
-    public Date getTimestamp() {
+    public Date getMoment() {
         return moment;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.moment = timestamp;
+    public void setMoment(Date moment) {
+        this.moment = moment;
+    }
+
+    public Cartracker getCartracker() {
+        return cartracker;
+    }
+
+    public void setCartracker(Cartracker cartracker) {
+        this.cartracker = cartracker;
     }
 
     public Double getxCoordinate() {
