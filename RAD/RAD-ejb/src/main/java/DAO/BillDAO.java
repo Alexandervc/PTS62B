@@ -1,6 +1,7 @@
 package DAO;
 
 import Domain.Bill;
+import Domain.Person;
 import java.util.List;
 
 /**
@@ -14,4 +15,6 @@ public interface BillDAO {
     Bill find(Object id);    
     List<Bill> findAll();    
     int count();
+    
+    public List<Bill> findAllForUser(Person person);
 }

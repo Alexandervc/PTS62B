@@ -15,19 +15,23 @@ import javax.persistence.OneToMany;
  */
 @Entity (name = "Person")
 public class Person implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String name;
     
-    @OneToMany(mappedBy="person")
+    @OneToMany(mappedBy = "person")
     private List<Bill> bills;
     
     private Long cartracker;
+    
+    @Deprecated
+    public Person() {        
+    }
 
-    public Person() {
-        bills = new ArrayList<>();
+    public Person(String name) {
+        this.name = name;
+        this.bills = new ArrayList<>();
     }
 
     public Long getId() {

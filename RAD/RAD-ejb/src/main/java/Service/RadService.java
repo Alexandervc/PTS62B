@@ -1,13 +1,12 @@
 package Service;
 
-import DAO.BillDAO;
-import DAO.PersonDAO;
+import Business.BillManager;
+import Business.PersonManager;
+import Business.RateManager;
 import Domain.Bill;
 import Domain.Person;
+import Domain.Rate;
 import Domain.RoadType;
-import Domain.RoadUsage;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,29 +17,39 @@ import javax.inject.Inject;
  */
 @Stateless
 @LocalBean
-public class RadService {
-    @Inject
-    private BillDAO billDAO;
+public class RadService {    
+    private Person person;
     
     @Inject
-    private PersonDAO personDAO;
+    private PersonManager personManager;
+    
+    @Inject
+    private BillManager billManager;
+    
+    @Inject
+    private RateManager rateManager;
 
     public RadService() {
-        
+        //Huidige gebruiker (mock voor inlogsysteem)
+        person = personManager.addPerson("Melanie");
+    }  
+    
+    public void addRate(double rate, RoadType type) {
+        rateManager.addRate(rate, type);
     }
 
-    public void test(){
-        Bill b = new Bill();
-        RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
-        List<RoadUsage> roads = new ArrayList<>();
-        roads.add(road);
-        b.setRoadUsage(roads);        
-        billDAO.create(b);
-        
-        Person p = new Person();
-        p.setName("Test");
+    /*
+    public void test(){  
+        Person p = new Person("Alexander");
         p.setCartracker(9L);
-        p.addBill(b);
-        personDAO.create(p);
+        personDAO.create(p);        
+        
+        Bill b = new Bill(person);
+        //RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
+        //List<RoadUsage> roads = new ArrayList<>();
+        //roads.add(road);
+        //b.setRoadUsage(roads);        
+        billDAO.create(b);        
     }
+    */
 }
