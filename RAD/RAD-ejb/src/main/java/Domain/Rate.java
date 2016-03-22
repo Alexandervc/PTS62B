@@ -25,4 +25,8 @@ public class Rate implements Serializable {
         this.rate = rate;
         this.type = type;
     } 
+    
+    public double getRate() {
+        return rate;
+    }
 }
