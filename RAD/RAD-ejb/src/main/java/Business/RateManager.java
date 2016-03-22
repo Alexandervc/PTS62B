@@ -15,12 +15,12 @@ public class RateManager {
     @Inject
     private RateDAO rateDAO;
     
-    public void addRate(double rate, RoadType type) {
+    public void createRate(double rate, RoadType type) {
         Rate r = new Rate(rate, type);
         rateDAO.create(r);
     }
    
-    public Rate getRate(RoadType type) {
+    public Rate findRate(RoadType type) {
         return rateDAO.find(type);
     }
 }

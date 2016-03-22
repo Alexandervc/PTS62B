@@ -22,8 +22,12 @@ public class BillManager {
     @Inject
     private RateDAO rateDAO;
     
-    public void getBills(Person person) {
+    public void findBills(Person person) {
         billDAO.findAllForUser(person);
+    }
+    
+    public void createBill(Bill bill) {
+        billDAO.create(bill);
     }
     
     public Bill generateBill(Person person, List<IRoadUsage> roadUsages) {
