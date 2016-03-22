@@ -19,4 +19,8 @@ public class RateManager {
         Rate r = new Rate(rate, type);
         rateDAO.create(r);
     }
+   
+    public Rate getRate(RoadType type) {
+        return rateDAO.find(type);
+    }
 }

@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
+import service.IRoadUsage;
 
 /**
  *
@@ -23,25 +26,23 @@ public class Bill implements Serializable {
 
     @ManyToOne
     private Person person;
-
-    //@Transient
-    //private List<RoadUsage> roadUsages;
-
-    private boolean paid;
+    
+    @Transient
+    private List<IRoadUsage> roadUsages;    
+    
     private double totalPrice;
+    private boolean paid;
 
     @Deprecated
     public Bill() {        
     }
     
-    public Bill(Person person) {
+    public Bill(Person person, List<IRoadUsage> roadUsages, double totalPrice) {
         this.person = person;
-        this.person.addBill(this);
-        
+        this.person.addBill(this);        
+        this.roadUsages = roadUsages;
+        this.totalPrice = totalPrice;
         this.paid = false;
-        this.totalPrice = 13.89;
-        //this.roadUsages = new ArrayList<>();
-        this.person = new Person();
     }
 
     public Long getId() {
@@ -56,15 +57,9 @@ public class Bill implements Serializable {
         this.person = person;
     }
     
-    /*
-    public List<RoadUsage> getRoadUsages() {
+    public List<IRoadUsage> getRoadUsages() {
         return roadUsages;
     }
-
-    public void setRoadUsage(List<RoadUsage> roadUsage) {
-        this.roadUsages = roadUsage;
-    }
-    */
 
     public boolean getPaid() {
         return paid;

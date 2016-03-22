@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import domain.Bill;
+import domain.Rate;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -24,9 +26,31 @@ public class BillBean {
     @EJB
     private RadService service;
     
-    private List<IRoadUsage> roadUsages;
+    private Bill bill;
     
+    public BillBean() {
+        generateBill();
+    }
+    
+    public Bill getBill() {
+        return bill;
+    }
+    
+    public void generateBill() {
+        this.bill = service.generateRoadUsages(1L, new Date(), new Date());
+    }
+    
+    public double getRate(IRoadUsage roadUsage) {
+        return this.service.getRate(roadUsage.getRoadType()).getRate();
+    }
+    
+    public double getPrice(IRoadUsage roadUsage) {
+        return roadUsage.getKm() * this.service.getRate(roadUsage.getRoadType()).getRate();
+    }
+    
+    /*
     public List<IRoadUsage> getRoadUsages() {
         return service.generateRoadUsages(1L, new Date(), new Date());
     }
+    */
 }

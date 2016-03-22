@@ -23,17 +23,24 @@
                                     <th>Price/km</th>
                                     <th>TotalPrice</th>
                                 </thead>
-                                <c:forEach var="ru" items="#{billBean.roadUsages}">
-
+                                
+                                <c:forEach var="ru" items="#{billBean.bill.roadUsages}">                                    
                                     <tr>
                                         <td>#{ru.roadName}</td>
                                         <td>#{ru.roadType}</td>
                                         <td>#{ru.km}</td>
-                                        <td>€ 1</td>
-                                        <td>€ #{ru.km}</td>
+                                        <td>#{billBean.getRate(ru)}</td>
+                                        <td>€ #{billBean.getPrice(ru)}</td>
                                     </tr>
-
-                                </c:forEach>
+                                </c:forEach> 
+                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>#{billBean.bill.totalPrice}</td>
+                                </tr>
                             </table>
                         </div>
                     </div>                    
