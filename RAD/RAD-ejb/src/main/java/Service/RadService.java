@@ -1,13 +1,20 @@
-package Service;
+package service;
 
-import Business.BillManager;
-import Business.PersonManager;
-import Business.RateManager;
-import Domain.Bill;
-import Domain.Person;
-import Domain.Rate;
-import Domain.RoadType;
+import business.BillManager;
+import business.PersonManager;
+import business.RateManager;
+import domain.Bill;
+import domain.Person;
+import domain.Rate;
+import domain.RoadType;
+import java.rmi.RemoteException;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -16,8 +23,7 @@ import javax.inject.Inject;
  * @author Linda
  */
 @Stateless
-@LocalBean
-public class RadService {    
+public class RadService  {  
     private Person person;
     
     @Inject
@@ -28,28 +34,48 @@ public class RadService {
     
     @Inject
     private RateManager rateManager;
-
-    public RadService() {
-        //Huidige gebruiker (mock voor inlogsysteem)
-        person = personManager.addPerson("Melanie");
-    }  
+    
+    @Inject
+    private RmiClient rmiClient;
+    
+    @PostConstruct
+    public void start() {
+        person = personManager.createPerson("Melanie");
+    }
     
     public void addRate(double rate, RoadType type) {
-        rateManager.addRate(rate, type);
+        rateManager.createRate(rate, type);
     }
-
-    /*
-    public void test(){  
-        Person p = new Person("Alexander");
-        p.setCartracker(9L);
-        personDAO.create(p);        
+    
+    public Rate getRate(RoadType type) {
+        return rateManager.findRate(type);
+    }
+    
+    public void addBill(Bill bill) {
+        billManager.createBill(bill);
+    }
+    
+    public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+        try {
+            List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
+            roadUsages.sort(null);
+            Bill bill = billManager.generateBill(person, roadUsages);
+            return bill;
+        } catch (RemoteException ex) {
+            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        Bill b = new Bill(person);
-        //RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
-        //List<RoadUsage> roads = new ArrayList<>();
-        //roads.add(road);
-        //b.setRoadUsage(roads);        
-        billDAO.create(b);        
+        return null;
+    }
+    
+    /*
+    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+        try {
+            return rmiClient.generateRoadUsages(cartrackerId, begin, end);
+        } catch (RemoteException ex) {
+            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     */
 }

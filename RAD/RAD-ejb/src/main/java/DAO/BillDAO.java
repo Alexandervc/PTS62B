@@ -1,7 +1,7 @@
-package DAO;
+package dao;
 
-import Domain.Bill;
-import Domain.Person;
+import domain.Bill;
+import domain.Person;
 import java.util.List;
 
 /**

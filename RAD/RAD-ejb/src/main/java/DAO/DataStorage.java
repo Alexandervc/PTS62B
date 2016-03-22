@@ -1,8 +1,9 @@
-package DAO;
+package dao;
 
-import Domain.RoadType;
-import Service.RadService;
+import domain.RoadType;
+import service.RadService;
 import javax.annotation.PostConstruct;
+import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -19,9 +20,10 @@ public class DataStorage {
     
     @PostConstruct
     public void onStartup() {
-        //service.test();
         service.addRate(1.29, RoadType.A);
         service.addRate(0.89, RoadType.B);
         service.addRate(0.49, RoadType.C);
+        service.addRate(0.25, RoadType.D);
+        service.addRate(0.12, RoadType.E);
     }
 }

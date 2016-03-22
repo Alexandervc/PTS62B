@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import Service.RadService;
+import service.RadService;
 import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Before;

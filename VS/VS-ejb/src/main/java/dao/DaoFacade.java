@@ -5,13 +5,14 @@
  */
 package dao;
 
+import java.io.Serializable;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author Alexander
  */
-public abstract class DaoFacade<T> {
+public abstract class DaoFacade<T> implements Serializable {
     private Class<T> entityClass;
 
     public DaoFacade(Class<T> entityClass) {

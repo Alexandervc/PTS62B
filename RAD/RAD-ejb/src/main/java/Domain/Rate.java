@@ -1,4 +1,4 @@
-package Domain;
+package domain;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -25,4 +25,8 @@ public class Rate implements Serializable {
         this.rate = rate;
         this.type = type;
     } 
+    
+    public double getRate() {
+        return rate;
+    }
 }

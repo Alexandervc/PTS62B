@@ -49,6 +49,7 @@ public class CarPosition implements Serializable {
     @ManyToOne
     private Cartracker cartracker;
     
+    @Deprecated
     public CarPosition(){
         
     }
