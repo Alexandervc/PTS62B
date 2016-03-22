@@ -19,11 +19,12 @@ import javax.persistence.OneToMany;
 @Entity
 public class Cartracker implements Serializable {
     @Id
-    private long id;
+    private Long id;
     
     @OneToMany (mappedBy = "cartracker")
     private List<CarPosition> positions;
     
+    @Deprecated
     public Cartracker() {
         
     }

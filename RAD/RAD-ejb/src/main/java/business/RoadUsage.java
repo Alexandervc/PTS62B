@@ -3,36 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package business;
 
 import domain.RoadType;
 import java.io.Serializable;
+import service.IRoadUsage;
 
 /**
  *
  * @author Alexander
  */
 public class RoadUsage implements IRoadUsage, Serializable{
-    private String name;
     private String roadName;
     private RoadType roadType;
     private Double km;
     
-    public RoadUsage(String name, String roadName, RoadType type, Double km) {
-        this.name = name;
+    public RoadUsage(String roadName, RoadType type, Double km) {
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    @Override
     public Double getKm() {
         return km;
     }
@@ -41,6 +33,7 @@ public class RoadUsage implements IRoadUsage, Serializable{
         this.km = km;
     }
 
+    @Override
     public String getRoadName() {
         return roadName;
     }
@@ -49,6 +42,7 @@ public class RoadUsage implements IRoadUsage, Serializable{
         this.roadName = roadName;
     }
 
+    @Override
     public RoadType getRoadType() {
         return roadType;
     }
@@ -57,5 +51,11 @@ public class RoadUsage implements IRoadUsage, Serializable{
         this.roadType = roadType;
     }
     
-    
+    /**
+     * Add the given km to this km
+     * @param km 
+     */
+    public void addKm(Double km) {
+        this.km += km;
+    }
 }

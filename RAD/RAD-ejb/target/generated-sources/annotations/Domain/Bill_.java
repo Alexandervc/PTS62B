@@ -1,12 +1,11 @@
-package Domain;
+package domain;
 
-import Domain1.Bill;
-import Domain1.Person;
+import domain.Person;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-03-21T09:48:29")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-03-21T23:16:48")
 @StaticMetamodel(Bill.class)
 public class Bill_ { 
 
