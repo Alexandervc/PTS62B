@@ -13,7 +13,7 @@ import service.IRoadUsage;
  *
  * @author Alexander
  */
-public class RoadUsage implements IRoadUsage, Serializable{
+public class RoadUsage implements IRoadUsage, Serializable, Comparable<RoadUsage> {
     private String roadName;
     private RoadType roadType;
     private Double km;
@@ -57,5 +57,10 @@ public class RoadUsage implements IRoadUsage, Serializable{
      */
     public void addKm(Double km) {
         this.km += km;
+    }
+
+    @Override
+    public int compareTo(RoadUsage t) {
+        return this.getRoadName().compareTo(t.getRoadName());
     }
 }

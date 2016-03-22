@@ -54,6 +54,7 @@ public class RadService  {
     public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
         try {
             List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
+            roadUsages.sort(null);
             Bill bill = billManager.generateBill(person, roadUsages);
             return bill;
         } catch (RemoteException ex) {
