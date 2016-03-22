@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import static jdk.nashorn.internal.objects.NativeMath.round;
 
 /**
  *
@@ -22,7 +23,7 @@ public class Rate implements Serializable {
     }
     
     public Rate(double rate, RoadType type) {
-        this.rate = rate;
+        this.rate = round(rate, 2);
         this.type = type;
     } 
     
