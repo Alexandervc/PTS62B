@@ -9,6 +9,7 @@ import domain.Bill;
 import domain.Rate;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -28,11 +29,19 @@ public class BillBean {
     
     private Bill bill;
     
-    public BillBean() {
+    /*public BillBean() {
         generateBill();
-    }
+    }*/
+    /*
+    @PostConstruct
+    public void start() {
+        generateBill();
+    }*/
     
     public Bill getBill() {
+        if(this.bill == null) {
+            generateBill();
+        }
         return bill;
     }
     
