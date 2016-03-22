@@ -1,0 +1,115 @@
+/* 
+    Created on : 4-nov-2015, 18:14:12
+    Author     : Melanie
+*/
+@import "../bootstrap/mixins/_buttons";
+
+html {
+    /* For sticky footer */
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: $standard-font;
+    background: $background-image no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /* For sticky footer, margin bottom by footer height */
+    margin-bottom: 40px;
+}
+
+/* -------------------------------- Header -------------------------------- */
+
+header {
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    background-color: $white;
+    margin-bottom: 20px;
+}
+
+.fixed {
+    top: 0;
+    z-index: 1;
+    position: fixed;
+    opacity: 0.8;
+}
+
+.top {
+    margin-top: 140px;
+}
+
+/* -------------------------------- Buttons -------------------------------- */
+
+.btn-ride {
+    @include button-variant($btn-color, $btn-bg, $btn-bg);
+    border: 0px;
+}
+
+/* -------------------------------- Layers -------------------------------- */
+
+.layer1 {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.layer2 {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.meme {
+    background-color: $white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    overflow: hidden;
+    padding: 20px;
+    
+    margin-bottom: 20px;
+}
+
+/* -------------------------------- Images -------------------------------- */
+
+.img-fit {
+    max-width: 350px;
+    width: 100%;
+    padding: 10px 0 20px 0;
+}
+    
+/* -------------------------------- Links -------------------------------- */
+
+.refs {
+    a {
+        color: $accent-color;
+        
+        &:hover {
+            color: darken($accent-color, 10%);
+        }
+    }
+}
+
+/* -------------------------------- Forms -------------------------------- */
+
+textarea {
+    resize: none;
+}
+
+/* -------------------------------- Charts -------------------------------- */
+
+.chart {
+    width: 100%;
+    height: 175px;
+}
+
+/* -------------------------------- Footer -------------------------------- */
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;    
+    background-color: $white;
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0,0,0,0.12);
+}

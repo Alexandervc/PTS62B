@@ -1,0 +1,20 @@
+package DAO;
+
+import Domain.Bill;
+import Domain.Person;
+import java.util.List;
+
+/**
+ *
+ * @author Linda
+ */
+public interface BillDAO {
+    void create(Bill bill);
+    void edit(Bill bill);
+    void remove(Bill bill);
+    Bill find(Object id);    
+    List<Bill> findAll();    
+    int count();
+    
+    public List<Bill> findAllForUser(Person person);
+}

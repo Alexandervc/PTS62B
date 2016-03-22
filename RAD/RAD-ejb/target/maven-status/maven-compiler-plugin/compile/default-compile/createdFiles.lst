@@ -1,0 +1,11 @@
+DAO\PersonDAO.class
+Domain\Bill_.class
+Domain\RoadUsage.class
+Service\RadService.class
+Domain\Bill.class
+DAO\BillDAO.class
+Domain\Person.class
+Domain\Person_.class
+NotUsed\Road.class
+NotUsed\CarPosition.class
+Domain\RoadType.class
