@@ -1,0 +1,23 @@
+Connectie met dev db:
+
+1. Open: C:\Program Files\glassfish-4.1.1\glassfish\domains\domain1\config\domain.xml
+2. Voeg de volgende code toe binnen <resources></resources>
+
+<jdbc-resource pool-name="DEV_LMS_dbpool" object-type="system-all" jndi-name="jdbc/DEV_LMS_dbresource"></jdbc-resource>
+<jdbc-connection-pool datasource-classname="oracle.jdbc.pool.OracleDataSource" name="DEV_LMS_dbpool" wrap-jdbc-objects="false" connection-validation-method="auto-commit" res-type="javax.sql.DataSource">
+      <property name="password" value="DEV_LMS_db"></property>
+      <property name="username" value="DEV_LMS_db"></property>
+      <property name="url" value="jdbc:oracle:thin:@192.168.24.79:1521"></property>
+    </jdbc-connection-pool>
+
+3. Connect met VPN.
+4. Delete persistence.xml
+5. Voeg nieuwe persistence context toe:
+
+Persistence Unit Name: Proftaak
+Data Source: jdbc/DEV_LMS_dbresource
+Table Generation Strategy: Drop and create
+
+De rest default.
+
+6. Clean build project. 
