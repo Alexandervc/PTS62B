@@ -6,13 +6,10 @@
 package Controller;
 
 import domain.Bill;
-import domain.Rate;
+import java.text.NumberFormat;
 import java.util.Date;
-import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import service.IRoadUsage;
 import service.RadService;
@@ -49,12 +46,19 @@ public class BillBean {
         this.bill = service.generateRoadUsages(1L, new Date(), new Date());
     }
     
-    public double getRate(IRoadUsage roadUsage) {
-        return this.service.getRate(roadUsage.getRoadType()).getRate();
+    public String getRate(IRoadUsage roadUsage) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(this.service.getRate(roadUsage.getRoadType()).getRate());
     }
     
-    public double getPrice(IRoadUsage roadUsage) {
-        return roadUsage.getKm() * this.service.getRate(roadUsage.getRoadType()).getRate();
+    public String getPrice(IRoadUsage roadUsage) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(roadUsage.getKm() * this.service.getRate(roadUsage.getRoadType()).getRate());
+    }
+    
+    public String getTotalPrice() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(this.bill.getTotalPrice());
     }
     
     /*
