@@ -15,7 +15,7 @@
                         <h1>Factuur</h1>
                         <h3>Alexander van Cuijk</h3>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped table-bordered">
                                 <thead>
                                     <th>RoadName</th>
                                     <th>RoadType</th>
@@ -28,9 +28,9 @@
                                     <tr>
                                         <td>#{ru.roadName}</td>
                                         <td>#{ru.roadType}</td>
-                                        <td>#{ru.km}</td>
-                                        <td>#{billBean.getRate(ru)}</td>
-                                        <td>€ #{billBean.getPrice(ru)}</td>
+                                        <td class="txt-right">#{ru.km}</td>
+                                        <td class="txt-right">#{billBean.getRate(ru)}</td>
+                                        <td class="txt-right">#{billBean.getPrice(ru)}</td>
                                     </tr>
                                 </c:forEach> 
                                 
@@ -39,7 +39,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>#{billBean.bill.totalPrice}</td>
+                                    <td class="txt-right"><b>#{billBean.totalPrice}</b></td>
                                 </tr>
                             </table>
                         </div>
