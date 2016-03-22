@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import static jdk.nashorn.internal.objects.NativeMath.round;
 import service.IRoadUsage;
 
 /**
@@ -42,7 +41,7 @@ public class Bill implements Serializable {
         this.person = person;
         this.person.addBill(this);        
         this.roadUsages = roadUsages;
-        this.totalPrice = round(totalPrice, 2);
+        this.totalPrice = totalPrice;
         this.paid = false;
     }
 
