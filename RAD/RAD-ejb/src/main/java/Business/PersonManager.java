@@ -14,7 +14,7 @@ public class PersonManager {
     @Inject
     private PersonDAO personDAO;
     
-    public Person addPerson(String name) {
+    public Person createPerson(String name) {
         Person person = new Person(name);
         personDAO.create(person);
         return person;

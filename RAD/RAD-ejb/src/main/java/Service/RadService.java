@@ -40,15 +40,19 @@ public class RadService  {
     
     @PostConstruct
     public void start() {
-        person = personManager.addPerson("Melanie");
+        person = personManager.createPerson("Melanie");
     }
     
     public void addRate(double rate, RoadType type) {
-        rateManager.addRate(rate, type);
+        rateManager.createRate(rate, type);
     }
     
     public Rate getRate(RoadType type) {
-        return rateManager.getRate(type);
+        return rateManager.findRate(type);
+    }
+    
+    public void addBill(Bill bill) {
+        billManager.createBill(bill);
     }
     
     public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
