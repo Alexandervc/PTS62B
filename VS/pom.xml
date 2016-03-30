@@ -36,7 +36,7 @@
                         <deployable>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>${project.artifactId}</artifactId>
-                            <type>war</type>
+                            <type>jar</type>
                             <properties>
                                 <context>${cargo.domain}</context>
                             </properties>
