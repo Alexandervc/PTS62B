@@ -19,7 +19,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class RmiClient {
 
-    private String ipAdressServer = "192.168.24.72";//"localhost";
+    private String ipAdressServer = "localhost";
     private int portnumber = 1099;
 
     // TODO produces!!!!??
