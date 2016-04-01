@@ -44,10 +44,6 @@ public class Test implements Serializable {
     @Column(name="SYSTEM_ID")
     private Long systemID;
     
-    public Long getId() {
-        return id;
-    }
-
     public Test() {
     }
 
@@ -55,6 +51,10 @@ public class Test implements Serializable {
         this.testType = testType;
         this.date = new Date(date.getTime());
         this.result = result;
+    }
+    
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {

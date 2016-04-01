@@ -1,8 +1,5 @@
 
 import Data.ResourceProducer;
-import javax.ejb.EJB;
-import javax.ejb.embeddable.EJBContainer;
-import javax.enterprise.context.Dependent;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;

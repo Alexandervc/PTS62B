@@ -32,12 +32,13 @@ public class MonitoringService {
         runJob();
     }
     
-    @Inject
-    private MonitoringManager manager;
-
     @Resource
     private ManagedScheduledExecutorService executor;
  
+    @Inject
+    private MonitoringManager manager;
+
+
     public void runJob() {
         executor.schedule(new Scheduler(), new Trigger() {
  

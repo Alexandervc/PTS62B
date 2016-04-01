@@ -7,8 +7,6 @@ package Service;
 
 import java.util.Properties;
 import javax.batch.runtime.BatchRuntime;
-import javax.ejb.Schedule;
-import javax.inject.Singleton;
 
 /**
  *
