@@ -60,11 +60,11 @@ public class Method implements Serializable {
     }
 
     public List<MethodTest> getTests() {
-        return tests;
+        return new ArrayList<>(this.tests);
     }
 
     public void setTests(List<MethodTest> tests) {
-        this.tests = tests;
+        this.tests = new ArrayList<>(tests);
     }
     
     

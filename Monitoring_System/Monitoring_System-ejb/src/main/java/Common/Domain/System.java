@@ -6,6 +6,7 @@
 package Common.Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,8 +55,6 @@ public class System implements Serializable {
     public System() {
     }
 
-    
-    
     public Long getId() {
         return id;
     }
@@ -97,19 +96,19 @@ public class System implements Serializable {
     }
 
     public List<Test> getTests() {
-        return tests;
+        return new ArrayList<>(tests);
     }
 
     public void setTests(List<Test> tests) {
-        this.tests = tests;
+        this.tests = new ArrayList<>(tests);
     }
 
     public List<ConnectionClient> getClients() {
-        return clients;
+        return new ArrayList<>(clients);
     }
 
     public void setClients(List<ConnectionClient> clients) {
-        this.clients = clients;
+        this.clients = new ArrayList<>(clients);
     }
     
     

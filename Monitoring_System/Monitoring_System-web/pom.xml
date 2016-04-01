@@ -26,6 +26,11 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Monitoring_System-ejb</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

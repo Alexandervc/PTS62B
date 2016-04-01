@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" >
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <h:body>    	
     	<ui:composition template="templates/template.xhtml">
@@ -12,18 +13,17 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <h1>Monitor</h1>
-                        
                         <div id="timeline1" class="chart"></div>
                     </div>                    
                 </div>
     		
-                <!--
-                <h:form>
-                    <h:inputText value="#{testBean.input}"/>
-                    <h:commandButton value="Submit" action="#{testBean.submit()}"/>
-                </h:form>
-                <h:outputText value="#{testBean.output}"/>
-                -->
+                <c:forEach var="sys" items="#{monitoringBean.retrieveSystems}">
+
+                <tr>
+                    <td>#{sys.name}</td>
+                </tr>
+
+                </c:forEach>
             </ui:define>
     	</ui:composition>    	
     </h:body>

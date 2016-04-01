@@ -5,7 +5,7 @@
  */
 package Service;
 
-import Business.MonitoringManager;
+import business.MonitoringManager;
 import Common.Domain.Test;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,8 +23,7 @@ import javax.inject.Inject;
  * The service that contains methods concerning the monitoring of servers
  * @author Edwin
  */
-@Stateless
-@LocalBean
+@Stateless(name="monitoring")
 public class MonitoringService {
     //Test
 
@@ -33,10 +32,11 @@ public class MonitoringService {
         runJob();
     }
     
-    @Inject MonitoringManager manager;
+    @Inject
+    private MonitoringManager manager;
 
     @Resource
-    ManagedScheduledExecutorService executor;
+    private ManagedScheduledExecutorService executor;
  
     public void runJob() {
         executor.schedule(new Scheduler(), new Trigger() {

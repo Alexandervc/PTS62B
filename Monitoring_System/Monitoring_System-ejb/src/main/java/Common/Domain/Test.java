@@ -35,10 +35,10 @@ public class Test implements Serializable {
     @Enumerated(EnumType.STRING)
     private TestType testType;
     
-    @Column(name = "DATE")
+    @Column(name = "DBDATE")
     private Date date;
     
-    @Column(name = "RESULT")
+    @Column(name = "DBRESULT")
     private Boolean result;
     
     @Column(name="SYSTEM_ID")
@@ -53,7 +53,7 @@ public class Test implements Serializable {
 
     public Test(TestType testType, Date date, Boolean result) {
         this.testType = testType;
-        this.date = date;
+        this.date = new Date(date.getTime());
         this.result = result;
     }
 
