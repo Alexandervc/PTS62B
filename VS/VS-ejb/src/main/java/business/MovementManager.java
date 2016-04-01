@@ -8,9 +8,6 @@ package business;
 import dao.CarPositionDao;
 import domain.CarPosition;
 import domain.Road;
-import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,11 +44,13 @@ public class MovementManager {
      * @param cartrackerId
      * @return The roadusages between the given date for the given cartrackerId
      */
-    public List<IRoadUsage> getRoadUsagesBetween(Date begin, Date end, Long cartrackerId) {
+    public List<IRoadUsage> getRoadUsagesBetween(Date begin, Date end, 
+            Long cartrackerId) {
         if(begin.after(end)) {
             throw new IllegalArgumentException("begin after end");
         }
-        List<CarPosition> cps = carPositionDao.getPositionsBetween(begin, end, cartrackerId);
+        List<CarPosition> cps = carPositionDao.getPositionsBetween(begin, end, 
+                cartrackerId);
         
         // Generate roadUsages
         Map<Road, IRoadUsage> roadUsages = new HashMap<>();
