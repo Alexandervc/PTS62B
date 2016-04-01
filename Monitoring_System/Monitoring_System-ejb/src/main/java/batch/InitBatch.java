@@ -5,7 +5,7 @@
  */
 package batch;
 
-import Business.MonitoringManager;
+import business.MonitoringManager;
 import javax.batch.api.Batchlet;
 import javax.inject.Inject;
 

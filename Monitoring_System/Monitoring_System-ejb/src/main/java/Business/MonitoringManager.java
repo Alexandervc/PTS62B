@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business;
+package business;
 
 import Common.Domain.ConnectionClient;
 import Common.Domain.MethodTest;
+import Common.Domain.System;
+import Common.Domain.Test;
+import Common.Domain.TestType;
 import Data.IMonitoring;
 import Data.RMI_Client;
 import Data.SystemDao;
 import Data.TestDao;
-import Common.Domain.System;
-import Common.Domain.Test;
-import Common.Domain.TestType;
 import Data.VSinterface;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,32 +34,41 @@ import javax.inject.Inject;
  */
 @Stateless
 public class MonitoringManager {
-    
-    @PostConstruct	
-    public void init() {
-        this.clientMap = new HashMap<>();
-        this.loadRMIServers();
-    }
-    
-    @Inject SystemDao systemDao;
-    @Inject TestDao testDao;
+
     private Map<String,RMI_Client> clientMap;
+    private @Inject SystemDao systemDao;
+    private @Inject TestDao testDao;
     
     /**
      * Retrieves a list of Systems that are currently part of the RRA
      * application.
      * @return A list of servers.
      */
-    public List<System> getSystems() {
-        return systemDao.getSystems();
+    public final List<System> getSystems() {
+        return this.systemDao.getSystems();
     }
+    
+    /**
+     * Initializes the monitoring manager by creating a clientmap
+     * and loading in the RMI servers.
+     */
+    @PostConstruct	
+    public final void init() {
+        this.clientMap = new HashMap<>();
+        this.loadRMIServers();
+    }
+
+    public MonitoringManager() {
+    }
+    
+    
     
     /**
      * Generates the status of the server
      * @param system The system object where the status will be generated for.
      * @return A list
      */
-    public List<Test> generateServerStatus(System system) {
+    public final List<Test> generateServerStatus(System system) {
         RMI_Client client = clientMap.get(system.getName());
         IMonitoring monitoringClient = client.getMonitoringClient(system.getName());
         List<Test> tests = new ArrayList<>();
@@ -142,7 +151,7 @@ public class MonitoringManager {
         for(System sys : this.getSystems()) {
             RMI_Client client = new RMI_Client(sys.getIP(),
                                     sys.getPort());
-            clientMap.put(sys.getName(), client);
+            this.clientMap.put(sys.getName(), client);
         }
     }
 

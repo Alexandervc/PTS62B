@@ -25,7 +25,8 @@ import javax.persistence.Query;
 @Stateless
 public class TestDao extends AbstractDao {
 
-    @Inject @MonitoringDB EntityManager em;
+    @Inject
+    private @MonitoringDB EntityManager em;
 
     public TestDao() {
         super(Test.class);

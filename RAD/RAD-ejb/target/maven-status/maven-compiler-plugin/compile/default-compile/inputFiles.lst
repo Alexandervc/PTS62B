@@ -1,23 +1,12 @@
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\BillManager.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\IMovementService.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\Bill.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\Person.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\RateManager.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\RateDAO.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\Road.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\RadService.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAO.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\RoadType.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\RoadUsage.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\AbstractFacade.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAO.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\RateDAOJPAImp.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\RmiClient.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\Rate.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAOJPAImp.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\CarPosition.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\PersonManager.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\DataStorage.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\RoadUsage.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAOJPAImp.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\IRoadUsage.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Service\RadService.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAO.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\RoadUsage.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Service\DataStorage.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\Road.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\RoadType.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAOJPAImp.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\PersonDAOJPAImp.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\DAO\BillDAO.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\NotUsed\CarPosition.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\Bill.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\Domain\Person.java

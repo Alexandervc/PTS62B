@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
-
-import java.io.Serializable;
+package Domain;
 
 /**
  *
- * @author Alexander
+ * @author Linda
  */
 public enum RoadType {
     A,
     B,
-    C,
-    D,
-    E
+    C
+    
 }

@@ -1,4 +1,9 @@
-package domain;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,25 +20,25 @@ import javax.persistence.OneToMany;
  */
 @Entity (name = "Person")
 public class Person implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    // fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String name;
     
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy="person")
     private List<Bill> bills;
     
     private Long cartracker;
+
+    //constructor
+    public Person() {
+        bills = new ArrayList<Bill>();
+    }
     
-    @Deprecated
-    public Person() {        
-    }
-
-    public Person(String name) {
-        this.name = name;
-        this.bills = new ArrayList<>();
-    }
-
+    // getters en setters
     public Long getId() {
         return id;
     }

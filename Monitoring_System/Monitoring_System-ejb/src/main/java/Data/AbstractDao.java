@@ -14,9 +14,9 @@ import javax.persistence.EntityManager;
  * @param <T>
  */
 public abstract class AbstractDao<T> {
-    private Class<T> entityClass;
+    private final Class<T> entityClass;
     
-    @Inject @MonitoringDB EntityManager em;
+    private @Inject @MonitoringDB EntityManager em;
 
     public AbstractDao(Class<T> entityClass) {
         this.entityClass = entityClass;

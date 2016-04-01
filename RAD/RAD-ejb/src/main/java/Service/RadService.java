@@ -1,81 +1,96 @@
-package service;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Service;
 
-import business.BillManager;
-import business.PersonManager;
-import business.RateManager;
-import domain.Bill;
-import domain.Person;
-import domain.Rate;
-import domain.RoadType;
-import java.rmi.RemoteException;
-import java.util.Date;
+import DAO.BillDAO;
+import DAO.PersonDAO;
+import Domain.Bill;
+import Domain.Person;
+import Domain.RoadType;
+import Domain.RoadUsage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
-import javax.ejb.Remote;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Linda
  */
 @Stateless
-public class RadService  {  
-    private Person person;
-    
+@LocalBean
+public class RadService {
+
     @Inject
-    private PersonManager personManager;
-    
+    private BillDAO billDAO;
     @Inject
-    private BillManager billManager;
-    
-    @Inject
-    private RateManager rateManager;
-    
-    @Inject
-    private RmiClient rmiClient;
-    
-    @PostConstruct
-    public void start() {
-        person = personManager.createPerson("Melanie");
-    }
-    
-    public void addRate(double rate, RoadType type) {
-        rateManager.createRate(rate, type);
-    }
-    
-    public Rate getRate(RoadType type) {
-        return rateManager.findRate(type);
-    }
-    
-    public void addBill(Bill bill) {
-        billManager.createBill(bill);
-    }
-    
-    public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
-        try {
-            List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
-            roadUsages.sort(null);
-            Bill bill = billManager.generateBill(person, roadUsages);
-            return bill;
-        } catch (RemoteException ex) {
-            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private PersonDAO personDAO;
+
+    public RadService() {
         
-        return null;
+    }
+
+    public void test(){
+        Bill b = new Bill();
+        RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
+        List<RoadUsage> roads = new ArrayList<>();
+        roads.add(road);
+        b.setRoadUsage(roads);        
+        persistBill(b);
+        
+        Person p = new Person();
+        p.setName("Test");
+        p.setCartracker(9L);
+        p.addBill(b);
+        persistPerson(p);
     }
     
-    /*
-    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+    public void persistBill(Bill b) {
         try {
-            return rmiClient.generateRoadUsages(cartrackerId, begin, end);
-        } catch (RemoteException ex) {
-            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+            billDAO.create(b);
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
         }
-        return null;
     }
-    */
+
+    public List<Bill> findAllBill() {
+        try {
+            List<Bill> bills = billDAO.findAll();
+            return bills;
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void persistPerson(Person p) {
+        try {
+            personDAO.create(p);
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Person> findAllPerson() {
+        try {
+            List<Person> persons = personDAO.findAll();
+            return persons;
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
 }

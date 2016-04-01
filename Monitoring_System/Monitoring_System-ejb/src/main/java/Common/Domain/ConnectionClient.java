@@ -6,6 +6,7 @@
 package Common.Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -47,11 +48,11 @@ public class ConnectionClient implements Serializable {
     }
 
     public List<Method> getMethods() {
-        return methods;
+        return new ArrayList<>(methods);
     }
 
     public void setMethods(List<Method> methods) {
-        this.methods = methods;
+        this.methods = new ArrayList<>(methods);
     }
     
     

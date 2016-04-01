@@ -24,9 +24,10 @@ hs_err_pid*
 /Monitoring_System/Monitoring_System-ear/target/
 /Monitoring_System/Monitoring_System-ejb/target/
 /Monitoring_System/Monitoring_System-web/target/
-/VS/VS-ejb/target/
-/VS/VS-ear/target/
-/VS/VS-web/target/
-/RAD/RAD-ear/target/
-/RAD/RAD-ejb/target/
-/RAD/RAD-web/target/
+/Software/Kwetter_SingleProjectVersion/nbproject/
+/Software/Kwetter_SingleProjectVersion/target/
+/Monitoring_System/Monitoring_System-ejb/nbproject/
+/Software/InfoSupportFrontend/nbproject/private/
+/Software/InfoSupportFrontend/build/
+/Software/InfoSupportFrontend/dist/
+/RAD/RAD-ejb/nbproject/

@@ -60,7 +60,7 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         kwetterSession.getFollowersForKweeterer(kweeterer);
         
         Kweeterer kweetererAlexander = kwetterSession.registerKweeterer("Vampander",
@@ -68,7 +68,7 @@ public class DBtest {
                 "Veghel",
                 "Alexander.nl",
                 "Alexander = goed",
-                "Alexander".getBytes());
+                "Alexander");
         em.getTransaction().commit();
         em.getTransaction().begin();
         kwetterSession.followKweeterer(kweeterer, kweetererAlexander);
@@ -92,7 +92,7 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         kwetterSession.getFollowersForKweeterer(kweeterer);
         
         Kweeterer kweetererAlexander = kwetterSession.registerKweeterer("Vampander",
@@ -100,7 +100,7 @@ public class DBtest {
                 "Veghel",
                 "Alexander.nl",
                 "Alexander = goed",
-                "Alexander".getBytes());
+                "Alexander");
         em.getTransaction().commit();
         em.getTransaction().begin();
         kwetterSession.followKweeterer(kweeterer, kweetererAlexander);
@@ -126,7 +126,7 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         em.getTransaction().commit();
         assertEquals(kwetterSession.getKweetererByUserName("TaylorSwift13"),kweeterer);
     }
@@ -139,13 +139,13 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         Kweeterer kweetererAlexander = kwetterSession.registerKweeterer("Vampander",
                 "Alexander",
                 "Veghel",
                 "Alexander.nl",
                 "Alexander = goed",
-                "Alexander".getBytes());
+                "Alexander");
         em.getTransaction().commit();
         kwetterSession.postKweet(kweetererAlexander, "@TaylorSwift13 yayayayaya");
         List<Kweet> mentioned_Kweets = kwetterSession.getMentionsForKweeterer(kweeterer);
@@ -160,7 +160,7 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         kwetterSession.postKweet(kweeterer, "aaa");
         kwetterSession.postKweet(kweeterer, "bab");
         kwetterSession.postKweet(kweeterer, "cbc");
@@ -178,14 +178,14 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         kwetterSession.getFollowersForKweeterer(kweeterer);
         Kweeterer kweetererAlexander = kwetterSession.registerKweeterer("Vampander",
                 "Alexander",
                 "Veghel",
                 "Alexander.nl",
                 "Alexander = goed",
-                "Alexander".getBytes());
+                "Alexander");
         assertEquals(0,kwetterSession.getKweetsFromKweeterer(kweeterer).size());
         kwetterSession.postKweet(kweeterer, "disgrace");
         assertEquals(1,kwetterSession.getKweetsFromKweeterer(kweeterer).size());
@@ -201,7 +201,7 @@ public class DBtest {
                 "New York",
                 "TaylorSwift.com",
                 "Born in 1989.",
-                "TaylorSwift13".getBytes());  
+                "TaylorSwift13");  
         kwetterSession.getFollowersForKweeterer(kweeterer);
         
         Kweeterer kweetererAlexander = kwetterSession.registerKweeterer("Vampander",
@@ -209,7 +209,7 @@ public class DBtest {
                 "Veghel",
                 "Alexander.nl",
                 "Alexander = goed",
-                "Alexander".getBytes());
+                "Alexander");
         em.getTransaction().commit();
         em.getTransaction().begin();
         Assert.assertEquals(0, kweeterer.getFollows().size());
