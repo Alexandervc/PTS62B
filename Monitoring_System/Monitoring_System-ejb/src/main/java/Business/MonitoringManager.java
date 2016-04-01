@@ -5,16 +5,16 @@
  */
 package business;
 
-import Common.Domain.ConnectionClient;
-import Common.Domain.MethodTest;
-import Common.Domain.System;
-import Common.Domain.Test;
-import Common.Domain.TestType;
-import Data.IMonitoring;
-import Data.RMI_Client;
-import Data.SystemDao;
-import Data.TestDao;
-import Data.VSinterface;
+import common.domain.ConnectionClient;
+import common.domain.MethodTest;
+import common.domain.System;
+import common.domain.Test;
+import common.domain.TestType;
+import data.IMonitoring;
+import data.RMI_Client;
+import data.SystemDao;
+import data.TestDao;
+import data.VSinterface;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
@@ -105,7 +105,7 @@ public class MonitoringManager {
         for(ConnectionClient cClient : system.getClients()) {
             String bindingName = cClient.getName();
             VSinterface Vs = client.getVSClient(bindingName);
-            List<Common.Domain.Method> methods = cClient.getMethods();
+            List<common.domain.Method> methods = cClient.getMethods();
             //gets all the methods in the client interface.
             for(Method m :Vs.getClass().getMethods()) {
                 boolean testResult = false;
@@ -124,9 +124,9 @@ public class MonitoringManager {
                 }
                 //checks if the method is already known.
                 Boolean known = false;
-                Common.Domain.Method dbMethod = null;
+                common.domain.Method dbMethod = null;
               
-                for(Common.Domain.Method i : methods) {
+                for(common.domain.Method i : methods) {
                     if(i.getName().equals(m.getName())) {
                         known = true;
                         dbMethod = i;
@@ -135,7 +135,7 @@ public class MonitoringManager {
                 
                 //if the method isn't known adds it to the database.
                 if(!known) {
-                    dbMethod = new Common.Domain.Method(m.getName());
+                    dbMethod = new common.domain.Method(m.getName());
                     methods.add(dbMethod);
                 }
                 
@@ -154,7 +154,7 @@ public class MonitoringManager {
     
     private void loadRMIServers() {
         for(System sys : this.getSystems()) {
-            RMI_Client client = new RMI_Client(sys.getIP(),
+            RMI_Client client = new RMI_Client(sys.getIp(),
                                     sys.getPort());
             this.clientMap.put(sys.getName(), client);
         }
