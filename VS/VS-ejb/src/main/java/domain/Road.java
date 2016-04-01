@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -67,11 +66,11 @@ public class Road implements Serializable, Comparable<Road> {
     }
 
     public List<CarPosition> getCarPositions() {
-        return carPositions;
+        return new ArrayList<>(carPositions);
     }
 
     public void setCarPositions(List<CarPosition> carPositions) {
-        this.carPositions = carPositions;
+        this.carPositions = new ArrayList<>(carPositions);
     }
 
     public Long getId() {

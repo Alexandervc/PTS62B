@@ -15,11 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.BeforeCompletion;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.inject.Inject;
 
 /**
  *
@@ -47,19 +45,21 @@ public class RmiServer {
             // TODO inject!!!
             //System.out.println(this.registry.list());
             if (registry == null) {
-            System.out.println("------------------------------------------------------------------ Create registry");
+            System.out.println("--------------------------------------------"
+                    + "---------------------- Create registry");
                 this.registry = LocateRegistry.createRegistry(portnumber);
              
             
                 if (this.registry != null) {
                     movementService = new MovementService();
                     //this.registry.unbind(bindingname);
-                    System.out.println("----------------------------------------------------------------------- bind service");
+                    System.out.println("--------------------------------------"
+                            + "--------------------------------- bind service");
                     this.registry.rebind(bindingname, movementService);
                 }}
         } catch (RemoteException ex) {
-            // ExportException niet erg??
-            ex.printStackTrace();
+            Logger.getLogger(RmiServer.class.getName()).log(Level.SEVERE, null, 
+                    ex);
         } 
     }
     
@@ -73,11 +73,10 @@ public class RmiServer {
                 this.registry = null;
                 System.out.println("unexport");
             }
-        } catch (RemoteException ex) {
-            ex.printStackTrace();
-        } catch (NotBoundException ex) {
-            ex.printStackTrace();
-        }
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(RmiServer.class.getName()).log(Level.SEVERE, null, 
+                    ex);
+        } 
     }
 
     /*

@@ -7,6 +7,7 @@ package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -47,10 +48,10 @@ public class Cartracker implements Serializable {
     }
 
     public List<CarPosition> getPositions() {
-        return positions;
+        return new ArrayList<>(positions);
     }
 
     public void setPositions(List<CarPosition> positions) {
-        this.positions = positions;
+        this.positions = new ArrayList<>(positions);
     }
 }
