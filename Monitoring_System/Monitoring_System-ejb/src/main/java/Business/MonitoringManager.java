@@ -40,6 +40,13 @@ public class MonitoringManager {
     private @Inject TestDao testDao;
     
     /**
+     * Empty constructor for sonarqube.
+     */
+    public MonitoringManager() {
+    }
+    
+    
+    /**
      * Retrieves a list of Systems that are currently part of the RRA
      * application.
      * @return A list of servers.
@@ -58,8 +65,6 @@ public class MonitoringManager {
         this.loadRMIServers();
     }
 
-    public MonitoringManager() {
-    }
     
     
     

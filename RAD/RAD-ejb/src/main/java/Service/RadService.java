@@ -1,96 +1,112 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Service;
+package service;
 
-import DAO.BillDAO;
-import DAO.PersonDAO;
-import Domain.Bill;
-import Domain.Person;
-import Domain.RoadType;
-import Domain.RoadUsage;
-import java.util.ArrayList;
+import business.CarManager;
+import business.BillManager;
+import business.PersonManager;
+import business.RateManager;
+import domain.Bill;
+import domain.Car;
+import domain.FuelType;
+import domain.Person;
+import domain.Rate;
+import domain.RoadType;
+import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Linda
  */
 @Stateless
-@LocalBean
-public class RadService {
-
+public class RadService  {  
+    private Person person;
+    
     @Inject
-    private BillDAO billDAO;
+    private PersonManager personManager;
+    
     @Inject
-    private PersonDAO personDAO;
-
-    public RadService() {
-        
-    }
-
-    public void test(){
-        Bill b = new Bill();
-        RoadUsage road = new RoadUsage(1L, "AutoWeg", RoadType.A, 25.36);
-        List<RoadUsage> roads = new ArrayList<>();
-        roads.add(road);
-        b.setRoadUsage(roads);        
-        persistBill(b);
-        
-        Person p = new Person();
-        p.setName("Test");
-        p.setCartracker(9L);
-        p.addBill(b);
-        persistPerson(p);
+    private BillManager billManager;
+    
+    @Inject
+    private RateManager rateManager;
+    
+    @Inject
+    private CarManager carManager;
+    
+    @Inject
+    private RmiClient rmiClient;
+    
+    @PostConstruct
+    public void start() {
     }
     
-    public void persistBill(Bill b) {
+    public Person addPerson(String firstname, String lastname, String initials,
+            String streetname, String number, String zipcode, 
+            String city, String country){
+        person = personManager.createPerson(firstname, lastname, initials,
+                streetname, number, zipcode, city, country);
+        return person;
+    }
+    public void addRate(double rate, RoadType type) {
+        rateManager.createRate(rate, type);
+    }
+    
+    public Rate getRate(RoadType type){
+        return rateManager.findRate(type);
+    }
+    
+    public void addBill(Bill bill) {
+        billManager.createBill(bill);
+    }
+    public void addCar(Person person, Long cartracker, FuelType fuel) {
+        carManager.createCar(person, cartracker, fuel);
+    }
+    
+    public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
         try {
-            billDAO.create(b);
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
+            List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
+            roadUsages.sort(null);
+            Bill bill = billManager.generateBill(person, roadUsages);
+            return bill;
+        } catch (RemoteException ex) {
+            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return null;
+    }
+    
+    /*
+    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+        try {
+            return rmiClient.generateRoadUsages(cartrackerId, begin, end);
+        } catch (RemoteException ex) {
+            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    */
+
+    public void setPersonManager(PersonManager personManager) {
+        this.personManager = personManager;
     }
 
-    public List<Bill> findAllBill() {
-        try {
-            List<Bill> bills = billDAO.findAll();
-            return bills;
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
+    public void setBillManager(BillManager billManager) {
+        this.billManager = billManager;
     }
 
-    public void persistPerson(Person p) {
-        try {
-            personDAO.create(p);
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
+    public void setRateManager(RateManager rateManager) {
+        this.rateManager = rateManager;
     }
 
-    public List<Person> findAllPerson() {
-        try {
-            List<Person> persons = personDAO.findAll();
-            return persons;
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
+    public void setCarManager(CarManager carManager) {
+        this.carManager = carManager;
     }
 }

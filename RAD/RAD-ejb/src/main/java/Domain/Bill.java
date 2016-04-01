@@ -1,55 +1,50 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Domain;
+package domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
+import service.IRoadUsage;
 
 /**
  *
  * @author Linda
  */
 @Entity(name = "Bill")
+@NamedQueries({
+    @NamedQuery(name="bill.findAllForUser", query="SELECT b FROM Bill b WHERE b.person = :person")
+}) 
 public class Bill implements Serializable {
-
-    // fields
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade= CascadeType.PERSIST)
+    @ManyToOne
     private Person person;
-
+    
     @Transient
-    private List<RoadUsage> roadUsages;
-
-    @Column(name = "Paid")
+    private List<IRoadUsage> roadUsages;    
+    
+    private double totalPrice;
     private boolean paid;
 
-    @Column(name = "TotalPrice")
-    private double totalPrice;
-
-    // constructor
-    public Bill() {
+    @Deprecated
+    public Bill() {        
+    }
+    
+    public Bill(Person person, List<IRoadUsage> roadUsages, double totalPrice) {
+        this.person = person;
+        this.person.addBill(this);        
+        this.roadUsages = roadUsages;
+        this.totalPrice = totalPrice;
         this.paid = false;
-        this.totalPrice = 13.89;
-        this.roadUsages = new ArrayList<RoadUsage>();
-        this.person = new Person();
     }
 
-    // getters en setters
     public Long getId() {
         return id;
     }
@@ -62,12 +57,8 @@ public class Bill implements Serializable {
         this.person = person;
     }
     
-    public List<RoadUsage> getRoadUsages() {
+    public List<IRoadUsage> getRoadUsages() {
         return roadUsages;
-    }
-
-    public void setRoadUsage(List<RoadUsage> roadUsage) {
-        this.roadUsages = roadUsage;
     }
 
     public boolean getPaid() {

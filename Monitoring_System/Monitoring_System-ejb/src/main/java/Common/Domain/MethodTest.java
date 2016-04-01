@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Common.Domain;
+package common.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

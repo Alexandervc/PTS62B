@@ -5,7 +5,7 @@
  */
 package JUnitTests;
 
-import Service.MonitoringService;
+import service.MonitoringService;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  * @author Edwin
  */
 public class SystemTest {
-    MonitoringService service;
+    private MonitoringService service;
     
     
     public SystemTest() {
@@ -34,7 +34,7 @@ public class SystemTest {
     
     @Before
     public void setUp() {
-        service = new MonitoringService();
+        this.service = new MonitoringService();
     }
     
     @After

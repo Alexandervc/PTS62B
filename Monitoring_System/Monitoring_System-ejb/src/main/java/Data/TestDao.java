@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package data;
 
-import Common.Domain.Test;
-import Common.Domain.TestType;
+
+import common.domain.Test;
+import common.domain.TestType;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -26,7 +27,7 @@ public class TestDao extends AbstractDao {
         super(Test.class);
     }
     
-    public Test retrieveLatestTestForTypeForSystem(Common.Domain.System system
+    public Test retrieveLatestTestForTypeForSystem(common.domain.System system
             , TestType type) {
         Query query = this.em.createNamedQuery("get latest test for system with type");
         query.setParameter("systemId", system.getId());

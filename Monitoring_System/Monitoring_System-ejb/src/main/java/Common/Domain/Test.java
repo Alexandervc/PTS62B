@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Common.Domain;
+package common.domain;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -23,7 +23,9 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(query = "select t from Test t where t.systemID = :systemId AND t.testType = :type ORDER BY t.date DESC", name = "get latest test for system with type")
+@NamedQuery(query = "select t from Test t where t.systemID = :systemId AND"
+        + " t.testType = :type ORDER BY t.date DESC", name = "get latest"
+                + " test for system with type")
 })
 public class Test implements Serializable {
 
@@ -43,7 +45,10 @@ public class Test implements Serializable {
     
     @Column(name="SYSTEM_ID")
     private Long systemID;
-    
+
+    /**
+     * Default empty constructor for JPA.
+     */
     public Test() {
     }
 
@@ -54,7 +59,7 @@ public class Test implements Serializable {
     }
     
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {

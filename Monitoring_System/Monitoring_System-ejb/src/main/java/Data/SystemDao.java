@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package data;
 
-import Common.Domain.Test;
-import Common.Domain.System;
+import common.domain.Test;
+import common.domain.System;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

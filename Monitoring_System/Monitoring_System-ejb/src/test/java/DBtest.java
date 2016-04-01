@@ -1,5 +1,9 @@
 
-import Data.ResourceProducer;
+
+import data.ResourceProducer;
+import javax.ejb.EJB;
+import javax.ejb.embeddable.EJBContainer;
+import javax.enterprise.context.Dependent;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -20,8 +24,8 @@ import org.junit.Test;
  */
 public class DBtest {
     
-    EntityManager em;
-    ResourceProducer producer;
+    private EntityManager em;
+    private ResourceProducer producer;
 
     @BeforeClass
     public static void setUpClass() {
@@ -34,12 +38,12 @@ public class DBtest {
     @Before
     public void setUp() throws NamingException {
         //producer = new ResourceProducer();
-        em = Persistence.createEntityManagerFactory("Proftaak").createEntityManager();  
+        this.em = Persistence.createEntityManagerFactory("Proftaak").createEntityManager();  
     }
 
     @Test
     public void DatabaseTest() {
-        em.getTransaction().begin();
+        this.em.getTransaction().begin();
     }
     /*
     @Test(expected = IllegalArgumentException.class)
