@@ -1,6 +1,7 @@
 dao\BillDAOJPAImp.class
 service\RadService.class
 dao\DataStorage.class
+domain\RoadUsage.class
 dao\PersonDAOJPAImp.class
 business\CarManager.class
 domain\Bill_.class
