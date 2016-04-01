@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Common.Domain;
+package common.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,30 +31,34 @@ public class ConnectionClient implements Serializable {
     @JoinColumn(name="CONNECTIONCLIENT_ID", referencedColumnName="ID")
     private List<Method> methods;
 
-    public Long getId() {
-        return id;
+    /**
+     * Empty constructor for JPA.
+     */
+    public ConnectionClient() {
+    }
+    
+    public final Long getId() {
+        return this.id;
     }
 
-    public void setId(Long id) {
+    public final void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public final String getName() {
+        return this.name;
     }
 
-    public void setName(String name) {
+    public final void setName(String name) {
         this.name = name;
     }
 
-    public List<Method> getMethods() {
-        return new ArrayList<>(methods);
+    public final List<Method> getMethods() {
+        return new ArrayList<>(this.methods);
     }
 
-    public void setMethods(List<Method> methods) {
+    public final void setMethods(List<Method> methods) {
         this.methods = new ArrayList<>(methods);
     }
-    
-    
-    
+      
 }

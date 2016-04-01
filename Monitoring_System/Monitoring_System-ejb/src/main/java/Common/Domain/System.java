@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Common.Domain;
+package common.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(query = "select s from System s", name = "get systems")
+    @NamedQuery(query = "select s from System s", name = "get systems")
 })
 public class System implements Serializable {
 
@@ -39,7 +39,7 @@ public class System implements Serializable {
     private String description;
     
     @Column(name = "IP")
-    private String IP;
+    private String ip;
     
     @Column(name = "PORT")
     private int port;
@@ -52,62 +52,65 @@ public class System implements Serializable {
     @JoinColumn(name="SYSTEM_ID", referencedColumnName="ID")
     private List<Test> tests;
 
+    /**
+     * Empty constructor for JPA usage.
+     */
     public System() {
     }
 
-    public Long getId() {
-        return id;
+    public final Long getId() {
+        return this.id;
     }
 
-    public void setId(Long id) {
+    public final void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public final String getName() {
+        return this.name;
     }
 
-    public void setName(String name) {
+    public final void setName(String name) {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public final String getDescription() {
+        return this.description;
     }
 
-    public void setDescription(String description) {
+    public final void setDescription(String description) {
         this.description = description;
     }
 
-    public String getIP() {
-        return IP;
+    public final String getIp() {
+        return this.ip;
     }
 
-    public void setIP(String IP) {
-        this.IP = IP;
+    public final void setIp(String ip) {
+        this.ip = ip;
     }
     
-    public int getPort() {
-        return port;
+    public final int getPort() {
+        return this.port;
     }
     
-    public void setPort(int port) {
+    public final void setPort(int port) {
         this.port = port;
     }
 
-    public List<Test> getTests() {
-        return new ArrayList<>(tests);
+    public final List<Test> getTests() {
+        return new ArrayList<>(this.tests);
     }
 
-    public void setTests(List<Test> tests) {
+    public final void setTests(List<Test> tests) {
         this.tests = new ArrayList<>(tests);
     }
 
-    public List<ConnectionClient> getClients() {
-        return new ArrayList<>(clients);
+    public final List<ConnectionClient> getClients() {
+        return new ArrayList<>(this.clients);
     }
 
-    public void setClients(List<ConnectionClient> clients) {
+    public final void setClients(List<ConnectionClient> clients) {
         this.clients = new ArrayList<>(clients);
     }
     

@@ -1,22 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package DAO;
+package dao;
 
-import Domain.Bill;
+import domain.Bill;
+import domain.Person;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 /**
  *
  * @author Linda
  */
 public interface BillDAO {
-    void setEntityManager(EntityManager em);
-    
     void create(Bill bill);
+    void edit(Bill bill);
+    void remove(Bill bill);
+    Bill find(Object id);    
+    List<Bill> findAll();    
+    int count();
     
-    List<Bill> findAll();  
+    public List<Bill> findAllForUser(Person person);
 }

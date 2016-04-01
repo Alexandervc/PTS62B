@@ -5,8 +5,8 @@
  */
 package managedbeans;
 
-import Common.Domain.System;
-import Service.MonitoringService;
+import common.domain.System;
+import service.MonitoringService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +26,11 @@ public class MonitoringBean implements Serializable  {
     @EJB(beanName="monitoring")
     private MonitoringService service;
     
-    private List<Common.Domain.System> retrieveSystems;
+    private List<common.domain.System> retrieveSystems;
     
 
     public List<System> getRetrieveSystems() {
         return service.retrieveSystems();
-    }
-
-    public void setRetrieveSystems(List<System> retrieveSystems) {
-        this.retrieveSystems = retrieveSystems;
     }
        
 }
