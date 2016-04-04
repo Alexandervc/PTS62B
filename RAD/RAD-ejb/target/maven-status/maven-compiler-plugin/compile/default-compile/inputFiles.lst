@@ -4,6 +4,7 @@ E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\dao\DataStora
 E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\dao\PersonDAO.java
 E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\domain\RoadType.java
 E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\business\PersonManager.java
+E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\domain\RoadUsage.java
 E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\dao\BillDAOJPAImp.java
 E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\dao\PersonDAOJPAImp.java
 E:\Fontys ICT\proftaak semester 6\PTS62B\RAD\RAD-ejb\src\main\java\business\RateManager.java

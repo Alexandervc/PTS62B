@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 /**
  *
- * @author Melanie
+ * @author Melanie.
  */
 @Entity (name = "Rate")
 public class Rate implements Serializable {
