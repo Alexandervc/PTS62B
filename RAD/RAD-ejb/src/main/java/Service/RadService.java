@@ -9,12 +9,14 @@ import business.CarManager;
 import business.BillManager;
 import business.PersonManager;
 import business.RateManager;
+import business.RoadUsage;
 import domain.Bill;
 import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,6 +61,11 @@ public class RadService {
         return person;
     }
 
+    public Person findPersonByName(String name) {
+        person = personManager.findPersonByName(name);
+        return person;
+    }
+
     public void addRate(double rate, RoadType type) {
         rateManager.createRate(rate, type);
     }
@@ -70,24 +77,32 @@ public class RadService {
     public void addBill(Bill bill) {
         billManager.createBill(bill);
     }
-    
+
     public void addCar(Person person, Long cartracker, FuelType fuel) {
         carManager.createCar(person, cartracker, fuel);
     }
 
-    public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+    public Bill generateRoadUsages(String name, Date begin, Date end) {
+
         try {
-            List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
-            roadUsages.sort(null);
-            Bill bill = billManager.generateBill(person, roadUsages);
-            return bill;
-        } catch (RemoteException ex) {
+            person = this.findPersonByName(name);
+            List<IRoadUsage> roadUsages = new ArrayList<>();
+            IRoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
+            roadUsages.add(usage);
+
+            //List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(person.getCars().get(0).getCartrackerId(), begin, end);
+            //roadUsages.sort(null);
+            if (person != null) {
+                Bill bill = billManager.generateBill(person, roadUsages);
+                return bill;
+            }
+        } catch (Exception ex) {
             Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
-    
+
     /*
     public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
         try {
@@ -97,8 +112,7 @@ public class RadService {
         }
         return null;
     }
-    */
-
+     */
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }
