@@ -94,6 +94,9 @@ public class ServerStatusManager {
 
         // Iterate throught the output and get the status of the application.
         for (String result : asadminListApplicationsOutput) {
+            // Debug print line.
+            System.out.println(result);
+            
             // Filter on web applications.
             if (result.contains("<web>")) {
                 // Match on first word. This retreives the application name.
@@ -142,6 +145,9 @@ public class ServerStatusManager {
         // Iterate throught the output and get the status of the 
         // application.
         for (String result : asadminShowComponentStatusOutput) {  
+            // Debug print line.
+            System.out.println(result);
+            
             // If the correct outpur line is reached, check the status.
             // An example of the output is:
             // asadmin> show-component-status TestApp
