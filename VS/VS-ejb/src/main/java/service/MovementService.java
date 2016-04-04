@@ -19,8 +19,8 @@ import javax.inject.Inject;
  * @author Alexander
  */
 @Stateless
-public class MovementService extends UnicastRemoteObject 
-        implements IMovementService {
+public class MovementService //extends UnicastRemoteObject implements IMovementService 
+{
     @Inject
     private MovementManager movementManager;
     
@@ -43,9 +43,9 @@ public class MovementService extends UnicastRemoteObject
      * @return
      * @throws RemoteException
      */
-    @Override
     public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
-            Date end) throws RemoteException {
+            Date end) //throws RemoteException 
+    {
         System.out.println("generateRoadUsages");
         return movementManager.getRoadUsagesBetween(begin, end, cartrackerId);
     }
