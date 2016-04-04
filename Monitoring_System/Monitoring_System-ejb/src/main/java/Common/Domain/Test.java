@@ -45,10 +45,6 @@ public class Test implements Serializable {
     
     @Column(name="SYSTEM_ID")
     private Long systemID;
-    
-    public Long getId() {
-        return this.id;
-    }
 
     /**
      * Default empty constructor for JPA.
@@ -60,6 +56,10 @@ public class Test implements Serializable {
         this.testType = testType;
         this.date = new Date(date.getTime());
         this.result = result;
+    }
+    
+    public Long getId() {
+        return this.id;
     }
 
     public void setId(Long id) {

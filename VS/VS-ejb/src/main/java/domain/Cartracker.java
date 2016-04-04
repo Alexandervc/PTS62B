@@ -47,10 +47,10 @@ public class Cartracker implements Serializable {
     }
 
     public List<CarPosition> getPositions() {
-        return positions;
+        return new ArrayList<>(positions);
     }
 
     public void setPositions(List<CarPosition> positions) {
-        this.positions = positions;
+        this.positions = new ArrayList<>(positions);
     }
 }

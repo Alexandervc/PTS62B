@@ -48,14 +48,22 @@ public class DataStorage {
             roadDao.create(road3);
             roadDao.create(road4);
             roadDao.create(road5);
-            CarPosition cp = new CarPosition(cartracker, new Date(), 1.0, 1.0, road, 1.0);
-            CarPosition cp2 = new CarPosition(cartracker, new Date(), 2.0, 2.0, road2, 2.0);
-            CarPosition cp3 = new CarPosition(cartracker, new Date(), 3.0, 3.0, road3, 3.0);
-            CarPosition cp4 = new CarPosition(cartracker, new Date(), 4.0, 4.0, road4, 4.0);
-            CarPosition cp5 = new CarPosition(cartracker, new Date(), 5.0, 5.0, road5, 5.0);
-            CarPosition cp6 = new CarPosition(cartracker, new Date(), 10.0, 10.0, road, 10.0);
-            CarPosition cp7 = new CarPosition(cartracker, new Date(), 11.0, 11.0, road, 11.0);
-            CarPosition cp8 = new CarPosition(cartracker, new Date(), 12.0, 12.0, road, 12.0);
+            CarPosition cp = new CarPosition(cartracker, new Date(), 1.0,
+                    1.0, road, 1.0);
+            CarPosition cp2 = new CarPosition(cartracker, new Date(), 2.0,
+                    2.0, road2, 2.0);
+            CarPosition cp3 = new CarPosition(cartracker, new Date(), 3.0, 
+                    3.0, road3, 3.0);
+            CarPosition cp4 = new CarPosition(cartracker, new Date(), 4.0, 
+                    4.0, road4, 4.0);
+            CarPosition cp5 = new CarPosition(cartracker, new Date(), 5.0, 
+                    5.0, road5, 5.0);
+            CarPosition cp6 = new CarPosition(cartracker, new Date(), 10.0, 
+                    10.0, road, 10.0);
+            CarPosition cp7 = new CarPosition(cartracker, new Date(), 11.0, 
+                    11.0, road, 11.0);
+            CarPosition cp8 = new CarPosition(cartracker, new Date(), 12.0, 
+                    12.0, road, 12.0);
             carPositionDao.create(cp);
             carPositionDao.create(cp2);
             carPositionDao.create(cp3);
