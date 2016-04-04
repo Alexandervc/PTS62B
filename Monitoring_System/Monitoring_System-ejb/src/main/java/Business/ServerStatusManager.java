@@ -21,7 +21,7 @@ import util.CmdHelper;
  */
 public class ServerStatusManager {
     
-    public static final String PASSWORD_FILE = "C:\\School\\Proftaak\\asadmin.txt";
+    public static final String PASSWORD_FILE = "C:\\Proftaak\\asadmin.txt";
     
     /**
      * TODO:
