@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package domain;
 
 import java.io.Serializable;
@@ -16,7 +21,9 @@ import javax.persistence.OneToMany;
  */
 @Entity (name = "Person")
 public class Person implements Serializable {
-    
+
+
+    // fields
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -61,7 +68,8 @@ public class Person implements Serializable {
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
     }
-
+    
+    // getters en setters
     public Long getId() {
         return id;
     }
