@@ -28,6 +28,6 @@ public class CarPosition {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.road = road;
-        this.km = km;
+        //this.km = km;
     }
 }
