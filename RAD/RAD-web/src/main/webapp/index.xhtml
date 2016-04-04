@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>         
         <ui:composition template="templates/template.xhtml">
@@ -18,6 +19,15 @@
                                 <h:inputText class="forminput"  id="nameBox"
                                              value="#{billBean.name}">
                                 </h:inputText>
+                                <h:selectOneMenu class="forminput" 
+                                                    id="dateBox1"
+                                                    value="#{billBean.date}">
+                                    <c:forEach var="month" items="#{billBean.dates}">
+                                        <f:selectItem itemValue="#{month.months}" 
+                                                      itemLabel="#{month.date}">
+                                        </f:selectItem>
+                                    </c:forEach> 
+                                </h:selectOneMenu>
                                 <h:commandButton type="submit"
                                                  value="Zoeken" 
                                                  action="#{billBean.generateBill()}">
@@ -62,7 +72,7 @@
                                     </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <p>Geen persoon geselecteerd</p>
+                                    <h3>Geen persoon geselecteerd</h3>
                                 </c:otherwise>
                             </c:choose>
                         </div>

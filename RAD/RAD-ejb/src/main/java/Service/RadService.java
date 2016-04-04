@@ -60,8 +60,8 @@ public class RadService {
                 streetname, number, zipcode, city, country);
         return person;
     }
-    
-    public Person findPersonByName(String name){
+
+    public Person findPersonByName(String name) {
         person = personManager.findPersonByName(name);
         return person;
     }
@@ -77,31 +77,32 @@ public class RadService {
     public void addBill(Bill bill) {
         billManager.createBill(bill);
     }
-    
+
     public void addCar(Person person, Long cartracker, FuelType fuel) {
         carManager.createCar(person, cartracker, fuel);
     }
 
     public Bill generateRoadUsages(String name, Date begin, Date end) {
-        
+
         try {
             person = this.findPersonByName(name);
             List<IRoadUsage> roadUsages = new ArrayList<>();
             IRoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
             roadUsages.add(usage);
-            
+
             //List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(person.getCars().get(0).getCartrackerId(), begin, end);
             //roadUsages.sort(null);
-            
-            Bill bill = billManager.generateBill(person, roadUsages);
-            return bill;
+            if (person != null) {
+                Bill bill = billManager.generateBill(person, roadUsages);
+                return bill;
+            }
         } catch (Exception ex) {
             Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
-    
+
     /*
     public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
         try {
@@ -111,8 +112,7 @@ public class RadService {
         }
         return null;
     }
-    */
-
+     */
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }
