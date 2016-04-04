@@ -25,6 +25,15 @@ public class BillBean {
     private RadService service;
     
     private Bill bill;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     /*public BillBean() {
         generateBill();
@@ -43,7 +52,7 @@ public class BillBean {
     }
     
     public void generateBill() {
-        this.bill = service.generateRoadUsages(1L, new Date(), new Date());
+        this.bill = service.generateRoadUsages(this.name, new Date(), new Date());
     }
     
     public String getRate(IRoadUsage roadUsage) {
@@ -59,6 +68,10 @@ public class BillBean {
     public String getTotalPrice() {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(this.bill.getTotalPrice());
+    }
+    
+    public String getPersonName() {
+        return this.bill.getPerson().getInitials() + " " + this.bill.getPerson().getLastName();
     }
     
     /*
