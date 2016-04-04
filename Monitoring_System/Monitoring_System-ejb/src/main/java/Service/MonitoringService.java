@@ -26,24 +26,24 @@ import javax.inject.Inject;
 public class MonitoringService {
     //Test
 
-    @PostConstruct
-    public void init() {
-        runJob();
-    }
-
+    @Resource
+    private ManagedScheduledExecutorService executor;
+ 
+    @Inject
+    private MonitoringManager manager;
+    
     /**
      * Empty constructor for JPA usage.
      */
     public MonitoringService() {
     }
     
+    @PostConstruct
+    public void init() {
+        runJob();
+    }
     
-    
-    @Resource
-    private ManagedScheduledExecutorService executor;
- 
-    @Inject
-    private MonitoringManager manager;
+
 
 
     public void runJob() {
