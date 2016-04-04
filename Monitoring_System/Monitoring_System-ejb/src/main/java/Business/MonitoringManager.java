@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business;
+package business;
 
-import Common.Domain.ConnectionClient;
-import Common.Domain.MethodTest;
-import Data.IMonitoring;
-import Data.RMI_Client;
-import Data.SystemDao;
-import Data.TestDao;
-import Common.Domain.System;
-import Common.Domain.Test;
-import Common.Domain.TestType;
-import Data.VSinterface;
+import common.domain.ConnectionClient;
+import common.domain.MethodTest;
+import common.domain.System;
+import common.domain.Test;
+import common.domain.TestType;
+import data.IMonitoring;
+import data.RMI_Client;
+import data.SystemDao;
+import data.TestDao;
+import data.VSinterface;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
@@ -34,32 +34,46 @@ import javax.inject.Inject;
  */
 @Stateless
 public class MonitoringManager {
+
+    private Map<String,RMI_Client> clientMap;
+    private @Inject SystemDao systemDao;
+    private @Inject TestDao testDao;
     
-    @PostConstruct	
-    public void init() {
-        this.clientMap = new HashMap<>();
-        this.loadRMIServers();
+    /**
+     * Empty constructor for sonarqube.
+     */
+    public MonitoringManager() {
     }
     
-    @Inject SystemDao systemDao;
-    @Inject TestDao testDao;
-    private Map<String,RMI_Client> clientMap;
     
     /**
      * Retrieves a list of Systems that are currently part of the RRA
      * application.
      * @return A list of servers.
      */
-    public List<System> getSystems() {
-        return systemDao.getSystems();
+    public final List<System> getSystems() {
+        return this.systemDao.getSystems();
     }
+    
+    /**
+     * Initializes the monitoring manager by creating a clientmap
+     * and loading in the RMI servers.
+     */
+    @PostConstruct	
+    public final void init() {
+        this.clientMap = new HashMap<>();
+        this.loadRMIServers();
+    }
+
+    
+    
     
     /**
      * Generates the status of the server
      * @param system The system object where the status will be generated for.
      * @return A list
      */
-    public List<Test> generateServerStatus(System system) {
+    public final List<Test> generateServerStatus(System system) {
         RMI_Client client = clientMap.get(system.getName());
         IMonitoring monitoringClient = client.getMonitoringClient(system.getName());
         List<Test> tests = new ArrayList<>();
@@ -91,7 +105,7 @@ public class MonitoringManager {
         for(ConnectionClient cClient : system.getClients()) {
             String bindingName = cClient.getName();
             VSinterface Vs = client.getVSClient(bindingName);
-            List<Common.Domain.Method> methods = cClient.getMethods();
+            List<common.domain.Method> methods = cClient.getMethods();
             //gets all the methods in the client interface.
             for(Method m :Vs.getClass().getMethods()) {
                 boolean testResult = false;
@@ -110,9 +124,9 @@ public class MonitoringManager {
                 }
                 //checks if the method is already known.
                 Boolean known = false;
-                Common.Domain.Method dbMethod = null;
+                common.domain.Method dbMethod = null;
               
-                for(Common.Domain.Method i : methods) {
+                for(common.domain.Method i : methods) {
                     if(i.getName().equals(m.getName())) {
                         known = true;
                         dbMethod = i;
@@ -121,7 +135,7 @@ public class MonitoringManager {
                 
                 //if the method isn't known adds it to the database.
                 if(!known) {
-                    dbMethod = new Common.Domain.Method(m.getName());
+                    dbMethod = new common.domain.Method(m.getName());
                     methods.add(dbMethod);
                 }
                 
@@ -140,9 +154,9 @@ public class MonitoringManager {
     
     private void loadRMIServers() {
         for(System sys : this.getSystems()) {
-            RMI_Client client = new RMI_Client(sys.getIP(),
+            RMI_Client client = new RMI_Client(sys.getIp(),
                                     sys.getPort());
-            clientMap.put(sys.getName(), client);
+            this.clientMap.put(sys.getName(), client);
         }
     }
 

@@ -1,9 +1,12 @@
 package service;
 
+import business.CarManager;
 import business.BillManager;
 import business.PersonManager;
 import business.RateManager;
 import domain.Bill;
+import domain.Car;
+import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
@@ -36,23 +39,35 @@ public class RadService  {
     private RateManager rateManager;
     
     @Inject
+    private CarManager carManager;
+    
+    @Inject
     private RmiClient rmiClient;
     
     @PostConstruct
     public void start() {
-        person = personManager.createPerson("Melanie");
     }
     
+    public Person addPerson(String firstname, String lastname, String initials,
+            String streetname, String number, String zipcode, 
+            String city, String country){
+        person = personManager.createPerson(firstname, lastname, initials,
+                streetname, number, zipcode, city, country);
+        return person;
+    }
     public void addRate(double rate, RoadType type) {
         rateManager.createRate(rate, type);
     }
     
-    public Rate getRate(RoadType type) {
+    public Rate getRate(RoadType type){
         return rateManager.findRate(type);
     }
     
     public void addBill(Bill bill) {
         billManager.createBill(bill);
+    }
+    public void addCar(Person person, Long cartracker, FuelType fuel) {
+        carManager.createCar(person, cartracker, fuel);
     }
     
     public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
@@ -78,4 +93,20 @@ public class RadService  {
         return null;
     }
     */
+
+    public void setPersonManager(PersonManager personManager) {
+        this.personManager = personManager;
+    }
+
+    public void setBillManager(BillManager billManager) {
+        this.billManager = billManager;
+    }
+
+    public void setRateManager(RateManager rateManager) {
+        this.rateManager = rateManager;
+    }
+
+    public void setCarManager(CarManager carManager) {
+        this.carManager = carManager;
+    }
 }

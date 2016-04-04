@@ -12,7 +12,7 @@ import service.IRoadUsage;
 
 /**
  *
- * @author Melanie
+ * @author Melanie.
  */
 @Stateless
 public class BillManager {
@@ -22,14 +22,28 @@ public class BillManager {
     @Inject
     private RateDAO rateDAO;
     
+    /**
+     * Find all bills in Database from person.
+     * @param person Type Person.
+     */
     public void findBills(Person person) {
         billDAO.findAllForUser(person);
     }
     
+    /**
+     * Create bill in Database.
+     * @param bill Type Bill.
+     */
     public void createBill(Bill bill) {
         billDAO.create(bill);
     }
     
+    /**
+     * Generate bill.
+     * @param person Type Person.
+     * @param roadUsages List of IRoadUsage.
+     * @return new Bill Type Bill.
+     */
     public Bill generateBill(Person person, List<IRoadUsage> roadUsages) {
         double totalPrice = 0;
         

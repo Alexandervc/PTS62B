@@ -7,12 +7,12 @@ package domain;
 
 /**
  *
- * @author Alexander
+ * @author Linda
  */
-public enum RoadType {
-    A,
-    B,
-    C,
-    D,
-    E
+public enum FuelType {
+    Petrol,
+    Diesel,
+    Gas,
+    Hybrid,
+    Electric
 }

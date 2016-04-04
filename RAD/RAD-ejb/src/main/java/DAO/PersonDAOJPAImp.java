@@ -22,5 +22,5 @@ public class PersonDAOJPAImp extends AbstractFacade<Person> implements PersonDAO
 
     public PersonDAOJPAImp() {
         super(Person.class);
-    }
+    }    
 }

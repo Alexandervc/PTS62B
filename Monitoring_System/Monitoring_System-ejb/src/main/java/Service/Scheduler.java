@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Service;
+package service;
 
 import java.util.Properties;
 import javax.batch.runtime.BatchRuntime;
-import javax.ejb.Schedule;
-import javax.inject.Singleton;
 
 /**
  *

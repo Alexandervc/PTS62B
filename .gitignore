@@ -24,9 +24,12 @@ hs_err_pid*
 /Monitoring_System/Monitoring_System-ear/target/
 /Monitoring_System/Monitoring_System-ejb/target/
 /Monitoring_System/Monitoring_System-web/target/
-/VS/VS-ejb/target/
-/VS/VS-ear/target/
-/VS/VS-web/target/
+/Monitoring_System/Monitoring_System-ejb/nbproject/
 /RAD/RAD-ear/target/
 /RAD/RAD-ejb/target/
 /RAD/RAD-web/target/
+/RAD/RAD-ejb/nbproject/
+/VS/VS-ear/target/
+/VS/VS-ejb/target/
+/VS/VS-web/target/
+/VS/VS-ejb/nbproject/

@@ -8,12 +8,16 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Melanie
- * @param <T>
+ * @author Melanie.
+ * @param <T> ClassType.
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 
+    /**
+     * Constructor AbstractFacade.
+     * @param entityClass.
+     */
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -21,7 +25,11 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
+        try{
         getEntityManager().persist(entity);
+        }catch(Exception e){
+            
+        }
     }
 
     public void edit(T entity) {

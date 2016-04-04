@@ -1,4 +1,4 @@
-package notused;
+package notUsed;
 
 import domain.RoadType;
 

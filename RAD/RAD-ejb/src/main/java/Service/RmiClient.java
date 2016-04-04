@@ -28,7 +28,7 @@ public class RmiClient {
 
     private IMovementService movementService;
 
-    @PostConstruct
+    //@PostConstruct
     private void start() {
         try {
             this.registry = LocateRegistry.getRegistry(ipAdressServer, portnumber);

@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 
-import business.PersonManager;
-import domain.Person;
+import business.RateManager;
+import domain.RoadType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,22 +21,20 @@ import service.RadService;
  * @author Linda
  */
 @RunWith(MockitoJUnitRunner.class)
-public class TestDAOPerson {
+public class TestDAORate {
+    
     RadService service;
     
     @Mock
-    PersonManager personManager;
+    RateManager rateManager;
     
-    Person person1;
-    
-    public TestDAOPerson() {
+    public TestDAORate() {
     }
     
     @Before
     public void setUp() {
         service = new RadService();
-        service.setPersonManager(personManager);
-        
+        service.setRateManager(rateManager);
     }
     
     @After
@@ -50,17 +48,10 @@ public class TestDAOPerson {
     // public void hello() {}
     
     @Test
-    public void testAddPerson(){
-        String firstname= "Linda";
-        String lastname ="van Engelen";
-        String initials = "LMJC";
-  
-        String streetname = "Sibeliuslaan";
-        String number = "83";
-        String zipcode = "5654CV";
-        String city = "Eindhoven";
-        String country = "Nederland";
-        service.addPerson(firstname, lastname, initials, streetname, number, zipcode, city, country);
-        verify(personManager, Mockito.times(1)).createPerson(firstname, lastname, initials, streetname, number, zipcode, city, country);
+    public void testAddRate(){
+        double rate = 9.76;
+        RoadType type = RoadType.E;
+        service.addRate(rate, type);
+        verify(rateManager, Mockito.times(1)).createRate(rate, type);
     }
 }
