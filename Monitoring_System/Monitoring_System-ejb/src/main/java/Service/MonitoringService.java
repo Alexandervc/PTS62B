@@ -80,12 +80,11 @@ public class MonitoringService {
      * @return A list
      */
     public List<Test> generateServerStatus(common.domain.System system) {
+        // TODO: add functional and endpoint.
         return this.manager.generateServerStatus(system);
     }
     
-    public List<Test> retrieveLatestTests(common.domain.System system) {
-        // TODO: uncomment;
-        //return this.manager.retrieveLatestTests(system);
-        return null;
-    }
+//    public List<Test> retrieveLatestTests(common.domain.System system) {
+//        return this.manager.retrieveLatestTests(system);
+//    }
 }

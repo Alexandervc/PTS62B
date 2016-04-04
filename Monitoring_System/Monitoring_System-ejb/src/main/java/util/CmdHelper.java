@@ -11,11 +11,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.Stateless;
 
 /**
  * Class which provides Windows Command Line functionality.
  * @author jesblo
  */
+@Stateless
 public class CmdHelper {
     
     /**

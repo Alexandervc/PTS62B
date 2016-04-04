@@ -13,29 +13,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.ejb.Stateless;
 import util.CmdHelper;
 
 /**
  * Provides the server status functionality using asadmin.
+ * 
+ * This requires the C:/glassfish4/glassfish/bin folder to be added to the PATH
+ * variable of the system, as well as a password file on the PASSWORD_FILE
+ * location containing the following parameters:
+ * 
+ * AS_ADMIN_PASSWORD=admin
+ * AS_ADMIN_ADMINPASSWORD=admin
+ * AS_ADMIN_USERPASSWORD=admin
+ * AS_ADMIN_MASTERPASSWORD=admin
+ * 
  * @author jesblo
  */
+@Stateless
 public class ServerStatusManager {
     
     public static final String PASSWORD_FILE = "C:\\Proftaak\\asadmin.txt";
     
-    /**
-     * TODO:
-     * 
-     * http://bbissett.blogspot.nl/2012/01/asadmin-with-remote-glassfish.html
-     * add C:/glassfish4/glassfish/bin to PATH
-     * 
-     * create password file:
-     * AS_ADMIN_PASSWORD=admin
-     * AS_ADMIN_ADMINPASSWORD=admin
-     * AS_ADMIN_USERPASSWORD=admin
-     * AS_ADMIN_MASTERPASSWORD=admin
-     */
-
     /**
      * Retrieves the status of all the deployed applications on the system.
      * @param system The system on which to retrieve the status from.
