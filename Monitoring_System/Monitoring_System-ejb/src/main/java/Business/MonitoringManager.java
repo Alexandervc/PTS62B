@@ -60,7 +60,7 @@ public class MonitoringManager {
      * @param system The system object where the status will be generated for.
      * @return A list
      */
-    public final Test generateServerStatus(System system) {
+    public final List<Test> generateServerStatus(System system) {
         return null;
     }
 }
