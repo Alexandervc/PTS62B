@@ -53,12 +53,14 @@ public class DataStorage {
                     "Sibeliuslaan", "83B", "5654CV",
                     "Eindhoven", "Nederland");
 
-            Bill b = new Bill(p, roadUsages, 35.2);
+            System.out.println("create car");
+            service.addCar(p, 5L, FuelType.Petrol);
+            
+            Bill b = new Bill(p, roadUsages, 35.2, 5L, "April", "2016");
 
             System.out.println("create bill");
             service.addBill(b);
-            System.out.println("create car");
-            service.addCar(p, 5L, FuelType.Petrol);
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

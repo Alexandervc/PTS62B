@@ -75,6 +75,13 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc7</artifactId>
+            <version>12.1.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ojdbc7.jar</systemPath> 
+        </dependency>
     </dependencies>
 
     <build>

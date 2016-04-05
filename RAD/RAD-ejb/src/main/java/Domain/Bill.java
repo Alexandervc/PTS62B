@@ -32,17 +32,25 @@ public class Bill implements Serializable {
     
     private double totalPrice;
     private boolean paid;
+    
+    private Long cartrackerId;
+    private String billMonth;
+    private String billYear;
 
     @Deprecated
     public Bill() {        
     }
     
-    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice) {
+    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
+           Long cartrackerId, String month, String year) {
         this.person = person;
         this.person.addBill(this);        
         this.roadUsages = roadUsages;
         this.totalPrice = totalPrice;
         this.paid = false;
+        this.cartrackerId=cartrackerId;
+        this.billMonth = month;
+        this.billYear = year;
     }
 
     public Long getId() {
@@ -71,5 +79,17 @@ public class Bill implements Serializable {
 
     public double getTotalPrice() {
         return totalPrice;
+    }
+
+    public Long getCartrackerId() {
+        return cartrackerId;
+    }
+
+    public String getBillMonth() {
+        return billMonth;
+    }
+
+    public String getBillYear() {
+        return billYear;
     }
 }

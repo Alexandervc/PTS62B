@@ -49,7 +49,7 @@ public class TestDAOBill {
         List<RoadUsage> roadUsages = new ArrayList<RoadUsage>();
         roadUsages.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
         
-        bill1 = new Bill(person1, roadUsages, 10.35);
+        bill1 = new Bill(person1, roadUsages, 10.35, 5L, "april", "2016");
     }
     
     @After
