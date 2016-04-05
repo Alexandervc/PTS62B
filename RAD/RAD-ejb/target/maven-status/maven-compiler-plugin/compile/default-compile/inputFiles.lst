@@ -1,4 +1,3 @@
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\IMovementService.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\Bill.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\Person.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\RateDAO.java
@@ -11,16 +10,15 @@ C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\Abstrac
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\FuelType.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\PersonDAO.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\RateDAOJPAImp.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\RmiClient.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\PersonDAOJPAImp.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\DataStorage.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\RoadUsage.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\BillDAOJPAImp.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\IRoadUsage.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\BillManager.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\business\RateManager.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\CarDAOJPAImp.java
-C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\RoadUsage.java
+C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\jms\JMSRADSender.java
+C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\jms\GenerateBillBean.java
+C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\service\RoadUsage.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\dao\CarDAO.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\domain\Rate.java
 C:\Users\Alexander\Documents\GitHub\PTS62B\RAD\RAD-ejb\src\main\java\notUsed\CarPosition.java
