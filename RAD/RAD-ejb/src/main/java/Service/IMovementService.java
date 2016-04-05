@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @author Alexander
  */
+/*
 public interface IMovementService extends Remote {
     List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) throws RemoteException;
-}
+}*/

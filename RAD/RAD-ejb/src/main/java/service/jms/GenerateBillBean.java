@@ -3,17 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
-
-import domain.RoadType;
+package service.jms;
 
 /**
  *
  * @author Alexander
  */
-/*
-public interface IRoadUsage {
-    String getRoadName();
-    RoadType getRoadType();
-    Double getKm();
-}*/
+// TODO!!!!!!
+public class GenerateBillBean {
+    
+}

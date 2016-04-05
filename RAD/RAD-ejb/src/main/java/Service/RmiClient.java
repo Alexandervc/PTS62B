@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
  *
  * @author Alexander
  */
+/*
 @Stateless
 public class RmiClient {
 
@@ -42,4 +43,4 @@ public class RmiClient {
             System.out.println(roadUsages.get(0).getKm());
             return roadUsages;
     }
-}
+}*/

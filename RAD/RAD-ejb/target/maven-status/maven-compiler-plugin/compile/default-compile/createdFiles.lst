@@ -19,7 +19,6 @@ dao\RateDAOJPAImp.class
 domain\FuelType.class
 domain\Rate.class
 business\RoadUsage.class
-service\IMovementService.class
 dao\BillDAO.class
 dao\AbstractFacade.class
 domain\Car.class
@@ -29,4 +28,3 @@ business\RateManager.class
 domain\Person_.class
 dao\PersonDAO.class
 notUsed\Road.class
-service\RmiClient.class

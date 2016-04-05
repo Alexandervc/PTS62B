@@ -5,10 +5,12 @@
  */
 package service.jms;
 
+import business.RoadUsage;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
@@ -46,8 +48,11 @@ public class GenerateRoadUsagesBean implements MessageListener {
             Date endDate = df.parse(endDateString);
             
             // Generate road usages
-            this.movementService.generateRoadUsages(cartrackerId, beginDate,
-                    endDate);
+            List<RoadUsage> roadUsages = this.movementService
+                    .generateRoadUsages(cartrackerId, beginDate, endDate);
+            
+            // Send
+            
         } catch (JMSException | ParseException ex) {
             Logger.getLogger(GenerateRoadUsagesBean.class.getName())
                     .log(Level.SEVERE, null, ex);

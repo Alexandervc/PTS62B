@@ -7,13 +7,12 @@ package business;
 
 import domain.RoadType;
 import java.io.Serializable;
-import service.IRoadUsage;
 
 /**
  *
  * @author Alexander
  */
-public class RoadUsage implements IRoadUsage, Serializable{
+public class RoadUsage implements Serializable{
     private String roadName;
     private RoadType roadType;
     private Double km;
@@ -24,7 +23,6 @@ public class RoadUsage implements IRoadUsage, Serializable{
         this.km = km;
     }
 
-    @Override
     public Double getKm() {
         return km;
     }
@@ -33,7 +31,6 @@ public class RoadUsage implements IRoadUsage, Serializable{
         this.km = km;
     }
 
-    @Override
     public String getRoadName() {
         return roadName;
     }
@@ -42,7 +39,6 @@ public class RoadUsage implements IRoadUsage, Serializable{
         this.roadName = roadName;
     }
 
-    @Override
     public RoadType getRoadType() {
         return roadType;
     }

@@ -6,6 +6,7 @@
 package service;
 
 import business.MovementManager;
+import business.RoadUsage;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class MovementService //extends UnicastRemoteObject implements IMovementS
      * @return
      * @throws RemoteException
      */
-    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
+    public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
             Date end) //throws RemoteException 
     {
         System.out.println("generateRoadUsages");
