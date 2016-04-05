@@ -1,9 +1,11 @@
 dao\BillDAOJPAImp.class
+service\jms\GenerateBillBean.class
 service\RadService.class
 dao\DataStorage.class
 dao\PersonDAOJPAImp.class
 business\CarManager.class
 domain\Bill_.class
+service\RoadUsage.class
 dao\CarDAO.class
 domain\Rate_.class
 business\BillManager.class
@@ -13,6 +15,7 @@ dao\RateDAO.class
 domain\RoadType.class
 domain\Bill.class
 domain\Car_.class
+service\jms\GenerateBillBean$1.class
 dao\RateDAOJPAImp.class
 domain\FuelType.class
 domain\Rate.class
@@ -22,6 +25,7 @@ domain\Car.class
 dao\CarDAOJPAImp.class
 domain\Person.class
 business\RateManager.class
+service\jms\JMSRADSender.class
 domain\Person_.class
 dao\PersonDAO.class
 notUsed\Road.class
