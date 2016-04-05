@@ -59,7 +59,7 @@ public class MonitoringManager {
      * application.
      * @return A list of servers.
      */
-    public final List<System> getSystems() {
+    public List<System> getSystems() {
         inject.toString();
         if(inject == null) {
             LOGGER.log(Level.INFO, "inject is null");
@@ -79,7 +79,7 @@ public class MonitoringManager {
      * and loading in the RMI servers.
      */
     @PostConstruct	
-    public final void init() {
+    public void init() {
         this.clientMap = new HashMap<>();
         this.loadRMIServers();
     }
@@ -89,7 +89,7 @@ public class MonitoringManager {
      * @param system The system object where the status will be generated for.
      * @return A list
      */
-    public final List<Test> generateServerStatus(System system) {
+    public  List<Test> generateServerStatus(System system) {
         RMI_Client client = clientMap.get(system.getName());
         IMonitoring monitoringClient = client.getMonitoringClient(system.getName());
         List<Test> tests = new ArrayList<>();
@@ -101,8 +101,7 @@ public class MonitoringManager {
         } catch(RemoteException ex) {
             result = false;
         }
-        java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
-        Test test = new Test(TestType.STATUS,sqlDate,result);
+        Test test = new Test(TestType.STATUS,new Timestamp(java.lang.System.currentTimeMillis()),result);
         
         tests.add(test);
         //Functional test
@@ -112,8 +111,7 @@ public class MonitoringManager {
         } catch(RemoteException ex) {
             result = false;
         }
-        sqlDate = new java.sql.Date(new Date().getTime());
-        test = new Test(TestType.FUNCTIONAL,sqlDate,result);
+        test = new Test(TestType.FUNCTIONAL,new Timestamp(java.lang.System.currentTimeMillis()),result);
         tests.add(test);
 
         result = true;
@@ -162,8 +160,7 @@ public class MonitoringManager {
                 dbMethod.setTests(methodTests);
             }       
         }
-        sqlDate = new java.sql.Date(new Date().getTime());
-        test = new Test(TestType.ENDPOINTS,sqlDate,result);
+        test = new Test(TestType.ENDPOINTS,new Timestamp(java.lang.System.currentTimeMillis()),result);
         tests.add(test);
         return tests;
     }

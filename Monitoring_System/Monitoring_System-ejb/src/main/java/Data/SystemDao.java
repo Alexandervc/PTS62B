@@ -24,12 +24,12 @@ import javax.persistence.Query;
  * @author Edwin
  */
 @Stateless
-public class SystemDao {
+public class SystemDao extends AbstractDao {
 
     private final static Logger LOGGER = Logger.getLogger(SystemDao.class.getName()); 
 
-    //@Inject @MonitoringDB2 
-    //private EntityManager em;
+    @Inject @MonitoringDB2 
+    private EntityManager em;
 
 
     @PostConstruct
@@ -38,18 +38,18 @@ public class SystemDao {
 
     }
     
+    @Override
     protected EntityManager getEntityManager() {
-        return null;
-        //return em;
+        return em;
     }
 
     public SystemDao() {
+        super(System.class);
     }
 
     public List<System> getSystems() {
-        return null;
-        //Query query = this.em.createNamedQuery("get systems");
-        //return query.getResultList();
+        Query query = this.getEntityManager().createNamedQuery("get systems");
+        return query.getResultList();
     }
     
 }

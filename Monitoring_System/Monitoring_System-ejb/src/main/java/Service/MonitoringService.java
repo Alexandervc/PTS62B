@@ -90,4 +90,5 @@ public class MonitoringService {
     public List<Test> retrieveLatestTests(common.domain.System system) {
         return this.manager.retrieveLatestTests(system);
     }
+    
 }
