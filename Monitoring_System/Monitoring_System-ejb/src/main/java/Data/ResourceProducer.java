@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package data;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -18,13 +17,13 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public class ResourceProducer {
-    @PersistenceContext(unitName = "Proftaak")
-    EntityManager em;
+    //@PersistenceContext(unitName = "Proftaak")
+    private EntityManager em;
     
     @Produces
     @MonitoringDB
     public EntityManager createMonitoringDB() {
-        //em = Persistence.createEntityManagerFactory("Proftaak").createEntityManager();
+        em = Persistence.createEntityManagerFactory("Proftaak").createEntityManager();
         return em;
     }
     

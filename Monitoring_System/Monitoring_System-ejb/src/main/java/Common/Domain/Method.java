@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Common.Domain;
+package common.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,11 +60,11 @@ public class Method implements Serializable {
     }
 
     public List<MethodTest> getTests() {
-        return tests;
+        return new ArrayList<>(this.tests);
     }
 
     public void setTests(List<MethodTest> tests) {
-        this.tests = tests;
+        this.tests = new ArrayList<>(tests);
     }
     
     

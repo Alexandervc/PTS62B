@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -63,7 +62,8 @@ public class CarPosition implements Serializable {
      * @param road cannot be null
      * @param km cannto be negative
      */
-    public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, Double yCoordinate, Road road, Double km) {
+    public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
+            Double yCoordinate, Road road, Double km) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
         }
@@ -77,7 +77,7 @@ public class CarPosition implements Serializable {
             throw new IllegalArgumentException("km negative");
         }
         this.cartracker = cartracker;
-        this.moment = moment;
+        this.moment = new Date(moment.getTime());
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.road = road;
@@ -93,11 +93,11 @@ public class CarPosition implements Serializable {
     }
 
     public Date getMoment() {
-        return moment;
+        return new Date(moment.getTime());
     }
 
     public void setMoment(Date moment) {
-        this.moment = moment;
+        this.moment = new Date(moment.getTime());
     }
 
     public Cartracker getCartracker() {

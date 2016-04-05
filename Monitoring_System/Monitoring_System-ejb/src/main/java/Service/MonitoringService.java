@@ -3,41 +3,49 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Service;
+package service;
 
-import Business.MonitoringManager;
-import Common.Domain.Test;
+import business.MonitoringManager;
+import common.domain.Test;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.enterprise.concurrent.LastExecution;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
 import javax.enterprise.concurrent.Trigger;
 import javax.inject.Inject;
 
 /**
- * The service that contains methods concerning the monitoring of servers
+ * The service that contains methods concerning the monitoring of servers.
  * @author Edwin
  */
-@Stateless
-@LocalBean
+@Stateless(name="monitoring")
 public class MonitoringService {
     //Test
 
+    @Resource
+    private ManagedScheduledExecutorService executor;
+ 
+    @Inject
+    private MonitoringManager manager;
+    
+    /**
+     * Empty constructor for JPA usage.
+     */
+    public MonitoringService() {
+    }
+    
     @PostConstruct
     public void init() {
         runJob();
     }
     
-    @Inject MonitoringManager manager;
 
-    @Resource
-    ManagedScheduledExecutorService executor;
- 
+
+
     public void runJob() {
         executor.schedule(new Scheduler(), new Trigger() {
  
@@ -65,7 +73,7 @@ public class MonitoringService {
      * application.
      * @return A list of systems.
      */
-    public List<Common.Domain.System> retrieveSystems() {
+    public List<common.domain.System> retrieveSystems() {
         return manager.getSystems();
     }
     
@@ -74,11 +82,11 @@ public class MonitoringService {
      * @param system the Server object where the status will be generated for.
      * @return A list
      */
-    public List<Test> generateServerStatus(Common.Domain.System system) {
+    public List<Test> generateServerStatus(common.domain.System system) {
         return this.manager.generateServerStatus(system);
     }
     
-    public List<Test> retrieveLatestTests(Common.Domain.System system) {
+    public List<Test> retrieveLatestTests(common.domain.System system) {
         return this.manager.retrieveLatestTests(system);
     }
 }

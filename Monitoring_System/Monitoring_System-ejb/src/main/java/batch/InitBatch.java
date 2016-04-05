@@ -5,7 +5,7 @@
  */
 package batch;
 
-import Business.MonitoringManager;
+import business.MonitoringManager;
 import javax.batch.api.Batchlet;
 import javax.inject.Inject;
 
@@ -14,13 +14,13 @@ import javax.inject.Inject;
  * @author Edwin
  */
 public class InitBatch implements Batchlet {
-    @Inject MonitoringManager manager;
+    private @Inject MonitoringManager manager;
 
     
     @Override
     public String process() throws Exception {
-        for(Common.Domain.System sys : manager.getSystems()) {
-            manager.generateServerStatus(sys);
+        for(common.domain.System sys : this.manager.getSystems()) {
+            this.manager.generateServerStatus(sys);
         }
         return "COMPLETED";
     }

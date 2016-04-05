@@ -1,12 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -14,38 +22,103 @@ import javax.persistence.OneToMany;
  * @author Linda
  */
 @Entity (name = "Person")
+@NamedQueries({
+    @NamedQuery(name="person.findByName", query="SELECT p FROM Person p WHERE p.firstName = :name")
+})
 public class Person implements Serializable {
+
+
+    // fields
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String name;
+    // Name
+    private String firstName;
+    private String lastName;
+    private String initials;
     
-    @OneToMany(mappedBy = "person")
+    // Adress
+    private String streetName;
+    private String number;
+    private String zipCode;
+    private String city;
+    private String country;
+    
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Bill> bills;
     
-    private Long cartracker;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+    private List<Car> cars;
     
     @Deprecated
     public Person() {        
     }
 
-    public Person(String name) {
-        this.name = name;
+    public Person(String firstname){
+        this.firstName = firstname;
         this.bills = new ArrayList<>();
+        this.cars = new ArrayList<>();
     }
-
+    public Person(String firstname, String lastname, String initials,
+            String streetname, String number, String zipcode, 
+            String city, String country) {
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.initials = initials;
+        this.streetName = streetname;
+        this.number = number;
+        this.zipCode = zipcode;
+        this.city = city;
+        this.country = country;
+        this.bills = new ArrayList<>();
+        this.cars = new ArrayList<>();
+    }
+    
+    // getters en setters
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
-    
-    public void setName(String name){
-        this.name = name;
+
+
+    public String getLastName() {
+        return lastName;
     }
-    
+
+
+    public String getInitials() {
+        return initials;
+    }
+
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+
+    public String getNumber() {
+        return number;
+    }
+
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+
+    public String getCity() {
+        return city;
+    }
+
+
+    public String getCountry() {
+        return country;
+    }
+
+
     public List<Bill> getBills() {
         return bills;
     }
@@ -53,13 +126,13 @@ public class Person implements Serializable {
     public void setBills(List<Bill> bills) {
         this.bills = bills;
     }
-    
-    public Long getCartracker() {
-        return cartracker;
+
+    public List<Car> getCars() {
+        return cars;
     }
 
-    public void setCartracker(Long cartracker) {
-        this.cartracker = cartracker;
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
     
     /**
@@ -69,5 +142,10 @@ public class Person implements Serializable {
     public void addBill(Bill b){
         this.bills.add(b);
         b.setPerson(this);
+    }
+    
+    public void addCar(Car c){
+        this.cars.add(c);
+        c.setPerson(this);
     }
 }

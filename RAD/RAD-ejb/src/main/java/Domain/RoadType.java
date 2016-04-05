@@ -5,11 +5,10 @@
  */
 package domain;
 
-import java.io.Serializable;
 
 /**
  *
- * @author Alexander
+ * @author Linda
  */
 public enum RoadType {
     A,

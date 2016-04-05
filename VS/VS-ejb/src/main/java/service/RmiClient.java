@@ -5,16 +5,19 @@
  */
 package service;
 
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.rmi.PortableRemoteObject;
 
 /**
  *
@@ -37,15 +40,17 @@ public class RmiClient {
     @PostConstruct
     private void start() {
         try {
-            this.registry = LocateRegistry.getRegistry(ipAdressServer, portnumber);
+            this.registry = LocateRegistry.getRegistry(ipAdressServer, 
+                    portnumber);
             if (this.registry != null) {
-                //movementService = (IMovementService) PortableRemoteObject.narrow(this.registry.lookup(bindingname), IMovementService.class);
-                movementService = (IMovementService) this.registry.lookup(bindingname);
+                movementService = (IMovementService) 
+                        this.registry.lookup(bindingname);
             }
-            List<IRoadUsage> roadUsages = movementService.generateRoadUsages(1L, new Date(), new Date());
+            List<IRoadUsage> roadUsages = movementService.generateRoadUsages(1L, 
+                    new Date(), new Date());
             System.out.println(roadUsages);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(RmiClient.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }

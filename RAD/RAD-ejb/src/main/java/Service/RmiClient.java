@@ -5,11 +5,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.ejb.DependsOn;
-import javax.ejb.Remote;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.ejb.Stateless;
 
 /**
@@ -28,7 +23,7 @@ public class RmiClient {
 
     private IMovementService movementService;
 
-    @PostConstruct
+    //@PostConstruct
     private void start() {
         try {
             this.registry = LocateRegistry.getRegistry(ipAdressServer, portnumber);
