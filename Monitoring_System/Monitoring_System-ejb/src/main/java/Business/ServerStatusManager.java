@@ -33,8 +33,7 @@ import util.CmdHelper;
 @Stateless
 public class ServerStatusManager {
     
-    // TODO: Change to "C:\\Proftaak\\asadmin.txt"
-    public static final String PASSWORD_FILE = "C:\\School\\Proftaak\\asadmin.txt";
+    public static final String PASSWORD_FILE = "C:\\Proftaak\\asadmin.txt";
     
     /**
      * Retrieves the status of all the deployed applications on the system.
