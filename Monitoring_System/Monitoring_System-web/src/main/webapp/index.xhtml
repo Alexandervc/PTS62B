@@ -4,7 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:body>    	
     	<ui:composition template="templates/template.xhtml">
@@ -15,15 +18,15 @@
                         <h1>Monitor</h1>
                         
                         <ui:repeat var="sys" value="#{monitoringBean.entries}">
-                            <tr>
-                                <td>#{sys.key}</td>
-                            </tr>
-                            <input type="hidden" id="hiddenField" value="#{sys.value}"> </input>                      
-                            <div id="timeline1" class="chart"></div>
+                            <h3>#{sys.key}</h3>
+                            <input type="hidden" id="#{sys.key}hidden" value="#{sys.value}"> </input>                      
+                            <div id="#{sys.key}" class="chart"></div>
                         </ui:repeat>
+                       
                     </div>                    
                 </div>
             </ui:define>
     	</ui:composition>    	
     </h:body>
+
 </html>

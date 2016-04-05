@@ -30,7 +30,11 @@ public class SystemState {
     }
 
     public void setFunctional(String functional) {
-        this.functional = functional;
+        if(functional.equals("true")) {
+            this.functional = "passed";
+        } else{
+            this.functional = "failed";
+        }
     }
 
     public String getEndpoints() {
@@ -38,7 +42,11 @@ public class SystemState {
     }
 
     public void setEndpoints(String endpoints) {
-        this.endpoints = endpoints;
+        if(endpoints.equals("true")) {
+            this.endpoints = "passed";
+        } else{
+            this.endpoints = "failed";
+        }
     }
 
     public String getStatus() {
@@ -46,6 +54,10 @@ public class SystemState {
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        if(status.equals("true")) {
+            this.status = "passed";
+        } else{
+            this.status = "failed";
+        }
     }   
 }
