@@ -14,11 +14,9 @@ import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -35,9 +33,6 @@ import service.jms.JMSRADSender;
 public class RadService {
 
     private Person person;
-    private Long cartrackerId;
-    private String month;
-    private String year;
 
     @Inject
     private PersonManager personManager;
@@ -95,16 +90,8 @@ public class RadService {
             this.bill = null;
         } else {
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM", 
-                        Locale.getDefault());
-                month = dateFormat.format(begin);
-                year = Integer.toString(begin.getYear() + 1900);
-                
-                this.findPersonByName(username);
-                cartrackerId = person.getCars().get(0).getCartrackerId();
-                
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId, 
-                        begin, end);
+                // TODO 1L > username
+                radSender.sendGenerateRoadUsagesCommand(1L, begin, end);
                 generatedBill = new Bill();
             } catch (JMSException ex) {
                 Logger.getLogger(RadService.class.getName())
@@ -116,8 +103,7 @@ public class RadService {
     }
 
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        bill = billManager.generateBill(person, roadUsages, cartrackerId, 
-                month, year);
+        bill = billManager.generateBill(person, roadUsages);
     }
 
     public void setPersonManager(PersonManager personManager) {

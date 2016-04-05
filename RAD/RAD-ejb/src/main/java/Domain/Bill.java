@@ -27,10 +27,6 @@ public class Bill implements Serializable {
     @ManyToOne
     private Person person;
     
-    private Long cartrackerID;
-    private String billMonth;
-    private String billYear;
-    
     @Transient
     private List<RoadUsage> roadUsages;    
     
@@ -41,16 +37,12 @@ public class Bill implements Serializable {
     public Bill() {        
     }
     
-    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice, 
-            Long cartrackerId, String month, String year) {
+    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice) {
         this.person = person;
         this.person.addBill(this);        
         this.roadUsages = roadUsages;
         this.totalPrice = totalPrice;
         this.paid = false;
-        this.cartrackerID = cartrackerId;
-        this.billMonth = month;
-        this.billYear = year;
     }
 
     public Long getId() {
@@ -80,16 +72,4 @@ public class Bill implements Serializable {
     public double getTotalPrice() {
         return totalPrice;
     }
-    public Long getCartrackerID() {
-        return cartrackerID;
-    }
-
-    public String getBillMonth() {
-        return billMonth;
-    }
-
-    public String getBillYear() {
-        return billYear;
-    }
-
 }
