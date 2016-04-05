@@ -5,9 +5,10 @@
  */
 package domain;
 
+
 /**
  *
- * @author Alexander
+ * @author Linda
  */
 public enum RoadType {
     A,

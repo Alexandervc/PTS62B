@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package service;
 
 import business.CarManager;
@@ -5,7 +10,6 @@ import business.BillManager;
 import business.PersonManager;
 import business.RateManager;
 import domain.Bill;
-import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.Rate;
@@ -17,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -26,50 +29,52 @@ import javax.inject.Inject;
  * @author Linda
  */
 @Stateless
-public class RadService  {  
+@LocalBean
+public class RadService {
+
     private Person person;
-    
+
     @Inject
     private PersonManager personManager;
-    
     @Inject
     private BillManager billManager;
-    
     @Inject
     private RateManager rateManager;
-    
+
     @Inject
     private CarManager carManager;
-    
+
     @Inject
     private RmiClient rmiClient;
-    
+
     @PostConstruct
     public void start() {
     }
-    
+
     public Person addPerson(String firstname, String lastname, String initials,
-            String streetname, String number, String zipcode, 
-            String city, String country){
+            String streetname, String number, String zipcode,
+            String city, String country) {
         person = personManager.createPerson(firstname, lastname, initials,
                 streetname, number, zipcode, city, country);
         return person;
     }
+
     public void addRate(double rate, RoadType type) {
         rateManager.createRate(rate, type);
     }
-    
-    public Rate getRate(RoadType type){
+
+    public Rate getRate(RoadType type) {
         return rateManager.findRate(type);
     }
-    
+
     public void addBill(Bill bill) {
         billManager.createBill(bill);
     }
+    
     public void addCar(Person person, Long cartracker, FuelType fuel) {
         carManager.createCar(person, cartracker, fuel);
     }
-    
+
     public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
         try {
             List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
