@@ -11,8 +11,8 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import service.IRoadUsage;
 import service.RadService;
+import service.RoadUsage;
 
 /**
  *
@@ -46,12 +46,12 @@ public class BillBean {
         this.bill = service.generateRoadUsages(1L, new Date(), new Date());
     }
     
-    public String getRate(IRoadUsage roadUsage) {
+    public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(this.service.getRate(roadUsage.getRoadType()).getRate());
     }
     
-    public String getPrice(IRoadUsage roadUsage) {
+    public String getPrice(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(roadUsage.getKm() * this.service.getRate(roadUsage.getRoadType()).getRate());
     }

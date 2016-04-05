@@ -18,10 +18,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSException;
@@ -31,8 +34,7 @@ import service.jms.JMSRADSender;
  *
  * @author Linda
  */
-@Stateless
-@LocalBean
+@Singleton
 public class RadService {
 
     private Person person;
@@ -46,13 +48,19 @@ public class RadService {
 
     @Inject
     private CarManager carManager;
-    
+
     @Inject
     private JMSRADSender radSender;
 
+    // TODO ?
+    private CountDownLatch countDownLatch;
+
+    //?
+    //private List<RoadUsage> roadUsages;
+    private Bill bill;
+
     //@Inject
     //private RmiClient rmiClient;
-
     @PostConstruct
     public void start() {
     }
@@ -76,30 +84,61 @@ public class RadService {
     public void addBill(Bill bill) {
         billManager.createBill(bill);
     }
-    
+
     public void addCar(Person person, Long cartracker, FuelType fuel) {
         carManager.createCar(person, cartracker, fuel);
     }
 
     public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
-        try {
-            //try {
-            //List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
-            //roadUsages.sort(null);
-            //Bill bill = billManager.generateBill(person, roadUsages);
-            //return bill;
-            //} catch (RemoteException ex) {
-            //    Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
-            //}
-            radSender.sendGenerateRoadUsagesCommand(cartrackerId, begin, end);
-            
-            
-        } catch (JMSException ex) {
-            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+        Bill generatedBill = null;
+
+        if (this.bill != null) {
+            generatedBill = this.bill;
+            this.bill = null;
+        } else {
+
+            try {
+                /*if (this.countDownLatch == null) {
+                this.countDownLatch = new CountDownLatch(1);
+            }*/
+                //try {
+                //List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(cartrackerId, begin, end);
+                //roadUsages.sort(null);
+                //Bill bill = billManager.generateBill(person, roadUsages);
+                //return bill;
+                //} catch (RemoteException ex) {
+                //    Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
+                //}
+                radSender.sendGenerateRoadUsagesCommand(cartrackerId, begin, end);
+
+                //this.countDownLatch.await();
+                //while (this.roadUsages == null) {
+                // wait
+                //}
+                //bill = new Bill(new Person("name"), this.roadUsages, 1);
+                //this.roadUsages = null;
+                //this.countDownLatch = null;
+                generatedBill = new Bill(new Person("name"), new ArrayList<RoadUsage>(), 1);
+            } catch (JMSException ex) {
+                Logger.getLogger(RadService.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
         }
-        return new Bill(new Person("name"), new ArrayList<IRoadUsage>(), 1);
+
+        return generatedBill;
     }
-    
+
+    public void receiveRoadUsages(List<RoadUsage> roadUsages) {
+        //if (this.roadUsages == null) {
+        // this.roadUsages = roadUsages;
+        //}
+        bill = new Bill(new Person("name"), roadUsages, 1);
+        System.out.println(bill);
+        /*if (this.countDownLatch != null) {
+            countDownLatch.countDown();
+        }*/
+    }
+
     /*
     public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
         try {
@@ -109,8 +148,7 @@ public class RadService {
         }
         return null;
     }
-    */
-
+     */
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }

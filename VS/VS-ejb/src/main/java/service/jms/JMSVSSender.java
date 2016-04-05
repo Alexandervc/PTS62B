@@ -9,6 +9,7 @@ import business.RoadUsage;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
@@ -20,6 +21,7 @@ import javax.jms.TextMessage;
  *
  * @author Alexander
  */
+@Stateless
 public class JMSVSSender {
     @Inject
     @JMSConnectionFactory("jms/__defaultConnectionFactory")
