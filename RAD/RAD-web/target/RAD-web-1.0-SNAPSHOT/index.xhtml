@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
     <h:body>         
         <ui:composition template="templates/template.xhtml">
@@ -15,23 +16,30 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
-                            <h:form>
-                                <h:inputText class="forminput"  id="nameBox"
-                                             value="#{billBean.name}">
-                                </h:inputText>
-                                <h:selectOneMenu class="forminput" 
-                                                    id="dateBox1"
-                                                    value="#{billBean.date}">
-                                    <c:forEach var="month" items="#{billBean.dates}">
-                                        <f:selectItem itemValue="#{month.months}" 
-                                                      itemLabel="#{month.date}">
-                                        </f:selectItem>
-                                    </c:forEach> 
-                                </h:selectOneMenu>
-                                <h:commandButton type="submit"
-                                                 value="Zoeken" 
-                                                 action="#{billBean.generateBill()}">
-                                </h:commandButton>
+                            <h:form class="form-horizontal">
+                                <div class="form-group">
+                                    <h:inputText class="form-control"  id="nameBox"
+                                                 value="#{billBean.name}"
+                                                 a:placeholder="Vul je naam in">
+                                    </h:inputText>
+                                    <h:selectOneMenu class="form-control" 
+                                                        id="dateBox1"
+                                                        value="#{billBean.date}">
+                                        <c:forEach var="month" items="#{billBean.dates}">
+                                            <f:selectItem itemValue="#{month.months}" 
+                                                          itemLabel="#{month.date}">
+                                            </f:selectItem>
+                                        </c:forEach> 
+                                    </h:selectOneMenu>
+                                    <h:commandButton type="submit"
+                                                     value="Zoeken"
+                                                     class="form-control"
+                                                     action="#{billBean.generateBill()}">
+                                        <span class="form-control-feedback 
+                                            glyphicon glyphicon-search">                                                  
+                                        </span>
+                                    </h:commandButton>
+                                </div>
                             </h:form>
                         </div>
                         <div class="col-sm-12" id="billDiv">
