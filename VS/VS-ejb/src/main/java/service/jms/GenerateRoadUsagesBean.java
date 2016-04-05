@@ -34,6 +34,9 @@ public class GenerateRoadUsagesBean implements MessageListener {
     @Inject
     private MovementService movementService;
     
+    @Inject
+    private JMSVSSender vsSender;
+    
     @Override
     public void onMessage(Message message) {
         try {
@@ -52,7 +55,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
                     .generateRoadUsages(cartrackerId, beginDate, endDate);
             
             // Send
-            
+            vsSender.sendRoadUsages(roadUsages);
         } catch (JMSException | ParseException ex) {
             Logger.getLogger(GenerateRoadUsagesBean.class.getName())
                     .log(Level.SEVERE, null, ex);

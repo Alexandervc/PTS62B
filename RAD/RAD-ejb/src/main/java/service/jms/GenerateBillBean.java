@@ -5,11 +5,13 @@
  */
 package service.jms;
 
+import javax.ejb.MessageDriven;
+
 /**
  *
  * @author Alexander
  */
-// TODO!!!!!!
+@MessageDriven(mappedName="jms/RAD/queue")
 public class GenerateBillBean {
     
 }

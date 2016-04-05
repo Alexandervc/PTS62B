@@ -6,6 +6,7 @@
 package service.jms;
 
 import business.RoadUsage;
+import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -29,8 +30,10 @@ public class JMSVSSender {
     
     public void sendRoadUsages(List<RoadUsage> roadUsages) throws JMSException {
         // To JSON
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(roadUsages);
         
-        TextMessage textMessage = context.createTextMessage("TODO");
+        TextMessage textMessage = context.createTextMessage(jsonString);
         textMessage.setStringProperty("method", "generateBill");
         
         context.createProducer().send(queue, textMessage);
