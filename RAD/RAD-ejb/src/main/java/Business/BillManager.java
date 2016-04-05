@@ -42,9 +42,13 @@ public class BillManager {
      * Generate bill.
      * @param person Type Person.
      * @param roadUsages List of IRoadUsage.
+     * @param cartrackerId
+     * @param month
+     * @param year
      * @return new Bill Type Bill.
      */
-    public Bill generateBill(Person person, List<RoadUsage> roadUsages) {
+    public Bill generateBill(Person person, List<RoadUsage> roadUsages, 
+            Long cartrackerId, String month, String year) {
         double totalPrice = 0;
         
         for (RoadUsage ru  : roadUsages) {
@@ -53,7 +57,8 @@ public class BillManager {
             totalPrice += price;
         }        
         
-        Bill bill = new Bill(person, roadUsages, totalPrice);        
+        Bill bill = new Bill(person, roadUsages, totalPrice, cartrackerId,
+                month, year);        
         return bill;
     }
 }
