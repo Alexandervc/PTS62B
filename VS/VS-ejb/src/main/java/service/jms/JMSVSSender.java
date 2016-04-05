@@ -24,7 +24,7 @@ import javax.jms.TextMessage;
 @Stateless
 public class JMSVSSender {
     @Inject
-    @JMSConnectionFactory("jms/__defaultConnectionFactory")
+    @JMSConnectionFactory("jms/RADConnectionFactory")
     private JMSContext context;
     
     @Resource(lookup="jms/RAD/queue")

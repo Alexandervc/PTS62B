@@ -25,7 +25,7 @@ import javax.jms.MapMessage;
 public class JMSRADSender {
 
     @Inject
-    @JMSConnectionFactory("jms/__defaultConnectionFactory")
+    @JMSConnectionFactory("jms/VSConnectionFactory")
     private JMSContext context;
 
     @Resource(lookup = "jms/VS/queue")
