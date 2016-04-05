@@ -5,9 +5,15 @@
  */
 package data;
 
+import business.MonitoringManager;
 import common.domain.Test;
 import common.domain.System;
+import java.util.logging.Logger;
+
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -18,25 +24,32 @@ import javax.persistence.Query;
  * @author Edwin
  */
 @Stateless
-public class SystemDao extends AbstractDao {
+public class SystemDao {
 
-    @Inject @MonitoringDB 
-    private EntityManager em;
+    private final static Logger LOGGER = Logger.getLogger(SystemDao.class.getName()); 
+
+    //@Inject @MonitoringDB2 
+    //private EntityManager em;
+
+
+    @PostConstruct
+    public void init() {
+        LOGGER.log(Level.INFO, "SystemDao created");
+
+    }
+    
+    protected EntityManager getEntityManager() {
+        return null;
+        //return em;
+    }
 
     public SystemDao() {
-        super(Test.class);
     }
 
     public List<System> getSystems() {
-        Query query = this.em.createNamedQuery("get systems");
-        return query.getResultList();
+        return null;
+        //Query query = this.em.createNamedQuery("get systems");
+        //return query.getResultList();
     }
-    
-    
-
-  
-    
-    
-    
     
 }

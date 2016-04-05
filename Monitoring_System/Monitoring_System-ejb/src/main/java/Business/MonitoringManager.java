@@ -15,6 +15,7 @@ import data.RMI_Client;
 import data.SystemDao;
 import data.TestDao;
 import data.VSinterface;
+import data.testinject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
@@ -24,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -36,8 +39,13 @@ import javax.inject.Inject;
 public class MonitoringManager {
 
     private Map<String,RMI_Client> clientMap;
-    private @Inject SystemDao systemDao;
-    private @Inject TestDao testDao;
+    @Inject
+    SystemDao systemDao;
+    @Inject TestDao testDao;
+    @Inject testinject inject;
+    
+    private final static Logger LOGGER = Logger.getLogger(MonitoringManager.class.getName()); 
+
     
     /**
      * Empty constructor for sonarqube.
@@ -52,6 +60,17 @@ public class MonitoringManager {
      * @return A list of servers.
      */
     public final List<System> getSystems() {
+        inject.toString();
+        if(inject == null) {
+            LOGGER.log(Level.INFO, "inject is null");
+        }
+        if(systemDao == null) {
+            if(testDao == null) {
+                LOGGER.log(Level.INFO, "testDao is null");
+            }
+            LOGGER.log(Level.INFO, "systemDao is null");
+            return new ArrayList<>();
+        }
         return this.systemDao.getSystems();
     }
     
@@ -65,9 +84,6 @@ public class MonitoringManager {
         this.loadRMIServers();
     }
 
-    
-    
-    
     /**
      * Generates the status of the server
      * @param system The system object where the status will be generated for.

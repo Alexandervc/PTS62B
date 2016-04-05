@@ -13,17 +13,17 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <h1>Monitor</h1>
+                        <ui:repeat var="sys" value="#{monitoringBean.retrieveSystems}">
+
+                        <tr>
+                            <td>#{sys.name}</td>
+                        </tr>
                         <div id="timeline1" class="chart"></div>
-                    </div>                    
+
+
+                        </ui:repeat>
+                        </div>                    
                 </div>
-    		
-                <c:forEach var="sys" items="#{monitoringBean.retrieveSystems}">
-
-                <tr>
-                    <td>#{sys.name}</td>
-                </tr>
-
-                </c:forEach>
             </ui:define>
     	</ui:composition>    	
     </h:body>

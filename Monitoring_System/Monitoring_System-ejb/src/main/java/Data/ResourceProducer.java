@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -17,13 +18,13 @@ import javax.persistence.Persistence;
 
 @Stateless
 public class ResourceProducer {
-    //@PersistenceContext(unitName = "Proftaak")
+    @PersistenceContext(unitName = "Proftaak")
     private EntityManager em;
     
     @Produces
-    @MonitoringDB
+    @MonitoringDB2
     public EntityManager createMonitoringDB() {
-        em = Persistence.createEntityManagerFactory("Proftaak").createEntityManager();
+        //em = Persistence.createEntityManagerFactory("Proftaak").createEntityManager();
         return em;
     }
     

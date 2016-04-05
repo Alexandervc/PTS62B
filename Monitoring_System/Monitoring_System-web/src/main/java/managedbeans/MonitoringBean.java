@@ -30,6 +30,7 @@ public class MonitoringBean implements Serializable  {
      * Empty constructor for sonarqube.
      */
     public MonitoringBean() {
+        
     }
     
     
@@ -39,7 +40,11 @@ public class MonitoringBean implements Serializable  {
      * @return The list of systems.
      */
     public List<System> getRetrieveSystems() {
+        
         this.retrieveSystems = this.service.retrieveSystems();
+        System e = new System();
+        e.setName("YALAYALA");
+        this.retrieveSystems.add(e);
         return new ArrayList<>(this.retrieveSystems);
     }
        
