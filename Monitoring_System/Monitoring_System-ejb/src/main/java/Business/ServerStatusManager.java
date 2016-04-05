@@ -33,7 +33,8 @@ import util.CmdHelper;
 @Stateless
 public class ServerStatusManager {
     
-    public static final String PASSWORD_FILE = "C:\\Proftaak\\asadmin.txt";
+    // TODO: Change to "C:\\Proftaak\\asadmin.txt"
+    public static final String PASSWORD_FILE = "C:\\School\\Proftaak\\asadmin.txt";
     
     /**
      * Retrieves the status of all the deployed applications on the system.
@@ -75,7 +76,7 @@ public class ServerStatusManager {
      * @return A list of application names.
      * @throws IOException 
      */
-    private List<String> listApplications(String host) throws IOException {
+    public List<String> listApplications(String host) throws IOException {
         // Defines the asadmin command list-applications.
         String[] command =
         {
@@ -121,7 +122,7 @@ public class ServerStatusManager {
      * @return The status of the application.
      * @throws IOException 
      */
-    private ServerStatus showComponentStatus(
+    public ServerStatus showComponentStatus(
             String host, 
             String applicationName) 
             throws IOException {
