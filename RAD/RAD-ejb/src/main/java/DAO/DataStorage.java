@@ -5,8 +5,7 @@
  */
 package dao;
 
-import business.RoadUsage;
-import business.RoadUsage;
+import service.RoadUsage;
 import domain.Bill;
 import domain.Car;
 import domain.FuelType;
@@ -19,7 +18,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import service.IRoadUsage;
 
 /**
  *
@@ -46,8 +44,8 @@ public class DataStorage {
             service.addRate(0.12, RoadType.E);
             System.out.println("rate-E succeed");
 
-            List<IRoadUsage> roadUsages = new ArrayList<>();
-            IRoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
+            List<RoadUsage> roadUsages = new ArrayList<>();
+            RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
             roadUsages.add(usage);
 
             System.out.println("create person");

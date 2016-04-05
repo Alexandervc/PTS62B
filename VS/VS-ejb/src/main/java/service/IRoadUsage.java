@@ -11,8 +11,9 @@ import domain.RoadType;
  *
  * @author Alexander
  */
+/*
 public interface IRoadUsage {
     String getRoadName();
     RoadType getRoadType();
     Double getKm();
-}
+}*/
