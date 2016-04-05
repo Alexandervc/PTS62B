@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import service.IRoadUsage;
+import service.RoadUsage;
 
 /**
  *
@@ -28,21 +28,29 @@ public class Bill implements Serializable {
     private Person person;
     
     @Transient
-    private List<IRoadUsage> roadUsages;    
+    private List<RoadUsage> roadUsages;    
     
     private double totalPrice;
     private boolean paid;
+    
+    private Long cartrackerId;
+    private String billMonth;
+    private String billYear;
 
     @Deprecated
     public Bill() {        
     }
     
-    public Bill(Person person, List<IRoadUsage> roadUsages, double totalPrice) {
+    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
+           Long cartrackerId, String month, String year) {
         this.person = person;
         this.person.addBill(this);        
         this.roadUsages = roadUsages;
         this.totalPrice = totalPrice;
         this.paid = false;
+        this.cartrackerId=cartrackerId;
+        this.billMonth = month;
+        this.billYear = year;
     }
 
     public Long getId() {
@@ -57,7 +65,7 @@ public class Bill implements Serializable {
         this.person = person;
     }
     
-    public List<IRoadUsage> getRoadUsages() {
+    public List<RoadUsage> getRoadUsages() {
         return roadUsages;
     }
 
@@ -71,5 +79,17 @@ public class Bill implements Serializable {
 
     public double getTotalPrice() {
         return totalPrice;
+    }
+
+    public Long getCartrackerId() {
+        return cartrackerId;
+    }
+
+    public String getBillMonth() {
+        return billMonth;
+    }
+
+    public String getBillYear() {
+        return billYear;
     }
 }

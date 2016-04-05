@@ -8,7 +8,7 @@ import domain.Rate;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.IRoadUsage;
+import service.RoadUsage;
 
 /**
  *
@@ -42,18 +42,22 @@ public class BillManager {
      * Generate bill.
      * @param person Type Person.
      * @param roadUsages List of IRoadUsage.
+     * @param cartrackerId
+     * @param month
+     * @param year
      * @return new Bill Type Bill.
      */
-    public Bill generateBill(Person person, List<IRoadUsage> roadUsages) {
+    public Bill generateBill(Person person, List<RoadUsage> roadUsages, 
+            Long cartrackerId, String month, String year) {
         double totalPrice = 0;
         
-        for (IRoadUsage ru  : roadUsages) {
+        for (RoadUsage ru  : roadUsages) {
             Rate rate = rateDAO.find(ru.getRoadType());
             double price = ru.getKm() * rate.getRate();
             totalPrice += price;
         }        
         
-        Bill bill = new Bill(person, roadUsages, totalPrice);        
+        Bill bill = new Bill(person, roadUsages, totalPrice, cartrackerId, month, year);        
         return bill;
     }
 }

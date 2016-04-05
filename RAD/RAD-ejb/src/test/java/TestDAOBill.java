@@ -5,7 +5,7 @@
  */
 
 import business.BillManager;
-import business.RoadUsage;
+import service.RoadUsage;
 import domain.Bill;
 import domain.Person;
 import domain.RoadType;
@@ -20,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
-import service.IRoadUsage;
 
 /**
  *
@@ -47,10 +46,10 @@ public class TestDAOBill {
         person1 = new Person("Linda", "van Engelen", "LMJC", "Sibeliuslaan", "83",
                 "5654CV", "Eindhoven", "Nederland");
         
-        List<IRoadUsage> roadUsages = new ArrayList<IRoadUsage>();
+        List<RoadUsage> roadUsages = new ArrayList<RoadUsage>();
         roadUsages.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
         
-        bill1 = new Bill(person1, roadUsages, 10.35);
+        bill1 = new Bill(person1, roadUsages, 10.35, 5L, "april", "2016");
     }
     
     @After

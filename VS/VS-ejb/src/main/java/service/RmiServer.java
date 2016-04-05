@@ -23,6 +23,7 @@ import javax.ejb.Startup;
  *
  * @author Alexander
  */
+/*
 @Singleton
 @Startup
 @DependsOn("DataStorage")
@@ -78,7 +79,7 @@ public class RmiServer {
                     ex);
         }
     }
-
+*/
     /*
 private static void printIPadresses() {
         try {
@@ -109,4 +110,4 @@ private static void printIPadresses() {
             System.out.println("Server: Cannot retrieve network interface list");
             System.out.println("Server: UnknownHostException: " + ex.getMessage());
         }*/
-}
+//}

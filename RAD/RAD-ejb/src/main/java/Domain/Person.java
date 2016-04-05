@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -20,6 +22,9 @@ import javax.persistence.OneToMany;
  * @author Linda
  */
 @Entity (name = "Person")
+@NamedQueries({
+    @NamedQuery(name="person.findByName", query="SELECT p FROM Person p WHERE p.firstName = :name")
+})
 public class Person implements Serializable {
 
 

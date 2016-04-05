@@ -23,7 +23,7 @@ import javax.ejb.Startup;
  *
  * @author Alexander
  */
-@Singleton
+/*@Singleton
 @Startup
 @DependsOn("RmiServer")
 public class RmiClient {
@@ -53,4 +53,4 @@ public class RmiClient {
             Logger.getLogger(RmiClient.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
-}
+}*/
