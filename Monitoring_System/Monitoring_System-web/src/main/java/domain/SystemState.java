@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import common.domain.Test;
@@ -11,8 +6,7 @@ import common.domain.Test;
  *
  * @author Edwin
  */
-public class SystemState {
-    
+public class SystemState {    
     private String systemName;
     
     private String functional;
@@ -22,8 +16,6 @@ public class SystemState {
     public SystemState(String systemName) {
         this.systemName = systemName;
     }
-    
-    
 
     public String getSystemName() {
         return systemName;
@@ -55,6 +47,5 @@ public class SystemState {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-   
+    }   
 }

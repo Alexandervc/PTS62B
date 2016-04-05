@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package managedbeans;
 
+import com.google.gson.Gson;
 import common.domain.System;
 import common.domain.Test;
 import common.domain.TestType;
@@ -54,7 +50,7 @@ public class MonitoringBean implements Serializable  {
                     default:
                         break;
                 }
-                com.google.gson.Gson gson = new com.google.gson.Gson();
+                Gson gson = new Gson();
                 map.put(sys.getName(),gson.toJson(state));
             }
         }
@@ -86,8 +82,6 @@ public class MonitoringBean implements Serializable  {
         
     }
     
-    
-    
     /**
      * Gets the systems that can be monitored.
      * @return The list of systems.
@@ -99,6 +93,5 @@ public class MonitoringBean implements Serializable  {
         e.setName("YALAYALA");
         this.retrieveSystems.add(e);*/
         return new ArrayList<>(this.retrieveSystems);
-    }
-       
+    }       
 }
