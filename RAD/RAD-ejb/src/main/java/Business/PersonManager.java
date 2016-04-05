@@ -36,4 +36,9 @@ public class PersonManager {
         
         return person;
     }
+    
+    public Person findPersonByName(String name){
+        Person person = personDAO.findByName(name);
+        return person;
+    }
 }

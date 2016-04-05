@@ -24,13 +24,13 @@ import javax.inject.Inject;
  * @author Linda
  */
 @Singleton
-@Startup
+//@Startup
 public class DataStorage {
 
     @Inject
     private RadService service;
 
-    @PostConstruct
+    //@PostConstruct
     public void onStartup() {
         try {
             service.addRate(1.29, RoadType.A);
@@ -54,8 +54,6 @@ public class DataStorage {
                     "Eindhoven", "Nederland");
 
             Bill b = new Bill(p, roadUsages, 35.2);
-
-            Car c = new Car(p, 5L, FuelType.Petrol);
 
             System.out.println("create bill");
             service.addBill(b);

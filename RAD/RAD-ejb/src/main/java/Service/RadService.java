@@ -14,6 +14,7 @@ import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -60,6 +61,11 @@ public class RadService {
         return person;
     }
 
+    public Person findPersonByName(String name) {
+        person = personManager.findPersonByName(name);
+        return person;
+    }
+
     public void addRate(double rate, RoadType type) {
         rateManager.createRate(rate, type);
     }
@@ -76,7 +82,7 @@ public class RadService {
         carManager.createCar(person, cartracker, fuel);
     }
 
-    public Bill generateRoadUsages(Long cartrackerId, Date begin, Date end) {
+    public Bill generateRoadUsages(String username, Date begin, Date end) {
         Bill generatedBill = null;
 
         if (this.bill != null) {
@@ -84,7 +90,8 @@ public class RadService {
             this.bill = null;
         } else {
             try {
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId, begin, end);
+                // TODO 1L > username
+                radSender.sendGenerateRoadUsagesCommand(1L, begin, end);
                 generatedBill = new Bill();
             } catch (JMSException ex) {
                 Logger.getLogger(RadService.class.getName())

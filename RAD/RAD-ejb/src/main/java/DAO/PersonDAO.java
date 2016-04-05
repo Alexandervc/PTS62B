@@ -14,4 +14,6 @@ public interface PersonDAO {
     Person find(Object id);    
     List<Person> findAll();    
     int count();
+    
+    Person findByName(String name);
 }

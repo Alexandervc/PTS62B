@@ -4,44 +4,85 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
-    <h:body>    	
+    <h:body>         
         <ui:composition template="templates/template.xhtml">
             <ui:define name="content">
-
+                <script>
+                </script> 
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
-                        <h1>Factuur</h1>
-                        <h3>Alexander van Cuijk</h3>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <th>RoadName</th>
-                                    <th>RoadType</th>
-                                    <th>Km</th>
-                                    <th>Price/km</th>
-                                    <th>TotalPrice</th>
-                                </thead>
-                                
-                                <c:forEach var="ru" items="#{billBean.bill.roadUsages}">                                    
-                                    <tr>
-                                        <td>#{ru.roadName}</td>
-                                        <td>#{ru.roadType}</td>
-                                        <td class="txt-right">#{ru.km}</td>
-                                        <td class="txt-right">#{billBean.getRate(ru)}</td>
-                                        <td class="txt-right">#{billBean.getPrice(ru)}</td>
-                                    </tr>
-                                </c:forEach> 
-                                
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="txt-right"><b>Totaal</b></td>
-                                    <td class="txt-right"><b>#{billBean.totalPrice}</b></td>
-                                </tr>
-                            </table>
+                        <div class="col-sm-12" id="searchDiv">
+                            <h:form class="form-horizontal">
+                                <div class="form-group">
+                                    <h:inputText class="form-control"  id="nameBox"
+                                                 value="#{billBean.name}"
+                                                 a:placeholder="Vul je naam in">
+                                    </h:inputText>
+                                    <h:selectOneMenu class="form-control" 
+                                                        id="dateBox1"
+                                                        value="#{billBean.date}">
+                                        <c:forEach var="month" items="#{billBean.dates}">
+                                            <f:selectItem itemValue="#{month.months}" 
+                                                          itemLabel="#{month.date}">
+                                            </f:selectItem>
+                                        </c:forEach> 
+                                    </h:selectOneMenu>
+                                    <h:commandButton type="submit"
+                                                     value="Zoeken"
+                                                     class="form-control"
+                                                     action="#{billBean.generateBill()}">
+                                        <span class="form-control-feedback 
+                                            glyphicon glyphicon-search">                                                  
+                                        </span>
+                                    </h:commandButton>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="col-sm-12" id="billDiv">
+                            <c:set var="bill" scope="session" value="#{billBean.bill}"/>
+                            <c:choose>
+                                <c:when test="${bill != null}">
+                                    <h1>Factuur</h1>
+                                    <h3>#{billBean.personName}</h3>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <th>RoadName</th>
+                                                <th>RoadType</th>
+                                                <th>Km</th>
+                                                <th>Price/km</th>
+                                                <th>TotalPrice</th>
+                                            </thead>
+
+                                            <c:forEach var="ru" items="#{billBean.bill.roadUsages}">                                    
+                                                <tr>
+                                                    <td>#{ru.roadName}</td>
+                                                    <td>#{ru.roadType}</td>
+                                                    <td class="txt-right">#{ru.km}</td>
+                                                    <td class="txt-right">#{billBean.getRate(ru)}</td>
+                                                    <td class="txt-right">#{billBean.getPrice(ru)}</td>
+                                                </tr>
+                                            </c:forEach> 
+
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="txt-right"><b>Totaal</b></td>
+                                                <td class="txt-right"><b>#{billBean.totalPrice}</b></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <h3>Geen persoon geselecteerd</h3>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>                    
                 </div>
