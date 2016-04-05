@@ -7,6 +7,7 @@ package service;
 
 import business.MonitoringManager;
 import common.domain.Test;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -89,4 +90,5 @@ public class MonitoringService {
     public List<Test> retrieveLatestTests(common.domain.System system) {
         return this.manager.retrieveLatestTests(system);
     }
+    
 }

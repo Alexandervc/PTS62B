@@ -15,6 +15,7 @@ import data.RMI_Client;
 import data.SystemDao;
 import data.TestDao;
 import data.VSinterface;
+import data.testinject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
@@ -24,6 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -36,8 +39,13 @@ import javax.inject.Inject;
 public class MonitoringManager {
 
     private Map<String,RMI_Client> clientMap;
-    private @Inject SystemDao systemDao;
-    private @Inject TestDao testDao;
+    @Inject
+    SystemDao systemDao;
+    @Inject TestDao testDao;
+    @Inject testinject inject;
+    
+    private final static Logger LOGGER = Logger.getLogger(MonitoringManager.class.getName()); 
+
     
     /**
      * Empty constructor for sonarqube.
@@ -51,7 +59,18 @@ public class MonitoringManager {
      * application.
      * @return A list of servers.
      */
-    public final List<System> getSystems() {
+    public List<System> getSystems() {
+        inject.toString();
+        if(inject == null) {
+            LOGGER.log(Level.INFO, "inject is null");
+        }
+        if(systemDao == null) {
+            if(testDao == null) {
+                LOGGER.log(Level.INFO, "testDao is null");
+            }
+            LOGGER.log(Level.INFO, "systemDao is null");
+            return new ArrayList<>();
+        }
         return this.systemDao.getSystems();
     }
     
@@ -60,20 +79,17 @@ public class MonitoringManager {
      * and loading in the RMI servers.
      */
     @PostConstruct	
-    public final void init() {
+    public void init() {
         this.clientMap = new HashMap<>();
         this.loadRMIServers();
     }
 
-    
-    
-    
     /**
      * Generates the status of the server
      * @param system The system object where the status will be generated for.
      * @return A list
      */
-    public final List<Test> generateServerStatus(System system) {
+    public  List<Test> generateServerStatus(System system) {
         RMI_Client client = clientMap.get(system.getName());
         IMonitoring monitoringClient = client.getMonitoringClient(system.getName());
         List<Test> tests = new ArrayList<>();
@@ -85,8 +101,7 @@ public class MonitoringManager {
         } catch(RemoteException ex) {
             result = false;
         }
-        java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
-        Test test = new Test(TestType.STATUS,sqlDate,result);
+        Test test = new Test(TestType.STATUS,new Timestamp(java.lang.System.currentTimeMillis()),result);
         
         tests.add(test);
         //Functional test
@@ -96,8 +111,7 @@ public class MonitoringManager {
         } catch(RemoteException ex) {
             result = false;
         }
-        sqlDate = new java.sql.Date(new Date().getTime());
-        test = new Test(TestType.FUNCTIONAL,sqlDate,result);
+        test = new Test(TestType.FUNCTIONAL,new Timestamp(java.lang.System.currentTimeMillis()),result);
         tests.add(test);
 
         result = true;
@@ -146,8 +160,7 @@ public class MonitoringManager {
                 dbMethod.setTests(methodTests);
             }       
         }
-        sqlDate = new java.sql.Date(new Date().getTime());
-        test = new Test(TestType.ENDPOINTS,sqlDate,result);
+        test = new Test(TestType.ENDPOINTS,new Timestamp(java.lang.System.currentTimeMillis()),result);
         tests.add(test);
         return tests;
     }
