@@ -1,6 +1,11 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package dao;
 
-import business.RoadUsage;
+import service.RoadUsage;
 import domain.Bill;
 import domain.Car;
 import domain.FuelType;
@@ -8,26 +13,24 @@ import domain.Person;
 import domain.RoadType;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import service.RadService;
+import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.persistence.PersistenceContext;
-import service.IRoadUsage;
 
 /**
  *
  * @author Linda
  */
 @Singleton
-@Startup
+//@Startup
 public class DataStorage {
 
     @Inject
     private RadService service;
 
-    @PostConstruct
+    //@PostConstruct
     public void onStartup() {
         try {
             service.addRate(1.29, RoadType.A);
@@ -41,8 +44,8 @@ public class DataStorage {
             service.addRate(0.12, RoadType.E);
             System.out.println("rate-E succeed");
 
-            List<IRoadUsage> roadUsages = new ArrayList<>();
-            IRoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
+            List<RoadUsage> roadUsages = new ArrayList<>();
+            RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
             roadUsages.add(usage);
 
             System.out.println("create person");
@@ -51,8 +54,6 @@ public class DataStorage {
                     "Eindhoven", "Nederland");
 
             Bill b = new Bill(p, roadUsages, 35.2);
-
-            Car c = new Car(p, 5L, FuelType.Petrol);
 
             System.out.println("create bill");
             service.addBill(b);

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package domain;
 
 import java.io.Serializable;
@@ -8,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -15,8 +22,13 @@ import javax.persistence.OneToMany;
  * @author Linda
  */
 @Entity (name = "Person")
+@NamedQueries({
+    @NamedQuery(name="person.findByName", query="SELECT p FROM Person p WHERE p.firstName = :name")
+})
 public class Person implements Serializable {
-    
+
+
+    // fields
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -61,7 +73,8 @@ public class Person implements Serializable {
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
     }
-
+    
+    // getters en setters
     public Long getId() {
         return id;
     }
