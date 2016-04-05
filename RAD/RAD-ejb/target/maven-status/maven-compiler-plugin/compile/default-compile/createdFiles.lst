@@ -1,7 +1,6 @@
 dao\BillDAOJPAImp.class
 service\RadService.class
 dao\DataStorage.class
-domain\RoadUsage.class
 dao\PersonDAOJPAImp.class
 business\CarManager.class
 domain\Bill_.class
@@ -12,14 +11,11 @@ business\PersonManager.class
 notUsed\CarPosition.class
 dao\RateDAO.class
 domain\RoadType.class
-service\IRoadUsage.class
 domain\Bill.class
 domain\Car_.class
 dao\RateDAOJPAImp.class
 domain\FuelType.class
 domain\Rate.class
-business\RoadUsage.class
-service\IMovementService.class
 dao\BillDAO.class
 dao\AbstractFacade.class
 domain\Car.class
@@ -29,4 +25,3 @@ business\RateManager.class
 domain\Person_.class
 dao\PersonDAO.class
 notUsed\Road.class
-service\RmiClient.class

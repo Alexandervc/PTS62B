@@ -9,29 +9,27 @@ import business.CarManager;
 import business.BillManager;
 import business.PersonManager;
 import business.RateManager;
-import business.RoadUsage;
 import domain.Bill;
 import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 import javax.inject.Inject;
+import javax.jms.JMSException;
+import service.jms.JMSRADSender;
 
 /**
  *
  * @author Linda
  */
-@Stateless
-@LocalBean
+@Singleton
 public class RadService {
 
     private Person person;
@@ -47,7 +45,9 @@ public class RadService {
     private CarManager carManager;
 
     @Inject
-    private RmiClient rmiClient;
+    private JMSRADSender radSender;
+
+    private Bill bill;
 
     @PostConstruct
     public void start() {
@@ -82,37 +82,30 @@ public class RadService {
         carManager.createCar(person, cartracker, fuel);
     }
 
-    public Bill generateRoadUsages(String name, Date begin, Date end) {
+    public Bill generateRoadUsages(String username, Date begin, Date end) {
+        Bill generatedBill = null;
 
-        try {
-            person = this.findPersonByName(name);
-            List<IRoadUsage> roadUsages = new ArrayList<>();
-            IRoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
-            roadUsages.add(usage);
-
-            //List<IRoadUsage> roadUsages = rmiClient.generateRoadUsages(person.getCars().get(0).getCartrackerId(), begin, end);
-            //roadUsages.sort(null);
-            if (person != null) {
-                Bill bill = billManager.generateBill(person, roadUsages);
-                return bill;
+        if (this.bill != null) {
+            generatedBill = this.bill;
+            this.bill = null;
+        } else {
+            try {
+                // TODO 1L > username
+                radSender.sendGenerateRoadUsagesCommand(1L, begin, end);
+                generatedBill = new Bill();
+            } catch (JMSException ex) {
+                Logger.getLogger(RadService.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return null;
+        return generatedBill;
     }
 
-    /*
-    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, Date end) {
-        try {
-            return rmiClient.generateRoadUsages(cartrackerId, begin, end);
-        } catch (RemoteException ex) {
-            Logger.getLogger(RadService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+    public void receiveRoadUsages(List<RoadUsage> roadUsages) {
+        bill = billManager.generateBill(person, roadUsages);
     }
-     */
+
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }
