@@ -7,7 +7,6 @@ package dao;
 
 import service.RoadUsage;
 import domain.Bill;
-import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
@@ -24,13 +23,13 @@ import javax.inject.Inject;
  * @author Linda
  */
 @Singleton
-//@Startup
+@Startup
 public class DataStorage {
 
     @Inject
     private RadService service;
 
-    //@PostConstruct
+    @PostConstruct
     public void onStartup() {
         try {
             service.addRate(1.29, RoadType.A);
