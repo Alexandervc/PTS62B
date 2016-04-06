@@ -44,8 +44,14 @@ public class DataStorage {
             System.out.println("rate-E succeed");
 
             List<RoadUsage> roadUsages = new ArrayList<>();
-            RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
-            roadUsages.add(usage);
+            RoadUsage usage1 = new RoadUsage("TestLaan", RoadType.E, 12.9);
+            RoadUsage usage2 = new RoadUsage("TestLaan", RoadType.A, 5.9);
+            RoadUsage usage3 = new RoadUsage("TestLaan", RoadType.C, 8.4);
+            RoadUsage usage4 = new RoadUsage("TestLaan", RoadType.B, 4.2);
+            roadUsages.add(usage1);
+            roadUsages.add(usage2);
+            roadUsages.add(usage3);
+            roadUsages.add(usage4);
 
             System.out.println("create person");
             Person p = service.addPerson("Linda", "van Engelen", "LMJC",
