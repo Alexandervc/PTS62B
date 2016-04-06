@@ -16,15 +16,12 @@ import javax.persistence.EntityManager;
 public abstract class AbstractDao<T> {
     private final Class<T> entityClass;
     
-    private @Inject @MonitoringDB EntityManager em;
+    protected abstract EntityManager getEntityManager();
 
+    
     public AbstractDao(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
-    
-    protected EntityManager getEntityManager() {
-        return em;
-    };
     
     public void create(T entity) {
         getEntityManager().persist(entity);
