@@ -25,9 +25,11 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name="CarPosition.getPositionsBetween", query = "SELECT cp "
             + "FROM CarPosition cp "
-            + "WHERE cp.moment >= :begin "
-            + "AND cp.moment <= :end "
-            + "AND cp.cartracker.id = :cartrackerId "
+            + "WHERE "
+//            + "cp.moment >= :begin "
+  //          + "AND cp.moment <= :end "
+    //        + "AND "
+            + "cp.cartracker.id = :cartrackerId "
             + "ORDER BY cp.road.roadType")
 })
 public class CarPosition implements Serializable {

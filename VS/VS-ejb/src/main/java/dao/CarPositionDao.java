@@ -43,8 +43,9 @@ public class CarPositionDao extends DaoFacade<CarPosition> {
     public List<CarPosition> getPositionsBetween(Date begin, Date end, 
             Long cartrackerId) {
         Query q = em.createNamedQuery("CarPosition.getPositionsBetween");
-        q.setParameter("begin", begin);
-        q.setParameter("end", end);
+        // TODO weer terug zetten
+        //q.setParameter("begin", begin);
+        //q.setParameter("end", end);
         q.setParameter("cartrackerId", cartrackerId);
         return q.getResultList();
     }

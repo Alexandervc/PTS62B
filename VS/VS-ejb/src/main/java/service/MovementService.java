@@ -8,7 +8,6 @@ package service;
 import business.MovementManager;
 import business.RoadUsage;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
