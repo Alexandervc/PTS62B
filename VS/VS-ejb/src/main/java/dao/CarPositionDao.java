@@ -11,7 +11,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,8 +25,6 @@ public class CarPositionDao extends DaoFacade<CarPosition> {
 
     public CarPositionDao() {
         super(CarPosition.class);
-        this.em = Persistence.createEntityManagerFactory("carTrackingPU")
-                .createEntityManager();
     }
     
     @PostConstruct

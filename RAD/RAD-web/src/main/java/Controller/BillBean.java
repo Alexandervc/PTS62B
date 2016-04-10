@@ -133,8 +133,8 @@ public class BillBean {
     }
 
     public String getPersonName() {
-        if (this.bill.getPerson() != null) {
-            return this.bill.getPerson().getInitials() + " " + this.bill.getPerson().getLastName();
+        if (this.bill.getPerson2() != null) {
+            return this.bill.getPerson2().getInitials() + " " + this.bill.getPerson2().getLastName();
         } else {
             return "";
         }

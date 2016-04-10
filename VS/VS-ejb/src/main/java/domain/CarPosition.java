@@ -37,7 +37,7 @@ public class CarPosition implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     private Date moment;
     
     private Double xCoordinate;

@@ -16,16 +16,16 @@ import service.RoadUsage;
  *
  * @author Linda
  */
-@Entity(name = "Bill")
+@Entity
 @NamedQueries({
-    @NamedQuery(name="bill.findAllForUser", query="SELECT b FROM Bill b WHERE b.person = :person")
+    @NamedQuery(name="bill.findAllForUser", query="SELECT b FROM Bill b WHERE b.person2 = :person")
 }) 
 public class Bill implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Person person;
+    private Person person2;
     
     @Transient
     private List<RoadUsage> roadUsages;    
@@ -43,8 +43,8 @@ public class Bill implements Serializable {
     
     public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
            Long cartrackerId, String month, String year) {
-        this.person = person;
-        this.person.addBill(this);        
+        this.person2 = person;
+        this.person2.addBill(this);        
         this.roadUsages = roadUsages;
         this.totalPrice = totalPrice;
         this.paid = false;
@@ -57,12 +57,12 @@ public class Bill implements Serializable {
         return id;
     }
     
-    public Person getPerson() {
-        return person;
+    public Person getPerson2() {
+        return person2;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPerson2(Person person) {
+        this.person2 = person;
     }
     
     public List<RoadUsage> getRoadUsages() {
