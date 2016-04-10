@@ -7,6 +7,7 @@ package common.domain;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,7 +39,7 @@ public class Test implements Serializable {
     private TestType testType;
     
     @Column(name = "DBDATE")
-    private Date date;
+    private Timestamp date;
     
     @Column(name = "DBRESULT")
     private Boolean result;
@@ -52,9 +53,9 @@ public class Test implements Serializable {
     public Test() {
     }
 
-    public Test(TestType testType, Date date, Boolean result) {
+    public Test(TestType testType, Timestamp date, Boolean result) {
         this.testType = testType;
-        this.date = new Date(date.getTime());
+        this.date = new Timestamp(date.getTime());
         this.result = result;
     }
     
@@ -65,4 +66,40 @@ public class Test implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }   
+
+    public TestType getTestType() {
+        return testType;
+    }
+
+    public void setTestType(TestType testType) {
+        this.testType = testType;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
+
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
+    public Long getSystemID() {
+        return systemID;
+    }
+
+    public void setSystemID(Long systemID) {
+        this.systemID = systemID;
+    }
+    
+
+    
+    
 }

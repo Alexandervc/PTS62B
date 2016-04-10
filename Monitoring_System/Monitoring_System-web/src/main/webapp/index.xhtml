@@ -4,7 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:body>    	
     	<ui:composition template="templates/template.xhtml">
@@ -13,18 +16,17 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <h1>Monitor</h1>
-                        <div id="timeline1" class="chart"></div>
+                        
+                        <ui:repeat var="sys" value="#{monitoringBean.entries}">
+                            <h3>#{sys.key}</h3>
+                            <input type="hidden" id="#{sys.key}hidden" value="#{sys.value}"> </input>                      
+                            <div id="#{sys.key}" class="chart"></div>
+                        </ui:repeat>
+                       
                     </div>                    
                 </div>
-    		
-                <c:forEach var="sys" items="#{monitoringBean.retrieveSystems}">
-
-                <tr>
-                    <td>#{sys.name}</td>
-                </tr>
-
-                </c:forEach>
             </ui:define>
     	</ui:composition>    	
     </h:body>
+
 </html>
