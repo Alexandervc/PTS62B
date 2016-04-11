@@ -121,8 +121,16 @@ public class RadService {
     }
 
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        bill = billManager.generateBill(person, roadUsages, cartrackerId, 
-                month, year);
+            for (Bill b : this.person.getBills()) {
+                if (b.getBillMonth().equals(month) && b.getBillYear().equals(year)
+                        && b.getCartrackerId().equals(cartrackerId)) {
+                    b.setRoadUsages(roadUsages);
+                    bill = b;
+                    return;
+                }
+            bill = billManager.generateBill(person, roadUsages, cartrackerId,
+                    month, year);
+        }
     }
 
     public void setPersonManager(PersonManager personManager) {
