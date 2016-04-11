@@ -29,7 +29,7 @@ public class Person implements Serializable {
 
 
     // fields
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     // Name
@@ -39,7 +39,7 @@ public class Person implements Serializable {
     
     // Adress
     private String streetName;
-    private String number;
+    private String housenumber;
     private String zipCode;
     private String city;
     private String country;
@@ -62,13 +62,13 @@ public class Person implements Serializable {
         this.cars = new ArrayList<>();
     }
     public Person(String firstname, String lastname, String initials,
-            String streetname, String number, String zipcode, 
+            String streetname, String housenumber, String zipcode, 
             String city, String country) {
         this.firstName = firstname;
         this.lastName = lastname;
         this.initials = initials;
         this.streetName = streetname;
-        this.number = number;
+        this.housenumber = housenumber;
         this.zipCode = zipcode;
         this.city = city;
         this.country = country;
@@ -108,8 +108,8 @@ public class Person implements Serializable {
     }
 
 
-    public String getNumber() {
-        return number;
+    public String getHousenumber() {
+        return housenumber;
     }
 
 
@@ -139,8 +139,8 @@ public class Person implements Serializable {
         this.streetName = streetName;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setHousenumber(String housenumber) {
+        this.housenumber = housenumber;
     }
 
     public void setZipCode(String zipCode) {
@@ -154,8 +154,6 @@ public class Person implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
-
-    
 
     public List<Bill> getBills() {
         return bills;
