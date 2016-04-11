@@ -24,7 +24,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(query = "select s from System s", name = "get systems")
+    @NamedQuery(query = "select s from System s", name = "get systems"),
+    @NamedQuery(query = "select s from System s where s.name = :name", name = "get system by name")
 })
 public class System implements Serializable {
 
@@ -32,7 +33,7 @@ public class System implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
     
     @Column(name = "DESCRIPTION")

@@ -183,4 +183,18 @@ public class MonitoringManager {
                 , TestType.ENDPOINTS));
         return returnList;
     }
+    
+    public System retrieveSystemByName(String name) {
+        return this.systemDao.getSystemByName(name);
+    }
+    
+    public void addTest(String systemName, boolean result, TestType type){
+        System system = this.systemDao.getSystemByName(systemName);
+        List<Test> tests = system.getTests();
+        java.util.Date date = new java.util.Date();
+        Test test = new Test(type,new Timestamp(date.getTime()),result);
+        tests.add(test);
+        this.testDao.create(test);
+        this.systemDao.edit(system);    
+    }
 }
