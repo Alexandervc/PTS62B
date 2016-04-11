@@ -12,8 +12,8 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class RateDAOJPAImp extends AbstractFacade<Rate> implements RateDAO, Serializable {
-    //@PersistenceContext(unitName ="RADpu")
-    @PersistenceContext(unitName = "DEVdbRADpu")
+    @PersistenceContext(unitName ="RADpu")
+   //@PersistenceContext(unitName = "DEVdbRADpu")
     private EntityManager em;
 
     @Override

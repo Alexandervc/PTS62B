@@ -95,16 +95,16 @@ public class RadService {
             this.bill = null;
         } else {
             try {
-                
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM", 
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
                         Locale.getDefault());
                 month = dateFormat.format(begin);
                 year = Integer.toString(begin.getYear() + 1900);
-                
-                this.findPersonByName(username);
+
+                person = this.findPersonByName(username);
                 cartrackerId = person.getCars().get(0).getCartrackerId();
-                
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId, 
+
+                radSender.sendGenerateRoadUsagesCommand(cartrackerId,
                         begin, end);
                 generatedBill = new Bill();
             } catch (JMSException ex) {
@@ -117,8 +117,17 @@ public class RadService {
     }
 
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        bill = billManager.generateBill(person, roadUsages, cartrackerId, 
-                month, year);
+        if (person != null) {
+            for (Bill b : this.person.getBills()) {
+                if (b.getBillMonth().equals(month) && b.getBillYear().equals(year)
+                        && b.getCartrackerId().equals(cartrackerId)) {
+                    b.setRoadUsages(roadUsages);
+                    return;
+                }
+            }
+            bill = billManager.generateBill(person, roadUsages, cartrackerId,
+                    month, year);
+        }
     }
 
     public void setPersonManager(PersonManager personManager) {
@@ -135,5 +144,21 @@ public class RadService {
 
     public void setCarManager(CarManager carManager) {
         this.carManager = carManager;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public void setCartrackerId(Long cartrackerId) {
+        this.cartrackerId = cartrackerId;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }
