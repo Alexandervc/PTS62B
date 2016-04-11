@@ -17,28 +17,33 @@
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
                             <h:form class="form-horizontal">
-                                <div class="form-group">
-                                    <h:inputText class="form-control"  id="nameBox"
+                                <div class="input-group">
+                                    <h:inputText class="form-control input"  
+                                                 id="nameBox"
                                                  value="#{billBean.name}"
                                                  a:placeholder="Vul je naam in">
                                     </h:inputText>
-                                    <h:selectOneMenu class="form-control" 
-                                                        id="dateBox1"
-                                                        value="#{billBean.date}">
-                                        <c:forEach var="month" items="#{billBean.dates}">
-                                            <f:selectItem itemValue="#{month.months}" 
-                                                          itemLabel="#{month.date}">
-                                            </f:selectItem>
-                                        </c:forEach> 
-                                    </h:selectOneMenu>
-                                    <h:commandButton type="submit"
-                                                     value="Zoeken"
-                                                     class="form-control"
-                                                     action="#{billBean.generateBill()}">
-                                        <span class="form-control-feedback 
-                                            glyphicon glyphicon-search">                                                  
-                                        </span>
-                                    </h:commandButton>
+                                    <span id="form-span" class="input-group-btn">
+                                        <h:selectOneMenu class="form-control" 
+                                                            id="dateBox1"
+                                                            value="#{billBean.date}">
+                                            <c:forEach var="month" items="#{billBean.dates}">
+                                                <f:selectItem itemValue="#{month.months}" 
+                                                              itemLabel="#{month.date}">
+                                                </f:selectItem>
+                                            </c:forEach> 
+                                        </h:selectOneMenu>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <h:commandButton type="submit"
+                                                         value="Zoeken"
+                                                         class="form-control"
+                                                         action="#{billBean.generateBill()}">
+                                            <span class="form-control-feedback 
+                                                glyphicon glyphicon-search">                                                  
+                                            </span>
+                                        </h:commandButton>
+                                    </span>                    
                                 </div>
                             </h:form>
                         </div>

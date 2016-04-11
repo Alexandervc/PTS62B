@@ -3,17 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
-
-import domain.RoadType;
+package common.domain;
 
 /**
- *
- * @author Alexander
+ * Defines the status of a server.
+ * @author jesblo
  */
-/*
-public interface IRoadUsage {
-    String getRoadName();
-    RoadType getRoadType();
-    Double getKm();
-}*/
+public enum ServerStatus {
+    ONLINE,
+    OFFLINE
+}

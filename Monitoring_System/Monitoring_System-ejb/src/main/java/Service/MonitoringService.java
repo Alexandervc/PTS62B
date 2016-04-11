@@ -7,7 +7,6 @@ package service;
 
 import business.MonitoringManager;
 import common.domain.Test;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,9 +42,6 @@ public class MonitoringService {
     public void init() {
         runJob();
     }
-    
-
-
 
     public void runJob() {
         executor.schedule(new Scheduler(), new Trigger() {
@@ -88,7 +84,9 @@ public class MonitoringService {
     }
     
     public List<Test> retrieveLatestTests(common.domain.System system) {
-        return this.manager.retrieveLatestTests(system);
+        return this.generateServerStatus(system);
+        
+        // TODO: Get historical tests.
+        //return this.manager.retrieveLatestTests(system);
     }
-    
 }

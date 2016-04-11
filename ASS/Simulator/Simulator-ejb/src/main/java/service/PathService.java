@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -45,7 +46,7 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
-    private String PROJECT_ROOT = "C:\\Users\\Melanie\\Documents\\FHICT jaar 3\\Semester 6\\PTS\\Simulator";
+    private String PROJECT_ROOT = "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
     
     private String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private BufferedReader reader;
@@ -149,13 +150,8 @@ public class PathService implements IPathService, Serializable {
             for (Point p : points) {
                 String fileName = cartrackerID + "-" + fileIndex + ".json";
                 
-                writer = new BufferedWriter(
-                        new OutputStreamWriter (
-                                new FileOutputStream(
-                                        new File(PROJECT_ROOT + "\\" + fileName)
-                                )
-                        )
-                );                
+                FileWriter fileWritter = new FileWriter(PROJECT_ROOT + "\\output\\" + fileName);
+                BufferedWriter writer = new BufferedWriter(fileWritter);               
                 
                 Date moment = new Date();
                 Double xCoordinate = p.getLatitude();
@@ -180,24 +176,18 @@ public class PathService implements IPathService, Serializable {
                 Gson gson = new Gson();
                 String output = gson.toJson(position);
                 writer.write(output);
+                writer.close();
                 
                 previous = p;
                 fileIndex++;
             }
             
-            writer = new BufferedWriter(
-                    new OutputStreamWriter (
-                            new FileOutputStream(
-                                    new File("C:\\Users\\Melanie\\Documents\\FHICT jaar 3\\Semester 6\\PTS\\Simulator\\config.txt")
-                            )
-                    )
-            ); 
-            
             String output = "cartrackerID=" + cartrackerID + ",fileIndex=" + fileIndex;
-            writer.write(output);
+            FileWriter fileWritter = new FileWriter(PROJECT_ROOT + "\\config.txt", false);
+            BufferedWriter writer2 = new BufferedWriter(fileWritter);
+            writer2.write(output);
+            writer2.close();
                     
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(PathService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(PathService.class.getName()).log(Level.SEVERE, null, ex);
         }

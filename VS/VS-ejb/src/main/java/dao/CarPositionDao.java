@@ -11,7 +11,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,8 +25,6 @@ public class CarPositionDao extends DaoFacade<CarPosition> {
 
     public CarPositionDao() {
         super(CarPosition.class);
-        this.em = Persistence.createEntityManagerFactory("carTrackingPU")
-                .createEntityManager();
     }
     
     @PostConstruct
@@ -43,8 +40,9 @@ public class CarPositionDao extends DaoFacade<CarPosition> {
     public List<CarPosition> getPositionsBetween(Date begin, Date end, 
             Long cartrackerId) {
         Query q = em.createNamedQuery("CarPosition.getPositionsBetween");
-        q.setParameter("begin", begin);
-        q.setParameter("end", end);
+        // TODO weer terug zetten
+        //q.setParameter("begin", begin);
+        //q.setParameter("end", end);
         q.setParameter("cartrackerId", cartrackerId);
         return q.getResultList();
     }
