@@ -6,8 +6,8 @@
 package service;
 
 import business.MovementManager;
+import business.RoadUsage;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -19,15 +19,10 @@ import javax.inject.Inject;
  * @author Alexander
  */
 @Stateless
-public class MovementService extends UnicastRemoteObject 
-        implements IMovementService {
+public class MovementService
+{
     @Inject
     private MovementManager movementManager;
-    
-    @Deprecated
-    public MovementService() throws RemoteException {
-        this.movementManager = new MovementManager();
-    }
     
     @PostConstruct
     public void start() {
@@ -41,11 +36,10 @@ public class MovementService extends UnicastRemoteObject
      * @param begin
      * @param end
      * @return
-     * @throws RemoteException
      */
-    @Override
-    public List<IRoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
-            Date end) throws RemoteException {
+    public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
+            Date end)
+    {
         System.out.println("generateRoadUsages");
         return movementManager.getRoadUsagesBetween(begin, end, cartrackerId);
     }

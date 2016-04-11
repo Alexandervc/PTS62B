@@ -36,10 +36,7 @@
                         <deployable>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>${project.artifactId}</artifactId>
-                            <type>war</type>
-                            <properties>
-                                <context>${cargo.domain}</context>
-                            </properties>
+                            <type>ejb</type>
                         </deployable>
                     </deployables>
                 </configuration>

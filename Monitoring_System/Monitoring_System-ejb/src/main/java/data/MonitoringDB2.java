@@ -21,5 +21,5 @@ import javax.inject.Qualifier;
 @Qualifier
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
-public @interface MonitoringDB {
+public @interface MonitoringDB2 {
 }

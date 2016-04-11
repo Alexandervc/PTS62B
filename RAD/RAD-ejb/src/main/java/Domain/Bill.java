@@ -10,54 +10,62 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import service.IRoadUsage;
+import service.RoadUsage;
 
 /**
  *
  * @author Linda
  */
-@Entity(name = "Bill")
+@Entity
 @NamedQueries({
-    @NamedQuery(name="bill.findAllForUser", query="SELECT b FROM Bill b WHERE b.person = :person")
+    @NamedQuery(name="bill.findAllForUser", query="SELECT b FROM Bill b WHERE b.person2 = :person")
 }) 
 public class Bill implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Person person;
+    private Person person2;
     
     @Transient
-    private List<IRoadUsage> roadUsages;    
+    private List<RoadUsage> roadUsages;    
     
     private double totalPrice;
     private boolean paid;
+    
+    private Long cartrackerId;
+    private String billMonth;
+    private String billYear;
 
     @Deprecated
     public Bill() {        
     }
     
-    public Bill(Person person, List<IRoadUsage> roadUsages, double totalPrice) {
-        this.person = person;
-        this.person.addBill(this);        
+    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
+           Long cartrackerId, String month, String year) {
+        this.person2 = person;
+        this.person2.addBill(this);        
         this.roadUsages = roadUsages;
         this.totalPrice = totalPrice;
         this.paid = false;
+        this.cartrackerId=cartrackerId;
+        this.billMonth = month;
+        this.billYear = year;
     }
 
     public Long getId() {
         return id;
     }
     
-    public Person getPerson() {
-        return person;
+    public Person getPerson2() {
+        return person2;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPerson2(Person person) {
+        this.person2 = person;
     }
     
-    public List<IRoadUsage> getRoadUsages() {
+    public List<RoadUsage> getRoadUsages() {
         return roadUsages;
     }
 
@@ -71,5 +79,17 @@ public class Bill implements Serializable {
 
     public double getTotalPrice() {
         return totalPrice;
+    }
+
+    public Long getCartrackerId() {
+        return cartrackerId;
+    }
+
+    public String getBillMonth() {
+        return billMonth;
+    }
+
+    public String getBillYear() {
+        return billYear;
     }
 }

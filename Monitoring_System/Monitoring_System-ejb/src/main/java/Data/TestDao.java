@@ -21,10 +21,15 @@ import javax.persistence.Query;
 public class TestDao extends AbstractDao {
 
     @Inject
-    private @MonitoringDB EntityManager em;
+    private @MonitoringDB2 EntityManager em;
 
     public TestDao() {
         super(Test.class);
+    }
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
     
     public Test retrieveLatestTestForTypeForSystem(common.domain.System system

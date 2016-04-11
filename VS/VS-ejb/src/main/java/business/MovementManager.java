@@ -16,7 +16,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.IRoadUsage;
 
 /**
  *
@@ -26,11 +25,6 @@ import service.IRoadUsage;
 public class MovementManager {
     @Inject
     private CarPositionDao carPositionDao;
-    
-    // TODO unittests
-    public MovementManager() {
-        this.carPositionDao = new CarPositionDao();
-    }
     
     @PostConstruct
     public void start() {
@@ -44,7 +38,7 @@ public class MovementManager {
      * @param cartrackerId
      * @return The roadusages between the given date for the given cartrackerId
      */
-    public List<IRoadUsage> getRoadUsagesBetween(Date begin, Date end, 
+    public List<RoadUsage> getRoadUsagesBetween(Date begin, Date end, 
             Long cartrackerId) {
         if(begin.after(end)) {
             throw new IllegalArgumentException("begin after end");
@@ -53,7 +47,7 @@ public class MovementManager {
                 cartrackerId);
         
         // Generate roadUsages
-        Map<Road, IRoadUsage> roadUsages = new HashMap<>();
+        Map<Road, RoadUsage> roadUsages = new HashMap<>();
         for(CarPosition cp : cps) {
             if(!roadUsages.containsKey(cp.getRoad())){
                 // Add roadUsage
@@ -69,9 +63,9 @@ public class MovementManager {
         }
         
         // TODO verbeteren
-        List<IRoadUsage> roadUsagesList = new ArrayList<>();
+        List<RoadUsage> roadUsagesList = new ArrayList<>();
         roadUsagesList.addAll(roadUsages.values());
         
-        return roadUsagesList;
+        return roadUsagesList;//List;
     }
 }
