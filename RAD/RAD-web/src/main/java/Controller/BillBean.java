@@ -41,7 +41,6 @@ public class BillBean {
     private Calendar datePast;
 
     public List<ListBoxDate> getDates() {
-        System.out.println(dates.size());
         return this.dates;
     }
 
@@ -96,8 +95,6 @@ public class BillBean {
             Calendar temp = this.datePast;
             temp.add(Calendar.YEAR, -2);
             temp.add(Calendar.MONTH, Integer.parseInt(date));
-
-            System.out.println(temp.get(Calendar.YEAR));
 
             String tempBeginDateString = 01 + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
