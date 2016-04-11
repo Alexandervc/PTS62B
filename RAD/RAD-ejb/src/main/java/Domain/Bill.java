@@ -21,7 +21,7 @@ import service.RoadUsage;
     @NamedQuery(name="bill.findAllForUser", query="SELECT b FROM Bill b WHERE b.person2 = :person")
 }) 
 public class Bill implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -51,6 +51,34 @@ public class Bill implements Serializable {
         this.cartrackerId=cartrackerId;
         this.billMonth = month;
         this.billYear = year;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setRoadUsages(List<RoadUsage> roadUsages) {
+        this.roadUsages = roadUsages;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setCartrackerId(Long cartrackerId) {
+        this.cartrackerId = cartrackerId;
+    }
+
+    public void setBillMonth(String billMonth) {
+        this.billMonth = billMonth;
+    }
+
+    public void setBillYear(String billYear) {
+        this.billYear = billYear;
+    }
+
+    public boolean isPaid() {
+        return paid;
     }
 
     public Long getId() {

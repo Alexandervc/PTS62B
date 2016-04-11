@@ -5,6 +5,7 @@ import dao.RateDAO;
 import domain.Bill;
 import domain.Person;
 import domain.Rate;
+import domain.RoadType;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -53,6 +54,7 @@ public class BillManager {
         
         for (RoadUsage ru  : roadUsages) {
             Rate rate = rateDAO.find(ru.getRoadType());
+            //rate= new Rate(1, RoadType.A);
             double price = ru.getKm() * rate.getRate();
             totalPrice += price;
         }        

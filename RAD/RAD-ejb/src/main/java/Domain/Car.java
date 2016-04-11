@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Car implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     private Long cartrackerId;
@@ -40,6 +40,18 @@ public class Car implements Serializable {
         this.person3 = person;
        this.person3.addCar(this);
         this.cartrackerId = cartracker;
+        this.fuel = fuel;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCartrackerId(Long cartrackerId) {
+        this.cartrackerId = cartrackerId;
+    }
+
+    public void setFuel(FuelType fuel) {
         this.fuel = fuel;
     }
 
