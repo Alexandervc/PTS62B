@@ -33,3 +33,6 @@ hs_err_pid*
 /VS/VS-ejb/target/
 /VS/VS-web/target/
 /VS/VS-ejb/nbproject/
+/Monitoring_System/Monitoring_System-ejb/src/main/resources/META-INF/persistence.xml
+RAD/RAD-web/target/maven-archiver/pom.properties
+RAD/RAD-web/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst

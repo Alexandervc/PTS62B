@@ -40,11 +40,13 @@ public class GenerateBillBean implements MessageListener {
             // Make roadusage
             TextMessage textMessage = (TextMessage) message;
             String jsonString = textMessage.getText();
-            System.out.println(jsonString);
+            Logger.getLogger(GenerateBillBean.class.getName())
+                    .log(Level.INFO, jsonString);
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<RoadUsage>>() {}.getType();
             List<RoadUsage> roadUsages = gson.fromJson(jsonString, type);
-            System.out.println(roadUsages);
+            Logger.getLogger(GenerateBillBean.class.getName())
+                    .log(Level.INFO, roadUsages.toString());
             radService.receiveRoadUsages(roadUsages);
         } catch (JMSException ex) {
             Logger.getLogger(GenerateBillBean.class.getName())

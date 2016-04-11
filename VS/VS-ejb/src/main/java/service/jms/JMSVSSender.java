@@ -8,6 +8,8 @@ package service.jms;
 import business.RoadUsage;
 import com.google.gson.Gson;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -32,8 +34,15 @@ public class JMSVSSender {
     
     public void sendRoadUsages(List<RoadUsage> roadUsages) throws JMSException {
         // To JSON
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(roadUsages);
+        //Gson gson = new Gson();
+        //String jsonString = gson.toJson(roadUsages);
+        String jsonString = "[";
+        for(RoadUsage ru : roadUsages) {
+            jsonString += "{\"roadName\":\"" + ru.getRoadName() + "\", \"roadType\":\"" + ru.getRoadType() + "\", \"km\":\"" + ru.getKm().toString() + "\"},";
+        }
+        jsonString = jsonString.substring(0, jsonString.length() -1) + "]";
+        Logger.getLogger(JMSVSSender.class.getName())
+                .log(Level.INFO, jsonString);
         
         TextMessage textMessage = context.createTextMessage(jsonString);
         textMessage.setStringProperty("method", "generateBill");

@@ -21,7 +21,7 @@ import javax.persistence.OneToMany;
  *
  * @author Linda
  */
-@Entity (name = "Person")
+@Entity
 @NamedQueries({
     @NamedQuery(name="person.findByName", query="SELECT p FROM Person p WHERE p.firstName = :name")
 })
@@ -44,10 +44,12 @@ public class Person implements Serializable {
     private String city;
     private String country;
     
-    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+    // TODO niet verwijzen naar person, aangezien tabel ook zo heet?
+    // of person is reserved word??
+    @OneToMany(mappedBy = "person2", cascade = CascadeType.PERSIST)
     private List<Bill> bills;
     
-    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "person3", cascade = CascadeType.PERSIST)
     private List<Car> cars;
     
     @Deprecated
@@ -78,11 +80,18 @@ public class Person implements Serializable {
     public Long getId() {
         return id;
     }
+    
+    public void setId(Long id){
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getLastName() {
         return lastName;
@@ -118,6 +127,35 @@ public class Person implements Serializable {
         return country;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setInitials(String initials) {
+        this.initials = initials;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    
 
     public List<Bill> getBills() {
         return bills;
@@ -141,11 +179,11 @@ public class Person implements Serializable {
      */
     public void addBill(Bill b){
         this.bills.add(b);
-        b.setPerson(this);
+        b.setPerson2(this);
     }
     
     public void addCar(Car c){
         this.cars.add(c);
-        c.setPerson(this);
+        c.setPerson3(this);
     }
 }

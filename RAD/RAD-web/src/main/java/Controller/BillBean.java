@@ -93,19 +93,19 @@ public class BillBean {
             Calendar temp = this.datePast;
             temp.add(Calendar.YEAR, -2);
             temp.add(Calendar.MONTH, Integer.parseInt(date));
-            
+
             System.out.println(temp.get(Calendar.YEAR));
-            
+
             String tempBeginDateString = 01 + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
-            
+
             // Calc end Date
             temp.add(Calendar.MONTH, 1);
             temp.set(Calendar.DATE, 1);
             temp.add(Calendar.DATE, -1);
             String tempEndDateString = temp.get(Calendar.DAY_OF_MONTH) + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
-            
+
             // Convert Calendar tot Date
             Date dateBegin = dateformat.parse(tempBeginDateString);
             Date dateEnd = dateformat.parse(tempEndDateString);
@@ -116,12 +116,12 @@ public class BillBean {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(this.service.getRate(roadUsage.getRoadType()).getRate());
     }
-    
+
     public String getPrice(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(roadUsage.getKm() * this.service.getRate(roadUsage.getRoadType()).getRate());
@@ -133,7 +133,11 @@ public class BillBean {
     }
 
     public String getPersonName() {
-        return this.bill.getPerson().getInitials() + " " + this.bill.getPerson().getLastName();
+        if (this.bill.getPerson2() != null) {
+            return this.bill.getPerson2().getInitials() + " " + this.bill.getPerson2().getLastName();
+        } else {
+            return "";
+        }
     }
 
     /*

@@ -26,11 +26,6 @@ public class MovementManager {
     @Inject
     private CarPositionDao carPositionDao;
     
-    // TODO unittests
-    public MovementManager() {
-        this.carPositionDao = new CarPositionDao();
-    }
-    
     @PostConstruct
     public void start() {
         System.out.println("Post construct movementManager");

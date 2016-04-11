@@ -10,7 +10,7 @@ import javax.persistence.Id;
  *
  * @author Melanie.
  */
-@Entity (name = "Rate")
+@Entity
 public class Rate implements Serializable {
     @Id @Enumerated(EnumType.STRING)
     private RoadType type;
