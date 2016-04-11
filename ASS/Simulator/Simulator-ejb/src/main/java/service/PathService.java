@@ -50,7 +50,8 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
-    private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    //private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    private String PROJECT_ROOT = "C:\\";
     
     private String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private BufferedReader reader;
