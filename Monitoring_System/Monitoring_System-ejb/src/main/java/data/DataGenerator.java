@@ -2,16 +2,11 @@ package data;
 
 import common.domain.Test;
 import common.domain.TestType;
-import static common.domain.Test_.date;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-
 
 @Singleton
 @Startup

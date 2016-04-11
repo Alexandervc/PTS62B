@@ -113,6 +113,9 @@ header {
 textarea {
   resize: none; }
 
+#form-span {
+  width: 150px; }
+
 /* -------------------------------- Charts -------------------------------- */
 .chart {
   width: 100%;
