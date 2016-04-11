@@ -33,6 +33,9 @@ import util.CmdHelper;
 @Stateless
 public class ServerStatusManager {
     
+    /**
+     * The location of the file which stores the passwords.
+     */
     public static final String PASSWORD_FILE = "C:\\Proftaak\\asadmin.txt";
     
     /**
@@ -75,7 +78,7 @@ public class ServerStatusManager {
      * @return A list of application names.
      * @throws IOException 
      */
-    public List<String> listApplications(String host) throws IOException {
+    private List<String> listApplications(String host) throws IOException {
         // Defines the asadmin command list-applications.
         String[] command =
         {
@@ -97,8 +100,8 @@ public class ServerStatusManager {
             // Debug print line.
             System.out.println(result);
             
-            // Filter on web applications.
-            if (result.contains("<web>")) {
+            // Get the application from the output.
+            if (result.contains("<")) {
                 // Match on first word. This retreives the application name.
                 Pattern pattern = Pattern.compile("^[\\w]+");
                 Matcher matcher = pattern.matcher(result);
@@ -121,7 +124,7 @@ public class ServerStatusManager {
      * @return The status of the application.
      * @throws IOException 
      */
-    public ServerStatus showComponentStatus(
+    private ServerStatus showComponentStatus(
             String host, 
             String applicationName) 
             throws IOException {

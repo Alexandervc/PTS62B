@@ -11,11 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 import javax.inject.Inject;
 import org.jglue.cdiunit.CdiRunner;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,9 +31,17 @@ public class ServerStatusManagerTest {
         common.domain.System system = new common.domain.System();
         system.setIp("192.168.24.70");
         
+        // Retrieve the application status of the system.
         Map<String, ServerStatus> applicationStatus
                 = manager.retrieveApplicationStatus(system);
         
+        // Iterate through the applications and print the status.
+        for (Map.Entry<String, ServerStatus> entry : applicationStatus.entrySet())
+        {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+        }
+        
+        // Check if the status of an application was retrieved.
         assertTrue(!applicationStatus.isEmpty());
     }
 }
