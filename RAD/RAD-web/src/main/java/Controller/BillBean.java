@@ -65,7 +65,7 @@ public class BillBean {
         this.datePast = new GregorianCalendar();
 
         datePast.add(Calendar.YEAR, -2);
-        System.out.println(datePast.get(Calendar.YEAR));
+        //System.out.println(datePast.get(Calendar.YEAR));
         Calendar temp = this.datePast;
 
         for (int m = 0; m < 24; m++) {
