@@ -35,8 +35,8 @@ public class DataStorage {
     @PostConstruct
     public void start() {
         System.out.println("start datastorage");
-        if (cartrackerDao.find(1L) == null) {
-            Cartracker cartracker = new Cartracker(1L);
+        if (cartrackerDao.find(123456789L) == null) {
+            Cartracker cartracker = new Cartracker(123456789L);
             cartrackerDao.create(cartracker);
             Road road = new Road("A1", RoadType.A);
             Road road2 = new Road("B1", RoadType.B);
