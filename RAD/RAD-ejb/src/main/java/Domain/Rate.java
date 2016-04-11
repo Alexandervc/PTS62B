@@ -25,6 +25,18 @@ public class Rate implements Serializable {
         this.rate = rate;
         this.type = type;
     } 
+
+    public RoadType getType() {
+        return type;
+    }
+
+    public void setType(RoadType type) {
+        this.type = type;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
     
     public double getRate() {
         return rate;

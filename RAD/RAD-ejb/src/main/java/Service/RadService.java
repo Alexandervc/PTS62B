@@ -15,7 +15,6 @@ import domain.Person;
 import domain.Rate;
 import domain.RoadType;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -95,19 +94,20 @@ public class RadService {
             this.bill = null;
         } else {
             try {
-                
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM", 
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
                         Locale.getDefault());
                 month = dateFormat.format(begin);
                 year = Integer.toString(begin.getYear() + 1900);
-                
-                // TODO terugzetten! werkt niet: null!!
-                //this.findPersonByName(username);
-                //cartrackerId = person.getCars().get(0).getCartrackerId();
-                person = new Person("Alexander", "van Cuijk", "A.W.A.L.", "Teststraat", "4", "8238WS", "Eindhoven", "Nederland");
-                cartrackerId = 1L;
-                
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId, 
+
+                this.person = this.findPersonByName(username);
+                if (this.person == null) {
+                    throw new IllegalArgumentException("user not found");
+                }
+
+                cartrackerId = person.getCars().get(0).getCartrackerId();
+
+                radSender.sendGenerateRoadUsagesCommand(cartrackerId,
                         begin, end);
                 generatedBill = new Bill();
             } catch (JMSException ex) {
@@ -120,8 +120,24 @@ public class RadService {
     }
 
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        bill = billManager.generateBill(person, roadUsages, cartrackerId, 
-                month, year);
+        Logger.getLogger(RadService.class.getName())
+                        .log(Level.INFO, "person" + this.person);
+        if (this.person.getBills().size() > 0) {
+            for (Bill b : this.person.getBills()) {
+                if (b.getBillMonth().equals(month) && b.getBillYear().equals(year)
+                        && b.getCartrackerId().equals(cartrackerId)) {
+                    b.setRoadUsages(roadUsages);
+                    this.bill = b;
+                    Logger.getLogger(RadService.class.getName())
+                        .log(Level.INFO, "found bill");
+                }
+            }
+        } else {
+            Logger.getLogger(RadService.class.getName())
+                        .log(Level.INFO, "generate new bill");
+            this.bill = billManager.generateBill(person, roadUsages, cartrackerId,
+                    month, year);
+        }
     }
 
     public void setPersonManager(PersonManager personManager) {

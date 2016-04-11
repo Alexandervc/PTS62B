@@ -27,11 +27,10 @@
                                         <h:selectOneMenu class="form-control" 
                                                             id="dateBox1"
                                                             value="#{billBean.date}">
-                                            <c:forEach var="month" items="#{billBean.dates}">
-                                                <f:selectItem itemValue="#{month.months}" 
-                                                              itemLabel="#{month.date}">
-                                                </f:selectItem>
-                                            </c:forEach> 
+                                            <f:selectItems value="#{billBean.dates}" 
+                                                           var="dateBill" 
+                                                           itemValue="#{dateBill.months}" 
+                                                           itemLabel="#{dateBill.date}"/>
                                         </h:selectOneMenu>
                                     </span>
                                     <span class="input-group-btn">

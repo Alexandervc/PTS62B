@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 public class BillDAOJPAImp extends AbstractFacade<Bill> implements BillDAO, Serializable {
 
     @PersistenceContext(unitName = "RADpu")
+    //@PersistenceContext(unitName = "DEVdbRADpu")
     private EntityManager em;
 
     @Override

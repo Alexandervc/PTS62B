@@ -15,6 +15,7 @@ import javax.persistence.TypedQuery;
 public class PersonDAOJPAImp extends AbstractFacade<Person> implements PersonDAO, Serializable {
 
     @PersistenceContext(unitName = "RADpu")
+    //@PersistenceContext(unitName = "DEVdbRADpu")
     private EntityManager em;
 
     @Override
