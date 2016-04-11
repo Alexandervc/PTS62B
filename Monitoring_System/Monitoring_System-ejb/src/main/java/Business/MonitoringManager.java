@@ -12,12 +12,16 @@ import common.domain.TestType;
 import data.RMI_Client;
 import data.SystemDao;
 import data.TestDao;
+import data.testinject;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -39,6 +43,10 @@ public class MonitoringManager {
     @Inject
     private TestDao testDao;
     
+    @Inject testinject inject;
+    
+    private final static Logger LOGGER = Logger.getLogger(MonitoringManager.class.getName()); 
+    
     /**
      * Instantiates the MonitoringManager class.
      */
@@ -51,12 +59,32 @@ public class MonitoringManager {
      * application.
      * @return A list of servers.
      */
-    public final List<System> getSystems() {
+    public List<System> getSystems() {
+        inject.toString();
+        if(inject == null) {
+            LOGGER.log(Level.INFO, "inject is null");
+        }
+        if(systemDao == null) {
+            if(testDao == null) {
+                LOGGER.log(Level.INFO, "testDao is null");
+            }
+            LOGGER.log(Level.INFO, "systemDao is null");
+            return new ArrayList<>();
+        }
         return this.systemDao.getSystems();
     }
     
     /**
-     * Generates the status of the server
+     * Initializes the monitoring manager by creating a clientmap
+     * and loading in the RMI servers.
+     */
+    @PostConstruct	
+    public void init() {
+        this.clientMap = new HashMap<>();
+    }
+
+    /**
+     * Generates the status of the server.
      * @param system The system object where the status will be generated for.
      * @return A list of the three types of test.
      */
@@ -64,16 +92,16 @@ public class MonitoringManager {
         List<Test> tests = new ArrayList<>();
         
         // Retrieve the server status.
-        List<Test> serverStatusTest = this.retrieveServerStatus(system);
+        Test serverStatusTest = this.retrieveServerStatus(system);
+        tests.add(serverStatusTest);
         
-        // If the server status was retrieved, get the first test object.
-        // This can be expanded by getting all the tests. The application
-        // currently expects one deployed application per server (system).
-        if (serverStatusTest.size() > 0) {
-            tests.add(serverStatusTest.get(0));
-        }
+        // Retrieve the result of the functional tests.
+        Test functionalTest = this.retrieveFunctionalTests(system);
+        tests.add(functionalTest);
         
-        // TODO: functional and endpoint tests.
+        // Retrieve the result of the endpoint test.
+        Test endpointTest = this.retrieveEndpointTest(system);
+        tests.add(endpointTest);
         
         return tests;
     }
@@ -81,9 +109,9 @@ public class MonitoringManager {
     /**
      * Retrieves the server status and maps it to a Test object.
      * @param system The system to retrieve the status from.
-     * @return 
+     * @return A test object with the result of the test
      */
-    private List<Test> retrieveServerStatus(System system) {
+    private Test retrieveServerStatus(System system) {
         List<Test> tests = new ArrayList<>();
         Map<String, ServerStatus> applicationStatus = null;
         
@@ -91,14 +119,8 @@ public class MonitoringManager {
         try {
             applicationStatus = 
                     serverStatusManager.retrieveApplicationStatus(system);
-        } catch (IOException ex) {
-            // TODO: Add logging.
-            Logger.getLogger(MonitoringManager.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            // TODO: Add logging.
-            Logger.getLogger(MonitoringManager.class.getName())
-                    .log(Level.SEVERE, null, ex);
+        } catch (IOException | InterruptedException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         
         // If the application status was retrieved, iterate through the results
@@ -108,14 +130,12 @@ public class MonitoringManager {
                     : applicationStatus.entrySet())
             {
                 // Convert util.Date to sql.Date.
-                java.util.Date currentUtilDate = new java.util.Date();
-                java.sql.Date currentSqlDate 
-                        = new java.sql.Date(currentUtilDate.getTime());
+                java.util.Date currentDate = new java.util.Date();                
                 
                 // Create a new test object to return.
                 Test test = new Test(
                         TestType.STATUS, 
-                        currentSqlDate, 
+                        new Timestamp(currentDate.getTime()), 
                         entry.getValue() == ServerStatus.ONLINE);
 
                 // Add the test to the result list.
@@ -123,6 +143,52 @@ public class MonitoringManager {
             }
         }
         
-        return tests;
+        // Check if at least one of the applications is offline.
+        for (Test test : tests) {
+            // If the test result is false (i.e. the application is offline, the
+            // test fails.
+            if (!test.getResult()) {
+                return test;
+            }
+        }
+        
+        // If the server status was retrieved, get the first test object.
+        // This can be expanded by getting all the tests. The application
+        // currently expects one deployed application per server (system).
+        return tests.get(0);
+    }
+    
+    /**
+     * Executes the remote functional tests and gets the result.
+     * @param system The system to retrieve the status from.
+     * @return A test object with the result of the test.
+     */
+    private Test retrieveFunctionalTests(System system) {
+        // TODO: create the functional test.
+        
+        // Create the test object which is returned.
+        Test test = new Test(
+                TestType.FUNCTIONAL,
+                new Timestamp(java.lang.System.currentTimeMillis()),
+                false);
+        
+        return test;
+    }
+    
+    /**
+     * Executes the endpoint tests and gets the result.
+     * @param system The system to retrieve the status from.
+     * @return A test object with the result of the test.
+     */
+    private Test retrieveEndpointTest(System system) {
+        // TODO: create the endpoint test.
+        
+        // Create the test object which is returned.
+        Test test = new Test(
+                TestType.FUNCTIONAL,
+                new Timestamp(java.lang.System.currentTimeMillis()),
+                false);
+        
+        return test;
     }
 }

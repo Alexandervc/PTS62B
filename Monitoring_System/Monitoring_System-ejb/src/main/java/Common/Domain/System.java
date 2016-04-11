@@ -58,6 +58,17 @@ public class System implements Serializable {
     public System() {
     }
 
+    public System(String name, String description, String ip, int port) {
+        this.name = name;
+        this.description = description;
+        this.ip = ip;
+        this.port = port;
+        this.clients = new ArrayList<>();
+        this.tests = new ArrayList();
+    }
+    
+    
+
     public final Long getId() {
         return this.id;
     }
@@ -112,6 +123,11 @@ public class System implements Serializable {
 
     public final void setClients(List<ConnectionClient> clients) {
         this.clients = new ArrayList<>(clients);
+    }
+    
+    public void addTest(Test test) {
+        test.setSystemID(this.id);
+        this.tests.add(test);
     }
     
     
