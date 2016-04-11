@@ -12,6 +12,7 @@ import common.domain.TestType;
 import data.RMI_Client;
 import data.SystemDao;
 import data.TestDao;
+import data.jms.CheckRequestSender;
 import data.testinject;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -22,8 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.JMSException;
 
 /**
  *
@@ -31,6 +34,9 @@ import javax.inject.Inject;
  */
 @Stateless
 public class MonitoringManager {
+
+    @EJB
+    private CheckRequestSender checkRequestSender;
 
     private Map<String,RMI_Client> clientMap;
     
@@ -86,9 +92,8 @@ public class MonitoringManager {
     /**
      * Generates the status of the server.
      * @param system The system object where the status will be generated for.
-     * @return A list of the three types of test.
      */
-    public final List<Test> generateServerStatus(System system) {
+    public final void generateServerStatus(System system) {
         List<Test> tests = new ArrayList<>();
         
         // Retrieve the server status.
@@ -103,7 +108,10 @@ public class MonitoringManager {
         Test endpointTest = this.retrieveEndpointTest(system);
         tests.add(endpointTest);
         
-        return tests;
+        for(Test test :tests) {
+            this.testDao.create(test);
+        }
+        this.systemDao.edit(tests);
     }
     
     /**
@@ -203,6 +211,21 @@ public class MonitoringManager {
         tests.add(test);
         this.testDao.create(test);
         this.systemDao.edit(system);    
+    }
+    
+    public List<Test> retrieveLatestTests(System system) {
+        List<Test> returnList = new ArrayList<>();
+        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+                , TestType.STATUS));
+        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+                , TestType.FUNCTIONAL));
+        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+                , TestType.ENDPOINTS));
+        return returnList;
+    }
+    
+    public void testFunctionalStateOfSystems() throws JMSException {
+        checkRequestSender.requestChecks();
     }
 }
 

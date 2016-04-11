@@ -26,6 +26,7 @@ public class CheckRequestSender {
     
     @Resource(lookup="jms/LMS/monitoringTopic")
     private Destination topic;
+    
       
     public void requestChecks() throws JMSException{
         Message message = context.createMessage();
