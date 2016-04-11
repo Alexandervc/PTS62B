@@ -34,13 +34,13 @@ public class JMSVSSender {
     
     public void sendRoadUsages(List<RoadUsage> roadUsages) throws JMSException {
         // To JSON
-        //Gson gson = new Gson();
-        //String jsonString = gson.toJson(roadUsages);
-        String jsonString = "[";
-        for(RoadUsage ru : roadUsages) {
-            jsonString += "{\"roadName\":\"" + ru.getRoadName() + "\", \"roadType\":\"" + ru.getRoadType() + "\", \"km\":\"" + ru.getKm().toString() + "\"},";
-        }
-        jsonString = jsonString.substring(0, jsonString.length() -1) + "]";
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(roadUsages);
+        //String jsonString = "[";
+        //for(RoadUsage ru : roadUsages) {
+        //    jsonString += "{\"roadName\":\"" + ru.getRoadName() + "\", \"roadType\":\"" + ru.getRoadType() + "\", \"km\":\"" + ru.getKm().toString() + "\"},";
+        //}
+        //jsonString = jsonString.substring(0, jsonString.length() -1) + "]";
         Logger.getLogger(JMSVSSender.class.getName())
                 .log(Level.INFO, jsonString);
         
