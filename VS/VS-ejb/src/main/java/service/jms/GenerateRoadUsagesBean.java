@@ -53,6 +53,8 @@ public class GenerateRoadUsagesBean implements MessageListener {
             // Generate road usages
             List<RoadUsage> roadUsages = this.movementService
                     .generateRoadUsages(cartrackerId, beginDate, endDate);
+            Logger.getLogger(GenerateRoadUsagesBean.class.getName())
+                    .log(Level.INFO, String.valueOf(roadUsages.size()));
             
             // Send
             vsSender.sendRoadUsages(roadUsages);

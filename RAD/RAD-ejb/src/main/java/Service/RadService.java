@@ -101,8 +101,11 @@ public class RadService {
                 month = dateFormat.format(begin);
                 year = Integer.toString(begin.getYear() + 1900);
                 
-                this.findPersonByName(username);
-                cartrackerId = person.getCars().get(0).getCartrackerId();
+                // TODO terugzetten! werkt niet: null!!
+                //this.findPersonByName(username);
+                //cartrackerId = person.getCars().get(0).getCartrackerId();
+                person = new Person("Alexander", "van Cuijk", "A.W.A.L.", "Teststraat", "4", "8238WS", "Eindhoven", "Nederland");
+                cartrackerId = 1L;
                 
                 radSender.sendGenerateRoadUsagesCommand(cartrackerId, 
                         begin, end);
