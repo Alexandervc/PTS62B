@@ -32,16 +32,16 @@ public class DataStorage {
     @PostConstruct
     public void onStartup() {
         try {
-//            service.addRate(1.29, RoadType.A);
-//            System.out.println("rate-A succeed");
-//            service.addRate(0.89, RoadType.B);
-//            System.out.println("rate-B succeed");
-//            service.addRate(0.49, RoadType.C);
-//            System.out.println("rate-C succeed");
-//            service.addRate(0.25, RoadType.D);
-//            System.out.println("rate-D succeed");
-//            service.addRate(0.12, RoadType.E);
-//            System.out.println("rate-E succeed");
+            service.addRate(1.29, RoadType.A);
+            System.out.println("rate-A succeed");
+            service.addRate(0.89, RoadType.B);
+            System.out.println("rate-B succeed");
+            service.addRate(0.49, RoadType.C);
+            System.out.println("rate-C succeed");
+            service.addRate(0.25, RoadType.D);
+            System.out.println("rate-D succeed");
+            service.addRate(0.12, RoadType.E);
+            System.out.println("rate-E succeed");
 
             List<RoadUsage> roadUsages = new ArrayList<>();
             RoadUsage usage1 = new RoadUsage("TestLaan", RoadType.E, 12.9);

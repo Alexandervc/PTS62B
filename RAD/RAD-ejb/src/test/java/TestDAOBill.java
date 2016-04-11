@@ -32,13 +32,8 @@ public class TestDAOBill {
     @Mock
     BillManager billManager;
     
-    @Mock
     Person person1;
-    
     Bill bill1;
-    Long cartracker = 1L;
-    String month = "April";
-    String year = "2016";
     
     public TestDAOBill() {       
     }
@@ -50,10 +45,6 @@ public class TestDAOBill {
                 
         person1 = new Person("Linda", "van Engelen", "LMJC", "Sibeliuslaan", "83",
                 "5654CV", "Eindhoven", "Nederland");
-        service.setPerson(person1);
-        service.setCartrackerId(cartracker);
-        service.setMonth(month);
-        service.setYear(year);
         
         List<RoadUsage> roadUsages = new ArrayList<RoadUsage>();
         roadUsages.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
@@ -69,15 +60,5 @@ public class TestDAOBill {
     public void testAddBill(){
        service.addBill(bill1);
         verify(billManager, Mockito.times(1)).createBill(bill1);
-    }
-    
-    @Test
-    public void testRecieveBill(){
-        List<RoadUsage> roadUsages = new ArrayList<RoadUsage>();
-        roadUsages.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
-        
-        service.receiveRoadUsages(roadUsages);
-        verify(billManager, Mockito.times(1)).generateBill(person1, roadUsages, 
-                cartracker, month, year);
     }
 }

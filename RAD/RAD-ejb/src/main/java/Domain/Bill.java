@@ -69,10 +69,6 @@ public class Bill implements Serializable {
         return roadUsages;
     }
 
-    public void setRoadUsages(List<RoadUsage> roadUsages) {
-        this.roadUsages = roadUsages;
-    }
-
     public boolean getPaid() {
         return paid;
     }
