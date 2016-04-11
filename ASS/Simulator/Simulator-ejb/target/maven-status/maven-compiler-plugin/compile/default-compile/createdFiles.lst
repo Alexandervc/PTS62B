@@ -6,7 +6,6 @@ model\Leg.class
 service\IGpsdService.class
 model\GpsSimulatorInstance.class
 simulator\GpsSimulator.class
-service\PathService.class
 service\IPathService.class
 service\GpsdService.class
 support\NavUtils.class
