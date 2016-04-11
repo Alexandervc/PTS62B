@@ -48,10 +48,10 @@ public class RoadUsage implements Serializable{
     }
     
     /**
-     * Add the given km to this km
-     * @param km 
+     * Add the given meter to this km
+     * @param meter 
      */
-    public void addKm(Double km) {
-        this.km += km;
+    public void addMeter(Double meter) {
+        this.km += (meter / 1000);
     }
 }

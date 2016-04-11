@@ -51,7 +51,7 @@ public class NavUtils {
         for (Point point : points) {
             count++;
 
-            if (count > 1 && count < points.size()) {
+            if (count > 1 && count <= points.size()) {
                 totalDistance = totalDistance + getDistance(previousCount, 
                         point);
             }

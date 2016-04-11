@@ -5,7 +5,7 @@
  */
 package service;
 
-import business.MovementManager;
+import business.RoadUsageManager;
 import business.RoadUsage;
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -19,10 +19,10 @@ import javax.inject.Inject;
  * @author Alexander
  */
 @Stateless
-public class MovementService
+public class RoadUsageService
 {
     @Inject
-    private MovementManager movementManager;
+    private RoadUsageManager roadUsageManager;
     
     @PostConstruct
     public void start() {
@@ -41,7 +41,7 @@ public class MovementService
             Date end)
     {
         System.out.println("generateRoadUsages");
-        return movementManager.getRoadUsagesBetween(begin, end, cartrackerId);
+        return roadUsageManager.getRoadUsagesBetween(begin, end, cartrackerId);
     }
     
 }

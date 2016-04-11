@@ -20,7 +20,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import service.MovementService;
+import service.RoadUsageService;
 
 /**
  *
@@ -32,7 +32,7 @@ import service.MovementService;
 })
 public class GenerateRoadUsagesBean implements MessageListener {
     @Inject
-    private MovementService movementService;
+    private RoadUsageService roadUsageService;
     
     @Inject
     private JMSVSSender vsSender;
@@ -51,7 +51,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
             Date endDate = df.parse(endDateString);
             
             // Generate road usages
-            List<RoadUsage> roadUsages = this.movementService
+            List<RoadUsage> roadUsages = this.roadUsageService
                     .generateRoadUsages(cartrackerId, beginDate, endDate);
             Logger.getLogger(GenerateRoadUsagesBean.class.getName())
                     .log(Level.INFO, String.valueOf(roadUsages.size()));
