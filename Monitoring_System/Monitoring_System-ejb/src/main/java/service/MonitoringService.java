@@ -24,7 +24,6 @@ import javax.inject.Inject;
  */
 @Stateless(name="monitoring")
 public class MonitoringService {
-    //Test
 
     @Resource
     private ManagedScheduledExecutorService executor;
@@ -79,14 +78,13 @@ public class MonitoringService {
      * @param system the Server object where the status will be generated for.
      * @return A list
      */
-    public List<Test> generateServerStatus(common.domain.System system) {
-        return this.manager.generateServerStatus(system);
+    public void generateServerStatus(common.domain.System system) {
+        this.manager.generateServerStatus(system);
     }
     
     public List<Test> retrieveLatestTests(common.domain.System system) {
-        return this.generateServerStatus(system);
         
         // TODO: Get historical tests.
-        //return this.manager.retrieveLatestTests(system);
+        return this.manager.retrieveLatestTests(system);
     }
 }
