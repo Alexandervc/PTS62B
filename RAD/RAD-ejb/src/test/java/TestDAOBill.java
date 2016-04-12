@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-import business1.BillManager;
-import service1.RoadUsage;
-import domain1.Bill;
-import domain1.Person;
-import domain1.RoadType;
+import business.BillManager;
+import service.RoadUsage;
+import domain.Bill;
+import domain.Person;
+import domain.RoadType;
 import java.util.ArrayList;
 import java.util.List;
-import service1.RadService;
+import service.RadService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

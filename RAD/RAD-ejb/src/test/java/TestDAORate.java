@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 
-import business1.RateManager;
-import domain1.RoadType;
+import business.RateManager;
+import domain.RoadType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
-import service1.RadService;
+import service.RadService;
 
 /**
  *

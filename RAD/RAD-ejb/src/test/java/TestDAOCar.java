@@ -5,10 +5,10 @@
  */
 
 
-import business1.CarManager;
-import domain1.Car;
-import domain1.FuelType;
-import domain1.Person;
+import business.CarManager;
+import domain.Car;
+import domain.FuelType;
+import domain.Person;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
-import service1.RadService;
+import service.RadService;
 
 /**
  *
