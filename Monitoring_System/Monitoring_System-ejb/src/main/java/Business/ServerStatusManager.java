@@ -5,7 +5,7 @@
  */
 package business;
 
-import common.Domain.ServerStatus;
+import common.domain.ServerStatus;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class ServerStatusManager {
      * @throws IOException
      * @throws InterruptedException 
      */
-    public Map<String, ServerStatus> retrieveApplicationStatus(common.Domain.System system) 
+    public Map<String, ServerStatus> retrieveApplicationStatus(common.domain.System system) 
            throws IOException, InterruptedException {
        
         Map<String, ServerStatus> serverStatus = new HashMap();

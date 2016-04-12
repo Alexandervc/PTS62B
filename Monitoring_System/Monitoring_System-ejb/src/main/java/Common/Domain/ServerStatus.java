@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package common.Domain;
+package common.domain;
 
 /**
  * Defines the status of a server.

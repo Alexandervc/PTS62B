@@ -5,25 +5,24 @@
  */
 package business;
 
-import common.Domain.ServerStatus;
-import common.Domain.System;
-import common.Domain.Test;
-import common.Domain.TestType;
-import data.RMI_Client;
+import common.domain.ServerStatus;
+import common.domain.System;
+import common.domain.Test;
+import common.domain.TestType;
 import data.SystemDao;
 import data.TestDao;
-import data.testinject;
+import data.jms.CheckRequestSender;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.JMSException;
 
 /**
  *
@@ -31,8 +30,12 @@ import javax.inject.Inject;
  */
 @Stateless
 public class MonitoringManager {
+    
+    private final static Logger LOGGER = Logger
+            .getLogger(MonitoringManager.class.getName()); 
 
-    private Map<String,RMI_Client> clientMap;
+    @EJB
+    private CheckRequestSender checkRequestSender;
     
     @Inject
     private ServerStatusManager serverStatusManager;
@@ -43,9 +46,6 @@ public class MonitoringManager {
     @Inject
     private TestDao testDao;
     
-    @Inject testinject inject;
-    
-    private final static Logger LOGGER = Logger.getLogger(MonitoringManager.class.getName()); 
     
     /**
      * Instantiates the MonitoringManager class.
@@ -60,35 +60,14 @@ public class MonitoringManager {
      * @return A list of servers.
      */
     public List<System> getSystems() {
-        inject.toString();
-        if(inject == null) {
-            LOGGER.log(Level.INFO, "inject is null");
-        }
-        if(systemDao == null) {
-            if(testDao == null) {
-                LOGGER.log(Level.INFO, "testDao is null");
-            }
-            LOGGER.log(Level.INFO, "systemDao is null");
-            return new ArrayList<>();
-        }
         return this.systemDao.getSystems();
-    }
-    
-    /**
-     * Initializes the monitoring manager by creating a clientmap
-     * and loading in the RMI servers.
-     */
-    @PostConstruct	
-    public void init() {
-        this.clientMap = new HashMap<>();
-    }
+    }   
 
     /**
      * Generates the status of the server.
      * @param system The system object where the status will be generated for.
-     * @return A list of the three types of test.
      */
-    public final List<Test> generateServerStatus(System system) {
+    public final void generateServerStatus(System system) {
         List<Test> tests = new ArrayList<>();
         
         // Retrieve the server status.
@@ -103,7 +82,10 @@ public class MonitoringManager {
         Test endpointTest = this.retrieveEndpointTest(system);
         tests.add(endpointTest);
         
-        return tests;
+        for(Test test :tests) {
+            this.testDao.create(test);
+        }
+        this.systemDao.edit(tests);
     }
     
     /**
@@ -118,7 +100,7 @@ public class MonitoringManager {
         // Try to get the status of all deployed applications of the system.
         try {
             applicationStatus = 
-                    serverStatusManager.retrieveApplicationStatus(system);
+                    this.serverStatusManager.retrieveApplicationStatus(system);
         } catch (IOException | InterruptedException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
@@ -127,10 +109,9 @@ public class MonitoringManager {
         // and create a test object.
         if (applicationStatus != null) {
             for (Map.Entry<String, ServerStatus> entry 
-                    : applicationStatus.entrySet())
-            {
+                    : applicationStatus.entrySet()) {
                 // Convert util.Date to sql.Date.
-                java.util.Date currentDate = new java.util.Date();                
+                java.util.Date currentDate = new java.util.Date();
                 
                 // Create a new test object to return.
                 Test test = new Test(
@@ -190,5 +171,34 @@ public class MonitoringManager {
                 false);
         
         return test;
+    }   
+    public System retrieveSystemByName(String name) {
+        return this.systemDao.getSystemByName(name);
+    }
+    
+    public void addTest(String systemName, boolean result, TestType type){
+        System system = this.systemDao.getSystemByName(systemName);
+        List<Test> tests = system.getTests();
+        java.util.Date date = new java.util.Date();
+        Test test = new Test(type,new Timestamp(date.getTime()),result);
+        tests.add(test);
+        this.testDao.create(test);
+        this.systemDao.edit(system);    
+    }
+    
+    public List<Test> retrieveLatestTests(System system) {
+        List<Test> returnList = new ArrayList<>();
+        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+                , TestType.STATUS));
+        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+                , TestType.FUNCTIONAL));
+        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+                , TestType.ENDPOINTS));
+        return returnList;
+    }
+    
+    public void testFunctionalStateOfSystems() throws JMSException {
+        checkRequestSender.requestChecks();
     }
 }
+

@@ -6,8 +6,8 @@
 package data;
 
 import business.MonitoringManager;
-import common.Domain.Test;
-import common.Domain.System;
+import common.domain.Test;
+import common.domain.System;
 import java.util.logging.Logger;
 
 import java.util.List;
@@ -50,6 +50,12 @@ public class SystemDao extends AbstractDao {
     public List<System> getSystems() {
         Query query = this.getEntityManager().createNamedQuery("get systems");
         return query.getResultList();
+    }
+    
+    public System getSystemByName(String name) {
+        Query query = this.getEntityManager().createNamedQuery("get system by name");
+        query.setParameter("name", name);   
+        return (System) query.getSingleResult();
     }
     
 }
