@@ -33,4 +33,3 @@ hs_err_pid*
 /VS/VS-ejb/target/
 /VS/VS-web/target/
 /VS/VS-ejb/nbproject/
-persistence.xml
