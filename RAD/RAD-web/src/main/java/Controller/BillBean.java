@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -40,7 +41,7 @@ public class BillBean {
     private Calendar datePast;
 
     public List<ListBoxDate> getDates() {
-        return dates;
+        return this.dates;
     }
 
     public String getDate() {
@@ -65,15 +66,16 @@ public class BillBean {
         this.datePast = new GregorianCalendar();
 
         datePast.add(Calendar.YEAR, -2);
-        System.out.println(datePast.get(Calendar.YEAR));
         Calendar temp = this.datePast;
 
-        for (int m = 0; m < 24; m++) {
+        for (int m = 0; m < 25; m++) {
             String month = new SimpleDateFormat("MMM").format(temp.getTime());
             this.dates.add(new ListBoxDate(month + " " + temp.get(Calendar.YEAR),
                     Integer.toString(m)));
             temp.add(Calendar.MONTH, 1);
         }
+        
+        Collections.reverse(this.dates);
     }
 
     /*
@@ -93,8 +95,6 @@ public class BillBean {
             Calendar temp = this.datePast;
             temp.add(Calendar.YEAR, -2);
             temp.add(Calendar.MONTH, Integer.parseInt(date));
-
-            System.out.println(temp.get(Calendar.YEAR));
 
             String tempBeginDateString = 01 + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
