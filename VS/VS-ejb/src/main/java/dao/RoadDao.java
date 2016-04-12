@@ -6,9 +6,11 @@
 package dao;
 
 import domain.Road;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,4 +30,9 @@ public class RoadDao extends DaoFacade<Road> {
         return em;
     }
     
+    public List<Road> findAll() {
+        Query q =  em.createNamedQuery("Road.findAll");
+        List<Road> roads = (List<Road>) q.getResultList();
+        return roads;
+    }
 }

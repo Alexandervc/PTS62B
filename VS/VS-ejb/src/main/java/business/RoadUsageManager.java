@@ -6,6 +6,7 @@
 package business;
 
 import dao.CarPositionDao;
+import dao.CartrackerDao;
 import domain.CarPosition;
 import domain.Road;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import javax.inject.Inject;
  * @author Alexander
  */
 @Stateless
-public class MovementManager {
+public class RoadUsageManager {
     @Inject
     private CarPositionDao carPositionDao;
     
@@ -53,12 +54,12 @@ public class MovementManager {
                 // Add roadUsage
                 RoadUsage ru = new RoadUsage(cp.getRoad().getName(), 
                                 cp.getRoad().getRoadType(),
-                                cp.getKm());
+                                cp.getMeter());
                 roadUsages.put(cp.getRoad(), ru);
             } else {
                 // Update km
                 RoadUsage ru = (RoadUsage) roadUsages.get(cp.getRoad());
-                ru.addKm(cp.getKm());
+                ru.addMeter(cp.getMeter());
             }
         }
         
@@ -66,6 +67,6 @@ public class MovementManager {
         List<RoadUsage> roadUsagesList = new ArrayList<>();
         roadUsagesList.addAll(roadUsages.values());
         
-        return roadUsagesList;//List;
+        return roadUsagesList;
     }
 }

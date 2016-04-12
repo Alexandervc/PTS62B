@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import model.Point;
 import model.DirectionInput;
 import java.util.ArrayList;
@@ -35,8 +37,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import model.GpsSimulatorInstance;
 import model.Leg;
+import service.jms.JmsAssSender;
 import simulator.GpsSimulator;
 import support.NavUtils;
 
@@ -46,7 +50,8 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
-    private String PROJECT_ROOT = "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    //private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    private String PROJECT_ROOT = "C:\\";
     
     private String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private BufferedReader reader;
@@ -56,6 +61,9 @@ public class PathService implements IPathService, Serializable {
     private Map<Long, GpsSimulatorInstance> taskFutures = new HashMap<>();
     private ExecutorService taskExecutor = Executors.newSingleThreadExecutor();    
     long instanceCounter = 1;
+    
+    @Inject
+    private JmsAssSender assSender;
     
     @PostConstruct
     public void setupLocations() {
@@ -167,7 +175,9 @@ public class PathService implements IPathService, Serializable {
                 
                 //Create json array
                 Map<String, Object> position = new HashMap<>();
-                position.put("moment", moment);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String momentString = df.format(moment);
+                position.put("moment", momentString);
                 position.put("xCoordinate", xCoordinate);
                 position.put("yCoordinate", yCoordinate);
                 position.put("meter", meter);
@@ -177,6 +187,10 @@ public class PathService implements IPathService, Serializable {
                 String output = gson.toJson(position);
                 writer.write(output);
                 writer.close();
+                
+                //Send JMS
+                assSender.sendPosition(output, Long.valueOf(cartrackerID),
+                        Integer.toUnsignedLong(fileIndex));
                 
                 previous = p;
                 fileIndex++;

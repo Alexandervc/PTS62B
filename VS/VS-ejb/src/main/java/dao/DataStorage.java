@@ -48,7 +48,7 @@ public class DataStorage {
             roadDao.create(road3);
             roadDao.create(road4);
             roadDao.create(road5);
-            CarPosition cp = new CarPosition(cartracker, new Date(), 1.0,
+            /*CarPosition cp = new CarPosition(cartracker, new Date(), 1.0,
                     1.0, road, 1.0);
             CarPosition cp2 = new CarPosition(cartracker, new Date(), 2.0,
                     2.0, road2, 2.0);
@@ -71,7 +71,7 @@ public class DataStorage {
             carPositionDao.create(cp5);
             carPositionDao.create(cp6);
             carPositionDao.create(cp7);
-            carPositionDao.create(cp8);
+            carPositionDao.create(cp8);*/
             
         }
     }

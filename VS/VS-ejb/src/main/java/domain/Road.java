@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -23,7 +24,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    
+    @NamedQuery(name="Road.findAll", query = "SELECT r FROM Road r")
 })
 public class Road implements Serializable, Comparable<Road> {
     @Id

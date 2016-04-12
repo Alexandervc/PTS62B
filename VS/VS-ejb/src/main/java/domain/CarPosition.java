@@ -42,7 +42,7 @@ public class CarPosition implements Serializable {
     
     private Double xCoordinate;
     private Double yCoordinate;
-    private Double km;
+    private Double meter;
     
     @ManyToOne
     private Road road;
@@ -62,10 +62,10 @@ public class CarPosition implements Serializable {
      * @param xCoordinate
      * @param yCoordinate
      * @param road cannot be null
-     * @param km cannto be negative
+     * @param meter cannto be negative
      */
     public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
-            Double yCoordinate, Road road, Double km) {
+            Double yCoordinate, Road road, Double meter) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
         }
@@ -75,7 +75,7 @@ public class CarPosition implements Serializable {
         if(road == null) {
             throw new IllegalArgumentException("road null");
         }
-        if(km < 0) {
+        if(meter < 0) {
             throw new IllegalArgumentException("km negative");
         }
         this.cartracker = cartracker;
@@ -83,7 +83,7 @@ public class CarPosition implements Serializable {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.road = road;
-        this.km = km;
+        this.meter = meter;
     }
 
     public Long getId() {
@@ -134,11 +134,11 @@ public class CarPosition implements Serializable {
         this.road = road;
     }
 
-    public Double getKm() {
-        return km;
+    public Double getMeter() {
+        return meter;
     }
 
-    public void setKm(Double km) {
-        this.km = km;
+    public void setMeter(Double meter) {
+        this.meter = meter;
     }
 }
