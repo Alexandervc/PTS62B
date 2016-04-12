@@ -1,9 +1,9 @@
 package managedbeans;
 
 import com.google.gson.Gson;
-import common.domain.System;
-import common.domain.Test;
-import common.domain.TestType;
+import common1.domain1.System;
+import common1.domain1.Test;
+import common1.domain1.TestType;
 import domain.SystemState;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
-import service.MonitoringService;
+import service1.MonitoringService;
 
 /**
  *
@@ -26,7 +26,7 @@ public class MonitoringBean implements Serializable  {
     @EJB(beanName="monitoring")
     private MonitoringService service;
     
-    private List<common.domain.System> retrieveSystems;
+    private List<common1.domain1.System> retrieveSystems;
 
     private List<String> systemStrings;
     
@@ -34,7 +34,7 @@ public class MonitoringBean implements Serializable  {
 
     public List<Entry<String, String>> getEntries() {
         Map map = new HashMap();
-        for(common.domain.System sys : this.getRetrieveSystems()) {
+        for(common1.domain1.System sys : this.getRetrieveSystems()) {
             SystemState state = new SystemState(sys.getName());
             for(Test t : service.retrieveLatestTests(sys)) {
                 switch (t.getTestType()) {
@@ -66,7 +66,7 @@ public class MonitoringBean implements Serializable  {
 
     public Map<String, SystemState> getMap() {
         this.map = new HashMap();
-        for(common.domain.System sys : retrieveSystems) {
+        for(common1.domain1.System sys : retrieveSystems) {
             this.map.put(sys.getName(), new SystemState(sys.getName()));
         }
         return map;
