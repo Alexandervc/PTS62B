@@ -1,6 +1,6 @@
 package domain;
 
-import common.domain.Test;
+import common.Domain.Test;
 
 /**
  *
