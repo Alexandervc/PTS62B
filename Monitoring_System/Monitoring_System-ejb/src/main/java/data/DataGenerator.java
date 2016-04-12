@@ -1,7 +1,7 @@
 package data;
 
-import common.domain.Test;
-import common.domain.TestType;
+import common.Domain.Test;
+import common.Domain.TestType;
 import java.sql.Timestamp;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -21,9 +21,9 @@ public class DataGenerator {
     @PostConstruct
     public void onStartup() {
         System.out.println("GENERATING DATA");
-        common.domain.System sys = new common.domain.System("VS","VS","192.168.24.74",8080);
-        common.domain.System sys2 = new common.domain.System("RAD","RAD","192.168.24.75",8080);
-        common.domain.System sys3 = new common.domain.System("ASS","ASS","192.168.24.76",8080);
+        common.Domain.System sys = new common.Domain.System("VS","VS","192.168.24.74",8080);
+        common.Domain.System sys2 = new common.Domain.System("RAD","RAD","192.168.24.75",8080);
+        common.Domain.System sys3 = new common.Domain.System("ASS","ASS","192.168.24.76",8080);
 
         systemDao.create(sys);
         systemDao.create(sys2);

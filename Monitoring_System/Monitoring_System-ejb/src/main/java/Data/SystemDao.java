@@ -6,8 +6,8 @@
 package data;
 
 import business.MonitoringManager;
-import common.domain.Test;
-import common.domain.System;
+import common.Domain.Test;
+import common.Domain.System;
 import java.util.logging.Logger;
 
 import java.util.List;

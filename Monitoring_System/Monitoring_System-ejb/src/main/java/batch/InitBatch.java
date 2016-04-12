@@ -19,7 +19,7 @@ public class InitBatch implements Batchlet {
     
     @Override
     public String process() throws Exception {
-        for(common.domain.System sys : this.manager.getSystems()) {
+        for(common.Domain.System sys : this.manager.getSystems()) {
             this.manager.generateServerStatus(sys);
         }
         return "COMPLETED";
