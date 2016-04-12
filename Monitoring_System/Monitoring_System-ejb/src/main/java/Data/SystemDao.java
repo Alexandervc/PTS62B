@@ -52,4 +52,10 @@ public class SystemDao extends AbstractDao {
         return query.getResultList();
     }
     
+    public System getSystemByName(String name) {
+        Query query = this.getEntityManager().createNamedQuery("get system by name");
+        query.setParameter("name", name);   
+        return (System) query.getSingleResult();
+    }
+    
 }
