@@ -7,7 +7,6 @@ package dao;
 
 import service.RoadUsage;
 import domain.Bill;
-import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
@@ -53,8 +52,14 @@ public class DataStorage {
                         .log(Level.INFO, "rate-E succeed");
 
                 List<RoadUsage> roadUsages = new ArrayList<>();
-                RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
-                roadUsages.add(usage);
+                RoadUsage usage1 = new RoadUsage("TestLaan", RoadType.E, 12.9);
+                RoadUsage usage2 = new RoadUsage("TestLaan", RoadType.A, 5.9);
+                RoadUsage usage3 = new RoadUsage("TestLaan", RoadType.C, 8.4);
+                RoadUsage usage4 = new RoadUsage("TestLaan", RoadType.B, 4.2);
+                roadUsages.add(usage1);
+                roadUsages.add(usage2);
+                roadUsages.add(usage3);
+                roadUsages.add(usage4);
 
                 Logger.getLogger(DataStorage.class.getName())
                         .log(Level.INFO, "create person");
@@ -75,7 +80,7 @@ public class DataStorage {
 
         } catch (Exception e) {
             Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.SEVERE, null, e);
+                    .log(Level.SEVERE, null, e);
         }
     }
 }
