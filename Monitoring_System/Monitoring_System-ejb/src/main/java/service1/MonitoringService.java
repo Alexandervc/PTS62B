@@ -6,7 +6,7 @@
 package service;
 
 import business.MonitoringManager;
-import common.Domain.Test;
+import common.domain.Test;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +24,6 @@ import javax.inject.Inject;
  */
 @Stateless(name="monitoring")
 public class MonitoringService {
-    //Test
 
     @Resource
     private ManagedScheduledExecutorService executor;
@@ -70,7 +69,7 @@ public class MonitoringService {
      * application.
      * @return A list of systems.
      */
-    public List<common.Domain.System> retrieveSystems() {
+    public List<common.domain.System> retrieveSystems() {
         return manager.getSystems();
     }
     
@@ -79,14 +78,13 @@ public class MonitoringService {
      * @param system the Server object where the status will be generated for.
      * @return A list
      */
-    public List<Test> generateServerStatus(common.Domain.System system) {
-        return this.manager.generateServerStatus(system);
+    public void generateServerStatus(common.domain.System system) {
+        this.manager.generateServerStatus(system);
     }
     
-    public List<Test> retrieveLatestTests(common.Domain.System system) {
-        return this.generateServerStatus(system);
+    public List<Test> retrieveLatestTests(common.domain.System system) {
         
         // TODO: Get historical tests.
-        //return this.manager.retrieveLatestTests(system);
+        return this.manager.retrieveLatestTests(system);
     }
 }

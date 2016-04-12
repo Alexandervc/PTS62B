@@ -6,7 +6,7 @@
 package JUnitTests;
 
 import business.ServerStatusManager;
-import common.Domain.ServerStatus;
+import common.domain.ServerStatus;
 import java.io.IOException;
 import java.util.Map;
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class ServerStatusManagerTest {
     @Test
     public void retrieveApplicationStatusTest() 
             throws IOException, InterruptedException {
-        common.Domain.System system = new common.Domain.System();
+        common.domain.System system = new common.domain.System();
         system.setIp("192.168.24.70");
         
         // Retrieve the application status of the system.

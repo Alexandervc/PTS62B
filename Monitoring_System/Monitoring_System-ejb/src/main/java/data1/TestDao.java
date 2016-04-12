@@ -6,8 +6,8 @@
 package data;
 
 
-import common.Domain.Test;
-import common.Domain.TestType;
+import common.domain.Test;
+import common.domain.TestType;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -32,7 +32,7 @@ public class TestDao extends AbstractDao {
         return em;
     }
     
-    public Test retrieveLatestTestForTypeForSystem(common.Domain.System system
+    public Test retrieveLatestTestForTypeForSystem(common.domain.System system
             , TestType type) {
         Query query = this.em.createNamedQuery("get latest test for system with type");
         query.setParameter("systemId", system.getId());
