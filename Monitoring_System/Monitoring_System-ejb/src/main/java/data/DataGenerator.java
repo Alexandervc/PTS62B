@@ -36,7 +36,7 @@ public class DataGenerator {
         Test t5 = new Test(TestType.FUNCTIONAL, new Timestamp(System.currentTimeMillis()),false );
         Test t6 = new Test(TestType.ENDPOINTS, new Timestamp(System.currentTimeMillis()),false );
         Test t7 = new Test(TestType.STATUS, new Timestamp(System.currentTimeMillis()),true );
-        Test t8 = new Test(TestType.FUNCTIONAL, new Timestamp(System.currentTimeMillis()),false );
+        Test t8 = new Test(TestType.FUNCTIONAL, new Timestamp(System.currentTimeMillis()),true );
         Test t9 = new Test(TestType.ENDPOINTS, new Timestamp(System.currentTimeMillis()),true );
         sys.addTest(t1);
         sys.addTest(t2);
