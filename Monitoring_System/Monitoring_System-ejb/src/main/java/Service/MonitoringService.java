@@ -6,7 +6,7 @@
 package service;
 
 import business.MonitoringManager;
-import common.domain.Test;
+import common.Domain.Test;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +70,7 @@ public class MonitoringService {
      * application.
      * @return A list of systems.
      */
-    public List<common.domain.System> retrieveSystems() {
+    public List<common.Domain.System> retrieveSystems() {
         return manager.getSystems();
     }
     
@@ -79,11 +79,11 @@ public class MonitoringService {
      * @param system the Server object where the status will be generated for.
      * @return A list
      */
-    public List<Test> generateServerStatus(common.domain.System system) {
+    public List<Test> generateServerStatus(common.Domain.System system) {
         return this.manager.generateServerStatus(system);
     }
     
-    public List<Test> retrieveLatestTests(common.domain.System system) {
+    public List<Test> retrieveLatestTests(common.Domain.System system) {
         return this.generateServerStatus(system);
         
         // TODO: Get historical tests.

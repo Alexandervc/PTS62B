@@ -5,10 +5,10 @@
  */
 package business;
 
-import common.domain.ServerStatus;
-import common.domain.System;
-import common.domain.Test;
-import common.domain.TestType;
+import common.Domain.ServerStatus;
+import common.Domain.System;
+import common.Domain.Test;
+import common.Domain.TestType;
 import data.RMI_Client;
 import data.SystemDao;
 import data.TestDao;
