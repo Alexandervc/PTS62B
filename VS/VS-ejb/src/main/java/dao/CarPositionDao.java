@@ -19,7 +19,7 @@ import javax.persistence.Query;
  * @author Alexander
  */
 @Stateless
-public class CarPositionDao extends DaoFacade<CarPosition> {
+public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
     @PersistenceContext
     private EntityManager em;
 

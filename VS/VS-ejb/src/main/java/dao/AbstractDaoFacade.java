@@ -12,28 +12,28 @@ import javax.persistence.EntityManager;
  * The facade with basic functionality for dao's.
  * @author Alexander
  */
-public abstract class DaoFacade<T> implements Serializable {
+public abstract class AbstractDaoFacade<T> implements Serializable {
     private Class<T> entityClass;
 
-    public DaoFacade(Class<T> entityClass) {
+    public AbstractDaoFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
     
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
-        getEntityManager().persist(entity);
+        this.getEntityManager().persist(entity);
     }
 
     public void edit(T entity) {
-        getEntityManager().merge(entity);
+        this.getEntityManager().merge(entity);
     }
 
     public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+        this.getEntityManager().remove(this.getEntityManager().merge(entity));
     }
 
     public T find(Object id) {
-        return getEntityManager().find(this.entityClass, id);
+        return this.getEntityManager().find(this.entityClass, id);
     }
 }

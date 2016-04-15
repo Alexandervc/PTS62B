@@ -29,11 +29,11 @@ public class RoadUsageManager {
     /**
      * Generate the roadUsages between the given date for the given cartracker.
      * @param begin The begin date of the period to get the roadUsages between.
-     * Cannot be after end
+     *      Cannot be after end
      * @param end The end date of the period to get the roadUsages between.
      * @param cartrackerId The cartracker to get the roadUsages for.
      * @return The roadusages between the given dates for the given 
-     * cartrackerId.
+     *      cartrackerId.
      */
     public List<RoadUsage> generateRoadUsagesBetween(Date begin, Date end, 
             Long cartrackerId) {
@@ -42,8 +42,8 @@ public class RoadUsageManager {
         }
         
         // Get carPositions
-        List<CarPosition> cps = carPositionDao.getPositionsBetween(begin, end, 
-                cartrackerId);
+        List<CarPosition> cps = this.carPositionDao.getPositionsBetween(begin, 
+                end, cartrackerId);
         
         // Make roadUsages from carPositions
         Map<Road, RoadUsage> roadUsages = new HashMap<>();

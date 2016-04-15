@@ -24,11 +24,11 @@ public class RoadUsageService {
    /**
      * Generate the roadUsages between the given date for the given cartracker.
      * @param begin The begin date of the period to get the roadUsages between.
-     * Cannot be after end
+     *      Cannot be after end
      * @param end The end date of the period to get the roadUsages between.
      * @param cartrackerId The cartracker to get the roadUsages for.
      * @return The roadusages between the given dates for the given 
-     * cartrackerId.
+     *      cartrackerId.
      */
     public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
             Date end) {

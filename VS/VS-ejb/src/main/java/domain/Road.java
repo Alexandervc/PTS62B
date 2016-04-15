@@ -39,6 +39,10 @@ public class Road implements Serializable, Comparable<Road> {
     @Enumerated(EnumType.STRING)
     private RoadType roadType;
     
+    /**
+     * Empty constructor.
+     * @deprecated only for jpa
+     */
     @Deprecated
     public Road() {
         

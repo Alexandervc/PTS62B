@@ -23,12 +23,12 @@ public class CarPositionService {
      * Save the given information into a CarPosition.
      * @param cartrackerId The unique identifier of a cartracker.
      * @param moment The moment in which the cartracker was at the given 
-     * coordinates.
+     *      coordinates.
      * @param xCoordinate The x-coordinate of the carPosition.
      * @param yCoordinate The y-coordinate of the carPosition.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since
-     * the last carPosition.
+     *      the last carPosition.
      */
     public void saveCarPosition(Long cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 

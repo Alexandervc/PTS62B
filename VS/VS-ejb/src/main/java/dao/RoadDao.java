@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author Alexander
  */
 @Stateless
-public class RoadDao extends DaoFacade<Road> {
+public class RoadDao extends AbstractDaoFacade<Road> {
     @PersistenceContext
     private EntityManager em;
 

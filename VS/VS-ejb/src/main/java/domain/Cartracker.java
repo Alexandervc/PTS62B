@@ -24,6 +24,10 @@ public class Cartracker implements Serializable {
     @OneToMany (mappedBy = "cartracker")
     private List<CarPosition> positions;
     
+    /**
+     * Empty constructor.
+     * @deprecated only for jpa
+     */
     @Deprecated
     public Cartracker() {
         

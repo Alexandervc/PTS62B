@@ -48,6 +48,10 @@ public class CarPosition implements Serializable {
     @ManyToOne
     private Cartracker cartracker;
     
+    /**
+     * Empty constructor.
+     * @deprecated only for jpa
+     */
     @Deprecated
     public CarPosition(){
         
@@ -57,12 +61,12 @@ public class CarPosition implements Serializable {
      * A position of the cartracker.
      * @param cartracker The cartracker which this is a position for.
      * @param moment The moment on which the cartracker was on the given 
-     * coordinates. Cannot be null.
+     *      coordinates. Cannot be null.
      * @param xCoordinate The x-coordinate of this position.
      * @param yCoordinate The y-coordinate of this position.
      * @param road The road on which this position was. Cannot be null.
      * @param meter The distance in meters the cartracker movement since the 
-     * last carposition. Cannot be negative.
+     *      last carposition. Cannot be negative.
      */
     public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
             Double yCoordinate, Road road, Double meter) {

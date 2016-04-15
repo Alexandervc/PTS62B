@@ -8,8 +8,6 @@ package service.jms;
 import business.RoadUsage;
 import com.google.gson.Gson;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

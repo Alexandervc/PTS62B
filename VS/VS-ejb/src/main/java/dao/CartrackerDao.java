@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Alexander
  */
 @Stateless
-public class CartrackerDao extends DaoFacade<Cartracker> {
+public class CartrackerDao extends AbstractDaoFacade<Cartracker> {
     @PersistenceContext
     private EntityManager em;
     

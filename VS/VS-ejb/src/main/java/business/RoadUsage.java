@@ -20,7 +20,7 @@ public class RoadUsage implements Serializable{
     /**
      * Helper class to store a usage of a road during a given period.
      * @param roadName The name of the road which this roadUsage is about.
-     * Cannort be null or empty.
+     *      Cannot be null or empty.
      * @param type The type of the road which this roadUsage is about.
      * @param km The distance in km's that is driven on the given road.
      */
@@ -34,7 +34,7 @@ public class RoadUsage implements Serializable{
     }
 
     public Double getKm() {
-        return km;
+        return this.km;
     }
 
     public void setKm(Double km) {
@@ -42,7 +42,7 @@ public class RoadUsage implements Serializable{
     }
 
     public String getRoadName() {
-        return roadName;
+        return this.roadName;
     }
 
     public void setRoadName(String roadName) {
@@ -50,7 +50,7 @@ public class RoadUsage implements Serializable{
     }
 
     public RoadType getRoadType() {
-        return roadType;
+        return this.roadType;
     }
 
     public void setRoadType(RoadType roadType) {
