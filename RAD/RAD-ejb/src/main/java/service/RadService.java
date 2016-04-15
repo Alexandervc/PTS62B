@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.jms.JMSException;
-import service.jms.JMSRADSender;
+import service.jms.RequestRoadUsagesBean;
 
 /**
  *
@@ -49,7 +49,7 @@ public class RadService {
     private CarManager carManager;
 
     @Inject
-    private JMSRADSender radSender;
+    private RequestRoadUsagesBean requestRoadUsages;
 
     private Bill bill;
 
@@ -86,7 +86,7 @@ public class RadService {
         carManager.createCar(person, cartracker, fuel);
     }
 
-    public Bill generateRoadUsages(String username, Date begin, Date end) {
+    public Bill requestRoadUsages(String username, Date begin, Date end) {
         Bill generatedBill = null;
 
         if (this.bill != null) {
@@ -107,7 +107,7 @@ public class RadService {
 
                 cartrackerId = person.getCars().get(0).getCartrackerId();
 
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId,
+                requestRoadUsages.requestRoadUsages(cartrackerId,
                         begin, end);
                 generatedBill = new Bill();
             } catch (JMSException ex) {

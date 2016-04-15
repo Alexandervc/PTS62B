@@ -6,7 +6,6 @@
 package business;
 
 import dao.CarPositionDao;
-import dao.CartrackerDao;
 import domain.CarPosition;
 import domain.Road;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- *
+ * The manager of roadUsages.
  * @author Alexander
  */
 @Stateless
@@ -27,27 +26,26 @@ public class RoadUsageManager {
     @Inject
     private CarPositionDao carPositionDao;
     
-    @PostConstruct
-    public void start() {
-        System.out.println("Post construct movementManager");
-    }
-    
     /**
-     * 
-     * @param begin cannot be after end
-     * @param end
-     * @param cartrackerId
-     * @return The roadusages between the given date for the given cartrackerId
+     * Generate the roadUsages between the given date for the given cartracker.
+     * @param begin The begin date of the period to get the roadUsages between.
+     * Cannot be after end
+     * @param end The end date of the period to get the roadUsages between.
+     * @param cartrackerId The cartracker to get the roadUsages for.
+     * @return The roadusages between the given dates for the given 
+     * cartrackerId.
      */
-    public List<RoadUsage> getRoadUsagesBetween(Date begin, Date end, 
+    public List<RoadUsage> generateRoadUsagesBetween(Date begin, Date end, 
             Long cartrackerId) {
         if(begin.after(end)) {
             throw new IllegalArgumentException("begin after end");
         }
+        
+        // Get carPositions
         List<CarPosition> cps = carPositionDao.getPositionsBetween(begin, end, 
                 cartrackerId);
         
-        // Generate roadUsages
+        // Make roadUsages from carPositions
         Map<Road, RoadUsage> roadUsages = new HashMap<>();
         for(CarPosition cp : cps) {
             if(!roadUsages.containsKey(cp.getRoad())){
@@ -63,10 +61,7 @@ public class RoadUsageManager {
             }
         }
         
-        // TODO verbeteren
-        List<RoadUsage> roadUsagesList = new ArrayList<>();
-        roadUsagesList.addAll(roadUsages.values());
-        
+        List<RoadUsage> roadUsagesList = new ArrayList<>(roadUsages.values());
         return roadUsagesList;
     }
 }

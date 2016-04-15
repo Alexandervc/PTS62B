@@ -19,7 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * Represents a road.
  * @author Alexander
  */
 @Entity
@@ -45,9 +45,9 @@ public class Road implements Serializable, Comparable<Road> {
     }
     
     /**
-     * 
-     * @param name cannot be or empty
-     * @param roadType
+     * Represents a road.
+     * @param name The name of the road. Cannot be null or empty
+     * @param roadType The type of the road.
      */
     public Road(String name, RoadType roadType) {
         if(name == null || name.isEmpty()){
@@ -59,7 +59,7 @@ public class Road implements Serializable, Comparable<Road> {
     }
 
     public RoadType getRoadType() {
-        return roadType;
+        return this.roadType;
     }
 
     public void setRoadType(RoadType roadType) {
@@ -67,15 +67,15 @@ public class Road implements Serializable, Comparable<Road> {
     }
 
     public List<CarPosition> getCarPositions() {
-        return carPositions;
+        return new ArrayList<>(this.carPositions);
     }
 
     public void setCarPositions(List<CarPosition> carPositions) {
-        this.carPositions = carPositions;
+        this.carPositions = new ArrayList<>(carPositions);
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -83,7 +83,7 @@ public class Road implements Serializable, Comparable<Road> {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {

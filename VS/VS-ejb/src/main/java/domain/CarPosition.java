@@ -18,7 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- *
+ * A position of the cartracker.
  * @author Alexander
  */
 @Entity
@@ -37,9 +37,7 @@ public class CarPosition implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    //@Temporal(TemporalType.DATE)
     private Date moment;
-    
     private Double xCoordinate;
     private Double yCoordinate;
     private Double meter;
@@ -56,13 +54,15 @@ public class CarPosition implements Serializable {
     }
     
     /**
-     * 
-     * @param cartracker
-     * @param moment cannot be null
-     * @param xCoordinate
-     * @param yCoordinate
-     * @param road cannot be null
-     * @param meter cannto be negative
+     * A position of the cartracker.
+     * @param cartracker The cartracker which this is a position for.
+     * @param moment The moment on which the cartracker was on the given 
+     * coordinates. Cannot be null.
+     * @param xCoordinate The x-coordinate of this position.
+     * @param yCoordinate The y-coordinate of this position.
+     * @param road The road on which this position was. Cannot be null.
+     * @param meter The distance in meters the cartracker movement since the 
+     * last carposition. Cannot be negative.
      */
     public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
             Double yCoordinate, Road road, Double meter) {
@@ -95,7 +95,7 @@ public class CarPosition implements Serializable {
     }
 
     public Date getMoment() {
-        return new Date(moment.getTime());
+        return new Date(this.moment.getTime());
     }
 
     public void setMoment(Date moment) {
@@ -103,7 +103,7 @@ public class CarPosition implements Serializable {
     }
 
     public Cartracker getCartracker() {
-        return cartracker;
+        return this.cartracker;
     }
 
     public void setCartracker(Cartracker cartracker) {
@@ -111,7 +111,7 @@ public class CarPosition implements Serializable {
     }
 
     public Double getxCoordinate() {
-        return xCoordinate;
+        return this.xCoordinate;
     }
 
     public void setxCoordinate(Double xCoordinate) {
@@ -119,7 +119,7 @@ public class CarPosition implements Serializable {
     }
 
     public Double getyCoordinate() {
-        return yCoordinate;
+        return this.yCoordinate;
     }
 
     public void setyCoordinate(Double yCoordinate) {
@@ -127,7 +127,7 @@ public class CarPosition implements Serializable {
     }
 
     public Road getRoad() {
-        return road;
+        return this.road;
     }
 
     public void setRoad(Road road) {
@@ -135,7 +135,7 @@ public class CarPosition implements Serializable {
     }
 
     public Double getMeter() {
-        return meter;
+        return this.meter;
     }
 
     public void setMeter(Double meter) {

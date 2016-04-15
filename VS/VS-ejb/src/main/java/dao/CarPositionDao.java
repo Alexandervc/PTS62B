@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * The dao for carPosition.
  * @author Alexander
  */
 @Stateless
@@ -26,20 +26,22 @@ public class CarPositionDao extends DaoFacade<CarPosition> {
     public CarPositionDao() {
         super(CarPosition.class);
     }
-    
-    @PostConstruct
-    public void start() {
-        System.out.println("Post construct CarPositionDao");
-    }
 
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
     
+    /**
+     * Get the carpositions between the given dates for the given cartracker.
+     * @param begin The begin date of the period to get the carpositions for.
+     * @param end The end date of the period to get the carpositions for.
+     * @param cartrackerId The cartracker to get the carpositions for.
+     * @return A list of carpositions.
+     */
     public List<CarPosition> getPositionsBetween(Date begin, Date end, 
             Long cartrackerId) {
-        Query q = em.createNamedQuery("CarPosition.getPositionsBetween");
+        Query q = this.em.createNamedQuery("CarPosition.getPositionsBetween");
         // TODO weer terug zetten
         //q.setParameter("begin", begin);
         //q.setParameter("end", end);

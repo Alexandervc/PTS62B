@@ -9,7 +9,7 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 
 /**
- *
+ * The facade with basic functionality for dao's.
  * @author Alexander
  */
 public abstract class DaoFacade<T> implements Serializable {
@@ -34,6 +34,6 @@ public abstract class DaoFacade<T> implements Serializable {
     }
 
     public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+        return getEntityManager().find(this.entityClass, id);
     }
 }

@@ -27,9 +27,10 @@ import service.RoadUsage;
  * @author Alexander
  */
 @MessageDriven(mappedName="jms/RAD/queue", activationConfig={
-    @ActivationConfigProperty(propertyName="messageSelector", propertyValue="method='generateBill'")
+    @ActivationConfigProperty(propertyName="messageSelector", 
+            propertyValue="method='receiveRoadUsages'")
 })
-public class GenerateBillBean implements MessageListener {
+public class ReceiveRoadUsagesBean implements MessageListener {
 
     @Inject
     private RadService radService;
@@ -40,16 +41,16 @@ public class GenerateBillBean implements MessageListener {
             // Make roadusage
             TextMessage textMessage = (TextMessage) message;
             String jsonString = textMessage.getText();
-            Logger.getLogger(GenerateBillBean.class.getName())
+            Logger.getLogger(ReceiveRoadUsagesBean.class.getName())
                     .log(Level.INFO, jsonString);
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<RoadUsage>>() {}.getType();
             List<RoadUsage> roadUsages = gson.fromJson(jsonString, type);
-            Logger.getLogger(GenerateBillBean.class.getName())
+            Logger.getLogger(ReceiveRoadUsagesBean.class.getName())
                     .log(Level.INFO, roadUsages.toString());
             radService.receiveRoadUsages(roadUsages);
         } catch (JMSException ex) {
-            Logger.getLogger(GenerateBillBean.class.getName())
+            Logger.getLogger(ReceiveRoadUsagesBean.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
     }

@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * Represents a cartracker.
  * @author Alexander
  */
 @Entity
@@ -30,8 +30,8 @@ public class Cartracker implements Serializable {
     }
     
     /**
-     * 
-     * @param id 
+     * Represents a cartracker.
+     * @param id The id for the cartracker.
      */
     public Cartracker(Long id) {
         this.id = id;
@@ -39,7 +39,7 @@ public class Cartracker implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -47,7 +47,7 @@ public class Cartracker implements Serializable {
     }
 
     public List<CarPosition> getPositions() {
-        return new ArrayList<>(positions);
+        return new ArrayList<>(this.positions);
     }
 
     public void setPositions(List<CarPosition> positions) {

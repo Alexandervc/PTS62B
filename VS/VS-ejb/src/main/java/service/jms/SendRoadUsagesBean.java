@@ -20,11 +20,11 @@ import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
 /**
- *
+ * The bean that sends roadUsages to RAD.
  * @author Alexander
  */
 @Stateless
-public class JMSVSSender {
+public class SendRoadUsagesBean {
     @Inject
     @JMSConnectionFactory("jms/RADConnectionFactory")
     private JMSContext context;
@@ -32,21 +32,19 @@ public class JMSVSSender {
     @Resource(lookup="jms/RAD/queue")
     private Destination queue;
     
+    /**
+     * Send the given roadUsages via JMS to RAD.
+     * @param roadUsages The roadUsages.
+     * @throws JMSException 
+     */
     public void sendRoadUsages(List<RoadUsage> roadUsages) throws JMSException {
         // To JSON
         Gson gson = new Gson();
         String jsonString = gson.toJson(roadUsages);
-        //String jsonString = "[";
-        //for(RoadUsage ru : roadUsages) {
-        //    jsonString += "{\"roadName\":\"" + ru.getRoadName() + "\", \"roadType\":\"" + ru.getRoadType() + "\", \"km\":\"" + ru.getKm().toString() + "\"},";
-        //}
-        //jsonString = jsonString.substring(0, jsonString.length() -1) + "]";
-        Logger.getLogger(JMSVSSender.class.getName())
-                .log(Level.INFO, jsonString);
         
-        TextMessage textMessage = context.createTextMessage(jsonString);
-        textMessage.setStringProperty("method", "generateBill");
+        TextMessage textMessage = this.context.createTextMessage(jsonString);
+        textMessage.setStringProperty("method", "receiveRoadUsages");
         
-        context.createProducer().send(queue, textMessage);
+        this.context.createProducer().send(this.queue, textMessage);
     }
 }

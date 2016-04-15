@@ -22,7 +22,7 @@ import javax.jms.MapMessage;
  * @author Alexander
  */
 @Stateless
-public class JMSRADSender {
+public class RequestRoadUsagesBean {
 
     @Inject
     @JMSConnectionFactory("jms/VSConnectionFactory")
@@ -31,7 +31,7 @@ public class JMSRADSender {
     @Resource(lookup = "jms/VS/queue")
     private Destination queue;
 
-    public void sendGenerateRoadUsagesCommand(Long cartrackerId,
+    public void requestRoadUsages(Long cartrackerId,
         Date beginDate, Date endDate) throws JMSException {
         MapMessage mapMessage = context.createMapMessage();
         mapMessage.setStringProperty("method", "generateRoadUsages");

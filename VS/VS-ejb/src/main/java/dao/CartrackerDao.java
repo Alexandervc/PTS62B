@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * The dao for cartracker.
  * @author Alexander
  */
 @Stateless
@@ -25,7 +25,6 @@ public class CartrackerDao extends DaoFacade<Cartracker> {
     
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
-    
 }

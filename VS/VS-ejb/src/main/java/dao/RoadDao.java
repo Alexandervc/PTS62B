@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * The dao for road.
  * @author Alexander
  */
 @Stateless
@@ -27,11 +27,11 @@ public class RoadDao extends DaoFacade<Road> {
 
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
     
     public List<Road> findAll() {
-        Query q =  em.createNamedQuery("Road.findAll");
+        Query q =  this.em.createNamedQuery("Road.findAll");
         List<Road> roads = (List<Road>) q.getResultList();
         return roads;
     }

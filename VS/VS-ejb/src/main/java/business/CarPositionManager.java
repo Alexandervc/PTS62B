@@ -14,13 +14,11 @@ import domain.Road;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- *
+ * The manager of carPositions.
  * @author Alexander
  */
 @Stateless
@@ -35,18 +33,20 @@ public class CarPositionManager {
     private CarPositionDao carPositionDao;
     
     /**
-     * Save the given information in a CarPosition
-     * @param cartrackerId
-     * @param moment
-     * @param xCoordinate
-     * @param yCoordinate
-     * @param roadName
-     * @param meter 
+     * Save the given information into a CarPosition.
+     * @param cartrackerId The unique identifier of a cartracker.
+     * @param moment The moment in which the cartracker was at the given 
+     * coordinates.
+     * @param xCoordinate The x-coordinate of the carPosition.
+     * @param yCoordinate The y-coordinate of the carPosition.
+     * @param roadName The name of the road on which the cartracker was.
+     * @param meter The number of meters the cartracker has measured since
+     * the last carPosition.
      */
     public void saveCarPosition(Long cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
             Double meter){
-        // find cartracker
+        // Find cartracker
         Cartracker cartracker = this.cartrackerDao.find(cartrackerId);
         if(cartracker == null) {
             // TODO foreign cartracker
@@ -54,14 +54,13 @@ public class CarPositionManager {
         }
         
         // TODO road anders
-        List<Road> roads = roadDao.findAll();
+        List<Road> roads = this.roadDao.findAll();
         Random random = new Random();
         Road road = roads.get(random.nextInt(roads.size()));
         
+        // Make carPosition
         CarPosition cp = new CarPosition(cartracker, moment, xCoordinate,
             yCoordinate, road, meter);
-        Logger.getLogger(CarPositionManager.class.getName())
-                .log(Level.INFO, cp.toString());
                 
         this.carPositionDao.create(cp);
     }

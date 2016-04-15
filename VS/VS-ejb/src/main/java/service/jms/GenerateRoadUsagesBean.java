@@ -23,7 +23,8 @@ import javax.jms.MessageListener;
 import service.RoadUsageService;
 
 /**
- *
+ * The messagedriven bean for receiving commands from RAD 
+ * to generate roadUsages.
  * @author Alexander
  */
 @MessageDriven(mappedName="jms/VS/queue", activationConfig = {
@@ -35,7 +36,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
     private RoadUsageService roadUsageService;
     
     @Inject
-    private JMSVSSender vsSender;
+    private SendRoadUsagesBean roadUsagesSender;
     
     @Override
     public void onMessage(Message message) {
@@ -57,7 +58,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
                     .log(Level.INFO, String.valueOf(roadUsages.size()));
             
             // Send
-            vsSender.sendRoadUsages(roadUsages);
+            this.roadUsagesSender.sendRoadUsages(roadUsages);
         } catch (JMSException | ParseException ex) {
             Logger.getLogger(GenerateRoadUsagesBean.class.getName())
                     .log(Level.SEVERE, null, ex);

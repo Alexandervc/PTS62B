@@ -9,7 +9,7 @@ import domain.RoadType;
 import java.io.Serializable;
 
 /**
- *
+ * Helper class to store a usage of a road during a given period.
  * @author Alexander
  */
 public class RoadUsage implements Serializable{
@@ -17,7 +17,17 @@ public class RoadUsage implements Serializable{
     private RoadType roadType;
     private Double km;
     
+    /**
+     * Helper class to store a usage of a road during a given period.
+     * @param roadName The name of the road which this roadUsage is about.
+     * Cannort be null or empty.
+     * @param type The type of the road which this roadUsage is about.
+     * @param km The distance in km's that is driven on the given road.
+     */
     public RoadUsage(String roadName, RoadType type, Double km) {
+        if(roadName == null || roadName.isEmpty()) {
+            throw new IllegalArgumentException("roadName null or empty");
+        }
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
@@ -48,8 +58,8 @@ public class RoadUsage implements Serializable{
     }
     
     /**
-     * Add the given meter to this km
-     * @param meter 
+     * Add the given meter to this km.
+     * @param meter The distance in meter to add.
      */
     public void addMeter(Double meter) {
         this.km += (meter / 1000);
