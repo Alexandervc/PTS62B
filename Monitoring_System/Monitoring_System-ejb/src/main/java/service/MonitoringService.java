@@ -24,7 +24,6 @@ import javax.inject.Inject;
  */
 @Stateless(name="monitoring")
 public class MonitoringService {
-
     @Resource
     private ManagedScheduledExecutorService executor;
  
