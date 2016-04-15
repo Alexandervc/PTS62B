@@ -45,7 +45,7 @@ public class Road implements Serializable, Comparable<Road> {
      */
     @Deprecated
     public Road() {
-        
+        // JPA
     }
     
     /**

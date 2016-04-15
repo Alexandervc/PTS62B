@@ -54,7 +54,7 @@ public class CarPosition implements Serializable {
      */
     @Deprecated
     public CarPosition(){
-        
+        // JPA
     }
     
     /**
@@ -91,7 +91,7 @@ public class CarPosition implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {

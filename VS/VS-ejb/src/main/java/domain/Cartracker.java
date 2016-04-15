@@ -30,7 +30,7 @@ public class Cartracker implements Serializable {
      */
     @Deprecated
     public Cartracker() {
-        
+        // JPA
     }
     
     /**
