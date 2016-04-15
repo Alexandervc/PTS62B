@@ -21,6 +21,9 @@ public class RoadDao extends AbstractDaoFacade<Road> {
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * The dao for road.
+     */
     public RoadDao() {
         super(Road.class);
     }
@@ -30,9 +33,12 @@ public class RoadDao extends AbstractDaoFacade<Road> {
         return this.em;
     }
     
+    /**
+     * Find all roads in the database.
+     * @return All found roads.
+     */
     public List<Road> findAll() {
         Query q =  this.em.createNamedQuery("Road.findAll");
-        List<Road> roads = (List<Road>) q.getResultList();
-        return roads;
+        return (List<Road>) q.getResultList();
     }
 }

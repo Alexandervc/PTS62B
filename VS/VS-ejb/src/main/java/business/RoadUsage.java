@@ -13,6 +13,8 @@ import java.io.Serializable;
  * @author Alexander
  */
 public class RoadUsage implements Serializable{
+    private static final Double kmToMeter = 1000.0;
+    
     private String roadName;
     private RoadType roadType;
     private Double km;
@@ -62,6 +64,6 @@ public class RoadUsage implements Serializable{
      * @param meter The distance in meter to add.
      */
     public void addMeter(Double meter) {
-        this.km += (meter / 1000);
+        this.km += meter / kmToMeter;
     }
 }

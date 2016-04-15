@@ -31,9 +31,10 @@ public class TestDataStorage {
 
     @PostConstruct
     public void start() {
-        if (this.cartrackerDao.find(123456789L) == null) {
+        Long testCartracker = 123456789L;
+        if (this.cartrackerDao.find(testCartracker) == null) {
             // Insert test data
-            Cartracker cartracker = new Cartracker(123456789L);
+            Cartracker cartracker = new Cartracker(testCartracker);
             this.cartrackerDao.create(cartracker);
             Road road = new Road("A1", RoadType.A);
             Road road2 = new Road("B1", RoadType.B);

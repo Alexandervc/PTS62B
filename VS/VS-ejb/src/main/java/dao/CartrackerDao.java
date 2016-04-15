@@ -19,6 +19,9 @@ public class CartrackerDao extends AbstractDaoFacade<Cartracker> {
     @PersistenceContext
     private EntityManager em;
     
+    /**
+     * The dao for cartracker.
+     */
     public CartrackerDao() {
         super(Cartracker.class);
     }

@@ -33,7 +33,7 @@ public class CarPositionService {
     public void saveCarPosition(Long cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
             Double meter) {
-        this.carPositionManager.saveCarPosition(cartrackerId, moment, xCoordinate, 
-                yCoordinate, roadName, meter);
+        this.carPositionManager.saveCarPosition(cartrackerId, moment, 
+                xCoordinate, yCoordinate, roadName, meter);
     }
 }

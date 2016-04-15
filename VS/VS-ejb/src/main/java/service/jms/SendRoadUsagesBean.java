@@ -33,7 +33,7 @@ public class SendRoadUsagesBean {
     /**
      * Send the given roadUsages via JMS to RAD.
      * @param roadUsages The roadUsages.
-     * @throws JMSException 
+     * @throws JMSException If sending via JMS failed.
      */
     public void sendRoadUsages(List<RoadUsage> roadUsages) throws JMSException {
         // To JSON

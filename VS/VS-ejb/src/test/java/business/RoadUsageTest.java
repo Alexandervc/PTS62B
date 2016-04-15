@@ -5,10 +5,10 @@
  */
 package business;
 
-import domain.RoadType;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import domain.RoadType;
 
 /**
  * Test for RoadUsage.
@@ -19,24 +19,24 @@ public class RoadUsageTest {
     
     @Before
     public void setUp() {
-        roadUsage = new RoadUsage("roadName", RoadType.A, 0.0);
+        this.roadUsage = new RoadUsage("roadName", RoadType.A, 0.0);
     }
     
     @Test
     public void addMeter0Shouldadd0() {
         Double expected = 0.0;
-        roadUsage.addMeter(0.0);
-        assertEquals(expected, roadUsage.getKm());
+        this.roadUsage.addMeter(0.0);
+        assertEquals(expected, this.roadUsage.getKm());
     }
     
     @Test
     public void addMeter500And1000ShouldAddOneAndHalf() {
         Double expected = 1.0;
-        roadUsage.addMeter(1000.0);
-        assertEquals(expected, roadUsage.getKm());
+        this.roadUsage.addMeter(1000.0);
+        assertEquals(expected, this.roadUsage.getKm());
         
         expected = 1.5;
-        roadUsage.addMeter(500.0);
-        assertEquals(expected, roadUsage.getKm());
+        this.roadUsage.addMeter(500.0);
+        assertEquals(expected, this.roadUsage.getKm());
     }
 }

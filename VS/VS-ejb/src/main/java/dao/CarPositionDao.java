@@ -8,7 +8,6 @@ package dao;
 import domain.CarPosition;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +22,9 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * The dao for carPosition.
+     */
     public CarPositionDao() {
         super(CarPosition.class);
     }
