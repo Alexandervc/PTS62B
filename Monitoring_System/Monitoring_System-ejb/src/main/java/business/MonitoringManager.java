@@ -5,13 +5,6 @@
  */
 package business;
 
-import common.domain.ServerStatus;
-import common.domain.System;
-import common.domain.Test;
-import common.domain.TestType;
-import data.SystemDao;
-import data.TestDao;
-import data.jms.CheckRequestSender;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -23,10 +16,17 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSException;
+import common.domain.ServerStatus;
+import common.domain.System;
+import common.domain.Test;
+import common.domain.TestType;
+import data.SystemDao;
+import data.TestDao;
+import data.jms.CheckRequestSender;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 @Stateless
 public class MonitoringManager {

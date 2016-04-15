@@ -11,11 +11,11 @@ import javax.inject.Inject;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 public class InitBatch implements Batchlet {
-    private @Inject MonitoringManager manager;
-
+    @Inject
+    private MonitoringManager manager;     
     
     @Override
     public String process() throws Exception {
@@ -29,7 +29,7 @@ public class InitBatch implements Batchlet {
 
     @Override
     public void stop() throws Exception {
-        System.out.println("stops");
+        //Stops the method, currently no usage.
     }
     
 }
