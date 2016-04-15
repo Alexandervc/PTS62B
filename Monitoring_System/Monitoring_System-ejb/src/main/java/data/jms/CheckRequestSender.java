@@ -5,6 +5,8 @@
  */
 package data.jms;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,9 +30,13 @@ public class CheckRequestSender {
     private Destination topic;
     
       
-    public void requestChecks() throws JMSException{
-        Message message = context.createMessage();
-        message.setStringProperty("method", "getFunctionalStatus");
-        context.createProducer().send(topic, message);
+    public void requestChecks(){
+        try {
+            Message message = context.createMessage();
+            message.setStringProperty("method", "getFunctionalStatus");
+            context.createProducer().send(topic, message);
+        } catch (JMSException ex) {
+            Logger.getLogger(CheckRequestSender.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

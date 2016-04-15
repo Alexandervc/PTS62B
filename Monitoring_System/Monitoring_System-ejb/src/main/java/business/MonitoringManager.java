@@ -31,7 +31,7 @@ import data.jms.CheckRequestSender;
 @Stateless
 public class MonitoringManager {
     
-    private final static Logger LOGGER = Logger
+    private static final Logger LOGGER = Logger
             .getLogger(MonitoringManager.class.getName()); 
 
     @EJB
@@ -172,10 +172,22 @@ public class MonitoringManager {
         
         return test;
     }   
+    
+    /**
+     * Retrieves the system based on its unique name.
+     * @param name The unique name of the system. 
+     * @return The system, null if the system isn't found.
+     */
     public System retrieveSystemByName(String name) {
         return this.systemDao.getSystemByName(name);
     }
     
+    /**
+     *  Creates and adds a test to a system based on its name.
+     * @param systemName The name of the system.
+     * @param result The result of the test.
+     * @param type The type of test that has to be created and added.
+     */
     public void addTest(String systemName, boolean result, TestType type){
         System system = this.systemDao.getSystemByName(systemName);
         List<Test> tests = system.getTests();
@@ -186,6 +198,11 @@ public class MonitoringManager {
         this.systemDao.edit(system);    
     }
     
+    /**
+     * Retrieves the last test for every type from a system.
+     * @param system The system where the tests are requested from.
+     * @return A list of the last test for every type of test.
+     */
     public List<Test> retrieveLatestTests(System system) {
         List<Test> returnList = new ArrayList<>();
         returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
@@ -197,7 +214,10 @@ public class MonitoringManager {
         return returnList;
     }
     
-    public void testFunctionalStateOfSystems() throws JMSException {
+    /**
+     * Tests the functional state of the systems. 
+     */
+    public void testFunctionalStateOfSystems() {
         checkRequestSender.requestChecks();
     }
 }
