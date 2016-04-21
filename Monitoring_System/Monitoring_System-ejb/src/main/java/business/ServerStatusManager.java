@@ -19,9 +19,10 @@ import util.CmdHelper;
 /**
  * Provides the server status functionality using asadmin.
  * 
- * This requires the C:/glassfish4/glassfish/bin folder to be added to the PATH
- * variable of the system, as well as a password file on the PASSWORD_FILE
- * location containing the following parameters:
+ * This requires the C:/glassfish4/glassfish/bin 
+ * (or C:/payara41/glassfish/bin) folder to be added to the PATH variable of
+ * the system, as well as a password file on the PASSWORD_FILE location 
+ * containing the following parameters:
  * 
  * AS_ADMIN_PASSWORD=admin
  * AS_ADMIN_ADMINPASSWORD=admin
@@ -42,11 +43,11 @@ public class ServerStatusManager {
      * Retrieves the status of all the deployed applications on the system.
      * @param system The system on which to retrieve the status from.
      * @return A map of the application names and their status.
-     * @throws IOException
-     * @throws InterruptedException 
+     * @throws IOException Thrown if the asadmin file was not found in 
+     * C:/Proftaak.
      */
     public Map<String, ServerStatus> retrieveApplicationStatus(common.domain.System system) 
-           throws IOException, InterruptedException {
+           throws IOException {
        
         Map<String, ServerStatus> serverStatus = new HashMap();
        
@@ -76,7 +77,8 @@ public class ServerStatusManager {
      * Executes the list-applications command using the CmdHelper.
      * @param host The host IP address of the system.
      * @return A list of application names.
-     * @throws IOException 
+     * @throws IOException Thrown if the asadmin file was not found in 
+     * C:/Proftaak.
      */
     private List<String> listApplications(String host) throws IOException {
         // Defines the asadmin command list-applications.
@@ -122,7 +124,8 @@ public class ServerStatusManager {
      * @param host The host IP address of the system.
      * @param applicationName The name of the application.
      * @return The status of the application.
-     * @throws IOException 
+     * @throws IOException Thrown if the asadmin file was not found in 
+     * C:/Proftaak.
      */
     private ServerStatus showComponentStatus(
             String host, 
