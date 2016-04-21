@@ -1,6 +1,6 @@
 Connectie met dev db:
 
-1. Open: C:\Program Files\glassfish-4.1.1\glassfish\domains\domain1\config\domain.xml
+1. Open: C:\Program Files\payara41\glassfish\domains\domain1\config\domain.xml
 2. Voeg de volgende code toe binnen <resources></resources>
 
 <jdbc-resource pool-name="DEV_LMS_dbpool" object-type="system-all" jndi-name="jdbc/DEV_LMS_dbresource"></jdbc-resource>
@@ -20,13 +20,4 @@ Table Generation Strategy: Drop and create
 
 De rest default.
 
-6. Clean build project. 
-
-
-ojdbc6 dependency:
-
-<dependency>
-    <groupId>com.oracle</groupId>
-    <artifactId>ojdbc6</artifactId>
-    <version>11.2.0.3</version>
-</dependency>
+6. Clean build project.
