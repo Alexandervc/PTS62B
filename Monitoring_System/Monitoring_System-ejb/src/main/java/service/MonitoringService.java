@@ -6,7 +6,9 @@
 package service;
 
 import business.MonitoringManager;
+import common.domain.MethodTest;
 import common.domain.Test;
+import common.domain.TestType;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -85,5 +87,9 @@ public class MonitoringService {
         
         // TODO: Get historical tests.
         return this.manager.retrieveLatestTests(system);
+    }
+    
+    public void saveTestresult(String systemName, Boolean result, TestType type){
+        this.manager.addTest(systemName, result , type);
     }
 }

@@ -32,6 +32,7 @@ public class ReceiveTestRequestBean implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
+            
             JUnitCore engine = new JUnitCore();
             engine.addListener(new TextListener(System.out)); // required to print reports
 

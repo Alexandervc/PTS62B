@@ -13,6 +13,7 @@ import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.TextMessage;
 import org.junit.runner.Result;
 
@@ -22,21 +23,23 @@ import org.junit.runner.Result;
  */
 @Stateless
 public class SendTestResultsBean {
+
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")
     private JMSContext context;
-    
-    @Resource(lookup="jms/LMS/queue")
+
+    @Resource(lookup = "jms/LMS/queue")
     private Destination queue;
-    
-    public void sendTestResults(Result result)  throws JMSException{
+
+    public void sendTestResults(Result result) throws JMSException {
+        MapMessage mapMessage = context.createMapMessage();
+        mapMessage.setStringProperty("method", "receiveTestresults");
         
-        String wasSucces = Boolean.toString(result.wasSuccessful());
-        TextMessage textMessage = this.context.createTextMessage(wasSucces);
+        mapMessage.setString("system", "VS");
+        mapMessage.setBoolean("result", result.wasSuccessful());
         
-        textMessage.setStringProperty("method", "receiveTestresultsVS");
-        
-        this.context.createProducer().send(this.queue, textMessage);
+
+        this.context.createProducer().send(this.queue, mapMessage);
     }
-    
+
 }
