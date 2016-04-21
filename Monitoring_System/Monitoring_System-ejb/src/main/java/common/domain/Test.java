@@ -90,7 +90,7 @@ public class Test implements Serializable {
     }
 
     public Boolean getResult() {
-        return result;
+        return this.result;
     }
 
     public void setResult(Boolean result) {

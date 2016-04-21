@@ -6,8 +6,9 @@
 package common.domain;
 
 /**
- *
- * @author Edwin
+ * A enum that contains all the test types that can be used within
+ * the monitoring system.
+ * @author Edwin.
  */
 public enum TestType {
     STATUS,

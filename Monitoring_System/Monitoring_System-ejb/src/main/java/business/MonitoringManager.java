@@ -15,7 +15,6 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.jms.JMSException;
 import common.domain.ServerStatus;
 import common.domain.System;
 import common.domain.Test;
@@ -205,11 +204,11 @@ public class MonitoringManager {
      */
     public List<Test> retrieveLatestTests(System system) {
         List<Test> returnList = new ArrayList<>();
-        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+        returnList.add(this.testDao.retrieveLatestTestForTypeForSystem(system
                 , TestType.STATUS));
-        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+        returnList.add(this.testDao.retrieveLatestTestForTypeForSystem(system
                 , TestType.FUNCTIONAL));
-        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+        returnList.add(this.testDao.retrieveLatestTestForTypeForSystem(system
                 , TestType.ENDPOINTS));
         return returnList;
     }
@@ -218,7 +217,7 @@ public class MonitoringManager {
      * Tests the functional state of the systems. 
      */
     public void testFunctionalStateOfSystems() {
-        checkRequestSender.requestChecks();
+        this.checkRequestSender.requestChecks();
     }
 }
 

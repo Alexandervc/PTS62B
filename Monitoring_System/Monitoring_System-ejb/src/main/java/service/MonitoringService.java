@@ -6,7 +6,6 @@
 package service;
 
 import business.MonitoringManager;
-import common.domain.MethodTest;
 import common.domain.Test;
 import common.domain.TestType;
 import java.util.Calendar;

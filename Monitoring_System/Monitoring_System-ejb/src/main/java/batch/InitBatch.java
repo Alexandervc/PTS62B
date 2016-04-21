@@ -17,6 +17,11 @@ public class InitBatch implements Batchlet {
     @Inject
     private MonitoringManager manager;     
     
+    /**
+     * Starts the processing of the batch.
+     * @return The result of the process.
+     * @throws Exception if anything goes wrong an Exception will be thrown.
+     */
     @Override
     public String process() throws Exception {
 
@@ -27,6 +32,10 @@ public class InitBatch implements Batchlet {
         return "COMPLETED";
     }
 
+    /**
+     * Method called when the batch job stops. Currently has no usage.
+     * @throws Exception .
+     */
     @Override
     public void stop() throws Exception {
         //Stops the method, currently no usage.
