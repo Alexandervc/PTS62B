@@ -6,6 +6,8 @@
 package service.jms;
 
 import com.google.gson.Gson;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -31,15 +33,29 @@ public class SendTestResultsBean {
     @Resource(lookup = "jms/LMS/queue")
     private Destination queue;
 
-    public void sendTestResults(Result result) throws JMSException {
-        MapMessage mapMessage = context.createMapMessage();
-        mapMessage.setStringProperty("method", "receiveTestresults");
-        
-        mapMessage.setString("system", "VS");
-        mapMessage.setBoolean("result", result.wasSuccessful());
-        
+    /**
+     * send result to LMS
+     *
+     * @param result the test result from VS JUnittest
+     */
+    public void sendTestResults(Result result) {
+        try {
+            
+            MapMessage mapMessage = context.createMapMessage();
+            // send result to method receiveTestresults
+            mapMessage.setStringProperty("method", "receiveTestresults");
 
-        this.context.createProducer().send(this.queue, mapMessage);
+            // set message string systemName
+            mapMessage.setString("system", "VS");
+            // set message boolean result
+            mapMessage.setBoolean("result", result.wasSuccessful());
+
+            // send message to LMS
+            this.context.createProducer().send(this.queue, mapMessage);
+        } catch (JMSException ex) {
+            Logger.getLogger(SendTestResultsBean.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }
 
 }
