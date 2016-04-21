@@ -5,9 +5,13 @@
  */
 package service.jms;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import org.junit.internal.TextListener;
@@ -29,18 +33,30 @@ public class ReceiveTestRequestBean implements MessageListener {
     @Inject
     private SendTestResultsBean sender;
 
+    /**
+     * receives request for testresult from LMS
+     * start JUnit test inside this system
+     * @param message contains request
+     */
     @Override
     public void onMessage(Message message) {
         try {
+            MapMessage mapMessage = (MapMessage) message;
             
+            mapMessage.getString("message");
+            
+            // engine for test
             JUnitCore engine = new JUnitCore();
             engine.addListener(new TextListener(System.out)); // required to print reports
 
+            // run test RoadUsageTest
             Result result = engine.run(junitTest.RoadUsageTest.class);
             
+            // sender will be send to LMS
             sender.sendTestResults(result);
-        } catch (Exception ex) {
-
+        } catch (JMSException ex) {
+            Logger.getLogger(ReceiveTestRequestBean.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 

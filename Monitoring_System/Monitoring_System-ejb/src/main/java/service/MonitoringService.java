@@ -89,6 +89,12 @@ public class MonitoringService {
         return this.manager.retrieveLatestTests(system);
     }
     
+    /**
+     * saves received testresult from sender in to DB
+     * @param systemName Name of system
+     * @param result boolean succeed
+     * @param type type of test
+     */
     public void saveTestresult(String systemName, Boolean result, TestType type){
         this.manager.addTest(systemName, result , type);
     }

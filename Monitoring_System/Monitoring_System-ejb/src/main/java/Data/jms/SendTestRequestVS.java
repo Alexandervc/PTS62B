@@ -19,7 +19,7 @@ import javax.jms.MapMessage;
  *
  * @author Linda
  */
-public class SendTestRequest {
+public class SendTestRequestVS {
     @Inject
     @JMSConnectionFactory("jms/VSConnectionFactory")
     private JMSContext contextVS;
@@ -27,16 +27,19 @@ public class SendTestRequest {
     @Resource(lookup="jms/VS/queue")
     private Destination queueVS;
     
-    public void sendRequestVS() {
+    /**
+     * Send request for testresult from system VS
+     */
+    public void sendRequest() {
         try {
             
             MapMessage mapMessage = contextVS.createMapMessage();
             mapMessage.setStringProperty("method", "receiveTestRequest");
-            mapMessage.setString("message", "TestresultsRequest");
+            mapMessage.setString("message", "Testresults Request");
             
             contextVS.createProducer().send(queueVS, mapMessage);
         } catch (JMSException ex) {
-            Logger.getLogger(SendTestRequest.class.getName())
+            Logger.getLogger(SendTestRequestVS.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
     }

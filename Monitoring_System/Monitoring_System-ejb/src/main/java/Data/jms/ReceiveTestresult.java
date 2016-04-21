@@ -6,12 +6,6 @@
 package Data.jms;
 
 import common.domain.TestType;
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
@@ -36,6 +30,10 @@ public class ReceiveTestresult implements MessageListener {
     @Inject
     private MonitoringService service;
 
+    /**
+     * receives message from system VS, RAD, ASS
+     * @param message contains systemName and testresult
+     */
     @Override
     public void onMessage(Message message) {
         try {
