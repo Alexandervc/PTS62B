@@ -37,5 +37,3 @@ hs_err_pid*
 /ASS/Simulator/Simulator-ejb/target/
 /ASS/Simulator/Simulator-web/target/
 /ASS/Simulator/Simulator-ejb/nbproject/
-persistence.xml
-/Monitoring_System/Monitoring_System-ejb/src/main/resources/META-INF/persistence.xml
