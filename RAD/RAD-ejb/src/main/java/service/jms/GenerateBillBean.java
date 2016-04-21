@@ -27,8 +27,9 @@ import service.RoadUsage;
  * @author Alexander
  */
 @MessageDriven(mappedName="jms/RAD/queue", activationConfig={
-    @ActivationConfigProperty(propertyName="messageSelector", propertyValue="method='generateBill'")
+    @ActivationConfigProperty(propertyName="messageSelector", propertyValue="method='receiveRoadUsages'")
 })
+// TODO old commits
 public class GenerateBillBean implements MessageListener {
 
     @Inject
