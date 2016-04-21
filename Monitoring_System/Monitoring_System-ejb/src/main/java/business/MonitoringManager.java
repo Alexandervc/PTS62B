@@ -101,7 +101,7 @@ public class MonitoringManager {
         try {
             applicationStatus = 
                     this.serverStatusManager.retrieveApplicationStatus(system);
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
