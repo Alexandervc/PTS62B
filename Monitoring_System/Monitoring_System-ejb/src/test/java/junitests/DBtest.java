@@ -4,9 +4,7 @@ import data.ResourceProducer;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /*
@@ -22,23 +20,30 @@ import org.junit.Test;
 public class DBtest {
     
     private EntityManager em;
-    private ResourceProducer producer;
 
     /**
      * Empty constructor for sonarqube.
      */
     public DBtest() {
+        // Comment for sonarqube.
     }
     
+    /**
+     * Creates the entity manager on start up.
+     * @throws NamingException Throws naming Exception if Entity 
+     * Manager Factory name is not found.
+     */
     @Before
     public void setUp() throws NamingException {
-        producer = new ResourceProducer();
         this.em = Persistence.createEntityManagerFactory("Proftaak")
                 .createEntityManager();  
     }
 
+    /**
+     * Tests if the database is able to connect.
+     */
     @Test
-    public void DatabaseTest() {
+    public void databaseTest() {
         this.em.getTransaction().begin();
     } 
 }

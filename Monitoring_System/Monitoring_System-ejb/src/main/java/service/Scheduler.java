@@ -9,12 +9,15 @@ import java.util.Properties;
 import javax.batch.runtime.BatchRuntime;
 
 /**
- *
- * @author Edwin
+ * A class that is run on a schedule so that tests will be executed.
+ * @author Edwin.
  */
  
 public class Scheduler implements Runnable {
  
+    /**
+     * Runs the batch job that executes the tests.
+     */
     public void run() {
         BatchRuntime.getJobOperator().start("ExecuteTests", new Properties());
     }

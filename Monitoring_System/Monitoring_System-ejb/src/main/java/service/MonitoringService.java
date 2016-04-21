@@ -35,18 +35,26 @@ public class MonitoringService {
      * Empty constructor for JPA usage.
      */
     public MonitoringService() {
+        // Comment for sonarqube.
     }
     
+    /**
+     * Starts the job once the application is started.
+     */
     @PostConstruct
     public void init() {
-        runJob();
+        this.runJob();
     }
 
+    /**
+     * Starts the job that will be used to monitor the systems.
+     */
     public void runJob() {
         executor.schedule(new Scheduler(), new Trigger() {
  
             @Override
-            public Date getNextRunTime(LastExecution lastExecutionInfo, Date taskScheduledTime) {
+            public Date getNextRunTime(LastExecution lastExecutionInfo,
+                    Date taskScheduledTime) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(taskScheduledTime);
                 cal.add(Calendar.MINUTE, 15);
@@ -60,6 +68,9 @@ public class MonitoringService {
         });
     }
  
+    /**
+     * Stops the job from running.
+     */
     public void cancelJob() {
         executor.shutdown();
     }
@@ -70,7 +81,7 @@ public class MonitoringService {
      * @return A list of systems.
      */
     public List<common.domain.System> retrieveSystems() {
-        return manager.getSystems();
+        return this.manager.getSystems();
     }
     
     /**
@@ -82,6 +93,11 @@ public class MonitoringService {
         this.manager.generateServerStatus(system);
     }
     
+    /**
+     * Retrives the last versions of the tests. One for each test type.
+     * @param system The system that the tests have to be retrieved for.
+     * @return A list with the 3 tests.
+     */
     public List<Test> retrieveLatestTests(common.domain.System system) {
         
         // TODO: Get historical tests.

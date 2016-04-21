@@ -32,7 +32,7 @@ public abstract class AbstractDao<T> {
      * @param entity The object that has to be created.
      */
     public void create(T entity) {
-        getEntityManager().persist(entity);
+        this.getEntityManager().persist(entity);
     }
     
     /**
@@ -40,7 +40,7 @@ public abstract class AbstractDao<T> {
      * @param entity The object that has to be updated.
      */
     public void edit(T entity) {
-        getEntityManager().merge(entity);
+        this.getEntityManager().merge(entity);
     }
     
     /**
@@ -48,7 +48,7 @@ public abstract class AbstractDao<T> {
      * @param entity The object that has to be removed.
      */
     public void remove(T entity) {
-        getEntityManager().remove(entity);
+        this.getEntityManager().remove(entity);
     }
     
     /**
@@ -57,6 +57,6 @@ public abstract class AbstractDao<T> {
      * @return The object with the unique identifier.
      */
     public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+        return this.getEntityManager().find(this.entityClass, id);
     }   
 }

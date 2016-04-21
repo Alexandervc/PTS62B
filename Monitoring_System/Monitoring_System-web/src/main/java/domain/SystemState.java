@@ -11,8 +11,8 @@ public class SystemState {
     private String endpoints;
     private String status;
     
-    private final String passed = "passed";
-    private final String failed = "failed";
+    private static final String PASSED = "passed";
+    private static final String FAILED = "failed";
 
     /**
      * Creates a system state without results and just a systemname.
@@ -74,9 +74,9 @@ public class SystemState {
      */
     public String formatResult(String result) {
         if("true".equals(result)) {
-            return passed;
+            return SystemState.PASSED;
         } else{
-            return failed;
+            return SystemState.FAILED;
         }
     }
 }

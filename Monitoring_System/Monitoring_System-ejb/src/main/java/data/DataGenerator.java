@@ -8,11 +8,12 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
-@Singleton
-@Startup
 /**
  * Generates initial data for testing usages.
+ * @author Edwin.
  */
+@Singleton
+@Startup
 public class DataGenerator {
     
     @Inject
@@ -21,10 +22,10 @@ public class DataGenerator {
     @Inject 
     private TestDao testDao;
     
-    @PostConstruct
     /**
      * Generates data when the application is started.
      */
+    @PostConstruct
     public void onStartup() {
         common.domain.System sys = 
                 new common.domain.System("VS","VS","192.168.24.74",8080);
