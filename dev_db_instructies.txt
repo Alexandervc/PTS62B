@@ -7,7 +7,7 @@ Connectie met dev db:
 <jdbc-connection-pool datasource-classname="oracle.jdbc.pool.OracleDataSource" name="DEV_LMS_dbpool" wrap-jdbc-objects="false" connection-validation-method="auto-commit" res-type="javax.sql.DataSource">
       <property name="password" value="DEV_LMS_db"></property>
       <property name="username" value="DEV_LMS_db"></property>
-      <property name="url" value="jdbc:oracle:thin:@192.168.24.79:1521"></property>
+      <property name="url" value="jdbc:oracle:thin:@192.168.24.79:1521:xe"></property>
     </jdbc-connection-pool>
 
 3. Connect met VPN.
