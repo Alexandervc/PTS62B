@@ -37,3 +37,5 @@ hs_err_pid*
 /ASS/Simulator/Simulator-ejb/target/
 /ASS/Simulator/Simulator-web/target/
 /ASS/Simulator/Simulator-ejb/nbproject/
+/ASS/Simulator/output/
+/ASS/Simulator/config.txt
