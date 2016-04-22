@@ -49,6 +49,7 @@ public class ReceiveTestRequestBean implements MessageListener {
 
             // run test RoadUsageTest
             Result result = engine.run(junitTest.RoadUsageTest.class);
+            // TODO carPositionManagerTest
             
             // sender will be send to LMS
             sender.sendTestResults(result);
