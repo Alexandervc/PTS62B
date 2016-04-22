@@ -23,15 +23,16 @@ import service.MonitoringService;
  */
 @MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='receiveTestresults'")
+            propertyValue = "method='receiveFunctionalStatus'")
 })
-public class ReceiveTestresult implements MessageListener {
+public class ReceiveFunctionalStatus implements MessageListener {
 
     @Inject
     private MonitoringService service;
 
     /**
      * receives message from system VS, RAD, ASS
+     *
      * @param message contains systemName and testresult
      */
     @Override
@@ -47,9 +48,9 @@ public class ReceiveTestresult implements MessageListener {
 
             // TODO save in db
             this.service.saveTestresult(systemName, testresult, TestType.FUNCTIONAL);
-            
+
         } catch (JMSException ex) {
-            Logger.getLogger(ReceiveTestresult.class.getName())
+            Logger.getLogger(ReceiveFunctionalStatus.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
     }

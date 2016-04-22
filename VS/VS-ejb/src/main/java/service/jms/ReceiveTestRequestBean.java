@@ -16,9 +16,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
-import org.junit.runners.AllTests;
 import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
 
 /**
  *
@@ -26,7 +24,7 @@ import org.junit.runner.notification.Failure;
  */
 @MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='receiveTestRequest'")
+            propertyValue = "method='getFunctionalStatus'")
 })
 public class ReceiveTestRequestBean implements MessageListener {
 
@@ -43,7 +41,7 @@ public class ReceiveTestRequestBean implements MessageListener {
         try {
             MapMessage mapMessage = (MapMessage) message;
             
-            mapMessage.getString("message");
+            mapMessage.getString("method");
             
             // engine for test
             JUnitCore engine = new JUnitCore();

@@ -5,7 +5,6 @@
  */
 package service.jms;
 
-import com.google.gson.Gson;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -16,7 +15,6 @@ import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
-import javax.jms.TextMessage;
 import org.junit.runner.Result;
 
 /**
@@ -43,7 +41,7 @@ public class SendTestResultsBean {
             
             MapMessage mapMessage = context.createMapMessage();
             // send result to method receiveTestresults
-            mapMessage.setStringProperty("method", "receiveTestresults");
+            mapMessage.setStringProperty("method", "receiveFunctionalStatus");
 
             // set message string systemName
             mapMessage.setString("system", "VS");
