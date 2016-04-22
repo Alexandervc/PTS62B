@@ -5,14 +5,13 @@ import dao.RateDAO;
 import domain.Bill;
 import domain.Person;
 import domain.Rate;
-import domain.RoadType;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.RoadUsage;
 
 /**
- *
+ *  Manager for BillDAO
  * @author Melanie.
  */
 @Stateless

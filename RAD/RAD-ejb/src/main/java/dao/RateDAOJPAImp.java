@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Implemented RateDAO
  * @author Melanie
  */
 @Stateless

@@ -7,7 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 /**
- *
+ * Rate class
  * @author Melanie.
  */
 @Entity

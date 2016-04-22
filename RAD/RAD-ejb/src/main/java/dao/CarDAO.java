@@ -9,7 +9,7 @@ import domain.Car;
 import java.util.List;
 
 /**
- *
+ * CarDAO interface
  * @author Linda
  */
 public interface CarDAO {

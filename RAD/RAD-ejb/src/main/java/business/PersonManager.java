@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- *
+ * Manager for PersonDAO
  * @author Melanie.
  */
 @Stateless

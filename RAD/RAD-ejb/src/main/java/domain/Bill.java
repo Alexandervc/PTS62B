@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import service.RoadUsage;
 
 /**
- *
+ * Bill class 
  * @author Linda
  */
 @Entity

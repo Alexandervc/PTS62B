@@ -9,7 +9,7 @@ import domain.RoadType;
 import java.io.Serializable;
 
 /**
- *
+ * Class RoadUsage
  * @author Alexander.
  */
 public class RoadUsage implements Serializable, Comparable<RoadUsage> {

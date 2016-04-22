@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- *
+ * Manager for RateDAO
  * @author Melanie.
  */
 @Stateless

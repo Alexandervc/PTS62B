@@ -18,7 +18,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
 /**
- *
+ * JMS RAD Sender
  * @author Alexander
  */
 @Stateless

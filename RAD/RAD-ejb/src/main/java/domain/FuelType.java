@@ -6,7 +6,7 @@
 package domain;
 
 /**
- *
+ * FuelType enum class 
  * @author Linda
  */
 public enum FuelType {

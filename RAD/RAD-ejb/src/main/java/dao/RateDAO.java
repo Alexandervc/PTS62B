@@ -4,7 +4,7 @@ import domain.Rate;
 import java.util.List;
 
 /**
- *
+ * RateDAO interface
  * @author Melanie
  */
 public interface RateDAO {

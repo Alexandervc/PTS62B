@@ -10,7 +10,7 @@ package notUsed;
 import java.util.Date;
 
 /**
- *
+ * CarPostion class
  * @author Linda
  */
 public class CarPosition {
