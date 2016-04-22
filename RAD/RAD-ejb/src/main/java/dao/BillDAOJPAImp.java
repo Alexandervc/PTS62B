@@ -32,6 +32,7 @@ public class BillDAOJPAImp extends AbstractFacade<Bill> implements BillDAO, Seri
     public List<Bill> findAllForUser(Person person) {
         List<Bill> messages;
         TypedQuery<Bill> query = em.createNamedQuery("bill.findAllForUser", Bill.class);
+        // TODO user ipv person??
         query.setParameter("user", person);
         messages = query.getResultList();
         return messages;
