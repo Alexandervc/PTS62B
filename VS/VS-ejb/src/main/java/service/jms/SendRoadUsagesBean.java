@@ -8,6 +8,8 @@ package service.jms;
 import business.RoadUsage;
 import com.google.gson.Gson;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -30,19 +32,25 @@ public class SendRoadUsagesBean {
     @Resource(lookup="jms/RAD/queue")
     private Destination queue;
     
+    private Logger logger = Logger
+            .getLogger(SendRoadUsagesBean.class.getName());
+    
     /**
      * Send the given roadUsages via JMS to RAD.
      * @param roadUsages The roadUsages.
-     * @throws JMSException If sending via JMS failed.
      */
-    public void sendRoadUsages(List<RoadUsage> roadUsages) throws JMSException {
-        // To JSON
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(roadUsages);
-        
-        TextMessage textMessage = this.context.createTextMessage(jsonString);
-        textMessage.setStringProperty("method", "receiveRoadUsages");
-        
-        this.context.createProducer().send(this.queue, textMessage);
+    public void sendRoadUsages(List<RoadUsage> roadUsages) {
+        try {
+            // To JSON
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(roadUsages);
+            
+            TextMessage textMessage = this.context.createTextMessage(jsonString);
+            textMessage.setStringProperty("method", "receiveRoadUsages");
+            
+            this.context.createProducer().send(this.queue, textMessage);
+        } catch (JMSException ex) {
+            this.logger.log(Level.SEVERE, null, ex);
+        }
     }
 }

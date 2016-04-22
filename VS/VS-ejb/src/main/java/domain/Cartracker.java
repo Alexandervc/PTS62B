@@ -57,4 +57,14 @@ public class Cartracker implements Serializable {
     public void setPositions(List<CarPosition> positions) {
         this.positions = new ArrayList<>(positions);
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(other == null || !(other instanceof Cartracker)) {
+            return false;
+        }
+        Cartracker otherCartracker = (Cartracker) other;
+        
+        return this.getId().equals(otherCartracker.getId());
+    }
 }

@@ -38,6 +38,9 @@ public class GenerateRoadUsagesBean implements MessageListener {
     @Inject
     private SendRoadUsagesBean roadUsagesSender;
     
+    private Logger logger = Logger
+            .getLogger(GenerateRoadUsagesBean.class.getName());
+    
     @Override
     public void onMessage(Message message) {
         try {
@@ -54,14 +57,11 @@ public class GenerateRoadUsagesBean implements MessageListener {
             // Generate road usages
             List<RoadUsage> roadUsages = this.roadUsageService
                     .generateRoadUsages(cartrackerId, beginDate, endDate);
-            Logger.getLogger(GenerateRoadUsagesBean.class.getName())
-                    .log(Level.INFO, String.valueOf(roadUsages.size()));
             
             // Send
             this.roadUsagesSender.sendRoadUsages(roadUsages);
         } catch (JMSException | ParseException ex) {
-            Logger.getLogger(GenerateRoadUsagesBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            this.logger.log(Level.SEVERE, null, ex);
         }
     }
 }

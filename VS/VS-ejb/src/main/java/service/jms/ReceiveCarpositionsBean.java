@@ -35,6 +35,9 @@ import service.CarPositionService;
 public class ReceiveCarpositionsBean implements MessageListener {
     @Inject
     private CarPositionService carPositionService;
+    
+    private Logger logger = Logger
+            .getLogger(ReceiveCarpositionsBean.class.getName());
 
     @Override
     public void onMessage(Message message) {
@@ -65,8 +68,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
             this.carPositionService.saveCarPosition(cartrackerId, moment,
                     xCoordinate, yCoordinate, roadName, meter);
         } catch (JMSException | ParseException ex) {
-            Logger.getLogger(ReceiveCarpositionsBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            this.logger.log(Level.SEVERE, null, ex);
         }
     }
 }

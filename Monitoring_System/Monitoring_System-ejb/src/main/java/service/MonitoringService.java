@@ -5,7 +5,7 @@
  */
 package service;
 
-import Data.jms.ReceiveFunctionalStatus;
+import data.jms.ReceiveFunctionalStatus;
 import business.MonitoringManager;
 import common.domain.Test;
 import common.domain.TestType;

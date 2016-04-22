@@ -20,7 +20,8 @@ import org.junit.runners.Suite;
  * @author Linda
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ junitTest.RoadUsageTest.class} )
+@Suite.SuiteClasses({ junitTest.RoadUsageTest.class, 
+    junitTest.CarPositionManagerTest.class} )
 public class RunAllJUnitTests {
     
     public RunAllJUnitTests() {
