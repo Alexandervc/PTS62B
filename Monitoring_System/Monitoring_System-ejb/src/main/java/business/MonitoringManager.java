@@ -219,5 +219,40 @@ public class MonitoringManager {
     public void testFunctionalStateOfSystems() {
         this.checkRequestSender.requestChecks();
     }
+    
+    /**
+     * Tests all systems on 3 test types. Functional, Endpoints and Status.
+     * Stores the result.
+     */
+    public void testSystems() {
+        // Sends a message into the topic so the systems can send their test
+        // results.
+        this.checkRequestSender.requestChecks();
+        
+        // For every system retrives the server status, adds this as a test
+        // to the database. Creates failed tests for functional and endpoints.
+        for(System s : this.getSystems()) {
+            Test testStatus = this.retrieveServerStatus(s);
+            s.addTest(testStatus);
+            this.testDao.create(testStatus);
+            
+            java.util.Date date= new java.util.Date();
+            Timestamp currentDate = new Timestamp(date.getTime());
+                
+            // Creates tests that will be fixed later.
+            Test testEndpoints = 
+                    new Test(TestType.ENDPOINTS, currentDate, false);
+            Test testFunctional =
+                    new Test(TestType.FUNCTIONAL, currentDate, false);
+                        
+            // Stores all the tests in the database.
+            this.testDao.create(testEndpoints);
+            this.testDao.create(testFunctional);
+            this.testDao.create(testStatus);
+
+            this.systemDao.edit(s);    
+        }
+    }
+    
 }
 
