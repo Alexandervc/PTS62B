@@ -13,7 +13,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- *
+ * Manager for CarDAO
  * @author Linda.
  */
 @Stateless

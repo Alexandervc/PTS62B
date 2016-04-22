@@ -15,7 +15,6 @@ import domain.Person;
 import domain.Rate;
 import domain.RoadType;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +27,7 @@ import javax.jms.JMSException;
 import service.jms.JMSRADSender;
 
 /**
+ * RAD Service class
  *
  * @author Linda
  */
@@ -54,89 +54,177 @@ public class RadService {
 
     private Bill bill;
 
+    /**
+     * Post construct method
+     */
     @PostConstruct
     public void start() {
+        // empty post construct method
     }
 
+    /**
+     * add person to database
+     *
+     * @param firstname of person
+     * @param lastname of person
+     * @param initials of person
+     * @param streetname of person
+     * @param number of person
+     * @param zipcode of person
+     * @param city of person
+     * @param country of person
+     * @return created person
+     */
     public Person addPerson(String firstname, String lastname, String initials,
             String streetname, String number, String zipcode,
             String city, String country) {
-        person = personManager.createPerson(firstname, lastname, initials,
+        this.person = this.personManager.createPerson(firstname, lastname, initials,
                 streetname, number, zipcode, city, country);
-        return person;
+        return this.person;
     }
 
+    /**
+     * find person in database with name can be null
+     *
+     * @param name of person
+     * @return found person
+     */
     public Person findPersonByName(String name) {
-        person = personManager.findPersonByName(name);
-        return person;
+        this.person = this.personManager.findPersonByName(name);
+        return this.person;
     }
 
+    /**
+     * add Rate to database
+     *
+     * @param rate of road
+     * @param type of road
+     */
     public void addRate(double rate, RoadType type) {
-        rateManager.createRate(rate, type);
+        this.rateManager.createRate(rate, type);
     }
 
+    /**
+     * find Rate in database with roadType can be null
+     *
+     * @param type of Road
+     * @return found Rate
+     */
     public Rate getRate(RoadType type) {
-        return rateManager.findRate(type);
+        return this.rateManager.findRate(type);
     }
 
+    /**
+     * add bill to database
+     *
+     * @param bill
+     */
     public void addBill(Bill bill) {
-        billManager.createBill(bill);
+        this.billManager.createBill(bill);
     }
 
+    /**
+     * add car to database
+     *
+     * @param person of car
+     * @param cartracker id of car
+     * @param fuel fueltype of car
+     */
     public void addCar(Person person, Long cartracker, FuelType fuel) {
-        carManager.createCar(person, cartracker, fuel);
+        this.carManager.createCar(person, cartracker, fuel);
     }
 
+    /**
+     * generate RoadUsages for bill
+     *
+     * @param username of person
+     * @param begin startdate bill
+     * @param end einddate bill
+     * @return generated bill;
+     */
     public Bill generateRoadUsages(String username, Date begin, Date end) {
         Bill generatedBill = null;
 
         if (this.bill != null) {
+            // roadusages are received from VS
             generatedBill = this.bill;
             this.bill = null;
         } else {
             try {
-                
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM", 
+                // format date
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
                         Locale.getDefault());
-                month = dateFormat.format(begin);
-                year = Integer.toString(begin.getYear() + 1900);
-                
+                // set month for bill
+                this.month = dateFormat.format(begin);
+                // set year for bill
+                this.year = Integer.toString(begin.getYear() + 1900);
+
+                // find person for bill
                 this.person = this.findPersonByName(username);
-                if(this.person == null) {
+                if (this.person == null) {
                     throw new IllegalArgumentException("user not found");
                 }
-                
-                cartrackerId = person.getCars().get(0).getCartrackerId();
-                
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId, 
+
+                // set cartracker id for bill
+                this.cartrackerId = this.person.getCars().get(0).getCartrackerId();
+
+                // ask roadUsages from VS
+                this.radSender.sendGenerateRoadUsagesCommand(this.cartrackerId,
                         begin, end);
+
+                // generate empty temp bill
                 generatedBill = new Bill();
             } catch (JMSException ex) {
                 Logger.getLogger(RadService.class.getName())
                         .log(Level.SEVERE, null, ex);
             }
         }
-
         return generatedBill;
     }
 
+    /**
+     * receive RoadUsages from VS
+     *
+     * @param roadUsages from VS
+     */
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        bill = billManager.generateBill(person, roadUsages, cartrackerId, 
-                month, year);
+        // set local bill with correct fields
+        this.bill = this.billManager.generateBill(this.person, roadUsages, 
+                this.cartrackerId, this.month, this.year);
     }
 
+    /**
+     * set personManager for JUnittest
+     *
+     * @param personManager
+     */
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }
 
+    /**
+     * set BillManager for JUnittest
+     *
+     * @param billManager
+     */
     public void setBillManager(BillManager billManager) {
         this.billManager = billManager;
     }
 
+    /**
+     * set RateManager for JUnittest
+     *
+     * @param rateManager
+     */
     public void setRateManager(RateManager rateManager) {
         this.rateManager = rateManager;
     }
 
+    /**
+     * set carManager for JUnittest
+     *
+     * @param carManager
+     */
     public void setCarManager(CarManager carManager) {
         this.carManager = carManager;
     }

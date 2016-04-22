@@ -5,7 +5,7 @@ import domain.Person;
 import java.util.List;
 
 /**
- *
+ * BillDAO interface
  * @author Linda
  */
 public interface BillDAO {

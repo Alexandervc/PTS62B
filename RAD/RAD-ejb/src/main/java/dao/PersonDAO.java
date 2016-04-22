@@ -4,7 +4,7 @@ import domain.Person;
 import java.util.List;
 
 /**
- *
+ * PersonDAO interface
  * @author Linda
  */
 public interface PersonDAO {

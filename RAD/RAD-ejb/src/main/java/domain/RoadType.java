@@ -7,7 +7,7 @@ package domain;
 
 
 /**
- *
+ * RoadType enum class
  * @author Linda
  */
 public enum RoadType {

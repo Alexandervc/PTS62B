@@ -23,7 +23,7 @@ import service.RadService;
 import service.RoadUsage;
 
 /**
- *
+ * Generate Bill Bean 
  * @author Alexander
  */
 @MessageDriven(mappedName="jms/RAD/queue", activationConfig={

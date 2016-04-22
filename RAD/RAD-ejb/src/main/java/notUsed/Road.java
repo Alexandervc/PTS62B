@@ -11,7 +11,7 @@ package notUsed;
 import domain.RoadType;
 
 /**
- *
+ * Road class
  * @author Linda
  */
 public class Road {

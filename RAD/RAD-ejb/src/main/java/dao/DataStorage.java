@@ -22,7 +22,7 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 
 /**
- *
+ * Class for test datastorage
  * @author Linda
  */
 @Singleton
@@ -34,48 +34,42 @@ public class DataStorage {
 
     @PostConstruct
     public void onStartup() {
-        try {
-            if (service.findPersonByName("Linda") == null) {
-                service.addRate(1.29, RoadType.A);
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "rate-A succeed");
-                service.addRate(0.89, RoadType.B);
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "rate-B succeed");
-                service.addRate(0.49, RoadType.C);
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "rate-C succeed");
-                service.addRate(0.25, RoadType.D);
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "rate-D succeed");
-                service.addRate(0.12, RoadType.E);
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "rate-E succeed");
-
-                List<RoadUsage> roadUsages = new ArrayList<>();
-                RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
-                roadUsages.add(usage);
-
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "create person");
-                Person p = service.addPerson("Linda", "van Engelen", "LMJC",
-                        "Sibeliuslaan", "83B", "5654CV",
-                        "Eindhoven", "Nederland");
-
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "create car");
-                service.addCar(p, 123456789L, FuelType.Petrol);
-
-                Bill b = new Bill(p, roadUsages, 35.2, 123456789L, "April", "2016");
-
-                Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.INFO, "create bill");
-                service.addBill(b);
-            }
-
-        } catch (Exception e) {
+        if (service.findPersonByName("Linda") == null) {
+            service.addRate(1.29, RoadType.A);
             Logger.getLogger(DataStorage.class.getName())
-                        .log(Level.SEVERE, null, e);
+                    .log(Level.INFO, "rate-A succeed");
+            service.addRate(0.89, RoadType.B);
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "rate-B succeed");
+            service.addRate(0.49, RoadType.C);
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "rate-C succeed");
+            service.addRate(0.25, RoadType.D);
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "rate-D succeed");
+            service.addRate(0.12, RoadType.E);
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "rate-E succeed");
+
+            List<RoadUsage> roadUsages = new ArrayList<>();
+            RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, 12.9);
+            roadUsages.add(usage);
+
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "create person");
+            Person p = service.addPerson("Linda", "van Engelen", "LMJC",
+                    "Sibeliuslaan", "83B", "5654CV",
+                    "Eindhoven", "Nederland");
+
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "create car");
+            service.addCar(p, 123456789L, FuelType.Petrol);
+
+            Bill b = new Bill(p, roadUsages, 35.2, 123456789L, "April", "2016");
+
+            Logger.getLogger(DataStorage.class.getName())
+                    .log(Level.INFO, "create bill");
+            service.addBill(b);
         }
     }
 }

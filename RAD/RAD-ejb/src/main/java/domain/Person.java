@@ -18,7 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * Person class
  * @author Linda
  */
 @Entity
