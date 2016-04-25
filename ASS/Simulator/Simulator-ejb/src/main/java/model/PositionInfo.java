@@ -17,7 +17,7 @@ public class PositionInfo {
      * @return the position
      */
     public Point getPosition() {
-        return position;
+        return this.position;
     }
 
     /**
@@ -31,7 +31,7 @@ public class PositionInfo {
      * @return the distanceFromStart
      */
     public Double getDistanceFromStart() {
-        return distanceFromStart;
+        return this.distanceFromStart;
     }
 
     /**
@@ -45,7 +45,7 @@ public class PositionInfo {
      * @return the leg
      */
     public Leg getLeg() {
-        return leg;
+        return this.leg;
     }
 
     /**
@@ -59,7 +59,7 @@ public class PositionInfo {
      * @return the speed
      */
     public Double getSpeed() {
-        return speed;
+        return this.speed;
     }
 
     /**
@@ -71,8 +71,8 @@ public class PositionInfo {
 
     @Override
     public String toString() {
-        return "PositionInfo [position=" + position + ", leg=" + leg + 
-                ", distanceFromStart=" + distanceFromStart
-                + ", speed=" + speed + "]";
+        return "PositionInfo [position=" + this.position + ", leg=" + this.leg + 
+                ", distanceFromStart=" + this.distanceFromStart
+                + ", speed=" + this.speed + "]";
     }
 }

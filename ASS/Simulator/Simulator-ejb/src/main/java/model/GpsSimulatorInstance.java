@@ -21,7 +21,7 @@ public class GpsSimulatorInstance {
     }
 
     public long getInstanceId() {
-        return instanceId;
+        return this.instanceId;
     }
 
     public void setInstanceId(long instanceId) {
@@ -29,7 +29,7 @@ public class GpsSimulatorInstance {
     }
 
     public GpsSimulator getGpsSimulator() {
-        return gpsSimulator;
+        return this.gpsSimulator;
     }
 
     public void setGpsSimulator(GpsSimulator gpsSimulator) {
@@ -37,7 +37,7 @@ public class GpsSimulatorInstance {
     }
 
     public Future<?> getGpsSimulatorTask() {
-        return gpsSimulatorTask;
+        return this.gpsSimulatorTask;
     }
 
     public void setGpsSimulatorTask(Future<?> gpsSimulatorTask) {
@@ -46,8 +46,8 @@ public class GpsSimulatorInstance {
 
     @Override
     public String toString() {
-        return "GpsSimulatorInstance [instanceId=" + instanceId + ", "
-                + "gpsSimulator=" + gpsSimulator
-                + ", gpsSimulatorTask=" + gpsSimulatorTask + "]";
+        return "GpsSimulatorInstance [instanceId=" + this.instanceId + ", "
+                + "gpsSimulator=" + this.gpsSimulator
+                + ", gpsSimulatorTask=" + this.gpsSimulatorTask + "]";
     }
 }

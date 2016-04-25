@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service.jms;
 
 import java.util.logging.Level;
@@ -15,7 +10,6 @@ import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
-import javax.jms.TextMessage;
 
 /**
  *
@@ -36,13 +30,13 @@ public class JmsAssSender {
             Logger.getLogger(JmsAssSender.class.getName())
                     .log(Level.INFO, jsonPosition);
             
-            MapMessage mapMessage = context.createMapMessage();
+            MapMessage mapMessage = this.context.createMapMessage();
             mapMessage.setStringProperty("method", "receiveCarpositions");
             mapMessage.setLong("cartrackerId", cartrackerId);
             mapMessage.setLong("serialNumber", serialNumber);
             mapMessage.setString("carposition", jsonPosition);
             
-            context.createProducer().send(destination, mapMessage);
+            this.context.createProducer().send(this.destination, mapMessage);
         } catch (JMSException ex) {
             Logger.getLogger(JmsAssSender.class.getName())
                     .log(Level.SEVERE, null, ex);

@@ -15,7 +15,7 @@ public class Leg {
      * @return the startPosition
      */
     public Point getStartPosition() {
-        return startPosition;
+        return this.startPosition;
     }
 
     /**
@@ -29,7 +29,7 @@ public class Leg {
      * @return the endPosition
      */
     public Point getEndPosition() {
-        return endPosition;
+        return this.endPosition;
     }
 
     /**
@@ -43,7 +43,7 @@ public class Leg {
      * @return the length
      */
     public Double getLength() {
-        return length;
+        return this.length;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Leg {
      * @return the heading
      */
     public Double getHeading() {
-        return heading;
+        return this.heading;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Leg {
      * @return the id
      */
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     /**

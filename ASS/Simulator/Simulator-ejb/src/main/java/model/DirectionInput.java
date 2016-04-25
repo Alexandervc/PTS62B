@@ -18,7 +18,7 @@ public class DirectionInput {
     }
 
     public String getFrom() {
-        return from;
+        return this.from;
     }
 
     public void setFrom(String from) {
@@ -26,7 +26,7 @@ public class DirectionInput {
     }
 
     public String getTo() {
-        return to;
+        return this.to;
     }
 
     public void setTo(String to) {

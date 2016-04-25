@@ -10,7 +10,7 @@ import model.Point;
  * @author Melanie
  */
 public class NavUtils {
-    private static double EARTH_RADIUS_IN_METERS = 
+    private static final double EARTH_RADIUS_IN_METERS = 
             DistanceUtils.EARTH_MEAN_RADIUS_KM * 1000;
 
     /**

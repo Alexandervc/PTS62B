@@ -90,8 +90,8 @@ public class GpsdService implements IGpsdService {
         }
 
         try {
-            pipeWriter.write(sentence + "\r\n");
-            pipeWriter.flush();
+            this.pipeWriter.write(sentence + "\r\n");
+            this.pipeWriter.flush();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -104,11 +104,11 @@ public class GpsdService implements IGpsdService {
      */
     void initGpsd() throws IOException, InterruptedException {
         startProc("killall -9 gpsd", false);
-        startProc("rm -f " + GPSD_PIPE, false);
-        startProc("mkfifo " + GPSD_PIPE, false);
-        startProc("gpsd " + GPSD_PIPE, false);
+        startProc("rm -f " + this.GPSD_PIPE, false);
+        startProc("mkfifo " + this.GPSD_PIPE, false);
+        startProc("gpsd " + this.GPSD_PIPE, false);
         //writer for gpsd pipe
-        pipeWriter = new BufferedWriter(new FileWriter(GPSD_PIPE));
+        this.pipeWriter = new BufferedWriter(new FileWriter(this.GPSD_PIPE));
 
     }
 
