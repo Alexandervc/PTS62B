@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
-import org.junit.runner.Result;
 
 /**
  *
