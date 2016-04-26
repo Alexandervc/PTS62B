@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- * Abstract class for persistends
+ * Abstract class for persistends.
  * @author Melanie.
  * @param <T> ClassType.
  */

@@ -23,18 +23,22 @@ import service.RadService;
 import service.RoadUsage;
 
 /**
- * Generate Bill Bean 
- * @author Alexander
+ * Generate Bill Bean. 
+ * @author Alexander.
  */
 @MessageDriven(mappedName="jms/RAD/queue", activationConfig={
-    @ActivationConfigProperty(propertyName="messageSelector", propertyValue="method='receiveRoadUsages'")
+    @ActivationConfigProperty(propertyName="messageSelector", 
+            propertyValue="method='receiveRoadUsages'")
 })
-// TODO old commits
 public class GenerateBillBean implements MessageListener {
 
     @Inject
     private RadService radService;
     
+    /**
+     * Receives message from VS.
+     * @param message type Message.
+     */
     @Override
     public void onMessage(Message message) {
         try {

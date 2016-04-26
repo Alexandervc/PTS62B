@@ -6,8 +6,8 @@
 package domain;
 
 /**
- * FuelType enum class 
- * @author Linda
+ * FuelType enum class. 
+ * @author Linda.
  */
 public enum FuelType {
     Petrol,
@@ -15,4 +15,5 @@ public enum FuelType {
     Gas,
     Hybrid,
     Electric
+    
 }

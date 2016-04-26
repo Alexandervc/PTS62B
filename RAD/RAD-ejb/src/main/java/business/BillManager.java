@@ -1,7 +1,5 @@
 package business;
 
-import dao.BillDAO;
-import dao.RateDAO;
 import domain.Bill;
 import domain.Person;
 import domain.Rate;
@@ -9,18 +7,20 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.RoadUsage;
+import dao.BillDao;
+import dao.RateDao;
 
 /**
- *  Manager for BillDAO
+ *  Manager for BillDao.
  * @author Melanie.
  */
 @Stateless
 public class BillManager {
     @Inject
-    private BillDAO billDAO;
+    private BillDao billDAO;
     
     @Inject
-    private RateDAO rateDAO;
+    private RateDao rateDAO;
     
     /**
      * Find all bills in Database from person.
@@ -42,9 +42,9 @@ public class BillManager {
      * Generate bill.
      * @param person Type Person.
      * @param roadUsages List of IRoadUsage.
-     * @param cartrackerId
-     * @param month
-     * @param year
+     * @param cartrackerId.
+     * @param month.
+     * @param year.
      * @return new Bill Type Bill.
      */
     public Bill generateBill(Person person, List<RoadUsage> roadUsages, 

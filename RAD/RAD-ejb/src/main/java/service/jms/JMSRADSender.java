@@ -18,8 +18,8 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
 /**
- * JMS RAD Sender
- * @author Alexander
+ * JMS RAD Sender.
+ * @author Alexander.
  */
 @Stateless
 public class JMSRADSender {
@@ -31,6 +31,13 @@ public class JMSRADSender {
     @Resource(lookup = "jms/VS/queue")
     private Destination queue;
 
+    /**
+     * Send request to VS for RoadUsages.
+     * @param cartrackerId Long.
+     * @param beginDate Date.
+     * @param endDate Date.
+     * @throws JMSException when sending fails.
+     */
     public void sendGenerateRoadUsagesCommand(Long cartrackerId,
         Date beginDate, Date endDate) throws JMSException {
         MapMessage mapMessage = context.createMapMessage();

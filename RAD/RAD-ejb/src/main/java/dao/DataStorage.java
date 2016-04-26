@@ -7,7 +7,6 @@ package dao;
 
 import service.RoadUsage;
 import domain.Bill;
-import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
@@ -22,8 +21,8 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 
 /**
- * Class for test datastorage
- * @author Linda
+ * Class for test datastorage.
+ * @author Linda.
  */
 @Singleton
 @Startup
