@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import domain.Bill;
 import domain.ListBoxDate;
@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -22,8 +24,9 @@ import service.RadService;
 import service.RoadUsage;
 
 /**
+ * Bean for RAD-web.
  *
- * @author Alexander
+ * @author Alexander.
  */
 @Named
 @RequestScoped
@@ -38,65 +41,99 @@ public class BillBean {
 
     private List<ListBoxDate> dates;
     private Calendar datePast;
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(BillBean.class.getName());
+    private static final SimpleDateFormat DATEFORMAT = 
+            new SimpleDateFormat("dd/MM/yyyy");
 
-    public List<ListBoxDate> getDates() {
-        return new ArrayList<ListBoxDate>(this.dates);
-    }
-
-    public String getDate() {
-        return this.date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * Constructor BillBean.
+     */
     public BillBean() {
         this.bill = null;
         this.dates = new ArrayList<>();
         this.datePast = new GregorianCalendar();
 
-        datePast.add(Calendar.YEAR, -2);
-        System.out.println(datePast.get(Calendar.YEAR));
+        this.datePast.add(Calendar.YEAR, -2);
         Calendar temp = this.datePast;
 
         for (int m = 0; m < 24; m++) {
             String month = new SimpleDateFormat("MMM").format(temp.getTime());
-            this.dates.add(new ListBoxDate(month + " " + temp.get(Calendar.YEAR),
-                    Integer.toString(m)));
+            this.dates.add(new ListBoxDate(month + " "
+                    + temp.get(Calendar.YEAR), Integer.toString(m)));
             temp.add(Calendar.MONTH, 1);
         }
     }
 
-    /*
-    @PostConstruct
-    public void start() {
-        generateBill();
-    }*/
+    /**
+     * Getter bill.
+     *
+     * @return bill type Bill.
+     */
     public Bill getBill() {
         return bill;
     }
 
+    /**
+     * Getter name person.
+     *
+     * @return String name.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Setter name person.
+     *
+     * @param name String.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Getter date.
+     *
+     * @return String date.
+     */
+    public String getDate() {
+        return this.date;
+    }
+
+    /**
+     * Setter Date.
+     *
+     * @param date String.
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    /**
+     * Getter Dates for listbox.
+     *
+     * @return ArrayList ListBoxDate.
+     */
+    public List<ListBoxDate> getDates() {
+        return new ArrayList<>(this.dates);
+    }
+
+    /**
+     * Generate bill function.
+     * Calculates Startdate and enddate.
+     * Request send to RadService.
+     */
     public void generateBill() {
         bill = null;
         try {
             // Calc begin date
-            SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
             Calendar temp = this.datePast;
             temp.add(Calendar.YEAR, -2);
-            temp.add(Calendar.MONTH, Integer.parseInt(date));
+            temp.add(Calendar.MONTH, Integer.parseInt(this.date));
 
-            System.out.println(temp.get(Calendar.YEAR));
-
-            String tempBeginDateString = 01 + "/"
+            String tempBeginDateString = "01" + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
 
             // Calc end Date
@@ -107,42 +144,59 @@ public class BillBean {
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
 
             // Convert Calendar tot Date
-            Date dateBegin = dateformat.parse(tempBeginDateString);
-            Date dateEnd = dateformat.parse(tempEndDateString);
+            Date dateBegin = DATEFORMAT.parse(tempBeginDateString);
+            Date dateEnd = DATEFORMAT.parse(tempEndDateString);
 
             // Get bill from service
-            this.bill = service.generateRoadUsages(this.name, dateBegin, dateEnd);
+            this.bill = this.service.generateRoadUsages(this.name, 
+                    dateBegin, dateEnd);
         } catch (NumberFormatException | ParseException e) {
-            System.out.println(e.getMessage());
+            LOGGER.log(Level.SEVERE, null, e);
         }
     }
 
+    /**
+     * Getter Rate roadusage.
+     * @param roadUsage type RoadUsage.
+     * @return String rate.
+     */
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(this.service.getRate(roadUsage.getRoadType()).getRate());
+        return formatter.format(this.service.getRate(roadUsage.getRoadType())
+                .getRate());
     }
 
+    /**
+     * Getter price roadusage.
+     * @param roadUsage type RoadUsage.
+     * @return String price.
+     */
     public String getPrice(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(roadUsage.getKm() * this.service.getRate(roadUsage.getRoadType()).getRate());
+        return formatter.format(roadUsage.getKm() * this.service
+                .getRate(roadUsage.getRoadType()).getRate());
     }
 
+    /**
+     * Getter total price bill.
+     * @return String total price bill.
+     */
     public String getTotalPrice() {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(this.bill.getTotalPrice());
     }
 
+    /**
+     * Getter person name from bill.
+     * @return String person name.
+     */
     public String getPersonName() {
         if (this.bill.getPerson2() != null) {
-            return this.bill.getPerson2().getInitials() + " " + this.bill.getPerson2().getLastName();
+            return this.bill.getPerson2().getInitials() + " " + 
+                    this.bill.getPerson2().getLastName();
         } else {
             return "";
         }
     }
-
-    /*
-    public List<IRoadUsage> getRoadUsages() {
-        return service.generateRoadUsages(1L, new Date(), new Date());
-    }
-     */
+    
 }
