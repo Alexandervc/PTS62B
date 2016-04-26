@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.jms.JMSException;
-import service.jms.JMSRADSender;
+import service.jms.RequestRoadUsagesBean;
 
 /**
  * RAD Service class.
@@ -34,7 +34,7 @@ import service.jms.JMSRADSender;
 public class RadService {
 
     private Person person;
-    private Long cartrackerId;
+    private String cartrackerId;
     private String month;
     private String year;
 
@@ -49,7 +49,7 @@ public class RadService {
     private CarManager carManager;
 
     @Inject
-    private JMSRADSender radSender;
+    private RequestRoadUsagesBean radSender;
 
     private Bill bill;
 
@@ -129,7 +129,7 @@ public class RadService {
      * @param cartracker id Long.
      * @param fuel fueltype.
      */
-    public void addCar(Person person, Long cartracker, FuelType fuel) {
+    public void addCar(Person person, String cartracker, FuelType fuel) {
         this.carManager.createCar(person, cartracker, fuel);
     }
 
@@ -141,7 +141,7 @@ public class RadService {
      * @param end Date.
      * @return generated bill type Bill.
      */
-    public Bill generateRoadUsages(String username, Date begin, Date end) {
+    public Bill requestRoadUsages(String username, Date begin, Date end) {
         Bill generatedBill = null;
 
         if (this.bill != null) {
@@ -149,34 +149,29 @@ public class RadService {
             generatedBill = this.bill;
             this.bill = null;
         } else {
-            try {
-                // format date
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
-                        Locale.getDefault());
-                // set month for bill
-                this.month = dateFormat.format(begin);
-                // set year for bill
-                this.year = Integer.toString(begin.getYear() + 1900);
+            // format date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
+                    Locale.getDefault());
+            // set month for bill
+            this.month = dateFormat.format(begin);
+            // set year for bill
+            this.year = Integer.toString(begin.getYear() + 1900);
 
-                // find person for bill
-                this.person = this.findPersonByName(username);
-                if (this.person == null) {
-                    throw new IllegalArgumentException("user not found");
-                }
-
-                // set cartracker id for bill
-                this.cartrackerId = this.person.getCars().get(0).getCartrackerId();
-
-                // ask roadUsages from VS
-                this.radSender.sendGenerateRoadUsagesCommand(this.cartrackerId,
-                        begin, end);
-
-                // generate empty temp bill
-                generatedBill = new Bill();
-            } catch (JMSException ex) {
-                Logger.getLogger(RadService.class.getName())
-                        .log(Level.SEVERE, null, ex);
+            // find person for bill
+            this.person = this.findPersonByName(username);
+            if (this.person == null) {
+                throw new IllegalArgumentException("user not found");
             }
+
+            // set cartracker id for bill
+            this.cartrackerId = this.person.getCars().get(0).getCartrackerId();
+
+            // ask roadUsages from VS
+            this.radSender.sendGenerateRoadUsagesCommand(this.cartrackerId,
+                    begin, end);
+
+            // generate empty temp bill
+            generatedBill = new Bill();
         }
         return generatedBill;
     }
@@ -188,7 +183,7 @@ public class RadService {
      */
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
         // set local bill with correct fields
-        this.bill = this.billManager.generateBill(this.person, roadUsages, 
+        this.bill = this.billManager.generateBill(this.person, roadUsages,
                 this.cartrackerId, this.month, this.year);
     }
 

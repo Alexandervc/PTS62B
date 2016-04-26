@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Cartracker implements Serializable {
     @Id
-    private Long id;
+    private String id;
     
     @OneToMany (mappedBy = "cartracker")
     private List<CarPosition> positions;
@@ -37,16 +37,16 @@ public class Cartracker implements Serializable {
      * Represents a cartracker.
      * @param id The id for the cartracker.
      */
-    public Cartracker(Long id) {
+    public Cartracker(String id) {
         this.id = id;
         this.positions = new ArrayList<>();
     }
 
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

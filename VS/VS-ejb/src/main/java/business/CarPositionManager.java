@@ -43,7 +43,7 @@ public class CarPositionManager {
      * @param meter The number of meters the cartracker has measured since 
      *      the last carPosition.
      */
-    public void saveCarPosition(Long cartrackerId, Date moment, 
+    public void saveCarPosition(String cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
             Double meter){
         // Find cartracker

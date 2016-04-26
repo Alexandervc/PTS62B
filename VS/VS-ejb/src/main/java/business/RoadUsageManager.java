@@ -35,7 +35,7 @@ public class RoadUsageManager {
      *      cartrackerId.
      */
     public List<RoadUsage> generateRoadUsagesBetween(Date begin, Date end, 
-            Long cartrackerId) {
+            String cartrackerId) {
         if(begin.after(end)) {
             throw new IllegalArgumentException("begin after end");
         }
