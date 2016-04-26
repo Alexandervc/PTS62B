@@ -4,14 +4,21 @@ import simulator.GpsSimulator;
 import java.util.concurrent.Future;
 
 /**
- *
- * @author Melanie
+ * GpsSimulatorInstance Class.
+ * @author Melanie.
  */
 public class GpsSimulatorInstance {
     private long instanceId;
     private GpsSimulator gpsSimulator;
     private Future<?> gpsSimulatorTask;
 
+    /**
+     * GpsSimulatorInstance constructor.
+     * 
+     * @param instanceId.
+     * @param gpsSimulator.
+     * @param gpsSimulatorTask.
+     */
     public GpsSimulatorInstance(long instanceId, GpsSimulator gpsSimulator, 
             Future<?> gpsSimulatorTask) {
         super();
@@ -21,7 +28,7 @@ public class GpsSimulatorInstance {
     }
 
     public long getInstanceId() {
-        return instanceId;
+        return this.instanceId;
     }
 
     public void setInstanceId(long instanceId) {
@@ -29,7 +36,7 @@ public class GpsSimulatorInstance {
     }
 
     public GpsSimulator getGpsSimulator() {
-        return gpsSimulator;
+        return this.gpsSimulator;
     }
 
     public void setGpsSimulator(GpsSimulator gpsSimulator) {
@@ -37,17 +44,22 @@ public class GpsSimulatorInstance {
     }
 
     public Future<?> getGpsSimulatorTask() {
-        return gpsSimulatorTask;
+        return this.gpsSimulatorTask;
     }
 
     public void setGpsSimulatorTask(Future<?> gpsSimulatorTask) {
         this.gpsSimulatorTask = gpsSimulatorTask;
     }
 
+    /**
+     * ToString method.
+     * 
+     * @return String.
+     */
     @Override
     public String toString() {
-        return "GpsSimulatorInstance [instanceId=" + instanceId + ", "
-                + "gpsSimulator=" + gpsSimulator
-                + ", gpsSimulatorTask=" + gpsSimulatorTask + "]";
+        return "GpsSimulatorInstance [instanceId=" + this.instanceId + ", "
+                + "gpsSimulator=" + this.gpsSimulator
+                + ", gpsSimulatorTask=" + this.gpsSimulatorTask + "]";
     }
 }

@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import model.PositionInfo;
 
 /**
- *
+ * GpsdService Class.
  * @author Melanie
  */
 public class GpsdService implements IGpsdService {
@@ -21,6 +21,11 @@ public class GpsdService implements IGpsdService {
     private BufferedWriter pipeWriter;
     public static final String GPSD_PIPE = "/tmp/gps";
 
+    /**
+     * Update position.
+     * 
+     * @param position 
+     */
     @Override
     public void updatePosition(PositionInfo position) {
         // an NMEA RMC position sentence (report) is of form:
@@ -90,8 +95,8 @@ public class GpsdService implements IGpsdService {
         }
 
         try {
-            pipeWriter.write(sentence + "\r\n");
-            pipeWriter.flush();
+            this.pipeWriter.write(sentence + "\r\n");
+            this.pipeWriter.flush();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -99,38 +104,39 @@ public class GpsdService implements IGpsdService {
     
     /**
      * Initialize gpsd.
-     *
-     * @return error message, if any
+     * 
+     * @throws java.io.IOException .
+     * @throws java.lang.InterruptedException .
      */
-    void initGpsd() throws IOException, InterruptedException {
+    public void initGpsd() throws IOException, InterruptedException {
         startProc("killall -9 gpsd", false);
-        startProc("rm -f " + GPSD_PIPE, false);
-        startProc("mkfifo " + GPSD_PIPE, false);
-        startProc("gpsd " + GPSD_PIPE, false);
+        startProc("rm -f " + this.GPSD_PIPE, false);
+        startProc("mkfifo " + this.GPSD_PIPE, false);
+        startProc("gpsd " + this.GPSD_PIPE, false);
         //writer for gpsd pipe
-        pipeWriter = new BufferedWriter(new FileWriter(GPSD_PIPE));
-
+        this.pipeWriter = new BufferedWriter(new FileWriter(this.GPSD_PIPE));
     }
 
     /**
      * Start given process.
      *
-     * @param command
-     * @param wait for process to exit
-     * @return
+     * @param command.
+     * @param wait for process to exit.
+     * @return int.
+     * @throws java.lang.InterruptedException .
      */
-    int startProc(String command, Boolean wait) throws IOException, 
+    public int startProc(String command, Boolean wait) throws IOException, 
             InterruptedException {
         String[] commandArray = command.split(" ");
         ProcessBuilder pb = new ProcessBuilder(commandArray);
-        //redirect errorstream and outputstream to single stream
+        //redirect errorstream and outputstream to single stream.
         pb.redirectErrorStream(true);   
         Process proc = pb.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 proc.getInputStream()));
         String line;
         
-        //empty the output buff of the proc
+        //empty the output buff of the proc.
         while ((line = in.readLine()) != null) {
             logger.log(Level.INFO, line);
         }

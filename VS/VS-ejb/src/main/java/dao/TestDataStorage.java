@@ -29,6 +29,9 @@ public class TestDataStorage {
     @Inject
     private RoadDao roadDao;
 
+    /**
+     * Save testdata.
+     */
     @PostConstruct
     public void start() {
         Long testCartracker = 123456789L;

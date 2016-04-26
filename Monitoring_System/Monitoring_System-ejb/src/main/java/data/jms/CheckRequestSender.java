@@ -5,6 +5,7 @@
  */
 package data.jms;
 
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -14,7 +15,7 @@ import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
-import javax.jms.Message;
+import javax.jms.MapMessage;
 
 /**
  *
@@ -32,8 +33,13 @@ public class CheckRequestSender {
       
     public void requestChecks(){
         try {
-            Message message = context.createMessage();
-            message.setStringProperty("method", "getFunctionalStatus");
+            MapMessage message = context.createMapMessage();
+            message.setStringProperty("method", "getStatus");
+            java.util.Date date = new java.util.Date();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String currentTime = df.format(date);
+            message.setString("time", currentTime);
+
             context.createProducer().send(topic, message);
         } catch (JMSException ex) {
             Logger.getLogger(CheckRequestSender.class.getName()).log(Level.SEVERE, null, ex);
