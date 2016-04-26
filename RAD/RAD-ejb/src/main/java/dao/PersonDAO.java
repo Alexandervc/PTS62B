@@ -4,10 +4,10 @@ import domain.Person;
 import java.util.List;
 
 /**
- * PersonDAO interface
- * @author Linda
+ * PersonDao interface.
+ * @author Linda.
  */
-public interface PersonDAO {
+public interface PersonDao {
     void create(Person person);
     void edit(Person person);
     void remove(Person person);

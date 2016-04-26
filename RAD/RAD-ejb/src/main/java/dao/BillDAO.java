@@ -5,10 +5,10 @@ import domain.Person;
 import java.util.List;
 
 /**
- * BillDAO interface
- * @author Linda
+ * BillDao interface.
+ * @author Linda.
  */
-public interface BillDAO {
+public interface BillDao {
     void create(Bill bill);
     void edit(Bill bill);
     void remove(Bill bill);
