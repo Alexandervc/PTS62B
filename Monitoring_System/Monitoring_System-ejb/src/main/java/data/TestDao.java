@@ -20,6 +20,7 @@ import javax.persistence.Query;
 @Stateless
 public class TestDao extends AbstractDao {
 
+    // The entity manager that is used to connect to the monitoring database.
     @Inject
     @MonitoringDB2
     private EntityManager em;

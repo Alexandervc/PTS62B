@@ -5,15 +5,12 @@
  */
 package service;
 
-import data.jms.ReceiveFunctionalStatus;
 import business.MonitoringManager;
 import common.domain.Test;
 import common.domain.TestType;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -21,7 +18,6 @@ import javax.enterprise.concurrent.LastExecution;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
 import javax.enterprise.concurrent.Trigger;
 import javax.inject.Inject;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * The service that contains methods concerning the monitoring of servers.
@@ -30,6 +26,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 @Stateless(name = "monitoring")
 public class MonitoringService {
+    
+    //Interval between tests in minutes;
+    private static int TESTINTERVAL = 15;
 
     @Resource
     private ManagedScheduledExecutorService executor;
@@ -56,19 +55,20 @@ public class MonitoringService {
      * Starts the job that will be used to monitor the systems.
      */
     public void runJob() {
-        executor.schedule(new Scheduler(), new Trigger() {
+        this.executor.schedule(new Scheduler(), new Trigger() {
 
             @Override
             public Date getNextRunTime(LastExecution lastExecutionInfo,
                     Date taskScheduledTime) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(taskScheduledTime);
-                cal.add(Calendar.MINUTE, 15);
-                return (Date) cal.getTime();
+                cal.add(Calendar.MINUTE, TESTINTERVAL);
+                return cal.getTime();
             }
 
             @Override
-            public boolean skipRun(LastExecution lastExecutionInfo, Date scheduledRunTime) {
+            public boolean skipRun(LastExecution lastExecutionInfo,
+                    Date scheduledRunTime) {
                 return null == lastExecutionInfo;
             }
         });
@@ -78,7 +78,7 @@ public class MonitoringService {
      * Stops the job from running.
      */
     public void cancelJob() {
-        executor.shutdown();
+        this.executor.shutdown();
     }
 
     /**
@@ -89,16 +89,6 @@ public class MonitoringService {
      */
     public List<common.domain.System> retrieveSystems() {
         return this.manager.getSystems();
-    }
-
-    /**
-     * Generates the status of the server
-     *
-     * @param system the Server object where the status will be generated for.
-     */
-    public void generateServerStatus(common.domain.System system) {
-        throw new NotImplementedException();
-        //this.manager.generateServerStatus(system);
     }
 
     /**
@@ -118,15 +108,8 @@ public class MonitoringService {
      * and stores them.
      *
      * @param systemName Name of system
-     * @param result boolean succeed
      */
-    public void processTestResults(String systemName, Boolean result) {
-        try {
-            //this.manager.addTest(systemName, result, TestType.FUNCTIONAL);
-            this.manager.addTest(systemName, true, TestType.ENDPOINTS);
-        } catch (Exception ex) {
-            Logger.getLogger(MonitoringService.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
+    public void processTestResults(String systemName) {
+        this.manager.addTest(systemName, true, TestType.ENDPOINTS);
     }  
 }
