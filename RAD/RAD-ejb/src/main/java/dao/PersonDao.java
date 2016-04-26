@@ -15,19 +15,19 @@ import javax.persistence.TypedQuery;
  * @author Linda.
  */
 @Stateless
-public class PersonDaoImp extends AbstractFacade<Person> 
-        implements PersonDao, Serializable {
+public class PersonDao extends AbstractFacade<Person> 
+        implements Serializable {
 
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
     
     private static final Logger LOGGER = Logger.
-            getLogger(PersonDaoImp.class.getName());
+            getLogger(PersonDao.class.getName());
 
     /**
      * Contructor.
      */
-    public PersonDaoImp() {
+    public PersonDao() {
         super(Person.class);
     }
     
@@ -45,7 +45,6 @@ public class PersonDaoImp extends AbstractFacade<Person>
      * @param name String.
      * @return found person type Person.
      */
-    @Override
     public Person findByName(String name) {
         Person person;
         try {

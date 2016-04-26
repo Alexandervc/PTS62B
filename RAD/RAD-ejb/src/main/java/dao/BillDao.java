@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery;
  * @author Linda.
  */
 @Stateless
-public class BillDaoImp extends AbstractFacade<Bill> 
+public class BillDao extends AbstractFacade<Bill> 
         implements Serializable {
 
     @PersistenceContext(unitName = "RADpu")
@@ -23,7 +23,7 @@ public class BillDaoImp extends AbstractFacade<Bill>
     /**
      * Contructor.
      */
-    public BillDaoImp() {
+    public BillDao() {
         super(Bill.class);
     }
     

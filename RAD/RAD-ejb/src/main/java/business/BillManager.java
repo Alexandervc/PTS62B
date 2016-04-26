@@ -17,7 +17,7 @@ import service.RoadUsage;
 @Stateless
 public class BillManager {
     @Inject
-    private BillDao billDAO;
+    private BillDao billDao;
     
     @Inject
     private RateDao rateDAO;
@@ -27,7 +27,7 @@ public class BillManager {
      * @param person Type Person.
      */
     public void findBills(Person person) {
-        this.billDAO.findAllForUser(person);
+        this.billDao.findAllForUser(person);
     }
     
     /**
@@ -35,7 +35,7 @@ public class BillManager {
      * @param bill Type Bill.
      */
     public void createBill(Bill bill) {
-        this.billDAO.create(bill);
+        this.billDao.create(bill);
     }
     
     /**
