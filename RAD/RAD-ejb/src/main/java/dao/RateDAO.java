@@ -1,17 +1,33 @@
 package dao;
 
 import domain.Rate;
-import java.util.List;
+import java.io.Serializable;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
- * RateDAO interface
- * @author Melanie
+ * Implemented RateDao.
+ * @author Melanie.
  */
-public interface RateDAO {
-    void create(Rate rate);
-    void edit(Rate rate);
-    void remove(Rate rate);
-    Rate find(Object id);    
-    List<Rate> findAll();    
-    int count();
+@Stateless
+public class RateDao extends AbstractFacade<Rate> implements Serializable {
+    @PersistenceContext(unitName ="RADpu")
+    private EntityManager em;
+
+    /**
+     * Getter EntityManager.
+     * @return em type EntityManager.
+     */
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.em;
+    }    
+    
+    /**
+     * Constructor.
+     */
+    public RateDao() {
+        super(Rate.class);
+    }
 }

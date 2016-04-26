@@ -5,6 +5,15 @@
  */
 package testRunner;
 
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import business.CarPositionManager;
 import dao.CarPositionDao;
 import dao.CartrackerDao;
@@ -13,21 +22,12 @@ import domain.CarPosition;
 import domain.Cartracker;
 import domain.Road;
 import domain.RoadType;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.argThat;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  *
@@ -50,7 +50,7 @@ public class CarPositionManagerTest {
     @Produces
     private CarPositionDao carPositionDao;
     
-    private Long cartrackerId;
+    private String cartrackerId;
     private Cartracker cartracker;
     
     private String roadName;
@@ -95,7 +95,7 @@ public class CarPositionManagerTest {
     @Before
     public void beforeTest() {
         // Declare expected values
-        this.cartrackerId = 123456789L;
+        this.cartrackerId = "PT123456789";
         this.cartracker = new Cartracker(this.cartrackerId);
         
         this.roadName = "road";

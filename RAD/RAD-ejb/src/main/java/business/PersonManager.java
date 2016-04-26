@@ -1,18 +1,18 @@
 package business;
 
-import dao.PersonDAO;
+import dao.PersonDao;
 import domain.Person;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- * Manager for PersonDAO
+ * Manager for PersonDao.
  * @author Melanie.
  */
 @Stateless
 public class PersonManager {
     @Inject
-    private PersonDAO personDAO;
+    private PersonDao personDAO;
     
     /**
      * Create person in Database.
@@ -26,19 +26,19 @@ public class PersonManager {
      * @param country String.
      * @return new person Type Person.
      */
-    public Person createPerson(String firstname, String lastname, String initials,
-            String streetname, String number, String zipcode, 
+    public Person createPerson(String firstname, String lastname, 
+            String initials,String streetname, String number, String zipcode, 
             String city, String country) {
         
         Person person = new Person(firstname, lastname, initials,
             streetname, number, zipcode, city, country);
-        personDAO.create(person);
+        this.personDAO.create(person);
         
         return person;
     }
     
     public Person findPersonByName(String name){
-        Person person = personDAO.findByName(name);
+        Person person = this.personDAO.findByName(name);
         return person;
     }
 }

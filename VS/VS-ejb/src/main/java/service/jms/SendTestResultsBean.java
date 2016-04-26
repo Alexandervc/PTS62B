@@ -5,12 +5,17 @@
  */
 package service.jms;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.JMSProducer;
+import javax.jms.MapMessage;
 
 /**
  *
@@ -18,6 +23,9 @@ import javax.jms.JMSContext;
  */
 @Stateless
 public class SendTestResultsBean {
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(GenerateRoadUsagesBean.class.getName());
 
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")
@@ -31,23 +39,23 @@ public class SendTestResultsBean {
      * param Result result
      */
     public void sendTestResults() {
-//        try {
-//            
-//            MapMessage mapMessage = context.createMapMessage();
-//            // send result to method receiveTestresults
-//            mapMessage.setStringProperty("method", "receiveFunctionalStatus");
-//
-//            // set message string systemName
-//            mapMessage.setString("system", "VS");
-//            // set message boolean result
-//            mapMessage.setBoolean("result", result.wasSuccessful());
-//
-//            // send message to LMS
-//            this.context.createProducer().send(this.queue, mapMessage);
-//        } catch (JMSException ex) {
-//            Logger.getLogger(SendTestResultsBean.class.getName())
-//                    .log(Level.SEVERE, null, ex);
-//        }
+        try {         
+            MapMessage mapMessage = context.createMapMessage();
+            // send result to method receiveTestresults
+            mapMessage.setStringProperty("method", "receiveStatus");
+
+            // set message string systemName
+            mapMessage.setString("system", "VS");
+            // set message boolean result
+            //mapMessage.setBoolean("result", result.wasSuccessful());
+
+            JMSProducer producer = context.createProducer();
+            producer.setTimeToLive(60000);
+            producer.send(this.queue, mapMessage);
+            this.context.createProducer().send(this.queue, mapMessage);
+        } catch (JMSException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
 
 }

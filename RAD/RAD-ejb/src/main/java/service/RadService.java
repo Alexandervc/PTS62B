@@ -24,18 +24,17 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.jms.JMSException;
-import service.jms.JMSRADSender;
+import service.jms.RequestRoadUsagesBean;
 
 /**
- * RAD Service class
- *
- * @author Linda
+ * RAD Service class.
+ * @author Linda.
  */
 @Singleton
 public class RadService {
 
     private Person person;
-    private Long cartrackerId;
+    private String cartrackerId;
     private String month;
     private String year;
 
@@ -50,30 +49,30 @@ public class RadService {
     private CarManager carManager;
 
     @Inject
-    private JMSRADSender radSender;
+    private RequestRoadUsagesBean radSender;
 
     private Bill bill;
 
     /**
-     * Post construct method
+     * Post construct method.
      */
     @PostConstruct
     public void start() {
-        // empty post construct method
+        // empty post construct method.
     }
 
     /**
-     * add person to database
+     * Add person to database.
      *
-     * @param firstname of person
-     * @param lastname of person
-     * @param initials of person
-     * @param streetname of person
-     * @param number of person
-     * @param zipcode of person
-     * @param city of person
-     * @param country of person
-     * @return created person
+     * @param firstname String.
+     * @param lastname String.
+     * @param initials String.
+     * @param streetname String.
+     * @param number String.
+     * @param zipcode String.
+     * @param city String.
+     * @param country String.
+     * @return created person type Person.
      */
     public Person addPerson(String firstname, String lastname, String initials,
             String streetname, String number, String zipcode,
@@ -84,10 +83,10 @@ public class RadService {
     }
 
     /**
-     * find person in database with name can be null
+     * Find person in database with name can be null.
      *
-     * @param name of person
-     * @return found person
+     * @param name String.
+     * @return found person.
      */
     public Person findPersonByName(String name) {
         this.person = this.personManager.findPersonByName(name);
@@ -95,54 +94,54 @@ public class RadService {
     }
 
     /**
-     * add Rate to database
+     * Add Rate to database.
      *
-     * @param rate of road
-     * @param type of road
+     * @param rate double.
+     * @param type RoadType.
      */
     public void addRate(double rate, RoadType type) {
         this.rateManager.createRate(rate, type);
     }
 
     /**
-     * find Rate in database with roadType can be null
+     * Find Rate in database with roadType can be null.
      *
-     * @param type of Road
-     * @return found Rate
+     * @param type of Road.
+     * @return found Rate.
      */
     public Rate getRate(RoadType type) {
         return this.rateManager.findRate(type);
     }
 
     /**
-     * add bill to database
+     * Add bill to database.
      *
-     * @param bill
+     * @param bill type Bill.
      */
     public void addBill(Bill bill) {
         this.billManager.createBill(bill);
     }
 
     /**
-     * add car to database
+     * Add car to database.
      *
-     * @param person of car
-     * @param cartracker id of car
-     * @param fuel fueltype of car
+     * @param person otype Person.
+     * @param cartracker id Long.
+     * @param fuel fueltype.
      */
-    public void addCar(Person person, Long cartracker, FuelType fuel) {
+    public void addCar(Person person, String cartracker, FuelType fuel) {
         this.carManager.createCar(person, cartracker, fuel);
     }
 
     /**
-     * generate RoadUsages for bill
+     * Generate RoadUsages for bill.
      *
-     * @param username of person
-     * @param begin startdate bill
-     * @param end einddate bill
-     * @return generated bill;
+     * @param username String.
+     * @param begin Date
+     * @param end Date.
+     * @return generated bill type Bill.
      */
-    public Bill generateRoadUsages(String username, Date begin, Date end) {
+    public Bill requestRoadUsages(String username, Date begin, Date end) {
         Bill generatedBill = null;
 
         if (this.bill != null) {
@@ -150,82 +149,78 @@ public class RadService {
             generatedBill = this.bill;
             this.bill = null;
         } else {
-            try {
-                // format date
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
-                        Locale.getDefault());
-                // set month for bill
-                this.month = dateFormat.format(begin);
-                // set year for bill
-                this.year = Integer.toString(begin.getYear() + 1900);
+            // format date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
+                    Locale.getDefault());
+            // set month for bill
+            this.month = dateFormat.format(begin);
+            // set year for bill
+            this.year = Integer.toString(begin.getYear() + 1900);
 
-                // find person for bill
-                this.person = this.findPersonByName(username);
-                if (this.person == null) {
-                    throw new IllegalArgumentException("user not found");
-                }
-
-                // set cartracker id for bill
-                this.cartrackerId = this.person.getCars().get(0).getCartrackerId();
-
-                // ask roadUsages from VS
-                this.radSender.sendGenerateRoadUsagesCommand(this.cartrackerId,
-                        begin, end);
-
-                // generate empty temp bill
-                generatedBill = new Bill();
-            } catch (JMSException ex) {
-                Logger.getLogger(RadService.class.getName())
-                        .log(Level.SEVERE, null, ex);
+            // find person for bill
+            this.person = this.findPersonByName(username);
+            if (this.person == null) {
+                throw new IllegalArgumentException("user not found");
             }
+
+            // set cartracker id for bill
+            this.cartrackerId = this.person.getCars().get(0).getCartrackerId();
+
+            // ask roadUsages from VS
+            this.radSender.sendGenerateRoadUsagesCommand(this.cartrackerId,
+                    begin, end);
+
+            // generate empty temp bill
+            generatedBill = new Bill();
         }
         return generatedBill;
     }
 
     /**
-     * receive RoadUsages from VS
+     * Receive RoadUsages from VS.
      *
-     * @param roadUsages from VS
+     * @param roadUsages List RoadUsage.
      */
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
         // set local bill with correct fields
-        this.bill = this.billManager.generateBill(this.person, roadUsages, 
+        this.bill = this.billManager.generateBill(this.person, roadUsages,
                 this.cartrackerId, this.month, this.year);
     }
 
     /**
-     * set personManager for JUnittest
+     * Set personManager for JUnittest.
      *
-     * @param personManager
+     * @param personManager PersonManager.
      */
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }
 
     /**
-     * set BillManager for JUnittest
+     * Set BillManager for JUnittest.
      *
-     * @param billManager
+     * @param billManager BillManager.
      */
     public void setBillManager(BillManager billManager) {
         this.billManager = billManager;
     }
 
     /**
-     * set RateManager for JUnittest
+     * Set RateManager for JUnittest.
      *
-     * @param rateManager
+     * @param rateManager RateManager.
      */
     public void setRateManager(RateManager rateManager) {
         this.rateManager = rateManager;
     }
 
     /**
-     * set carManager for JUnittest
+     * Set carManager for JUnittest.
      *
-     * @param carManager
+     * @param carManager CarManager.
      */
     public void setCarManager(CarManager carManager) {
         this.carManager = carManager;
     }
+    
 }

@@ -29,9 +29,12 @@ public class TestDataStorage {
     @Inject
     private RoadDao roadDao;
 
+    /**
+     * Save testdata.
+     */
     @PostConstruct
     public void start() {
-        Long testCartracker = 123456789L;
+        String testCartracker = "PT123456789";
         if (this.cartrackerDao.find(testCartracker) == null) {
             // Insert test data
             Cartracker cartracker = new Cartracker(testCartracker);

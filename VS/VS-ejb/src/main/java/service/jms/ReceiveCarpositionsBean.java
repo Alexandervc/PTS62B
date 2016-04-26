@@ -36,7 +36,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
     @Inject
     private CarPositionService carPositionService;
     
-    private Logger logger = Logger
+    private static final Logger LOGGER = Logger
             .getLogger(ReceiveCarpositionsBean.class.getName());
 
     @Override
@@ -45,7 +45,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
             MapMessage mapMessage = (MapMessage) message;
 
             // Get values
-            Long cartrackerId = mapMessage.getLong("cartrackerId");
+            String cartrackerId = mapMessage.getString("cartrackerId");
             // TODO check
             Long serialNumber = mapMessage.getLong("serialNumber");
 
@@ -68,7 +68,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
             this.carPositionService.saveCarPosition(cartrackerId, moment,
                     xCoordinate, yCoordinate, roadName, meter);
         } catch (JMSException | ParseException ex) {
-            this.logger.log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

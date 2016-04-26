@@ -10,8 +10,8 @@ package notUsed;
 import java.util.Date;
 
 /**
- * CarPostion class
- * @author Linda
+ * CarPostion class.
+ * @author Linda.
  */
 public class CarPosition {
     
@@ -22,12 +22,22 @@ public class CarPosition {
     private Road road;
     private double km;
     
-    public CarPosition(Long id, Date moment, double xCoordinate, double yCoordinate, Road road, double km) {
+    /**
+     * Contructor.
+     * @param id Long.
+     * @param moment Date.
+     * @param xCoordinate double.
+     * @param yCoordinate double.
+     * @param road type Road.
+     * @param km double.
+     */
+    public CarPosition(Long id, Date moment, double xCoordinate, 
+            double yCoordinate, Road road, double km) {
         this.id = id;
-        this.moment = moment;
+        this.moment = new Date(moment.getTime());
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.road = road;
-        //this.km = km;
+        this.km = km;
     }
 }

@@ -30,7 +30,7 @@ public class RoadUsageService {
      * @return The roadusages between the given dates for the given 
      *      cartrackerId.
     */
-    public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
+    public List<RoadUsage> generateRoadUsages(String cartrackerId, Date begin, 
             Date end) {
         return this.roadUsageManager.generateRoadUsagesBetween(begin, end, 
                 cartrackerId);

@@ -24,11 +24,7 @@ public class InitBatch implements Batchlet {
      */
     @Override
     public String process() throws Exception {
-
-        this.manager.testFunctionalStateOfSystems();
-        for(common.domain.System sys : this.manager.getSystems()) {
-            this.manager.generateServerStatus(sys);
-        }
+        this.manager.testSystems();
         return "COMPLETED";
     }
 

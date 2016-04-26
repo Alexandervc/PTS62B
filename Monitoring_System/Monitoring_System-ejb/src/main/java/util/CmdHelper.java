@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -17,14 +18,20 @@ import javax.ejb.Stateless;
  * Class which provides Windows Command Line functionality.
  * @author jesblo
  */
-@Stateless
 public class CmdHelper {
+    
+    /**
+     * Instantiates the CmdHelper class.
+     */
+    private CmdHelper() {
+        // Empty private constructor for the utility class.
+    }
     
     /**
      * Method which executes a command within the Windows command line.
      * @param command The command which is to be executed.
      * @return The output lines.
-     * @throws IOException 
+     * @throws IOException Thrown if the command was not found.
      */
     public static List<String> execute(String[] command) throws IOException {
         return CmdHelper.execute(command, new String[0]);
@@ -36,7 +43,7 @@ public class CmdHelper {
      * @param additional Additional parameters which will be appended to the 
      * command.
      * @return The output lines.
-     * @throws IOException 
+     * @throws IOException Thrown if the command was not found.
      */
     public static List<String> execute(String[] command, String[] additional) 
             throws IOException {
@@ -46,7 +53,7 @@ public class CmdHelper {
         // Define the cmd command.
         String[] cmd =
         {
-            "cmd"
+            "cmd",
         };
 
         // Execute the cmd command.
@@ -57,17 +64,19 @@ public class CmdHelper {
 
         // Create the buffered input stream reader.
         BufferedReader stdInput = new BufferedReader(
-                new InputStreamReader(p.getInputStream()));
+                new InputStreamReader(
+                        p.getInputStream(), 
+                        StandardCharsets.UTF_8));
 
         // Execute the command.
-        PrintWriter stdin = new PrintWriter(p.getOutputStream());
-        stdin.println(String.join(" ", commandTotal));
-        stdin.close();
+        PrintWriter commandWriter = new PrintWriter(p.getOutputStream());
+        commandWriter.println(String.join(" ", commandTotal));
+        commandWriter.close();
 
         // Print the result lines.
-        String s = null;
-        while ((s = stdInput.readLine()) != null) {            
-            output.add(s);
+        String resultLine;
+        while ((resultLine = stdInput.readLine()) != null) {            
+            output.add(resultLine);
         }
 
         return output;

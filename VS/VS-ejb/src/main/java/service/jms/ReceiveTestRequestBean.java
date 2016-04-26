@@ -8,6 +8,7 @@ package service.jms;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -17,7 +18,7 @@ import javax.jms.MessageListener;
  */
 @MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='getFunctionalStatus'")
+            propertyValue = "method='getStatus'")
 })
 public class ReceiveTestRequestBean implements MessageListener {
 
@@ -31,25 +32,20 @@ public class ReceiveTestRequestBean implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
-//        try {
-//            MapMessage mapMessage = (MapMessage) message;
-//            
-//            mapMessage.getString("method");
-//            
-//            // engine for test
-//            JUnitCore engine = new JUnitCore();
-//            engine.addListener(new TextListener(System.out)); // required to print reports
-//
-//            // run test RoadUsageTest
-//            Result result = engine.run(junitTest.RoadUsageTest.class);
-//            // TODO carPositionManagerTest
-//            
-//            // sender will be send to LMS
-//            sender.sendTestResults(result);
-//        } catch (JMSException ex) {
-//            Logger.getLogger(ReceiveTestRequestBean.class.getName())
-//                    .log(Level.SEVERE, null, ex);
-//        }
-    }
+        MapMessage mapMessage = (MapMessage) message;
+        /*
+        // engine for test
+        JUnitCore engine = new JUnitCore();
+        // required to print reports
+        engine.addListener(new TextListener(System.out));
 
+        // run test RoadUsageTest
+        Result result = engine.run(junitTest.RoadUsageTest.class);
+        // TODO carPositionManagerTest
+
+        // sender will be send to LMS
+        sender.sendTestResults(result);
+        */
+        sender.sendTestResults();
+    }
 }
