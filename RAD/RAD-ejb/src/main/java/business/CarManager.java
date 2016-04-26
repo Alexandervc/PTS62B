@@ -28,7 +28,7 @@ public class CarManager {
      * @param cartracker Long.
      * @param fuel Type FuelType.
      */
-    public void createCar(Person person, Long cartracker, FuelType fuel){
+    public void createCar(Person person, String cartracker, FuelType fuel){
         Car car = new Car(person, cartracker, fuel);
         carDAO.create(car);
     }

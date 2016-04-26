@@ -23,7 +23,7 @@ public class Car implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private Long cartrackerId;
+    private String cartrackerId;
     
     @Enumerated(EnumType.STRING)
     private FuelType fuel;
@@ -36,7 +36,7 @@ public class Car implements Serializable {
         
     }
     
-    public Car(Person person, Long cartracker, FuelType fuel){
+    public Car(Person person, String cartracker, FuelType fuel){
         this.person3 = person;
        this.person3.addCar(this);
         this.cartrackerId = cartracker;
@@ -47,7 +47,7 @@ public class Car implements Serializable {
         this.id = id;
     }
 
-    public void setCartrackerId(Long cartrackerId) {
+    public void setCartrackerId(String cartrackerId) {
         this.cartrackerId = cartrackerId;
     }
 
@@ -59,7 +59,7 @@ public class Car implements Serializable {
         return id;
     }
 
-    public Long getCartrackerId() {
+    public String getCartrackerId() {
         return cartrackerId;
     }
 

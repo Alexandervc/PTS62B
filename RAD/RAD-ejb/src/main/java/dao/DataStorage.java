@@ -63,9 +63,9 @@ public class DataStorage {
 
             Logger.getLogger(DataStorage.class.getName())
                     .log(Level.INFO, "create car");
-            service.addCar(p, 123456789L, FuelType.Petrol);
+            service.addCar(p, "PT123456789", FuelType.Petrol);
 
-            Bill b = new Bill(p, roadUsages, 35.2, 123456789L, "April", "2016");
+            Bill b = new Bill(p, roadUsages, 35.2, "PT123456789", "April", "2016");
 
             Logger.getLogger(DataStorage.class.getName())
                     .log(Level.INFO, "create bill");

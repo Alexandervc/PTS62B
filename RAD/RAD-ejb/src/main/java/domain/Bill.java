@@ -33,7 +33,7 @@ public class Bill implements Serializable {
     private double totalPrice;
     private boolean paid;
     
-    private Long cartrackerId;
+    private String cartrackerId;
     private String billMonth;
     private String billYear;
 
@@ -42,7 +42,7 @@ public class Bill implements Serializable {
     }
     
     public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
-           Long cartrackerId, String month, String year) {
+           String cartrackerId, String month, String year) {
         this.person2 = person;
         this.person2.addBill(this);        
         this.roadUsages = roadUsages;
@@ -65,7 +65,7 @@ public class Bill implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public void setCartrackerId(Long cartrackerId) {
+    public void setCartrackerId(String cartrackerId) {
         this.cartrackerId = cartrackerId;
     }
 
@@ -109,7 +109,7 @@ public class Bill implements Serializable {
         return totalPrice;
     }
 
-    public Long getCartrackerId() {
+    public String getCartrackerId() {
         return cartrackerId;
     }
 

@@ -51,7 +51,7 @@ public class SendRoadUsagesBean {
             
             this.context.createProducer().send(this.queue, textMessage);
         } catch (JMSException ex) {
-            this.LOGGER.log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

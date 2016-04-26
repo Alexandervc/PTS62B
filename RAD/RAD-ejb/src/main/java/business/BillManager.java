@@ -48,7 +48,7 @@ public class BillManager {
      * @return new Bill Type Bill.
      */
     public Bill generateBill(Person person, List<RoadUsage> roadUsages, 
-            Long cartrackerId, String month, String year) {
+            String cartrackerId, String month, String year) {
         double totalPrice = 0;
         
         for (RoadUsage ru  : roadUsages) {

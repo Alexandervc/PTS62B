@@ -10,11 +10,8 @@ import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -60,7 +57,7 @@ public class TestDAOCar {
     
     @Test
     public void testAddCar(){
-        service.addCar(person1, 32L, FuelType.Petrol);
-        verify(carManager, Mockito.times(1)).createCar(person1, 32L, FuelType.Petrol);
+        service.addCar(person1, "PT123456789", FuelType.Petrol);
+        verify(carManager, Mockito.times(1)).createCar(person1, "PT123456789", FuelType.Petrol);
     }
 }

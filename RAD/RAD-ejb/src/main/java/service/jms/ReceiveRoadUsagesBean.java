@@ -30,28 +30,28 @@ import service.RoadUsage;
     @ActivationConfigProperty(propertyName="messageSelector", propertyValue="method='receiveRoadUsages'")
 })
 // TODO old commits
-public class GenerateBillBean implements MessageListener {
+public class ReceiveRoadUsagesBean implements MessageListener {
 
     @Inject
     private RadService radService;
     
+    private static final Logger LOGGER = Logger
+            .getLogger(ReceiveRoadUsagesBean.class.getName());
+    
     @Override
     public void onMessage(Message message) {
         try {
-            // Make roadusage
+            // Get roadusages from message
             TextMessage textMessage = (TextMessage) message;
             String jsonString = textMessage.getText();
-            Logger.getLogger(GenerateBillBean.class.getName())
-                    .log(Level.INFO, jsonString);
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<RoadUsage>>() {}.getType();
             List<RoadUsage> roadUsages = gson.fromJson(jsonString, type);
-            Logger.getLogger(GenerateBillBean.class.getName())
-                    .log(Level.INFO, roadUsages.toString());
+            
+            // Call service
             radService.receiveRoadUsages(roadUsages);
         } catch (JMSException ex) {
-            Logger.getLogger(GenerateBillBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
     

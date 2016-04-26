@@ -50,7 +50,7 @@ public class CarPositionManagerTest {
     @Produces
     private CarPositionDao carPositionDao;
     
-    private Long cartrackerId;
+    private String cartrackerId;
     private Cartracker cartracker;
     
     private String roadName;
@@ -95,7 +95,7 @@ public class CarPositionManagerTest {
     @Before
     public void beforeTest() {
         // Declare expected values
-        this.cartrackerId = 123456789L;
+        this.cartrackerId = "PT123456789";
         this.cartracker = new Cartracker(this.cartrackerId);
         
         this.roadName = "road";
