@@ -1,0 +1,9 @@
+Jenkins tests api
+
+http://192.168.24.70:8070/job/<job-name>/lastSuccessfulBuild/testReport/api/json
+
+Vervang <job-name> met de deploy job name, bijvoorbeeld: PTS-S62B-RAD-deploy.
+
+Als je de resultaten wil bekijken in de browser kan je ?pretty=true toevoegen:
+
+http://192.168.24.70:8070/job/PTS-S62B-RAD-deploy/lastSuccessfulBuild/testReport/api/json?pretty=true
