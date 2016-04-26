@@ -18,7 +18,7 @@ import service.MonitoringService;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 @ManagedBean
 @RequestScoped
@@ -28,7 +28,6 @@ public class MonitoringBean implements Serializable  {
     
     private List<common.domain.System> retrieveSystems;
 
-    @Transient
     private List<Entry<String, String>> entries;
 
     public List<Entry<String, String>> getEntries() {

@@ -23,7 +23,7 @@ import org.junit.runner.RunWith;
 public class ServerStatusManagerTest {
     
     @Inject
-    ServerStatusManager manager;
+    private ServerStatusManager manager;
         
     /**
      * Tests the retrieve application status method on the LMS server.
