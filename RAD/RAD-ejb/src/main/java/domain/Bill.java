@@ -49,6 +49,7 @@ public class Bill implements Serializable {
     @Deprecated
     public Bill() {
         // Empty for JPA.
+        this.roadUsages = new ArrayList<>();
     }
 
     /**
