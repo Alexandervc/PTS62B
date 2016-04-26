@@ -198,6 +198,22 @@ public class MonitoringManager {
     }
     
     /**
+     * Retrieves all tests for every type from a system.
+     * @param system The system where the tests are requested from.
+     * @return A list of test for every type of test.
+     */
+    public List<List<Test>> retrieveTests(System system) {
+        List<List<Test>> returnList = new ArrayList<>();
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.STATUS));
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.FUNCTIONAL));
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.ENDPOINTS));
+        return returnList;
+    }
+    
+    /**
      * Retrieves the last test for every type from a system.
      * @param system The system where the tests are requested from.
      * @return A list of the last test for every type of test.

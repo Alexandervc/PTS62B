@@ -30,11 +30,15 @@ public class MonitoringBean implements Serializable  {
     private MonitoringService service;
     
     private List<common.domain.System> retrieveSystems;
-
     private List<String> systemStrings;
-    
     private List<Entry<String, String>> entries;
-
+    
+    /**
+     * Get test results.
+     * 
+     * @return output for monitor. 
+     */
+    /*
     public List<Entry<String, String>> getEntries() {
         Map map = new HashMap();
         for(common.domain.System sys : this.getRetrieveSystems()) {
@@ -62,40 +66,100 @@ public class MonitoringBean implements Serializable  {
         entries = new ArrayList<>(map.entrySet());
         return entries;
     }
-
-    public void setEntries(List<Entry<String, String>> entries) {
-        this.entries = entries;
-    }
+    */
     
-    private Map<String, SystemState> map;
-
-    public Map<String, SystemState> getMap() {
-        this.map = new HashMap();
+     
+    public List<Entry<String, String>> getEntries() {
+        List map = new ArrayList();
         
-        for(common.domain.System sys : retrieveSystems) {
-            this.map.put(sys.getName(), new SystemState(sys.getName()));
+        for(common.domain.System sys : this.getRetrieveSystems()) {
+            List<List<Test>> tests = this.service.retrieveTests(sys);           
+            
+            for (List<Test> list_t : tests) { 
+                List<Object> params = new ArrayList<>();
+                //SystemState state = new SystemState(sys.getName());
+                Boolean first = true;
+                int[] date;
+                
+                for (Test t : list_t) {
+                    Timestamp timestamp = t.getDate();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(timestamp.getTime());
+
+                    date = new int[6];
+                    date[0] = calendar.get(Calendar.YEAR);
+                    date[1] = calendar.get(Calendar.MONTH);
+                    date[2] = calendar.get(Calendar.DAY_OF_WEEK);
+                    date[3] = calendar.get(Calendar.HOUR_OF_DAY);
+                    date[4] = calendar.get(Calendar.MINUTE);
+                    date[5] = calendar.get(Calendar.SECOND);
+
+                    if (!first) {
+                        //Set enddate for previous record on current date.
+                        params.add(4, date);
+                        Gson gson = new Gson();                    
+                        String json = gson.toJson(params);                    
+                        map.add(json);
+
+                        params = new ArrayList<>();
+                    }
+
+                    params.add(0, sys.getName());
+
+                    String testtype = t.getTestType().toString();
+                    params.add(1, testtype);
+
+                    Boolean result = t.getResult();
+                    String testresult = "failed"; 
+
+                    if (result) {
+                        testresult = "passed";
+                    }                
+
+                    params.add(2, testresult);
+
+                    params.add(3, date);
+
+                    first = false; 
+                }
+                
+                //Sent enddate now for last record.
+                Calendar calendar = Calendar.getInstance();
+                date = new int[6];
+                date[0] = calendar.get(Calendar.YEAR);
+                date[1] = calendar.get(Calendar.MONTH);
+                date[2] = calendar.get(Calendar.DAY_OF_WEEK);
+                date[3] = calendar.get(Calendar.HOUR_OF_DAY);
+                date[4] = calendar.get(Calendar.MINUTE);
+                date[5] = calendar.get(Calendar.SECOND);
+
+                params.add(4, date);
+                Gson gson = new Gson();
+                String json = gson.toJson(params);
+                map.add(json);
+            }           
         }
         
         return map;
-    }    
-    
-    public void setMap(Map<String, SystemState> map) {
-        this.map = map;
     }
     
-    /*
-    private Map<String, List<Object>> map;
+    /**
+     * Get entries for system.
+     * 
+     * @param sys.
+     * @return List of entries.
+     */
+    public List<Entry<String, String>> getEntriesForSystem(common.domain.System sys) {
+        List map = new ArrayList();
+        List<List<Test>> tests = this.service.retrieveTests(sys);           
 
-    public Map<String, List<Object>> getMap() {
-        this.map = new HashMap();
-        
-        for(common.domain.System sys : retrieveSystems) {
-            List<Test> tests = service.retrieveLatestTests(sys);            
+        for (List<Test> list_t : tests) { 
             List<Object> params = new ArrayList<>();
+            //SystemState state = new SystemState(sys.getName());
             Boolean first = true;
             int[] date;
-            
-            for (Test t : tests) {   
+
+            for (Test t : list_t) {
                 Timestamp timestamp = t.getDate();
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(timestamp.getTime());
@@ -107,23 +171,37 @@ public class MonitoringBean implements Serializable  {
                 date[3] = calendar.get(Calendar.HOUR_OF_DAY);
                 date[4] = calendar.get(Calendar.MINUTE);
                 date[5] = calendar.get(Calendar.SECOND);
-                
+
                 if (!first) {
-                    //Set enddate for previous record on current date
-                    params.add(2, date);
-                    this.map.put(sys.getName(), params);
+                    //Set enddate for previous record on current date.
+                    params.add(4, date);
+                    Gson gson = new Gson();                    
+                    String json = gson.toJson(params);                    
+                    map.add(json);
+
                     params = new ArrayList<>();
                 }
-                
-                SystemState state = new SystemState(sys.getName());
-                params.add(0, state);
-                
-                params.add(1, date);
-                
-                first = false;    
+
+                params.add(0, sys.getName());
+
+                String testtype = t.getTestType().toString();
+                params.add(1, testtype);
+
+                Boolean result = t.getResult();
+                String testresult = "failed"; 
+
+                if (result) {
+                    testresult = "passed";
+                }                
+
+                params.add(2, testresult);
+
+                params.add(3, date);
+
+                first = false; 
             }
-            
-            //Sent enddate now for last record
+
+            //Sent enddate now for last record.
             Calendar calendar = Calendar.getInstance();
             date = new int[6];
             date[0] = calendar.get(Calendar.YEAR);
@@ -132,18 +210,19 @@ public class MonitoringBean implements Serializable  {
             date[3] = calendar.get(Calendar.HOUR_OF_DAY);
             date[4] = calendar.get(Calendar.MINUTE);
             date[5] = calendar.get(Calendar.SECOND);
-            
-            params.add(2, date);
-            this.map.put(sys.getName(), params);
-        }
+
+            params.add(4, date);
+            Gson gson = new Gson();
+            String json = gson.toJson(params);
+            map.add(json);
+        }           
         
         return map;
     }
-    
-    public void setMap(Map<String, List<Object>> map) {
-        this.map = map;
-    }  
-    */
+
+    public void setEntries(List<Entry<String, String>> entries) {
+        this.entries = entries;
+    }
     
     /**
      * Empty constructor for sonarqube.

@@ -99,6 +99,18 @@ public class MonitoringService {
     public void generateServerStatus(common.domain.System system) {
         this.manager.generateServerStatus(system);
     }
+    
+    /**
+     * Retrives all tests. One for each test type.
+     *
+     * @param system The system that the tests have to be retrieved for.
+     * @return A list with the 3 tests.
+     */
+    public List<List<Test>> retrieveTests(common.domain.System system) {
+
+        // TODO: Get historical tests.
+        return this.manager.retrieveTests(system);
+    }
 
     /**
      * Retrives the last versions of the tests. One for each test type.
