@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,6 +48,7 @@ public class Bill implements Serializable {
      */
     @Deprecated
     public Bill() {
+        // Empty for JPA.
     }
 
     /**
@@ -63,8 +65,7 @@ public class Bill implements Serializable {
            String cartrackerId, String month, String year) {
         this.person2 = person;
         this.person2.addBill(this);
-        List<RoadUsage> roadUsages_copy = roadUsages;
-        this.roadUsages = roadUsages_copy;
+        this.roadUsages = new ArrayList<>(roadUsages);
         this.totalPrice = totalPrice;
         this.paid = false;
         this.cartrackerId = cartrackerId;
@@ -114,7 +115,7 @@ public class Bill implements Serializable {
      * @return List RoadUsages.
      */
     public List<RoadUsage> getRoadUsages() {
-        return this.roadUsages;
+        return new ArrayList<>(this.roadUsages);
     }
 
     /**
@@ -123,8 +124,7 @@ public class Bill implements Serializable {
      * @param roadUsages List RoadUsage.
      */
     public void setRoadUsages(List<RoadUsage> roadUsages) {
-        List<RoadUsage> roadUsages_copy = roadUsages;
-        this.roadUsages = roadUsages_copy;
+        this.roadUsages = new ArrayList<>(roadUsages);
     }
 
     /**

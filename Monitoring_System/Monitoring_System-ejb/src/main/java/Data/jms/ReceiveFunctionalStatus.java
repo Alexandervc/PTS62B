@@ -5,7 +5,6 @@
  */
 package data.jms;
 
-import common.domain.TestType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
@@ -23,10 +22,13 @@ import service.MonitoringService;
  */
 @MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='receiveFunctionalStatus'")
+            propertyValue = "method='receiveStatus'")
 })
 public class ReceiveFunctionalStatus implements MessageListener {
 
+    private static final Logger LOGGER = Logger
+            .getLogger(ReceiveFunctionalStatus.class.getName()); 
+    
     @Inject
     private MonitoringService service;
 
@@ -47,11 +49,10 @@ public class ReceiveFunctionalStatus implements MessageListener {
             Boolean testresult = mapMessage.getBoolean("result");
 
             // TODO save in db
-            this.service.saveTestresult(systemName, testresult, TestType.FUNCTIONAL);
+            this.service.processTestResults(systemName);
 
         } catch (JMSException ex) {
-            Logger.getLogger(ReceiveFunctionalStatus.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -9,10 +9,17 @@ package util;
 import java.util.Arrays;
 
 /**
- *
+ * Provides functionality regarding arrays.
  * @author jesblo
  */
 public class ArrayHelper {
+    
+    /**
+     * Instantiates the ArrayHelper class.
+     */
+    private ArrayHelper() {
+        // Empty private constructor for the utility class.
+    }
     
     /**
     * Combines two arrays.

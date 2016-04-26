@@ -3,13 +3,9 @@ package managedbeans;
 import com.google.gson.Gson;
 import common.domain.System;
 import common.domain.Test;
-import common.domain.TestType;
 import domain.SystemState;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +13,12 @@ import java.util.Map.Entry;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.persistence.Transient;
 import service.MonitoringService;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 @ManagedBean
 @RequestScoped
@@ -31,15 +28,13 @@ public class MonitoringBean implements Serializable  {
     
     private List<common.domain.System> retrieveSystems;
 
-    private List<String> systemStrings;
-    
     private List<Entry<String, String>> entries;
 
     public List<Entry<String, String>> getEntries() {
-        Map map = new HashMap();
+        Map hMap = new HashMap();
         for(common.domain.System sys : this.getRetrieveSystems()) {
             SystemState state = new SystemState(sys.getName());
-            for(Test t : service.retrieveLatestTests(sys)) {
+            for(Test t : this.service.retrieveLatestTests(sys)) {
                 switch (t.getTestType()) {
                     case FUNCTIONAL:
                         state.setFunctional(t.getResult().toString());
@@ -55,34 +50,18 @@ public class MonitoringBean implements Serializable  {
                 }
                 
                 Gson gson = new Gson();
-                map.put(sys.getName(), gson.toJson(state));
+                hMap.put(sys.getName(), gson.toJson(state));
             }
         }
         
-        entries = new ArrayList<>(map.entrySet());
-        return entries;
+        this.entries = new ArrayList<>(hMap.entrySet());
+        return this.entries;
     }
 
     public void setEntries(List<Entry<String, String>> entries) {
-        this.entries = entries;
+        this.entries = new ArrayList(entries    );
     }
-    
-    private Map<String, SystemState> map;
-
-    public Map<String, SystemState> getMap() {
-        this.map = new HashMap();
-        
-        for(common.domain.System sys : retrieveSystems) {
-            this.map.put(sys.getName(), new SystemState(sys.getName()));
-        }
-        
-        return map;
-    }    
-    
-    public void setMap(Map<String, SystemState> map) {
-        this.map = map;
-    }
-    
+   
     /*
     private Map<String, List<Object>> map;
 
@@ -149,7 +128,7 @@ public class MonitoringBean implements Serializable  {
      * Empty constructor for sonarqube.
      */
     public MonitoringBean() {
-        
+        // Comment for sonarqube.
     }
     
     /**
@@ -158,9 +137,6 @@ public class MonitoringBean implements Serializable  {
      */
     public List<System> getRetrieveSystems() {        
         this.retrieveSystems = this.service.retrieveSystems();
-       /* System e = new System();
-        e.setName("YALAYALA");
-        this.retrieveSystems.add(e);*/
         return new ArrayList<>(this.retrieveSystems);
     }       
 }

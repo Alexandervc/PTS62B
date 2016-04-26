@@ -1,5 +1,7 @@
 package business;
 
+import dao.BillDao;
+import dao.RateDao;
 import domain.Bill;
 import domain.Person;
 import domain.Rate;
@@ -7,8 +9,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.RoadUsage;
-import dao.BillDao;
-import dao.RateDao;
 
 /**
  *  Manager for BillDao.
@@ -17,7 +17,7 @@ import dao.RateDao;
 @Stateless
 public class BillManager {
     @Inject
-    private BillDao billDAO;
+    private BillDao billDao;
     
     @Inject
     private RateDao rateDAO;
@@ -27,7 +27,7 @@ public class BillManager {
      * @param person Type Person.
      */
     public void findBills(Person person) {
-        billDAO.findAllForUser(person);
+        this.billDao.findAllForUser(person);
     }
     
     /**
@@ -35,7 +35,7 @@ public class BillManager {
      * @param bill Type Bill.
      */
     public void createBill(Bill bill) {
-        billDAO.create(bill);
+        this.billDao.create(bill);
     }
     
     /**
@@ -52,13 +52,13 @@ public class BillManager {
         double totalPrice = 0;
         
         for (RoadUsage ru  : roadUsages) {
-            Rate rate = rateDAO.find(ru.getRoadType());
-            //rate= new Rate(1, RoadType.A);
+            Rate rate = this.rateDAO.find(ru.getRoadType());
             double price = ru.getKm() * rate.getRate();
             totalPrice += price;
         }        
         
-        Bill bill = new Bill(person, roadUsages, totalPrice, cartrackerId, month, year);        
+        Bill bill = new Bill(person, roadUsages, totalPrice, cartrackerId, 
+                month, year);        
         return bill;
     }
 }

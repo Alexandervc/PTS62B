@@ -6,17 +6,35 @@
 package dao;
 
 import domain.Car;
-import java.util.List;
+import java.io.Serializable;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
- * CarDao interface.
+ * Implemented CarDao.
  * @author Linda.
  */
-public interface CarDao {
-    void create(Car car);
-    void edit(Car car);
-    void remove(Car car);
-    Car find(Object id);    
-    List<Car> findAll();    
-    int count();
+@Stateless
+public class CarDao extends AbstractFacade<Car> implements Serializable {
+
+    @PersistenceContext(unitName = "RADpu")
+    private EntityManager em;
+
+    /**
+     * Getter EntityManager.
+     * @return em type EntityManager.
+     */
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.em;
+    }
+
+    /**
+     * Constructor.
+     */
+    public CarDao() {
+        super(Car.class);
+    }
+
 }

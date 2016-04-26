@@ -101,7 +101,7 @@ public class Person implements Serializable {
      * @return Id.
      */
     public Long getId() {
-        return id;
+        return this.id;
     }
     /**
      * Setter Id.
@@ -116,7 +116,7 @@ public class Person implements Serializable {
      * @return String first name.
      */
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     /**
@@ -132,7 +132,7 @@ public class Person implements Serializable {
      * @return String Last name.
      */
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     /**
@@ -147,7 +147,7 @@ public class Person implements Serializable {
      * @return String initials.
      */
     public String getInitials() {
-        return initials;
+        return this.initials;
     }
 
     /**
@@ -163,7 +163,7 @@ public class Person implements Serializable {
      * @return String streetname.
      */
     public String getStreetName() {
-        return streetName;
+        return this.streetName;
     }
     /**
      * Setter Streetname.
@@ -178,7 +178,7 @@ public class Person implements Serializable {
      * @return String Housenumber.
      */
     public String getHousenumber() {
-        return housenumber;
+        return this.housenumber;
     }
 /**
  * Setter Housenumber.
@@ -193,7 +193,7 @@ public class Person implements Serializable {
      * @return String zipcode.
      */
     public String getZipCode() {
-        return zipCode;
+        return this.zipCode;
     }
 
     /**
@@ -209,7 +209,7 @@ public class Person implements Serializable {
      * @return String City.
      */
     public String getCity() {
-        return city;
+        return this.city;
     }
 
     /**
@@ -225,7 +225,7 @@ public class Person implements Serializable {
      * @return String Country.
      */
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     /**
@@ -241,7 +241,7 @@ public class Person implements Serializable {
      * @return list bills.
      */
     public List<Bill> getBills() {
-        return bills;
+        return new ArrayList<Bill>(this.bills);
     }
     
     /**
@@ -249,8 +249,7 @@ public class Person implements Serializable {
      * @param bills of person.
      */
     public void setBills(List<Bill> bills) {
-        List<Bill> bills_copy = bills;
-        this.bills = bills_copy;
+        this.bills = new ArrayList<Bill>(bills);
     }
 
     /**
@@ -258,7 +257,7 @@ public class Person implements Serializable {
      * @return List cars.
      */
     public List<Car> getCars() {
-        return cars;
+        return new ArrayList<Car>(this.cars);
     }
 
     /**
@@ -266,7 +265,7 @@ public class Person implements Serializable {
      * @param cars of person. 
      */
     public void setCars(List<Car> cars) {
-        this.cars = cars;
+        this.cars = new ArrayList<Car>(this.cars);
     }
     
     /**

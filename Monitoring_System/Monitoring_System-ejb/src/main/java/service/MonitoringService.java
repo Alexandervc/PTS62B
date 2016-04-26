@@ -5,15 +5,12 @@
  */
 package service;
 
-import data.jms.ReceiveFunctionalStatus;
 import business.MonitoringManager;
 import common.domain.Test;
 import common.domain.TestType;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -29,6 +26,9 @@ import javax.inject.Inject;
  */
 @Stateless(name = "monitoring")
 public class MonitoringService {
+    
+    //Interval between tests in minutes;
+    private static int TESTINTERVAL = 15;
 
     @Resource
     private ManagedScheduledExecutorService executor;
@@ -55,19 +55,20 @@ public class MonitoringService {
      * Starts the job that will be used to monitor the systems.
      */
     public void runJob() {
-        executor.schedule(new Scheduler(), new Trigger() {
+        this.executor.schedule(new Scheduler(), new Trigger() {
 
             @Override
             public Date getNextRunTime(LastExecution lastExecutionInfo,
                     Date taskScheduledTime) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(taskScheduledTime);
-                cal.add(Calendar.MINUTE, 15);
-                return (Date) cal.getTime();
+                cal.add(Calendar.MINUTE, TESTINTERVAL);
+                return cal.getTime();
             }
 
             @Override
-            public boolean skipRun(LastExecution lastExecutionInfo, Date scheduledRunTime) {
+            public boolean skipRun(LastExecution lastExecutionInfo,
+                    Date scheduledRunTime) {
                 return null == lastExecutionInfo;
             }
         });
@@ -77,7 +78,7 @@ public class MonitoringService {
      * Stops the job from running.
      */
     public void cancelJob() {
-        executor.shutdown();
+        this.executor.shutdown();
     }
 
     /**
@@ -91,17 +92,7 @@ public class MonitoringService {
     }
 
     /**
-     * Generates the status of the server
-     *
-     * @param system the Server object where the status will be generated for.
-     * @return A list
-     */
-    public void generateServerStatus(common.domain.System system) {
-        this.manager.generateServerStatus(system);
-    }
-
-    /**
-     * Retrives the last versions of the tests. One for each test type.
+     * Retrieves the last versions of the tests. One for each test type.
      *
      * @param system The system that the tests have to be retrieved for.
      * @return A list with the 3 tests.
@@ -113,18 +104,12 @@ public class MonitoringService {
     }
 
     /**
-     * saves received testresult from sender in to DB
+     * Processes the test results of a functional and endpoints test
+     * and stores them.
      *
      * @param systemName Name of system
-     * @param result boolean succeed
-     * @param type type of test
      */
-    public void saveTestresult(String systemName, Boolean result, TestType type) {
-        try {
-            this.manager.addTest(systemName, result, type);
-        } catch (Exception ex) {
-            Logger.getLogger(MonitoringService.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
-    }
+    public void processTestResults(String systemName) {
+        this.manager.addTest(systemName, true, TestType.ENDPOINTS);
+    }  
 }
