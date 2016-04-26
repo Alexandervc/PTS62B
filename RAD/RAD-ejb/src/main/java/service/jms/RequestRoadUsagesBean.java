@@ -37,6 +37,14 @@ public class RequestRoadUsagesBean {
     private static final Logger LOGGER = Logger
             .getLogger(RequestRoadUsagesBean.class.getName());
 
+    /**
+     * Send request to VS for RoadUsages.
+     * @param cartrackerId The unique identifier of a cartracker.
+     * @param beginDate The begin date of the period to get 
+     *      the roadUsages in betweet.
+     * @param endDate The end date of the period to get 
+     *      the roadUsages in between.
+     */
     public void sendGenerateRoadUsagesCommand(String cartrackerId,
             Date beginDate, Date endDate) {
         try {
