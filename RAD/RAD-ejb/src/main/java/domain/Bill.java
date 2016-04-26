@@ -167,7 +167,7 @@ public class Bill implements Serializable {
      * @return Cartrackerid Long.
      */
     public String getCartrackerId() {
-        return cartrackerId;
+        return this.cartrackerId;
     }
     
     /**

@@ -241,7 +241,7 @@ public class Person implements Serializable {
      * @return list bills.
      */
     public List<Bill> getBills() {
-        return new ArrayList<Bill>(this.bills);
+        return new ArrayList<>(this.bills);
     }
     
     /**
@@ -249,7 +249,7 @@ public class Person implements Serializable {
      * @param bills of person.
      */
     public void setBills(List<Bill> bills) {
-        this.bills = new ArrayList<Bill>(bills);
+        this.bills = new ArrayList<>(bills);
     }
 
     /**
@@ -257,7 +257,7 @@ public class Person implements Serializable {
      * @return List cars.
      */
     public List<Car> getCars() {
-        return new ArrayList<Car>(this.cars);
+        return new ArrayList<>(this.cars);
     }
 
     /**
@@ -265,6 +265,7 @@ public class Person implements Serializable {
      * @param cars of person. 
      */
     public void setCars(List<Car> cars) {
+        // TODO!!
         this.cars = new ArrayList<Car>(this.cars);
     }
     
