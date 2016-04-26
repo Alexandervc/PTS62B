@@ -19,13 +19,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
- *
- * @author Edwin
+ * The entity for a system that is being monitored by the LMS system.
+ * @author Edwin.
  */
 @Entity
 @NamedQueries({
     @NamedQuery(query = "select s from System s", name = "get systems"),
-    @NamedQuery(query = "select s from System s where s.name = :name", name = "get system by name")
+    @NamedQuery(query = "select s from System s where s.name = :name",
+            name = "get system by name")
 })
 public class System implements Serializable {
 
@@ -46,10 +47,6 @@ public class System implements Serializable {
     private int port;
     
     @OneToMany
-    @JoinColumn(name="SYSTEM")
-    private List<ConnectionClient> clients;
-    
-    @OneToMany
     @JoinColumn(name="SYSTEM_ID", referencedColumnName="ID")
     private List<Test> tests;
 
@@ -57,14 +54,22 @@ public class System implements Serializable {
      * Empty constructor for JPA usage.
      */
     public System() {
+        // Comment needed for sonarqube.
     }
 
+    /**
+     * Creates a system, using parameters to set values and initialises
+     * a new ArrayList for the tests.
+     * @param name The name of the system.
+     * @param description The description of the system.
+     * @param ip The IP adress of the system.
+     * @param port The port that is used for communication.
+     */
     public System(String name, String description, String ip, int port) {
         this.name = name;
         this.description = description;
         this.ip = ip;
         this.port = port;
-        this.clients = new ArrayList<>();
         this.tests = new ArrayList();
     }
     
@@ -117,15 +122,12 @@ public class System implements Serializable {
     public void setTests(List<Test> tests) {
         this.tests = new ArrayList<>(tests);
     }
-
-    public List<ConnectionClient> getClients() {
-        return new ArrayList<>(this.clients);
-    }
-
-    public void setClients(List<ConnectionClient> clients) {
-        this.clients = new ArrayList<>(clients);
-    }
     
+    /**
+     * Adds a test to the list of tests, Sets the systemId of the test
+     * to the id of this system.
+     * @param test The test that has to be added.
+     */
     public void addTest(Test test) {
         test.setSystemID(this.id);
         this.tests.add(test);

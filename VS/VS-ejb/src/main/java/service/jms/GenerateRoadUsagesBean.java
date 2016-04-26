@@ -23,7 +23,8 @@ import javax.jms.MessageListener;
 import service.RoadUsageService;
 
 /**
- *
+ * The messagedriven bean for receiving commands from RAD 
+ * to generate roadUsages.
  * @author Alexander
  */
 @MessageDriven(mappedName="jms/VS/queue", activationConfig = {
@@ -35,13 +36,16 @@ public class GenerateRoadUsagesBean implements MessageListener {
     private RoadUsageService roadUsageService;
     
     @Inject
-    private JMSVSSender vsSender;
+    private SendRoadUsagesBean roadUsagesSender;
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(GenerateRoadUsagesBean.class.getName());
     
     @Override
     public void onMessage(Message message) {
         try {
             MapMessage mapMessage = (MapMessage) message;
-            Long cartrackerId = mapMessage.getLong("cartrackerId");
+            String cartrackerId = mapMessage.getString("cartrackerId");
             String beginDateString = mapMessage.getString("beginDate");
             String endDateString = mapMessage.getString("endDate");
             
@@ -53,14 +57,11 @@ public class GenerateRoadUsagesBean implements MessageListener {
             // Generate road usages
             List<RoadUsage> roadUsages = this.roadUsageService
                     .generateRoadUsages(cartrackerId, beginDate, endDate);
-            Logger.getLogger(GenerateRoadUsagesBean.class.getName())
-                    .log(Level.INFO, String.valueOf(roadUsages.size()));
             
             // Send
-            vsSender.sendRoadUsages(roadUsages);
+            this.roadUsagesSender.sendRoadUsages(roadUsages);
         } catch (JMSException | ParseException ex) {
-            Logger.getLogger(GenerateRoadUsagesBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

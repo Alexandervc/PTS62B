@@ -6,7 +6,6 @@
 package business;
 
 import dao.CarPositionDao;
-import dao.CartrackerDao;
 import domain.CarPosition;
 import domain.Road;
 import java.util.ArrayList;
@@ -14,12 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- *
+ * The manager of roadUsages.
  * @author Alexander
  */
 @Stateless
@@ -27,27 +25,26 @@ public class RoadUsageManager {
     @Inject
     private CarPositionDao carPositionDao;
     
-    @PostConstruct
-    public void start() {
-        System.out.println("Post construct movementManager");
-    }
-    
     /**
-     * 
-     * @param begin cannot be after end
-     * @param end
-     * @param cartrackerId
-     * @return The roadusages between the given date for the given cartrackerId
+     * Generate the roadUsages between the given date for the given cartracker.
+     * @param begin The begin date of the period to get the roadUsages between.
+     *      Cannot be after end
+     * @param end The end date of the period to get the roadUsages between.
+     * @param cartrackerId The cartracker to get the roadUsages for.
+     * @return The roadusages between the given dates for the given 
+     *      cartrackerId.
      */
-    public List<RoadUsage> getRoadUsagesBetween(Date begin, Date end, 
-            Long cartrackerId) {
+    public List<RoadUsage> generateRoadUsagesBetween(Date begin, Date end, 
+            String cartrackerId) {
         if(begin.after(end)) {
             throw new IllegalArgumentException("begin after end");
         }
-        List<CarPosition> cps = carPositionDao.getPositionsBetween(begin, end, 
-                cartrackerId);
         
-        // Generate roadUsages
+        // Get carPositions
+        List<CarPosition> cps = this.carPositionDao.getPositionsBetween(begin, 
+                end, cartrackerId);
+        
+        // Make roadUsages from carPositions
         Map<Road, RoadUsage> roadUsages = new HashMap<>();
         for(CarPosition cp : cps) {
             if(!roadUsages.containsKey(cp.getRoad())){
@@ -63,10 +60,6 @@ public class RoadUsageManager {
             }
         }
         
-        // TODO verbeteren
-        List<RoadUsage> roadUsagesList = new ArrayList<>();
-        roadUsagesList.addAll(roadUsages.values());
-        
-        return roadUsagesList;
+        return new ArrayList<>(roadUsages.values());
     }
 }

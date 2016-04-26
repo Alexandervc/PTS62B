@@ -11,25 +11,30 @@ import javax.inject.Inject;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 public class InitBatch implements Batchlet {
-    private @Inject MonitoringManager manager;
-
+    @Inject
+    private MonitoringManager manager;     
     
+    /**
+     * Starts the processing of the batch.
+     * @return The result of the process.
+     * @throws Exception if anything goes wrong an Exception will be thrown.
+     */
     @Override
     public String process() throws Exception {
-
-        this.manager.testFunctionalStateOfSystems();
-        for(common.domain.System sys : this.manager.getSystems()) {
-            this.manager.generateServerStatus(sys);
-        }
+        this.manager.testSystems();
         return "COMPLETED";
     }
 
+    /**
+     * Method called when the batch job stops. Currently has no usage.
+     * @throws Exception .
+     */
     @Override
     public void stop() throws Exception {
-        System.out.println("stops");
+        //Stops the method, currently no usage.
     }
     
 }

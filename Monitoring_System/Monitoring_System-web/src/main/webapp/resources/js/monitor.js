@@ -2,7 +2,6 @@ google.charts.load("current", {packages: ['corechart', 'controls', 'timeline']})
 google.charts.setOnLoadCallback(drawCharts);
 
 function drawChart(fieldname) {
-
     var json = document.getElementById(fieldname);
 
     var obj = JSON.parse(json.value);
@@ -12,15 +11,29 @@ function drawChart(fieldname) {
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn({type: 'string', id: 'State'});
     dataTable.addColumn({type: 'string', id: 'Name'});
-    dataTable.addColumn({ type: 'string', id: 'ID' });
+    dataTable.addColumn({type: 'string', id: 'ID'});
     dataTable.addColumn({type: 'date', id: 'Start'});
     dataTable.addColumn({type: 'date', id: 'End'});
     
     dataTable.addRows([
-        ['Online', obj.status,obj.status, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)],
+        ['Online', obj.status, obj.status, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)],
         ['Endpoints', obj.endpoints, obj.endpoints, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)],
-        ['Features', obj.functional,obj.functional, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)]
+        ['Features', obj.functional, obj.functional, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)]
     ]);
+   
+    /*
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({type: 'string', id: 'State'});
+    dataTable.addColumn({type: 'string', id: 'Name'});
+    dataTable.addColumn({type: 'date', id: 'Start'});
+    dataTable.addColumn({type: 'date', id: 'End'});
+    
+    dataTable.addRows([
+        ['Online', obj.status, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)],
+        ['Endpoints', obj.endpoints, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)],
+        ['Features', obj.functional, new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 24, 0, 0)],
+    ]);
+    */
 
     var colors = [];
 

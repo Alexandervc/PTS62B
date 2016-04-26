@@ -13,26 +13,32 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * The dao for road.
  * @author Alexander
  */
 @Stateless
-public class RoadDao extends DaoFacade<Road> {
+public class RoadDao extends AbstractDaoFacade<Road> {
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * The dao for road.
+     */
     public RoadDao() {
         super(Road.class);
     }
 
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
     
+    /**
+     * Find all roads in the database.
+     * @return All found roads.
+     */
     public List<Road> findAll() {
-        Query q =  em.createNamedQuery("Road.findAll");
-        List<Road> roads = (List<Road>) q.getResultList();
-        return roads;
+        Query q =  this.em.createNamedQuery("Road.findAll");
+        return (List<Road>) q.getResultList();
     }
 }

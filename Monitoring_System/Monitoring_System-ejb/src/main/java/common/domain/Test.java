@@ -19,7 +19,7 @@ import javax.persistence.NamedQuery;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 @Entity
 @NamedQueries({
@@ -50,8 +50,15 @@ public class Test implements Serializable {
      * Default empty constructor for JPA.
      */
     public Test() {
+        // Empty constructor for Sonarqube.
     }
 
+    /**
+     * A constructor used to construct a Test object.
+     * @param testType The type of text.
+     * @param date The date the test was executed.
+     * @param result The result of the test.
+     */
     public Test(TestType testType, Timestamp date, Boolean result) {
         this.testType = testType;
         this.date = new Timestamp(date.getTime());
@@ -67,7 +74,7 @@ public class Test implements Serializable {
     }   
 
     public TestType getTestType() {
-        return testType;
+        return this.testType;
     }
 
     public void setTestType(TestType testType) {
@@ -75,15 +82,15 @@ public class Test implements Serializable {
     }
 
     public Timestamp getDate() {
-        return date;
+        return (Timestamp) this.date.clone();
     }
 
     public void setDate(Timestamp date) {
-        this.date = date;
+        this.date = (Timestamp) date.clone();
     }
 
     public Boolean getResult() {
-        return result;
+        return this.result;
     }
 
     public void setResult(Boolean result) {
@@ -91,7 +98,7 @@ public class Test implements Serializable {
     }
 
     public Long getSystemID() {
-        return systemID;
+        return this.systemID;
     }
 
     public void setSystemID(Long systemID) {

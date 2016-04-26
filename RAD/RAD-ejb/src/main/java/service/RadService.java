@@ -15,7 +15,6 @@ import domain.Person;
 import domain.Rate;
 import domain.RoadType;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -25,17 +24,17 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.jms.JMSException;
-import service.jms.JMSRADSender;
+import service.jms.RequestRoadUsagesBean;
 
 /**
- *
- * @author Linda
+ * RAD Service class.
+ * @author Linda.
  */
 @Singleton
 public class RadService {
 
     private Person person;
-    private Long cartrackerId;
+    private String cartrackerId;
     private String month;
     private String year;
 
@@ -50,94 +49,178 @@ public class RadService {
     private CarManager carManager;
 
     @Inject
-    private JMSRADSender radSender;
+    private RequestRoadUsagesBean radSender;
 
     private Bill bill;
 
+    /**
+     * Post construct method.
+     */
     @PostConstruct
     public void start() {
+        // empty post construct method.
     }
 
+    /**
+     * Add person to database.
+     *
+     * @param firstname String.
+     * @param lastname String.
+     * @param initials String.
+     * @param streetname String.
+     * @param number String.
+     * @param zipcode String.
+     * @param city String.
+     * @param country String.
+     * @return created person type Person.
+     */
     public Person addPerson(String firstname, String lastname, String initials,
             String streetname, String number, String zipcode,
             String city, String country) {
-        person = personManager.createPerson(firstname, lastname, initials,
+        this.person = this.personManager.createPerson(firstname, lastname, initials,
                 streetname, number, zipcode, city, country);
-        return person;
+        return this.person;
     }
 
+    /**
+     * Find person in database with name can be null.
+     *
+     * @param name String.
+     * @return found person.
+     */
     public Person findPersonByName(String name) {
-        person = personManager.findPersonByName(name);
-        return person;
+        this.person = this.personManager.findPersonByName(name);
+        return this.person;
     }
 
+    /**
+     * Add Rate to database.
+     *
+     * @param rate double.
+     * @param type RoadType.
+     */
     public void addRate(double rate, RoadType type) {
-        rateManager.createRate(rate, type);
+        this.rateManager.createRate(rate, type);
     }
 
+    /**
+     * Find Rate in database with roadType can be null.
+     *
+     * @param type of Road.
+     * @return found Rate.
+     */
     public Rate getRate(RoadType type) {
-        return rateManager.findRate(type);
+        return this.rateManager.findRate(type);
     }
 
+    /**
+     * Add bill to database.
+     *
+     * @param bill type Bill.
+     */
     public void addBill(Bill bill) {
-        billManager.createBill(bill);
+        this.billManager.createBill(bill);
     }
 
-    public void addCar(Person person, Long cartracker, FuelType fuel) {
-        carManager.createCar(person, cartracker, fuel);
+    /**
+     * Add car to database.
+     *
+     * @param person otype Person.
+     * @param cartracker id Long.
+     * @param fuel fueltype.
+     */
+    public void addCar(Person person, String cartracker, FuelType fuel) {
+        this.carManager.createCar(person, cartracker, fuel);
     }
 
-    public Bill generateRoadUsages(String username, Date begin, Date end) {
+    /**
+     * Generate RoadUsages for bill.
+     *
+     * @param username String.
+     * @param begin Date
+     * @param end Date.
+     * @return generated bill type Bill.
+     */
+    public Bill requestRoadUsages(String username, Date begin, Date end) {
         Bill generatedBill = null;
 
         if (this.bill != null) {
+            // roadusages are received from VS
             generatedBill = this.bill;
             this.bill = null;
         } else {
-            try {
-                
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM", 
-                        Locale.getDefault());
-                month = dateFormat.format(begin);
-                year = Integer.toString(begin.getYear() + 1900);
-                
-                this.person = this.findPersonByName(username);
-                if(this.person == null) {
-                    throw new IllegalArgumentException("user not found");
-                }
-                
-                cartrackerId = person.getCars().get(0).getCartrackerId();
-                
-                radSender.sendGenerateRoadUsagesCommand(cartrackerId, 
-                        begin, end);
-                generatedBill = new Bill();
-            } catch (JMSException ex) {
-                Logger.getLogger(RadService.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
-        }
+            // format date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
+                    Locale.getDefault());
+            // set month for bill
+            this.month = dateFormat.format(begin);
+            // set year for bill
+            this.year = Integer.toString(begin.getYear() + 1900);
 
+            // find person for bill
+            this.person = this.findPersonByName(username);
+            if (this.person == null) {
+                throw new IllegalArgumentException("user not found");
+            }
+
+            // set cartracker id for bill
+            this.cartrackerId = this.person.getCars().get(0).getCartrackerId();
+
+            // ask roadUsages from VS
+            this.radSender.sendGenerateRoadUsagesCommand(this.cartrackerId,
+                    begin, end);
+
+            // generate empty temp bill
+            generatedBill = new Bill();
+        }
         return generatedBill;
     }
 
+    /**
+     * Receive RoadUsages from VS.
+     *
+     * @param roadUsages List RoadUsage.
+     */
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        bill = billManager.generateBill(person, roadUsages, cartrackerId, 
-                month, year);
+        // set local bill with correct fields
+        this.bill = this.billManager.generateBill(this.person, roadUsages,
+                this.cartrackerId, this.month, this.year);
     }
 
+    /**
+     * Set personManager for JUnittest.
+     *
+     * @param personManager PersonManager.
+     */
     public void setPersonManager(PersonManager personManager) {
         this.personManager = personManager;
     }
 
+    /**
+     * Set BillManager for JUnittest.
+     *
+     * @param billManager BillManager.
+     */
     public void setBillManager(BillManager billManager) {
         this.billManager = billManager;
     }
 
+    /**
+     * Set RateManager for JUnittest.
+     *
+     * @param rateManager RateManager.
+     */
     public void setRateManager(RateManager rateManager) {
         this.rateManager = rateManager;
     }
 
+    /**
+     * Set carManager for JUnittest.
+     *
+     * @param carManager CarManager.
+     */
     public void setCarManager(CarManager carManager) {
         this.carManager = carManager;
     }
+    
 }

@@ -6,15 +6,15 @@ import java.util.List;
 import model.Point;
 
 /**
- *
+ * NavUtils  Class.
  * @author Melanie
  */
 public class NavUtils {
-    private static double EARTH_RADIUS_IN_METERS = 
+    private static final double EARTH_RADIUS_IN_METERS = 
             DistanceUtils.EARTH_MEAN_RADIUS_KM * 1000;
 
     /**
-     * Private Constructor. Suppress default constructor for non-instantiability
+     * Private Constructor. Suppress default constructor for non-instantiability.
      */
     private NavUtils() {
         throw new AssertionError();
@@ -23,9 +23,9 @@ public class NavUtils {
     /**
      * Returns distance (in meters) between 2 points.
      *
-     * @param point1 Must not be null
-     * @param point2 Must not be null
-     * @return distance in meters
+     * @param point1 Must not be null.
+     * @param point2 Must not be null.
+     * @return distance in meters.
      */
     public static double getDistance(Point point1, Point point2) {
         if (point1 !=  null && point2 != null) {
@@ -42,6 +42,12 @@ public class NavUtils {
         }
     }
 
+    /**
+     * Get total distance between all points.
+     * 
+     * @param points.
+     * @return total distance in meters.
+     */
     public static double getTotalDistance(List<Point> points) {
         double totalDistance = 0;        
        
@@ -65,9 +71,9 @@ public class NavUtils {
     /**
      * Returns bearing of position 2 from position 1.
      *
-     * @param pt1
-     * @param pt2
-     * @return
+     * @param pt1.
+     * @param pt2.
+     * @return bearing.
      */
     public static double getBearing(Point pt1, Point pt2) {
         double longitude1 = pt1.getLongitude();
@@ -85,10 +91,10 @@ public class NavUtils {
      * Returns coordinates of position which is given distance and bearing from
      * given point.
      *
-     * @param pt1
-     * @param d
-     * @param brg
-     * @return
+     * @param pt1.
+     * @param d.
+     * @param brg.
+     * @return Position.
      */
     public static Point getPosition(Point pt1, double d, double brg) {
         if (Double.doubleToRawLongBits(d) == 0) {

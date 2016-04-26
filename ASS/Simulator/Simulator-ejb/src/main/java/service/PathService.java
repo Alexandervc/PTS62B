@@ -12,12 +12,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import model.Point;
@@ -28,7 +27,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,58 +38,71 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import model.GpsSimulatorInstance;
 import model.Leg;
-import service.jms.JmsAssSender;
+import service.jms.SendPositionBean;
 import simulator.GpsSimulator;
 import support.NavUtils;
 
 /**
- *
- * @author Melanie
+ * PathService Class.
+ * @author Melanie.
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
-    //private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
-    private String PROJECT_ROOT = "C:\\";
+    private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    //private final String PROJECT_ROOT = "C:\\";
     
-    private String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
-    private BufferedReader reader;
-    private BufferedWriter writer;
+    private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
+    private transient BufferedReader reader;
     
     private List<String> locations;
-    private Map<Long, GpsSimulatorInstance> taskFutures = new HashMap<>();
-    private ExecutorService taskExecutor = Executors.newSingleThreadExecutor();    
-    long instanceCounter = 1;
+    private final Map<Long, GpsSimulatorInstance> taskFutures = new HashMap<>();
+    private final transient ExecutorService taskExecutor = Executors.newSingleThreadExecutor();    
+    private long instanceCounter = 1;
     
     @Inject
-    private JmsAssSender assSender;
+    private SendPositionBean sendPositionBean;
     
+    /**
+     * Setup location info.
+     */
     @PostConstruct
     public void setupLocations() {
-        locations = new ArrayList<>();
-        locations.add("R. do Ouro,1150-060 Lisboa,Portugal");
-        locations.add("R. Alm. Gago Coutinho,Albufeira,Portugal");
-        locations.add("R. Dr. Faria e Silva 34,Portugal");
-        locations.add("Entrada da Barca, 7630-340 Zambujeira do Mar,7630-734,"
+        this.locations = new ArrayList<>();
+        this.locations.add("R. do Ouro,1150-060 Lisboa,Portugal");
+        this.locations.add("R. Alm. Gago Coutinho,Albufeira,Portugal");
+        this.locations.add("R. Dr. Faria e Silva 34,Portugal");
+        this.locations.add("Entrada da Barca, 7630-340 Zambujeira do Mar,7630-734,"
                 + "Portugal");
-        locations.add("R. de Serpa Pinto,84,7940-172 Cuba,Portugal");
-        locations.add("Terreiro da Sé,4050-573 Porto,Portugal");
-        locations.add("Rua Sara Afonso, n.º 105-117,4460-841 Sra. da Hora,"
+        this.locations.add("R. de Serpa Pinto,84,7940-172 Cuba,Portugal");
+        this.locations.add("Terreiro da Sé,4050-573 Porto,Portugal");
+        this.locations.add("Rua Sara Afonso, n.º 105-117,4460-841 Sra. da Hora,"
                 + "Portugal");
-        locations.add("R. Abade Inácio Pimentel,4785-273 Trofa,Portugal");
-        locations.add("R. Marquês de Pombal,4560-682 Penafiel,Portugal");
-        locations.add("Largo da Estação,4700-223 Maximinos - Braga,Portugal");
+        this.locations.add("R. Abade Inácio Pimentel,4785-273 Trofa,Portugal");
+        this.locations.add("R. Marquês de Pombal,4560-682 Penafiel,Portugal");
+        this.locations.add("Largo da Estação,4700-223 Maximinos - Braga,Portugal");
     }
     
+    /**
+     * Setup reader.
+     * 
+     * @throws FileNotFoundException . 
+     */
     public void setupStream() throws FileNotFoundException {
-        reader = new BufferedReader(
+        this.reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                new File(PROJECT_ROOT + "\\config.txt")
+                                new File(this.PROJECT_ROOT + "\\config.txt")
                         )
                 )
         );
     }
 
+    /**
+     * Get coordinates from google for directionInput.
+     * 
+     * @param directionInput.
+     * @return list of points.
+     */
     @Override
     public List<Point> getCoordinatesFromGoogle(DirectionInput directionInput) {
         GeoApiContext context = new GeoApiContext().setApiKey(this.APIkey);
@@ -107,8 +118,8 @@ public class PathService implements IPathService, Serializable {
             for (DirectionsRoute route : routes.routes) {
                 latlongList = route.overviewPolyline.decodePath();
             }
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
         }
 
         List<Point> points = new ArrayList<>();
@@ -120,28 +131,36 @@ public class PathService implements IPathService, Serializable {
         return points;
     }
     
+    /**
+     * Get random directioninput for start- and endposition.
+     * 
+     * @return directioninput.
+     */
     @Override
     public DirectionInput getRandomDirectioninput() {
-        Random r = new Random();
-        int i1 = r.nextInt(locations.size());
+        SecureRandom  r = new SecureRandom();
+        int i1 = r.nextInt(this.locations.size());
         int i2 = 0;
         
         do {
-            i2 = r.nextInt(locations.size());
+            i2 = r.nextInt(this.locations.size());
         } while (i1 == i2);
         
         DirectionInput input = new DirectionInput(
-                locations.get(i1), locations.get(i2));     
+                this.locations.get(i1), this.locations.get(i2));     
         
         return input;
     }
     
+    /**
+     * Generate files for roadusages.
+     */
     @Override
     public void generateFile() {
         try {
             setupStream();
             
-            String file = reader.readLine();
+            String file = this.reader.readLine();
             String[] fileParam = file.split(",");
             String cartrackerID = fileParam[0].substring(fileParam[0].
                     indexOf("=")+1);
@@ -151,14 +170,13 @@ public class PathService implements IPathService, Serializable {
             DirectionInput input = getRandomDirectioninput();
             List<Point> points = getCoordinatesFromGoogle(input);
             
-            double totalDistance = NavUtils.getTotalDistance(points);
-            
             Point previous = null;
             
             for (Point p : points) {
                 String fileName = cartrackerID + "-" + fileIndex + ".json";
                 
-                FileWriter fileWritter = new FileWriter(PROJECT_ROOT + "\\output\\" + fileName);
+                FileWriter fileWritter = new FileWriter(this.PROJECT_ROOT 
+                        + "\\output\\" + fileName);
                 BufferedWriter writer = new BufferedWriter(fileWritter);               
                 
                 Date moment = new Date();
@@ -173,7 +191,7 @@ public class PathService implements IPathService, Serializable {
                     meter = NavUtils.getTotalDistance(ps);
                 }
                 
-                //Create json array
+                //Create json array.
                 Map<String, Object> position = new HashMap<>();
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String momentString = df.format(moment);
@@ -182,61 +200,69 @@ public class PathService implements IPathService, Serializable {
                 position.put("yCoordinate", yCoordinate);
                 position.put("meter", meter);
                 
-                //Write file
+                //Write file.
                 Gson gson = new Gson();
                 String output = gson.toJson(position);
                 writer.write(output);
                 writer.close();
                 
-                //Send JMS
-                assSender.sendPosition(output, Long.valueOf(cartrackerID),
+                //Send JMS.
+                this.sendPositionBean.sendPosition(output, cartrackerID,
                         Integer.toUnsignedLong(fileIndex));
                 
                 previous = p;
                 fileIndex++;
             }
             
-            String output = "cartrackerID=" + cartrackerID + ",fileIndex=" + fileIndex;
-            FileWriter fileWritter = new FileWriter(PROJECT_ROOT + "\\config.txt", false);
+            String output = "cartrackerID=" + cartrackerID + ",fileIndex=" 
+                    + fileIndex;
+            FileWriter fileWritter = new FileWriter(this.PROJECT_ROOT 
+                    + "\\config.txt", false);
             BufferedWriter writer2 = new BufferedWriter(fileWritter);
             writer2.write(output);
-            writer2.close();
-                    
+            writer2.close();                    
         } catch (IOException ex) {
-            Logger.getLogger(PathService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PathService.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
     
+    /**
+     * Generate GpsSimulatorInstance.
+     * 
+     * @return GpsSimulatorInstance.
+     */
     @Override
     public GpsSimulatorInstance generate() {
-        DirectionInput input = getRandomDirectioninput();
-                
-        Point lookAtPoint = null;
-        Set<Long> instanceIds = new HashSet<>(taskFutures.keySet());
+        DirectionInput input = getRandomDirectioninput();                
+        
+        Set<Long> instanceIds = new HashSet<>(this.taskFutures.keySet());
         List<Point> points = getCoordinatesFromGoogle(input);
-
-        if (lookAtPoint == null) {
-            lookAtPoint = points.get(0);
-        }
 
         GpsSimulator gpsSimulator = new GpsSimulator();
         //gpsSimulator.setMessageChannel(messageChannel);
         gpsSimulator.setShouldMove(true);
-        gpsSimulator.setExportPositionsToKml(true);
         gpsSimulator.setSpeedInKph(40d);
-        gpsSimulator.setId(instanceCounter);
+        gpsSimulator.setId(this.instanceCounter);
 
-        instanceIds.add(instanceCounter);
+        instanceIds.add(this.instanceCounter);
         prepareGpsSimulator(gpsSimulator, points);
 
-        Future<?> future = taskExecutor.submit(gpsSimulator);
+        Future<?> future = this.taskExecutor.submit(gpsSimulator);
         GpsSimulatorInstance instance = new GpsSimulatorInstance(
-                instanceCounter, gpsSimulator, future);
-        taskFutures.put(instanceCounter, instance);
-        instanceCounter++;
+                this.instanceCounter, gpsSimulator, future);
+        this.taskFutures.put(this.instanceCounter, instance);
+        this.instanceCounter++;
         return instance;
     }
 
+    /**
+     * Prepare gps simulator.
+     * 
+     * @param gpsSimulator.
+     * @param points.
+     * @return GpsSimulator.
+     */
     @Override
     public GpsSimulator prepareGpsSimulator(GpsSimulator gpsSimulator, 
             List<Point> points) {
@@ -248,9 +274,9 @@ public class PathService implements IPathService, Serializable {
     }
 
     /**
-     * Creates list of legs in the path
+     * Creates list of legs in the path.
      *
-     * @param points
+     * @param points.
      */
     private List<Leg> createLegsList(List<Point> points) {
         final List<Leg> legs = new ArrayList<>();

@@ -5,13 +5,6 @@
  */
 package business;
 
-import common.domain.ServerStatus;
-import common.domain.System;
-import common.domain.Test;
-import common.domain.TestType;
-import data.SystemDao;
-import data.TestDao;
-import data.jms.CheckRequestSender;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -22,16 +15,22 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.jms.JMSException;
+import common.domain.ServerStatus;
+import common.domain.System;
+import common.domain.Test;
+import common.domain.TestType;
+import data.SystemDao;
+import data.TestDao;
+import data.jms.CheckRequestSender;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 @Stateless
 public class MonitoringManager {
     
-    private final static Logger LOGGER = Logger
+    private static final Logger LOGGER = Logger
             .getLogger(MonitoringManager.class.getName()); 
 
     @EJB
@@ -63,30 +62,6 @@ public class MonitoringManager {
         return this.systemDao.getSystems();
     }   
 
-    /**
-     * Generates the status of the server.
-     * @param system The system object where the status will be generated for.
-     */
-    public final void generateServerStatus(System system) {
-        List<Test> tests = new ArrayList<>();
-        
-        // Retrieve the server status.
-        Test serverStatusTest = this.retrieveServerStatus(system);
-        tests.add(serverStatusTest);
-        
-        // Retrieve the result of the functional tests.
-        Test functionalTest = this.retrieveFunctionalTests(system);
-        tests.add(functionalTest);
-        
-        // Retrieve the result of the endpoint test.
-        Test endpointTest = this.retrieveEndpointTest(system);
-        tests.add(endpointTest);
-        
-        for(Test test :tests) {
-            this.testDao.create(test);
-        }
-        this.systemDao.edit(tests);
-    }
     
     /**
      * Retrieves the server status and maps it to a Test object.
@@ -101,7 +76,7 @@ public class MonitoringManager {
         try {
             applicationStatus = 
                     this.serverStatusManager.retrieveApplicationStatus(system);
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
@@ -137,45 +112,23 @@ public class MonitoringManager {
         // This can be expanded by getting all the tests. The application
         // currently expects one deployed application per server (system).
         return tests.get(0);
-    }
-    
-    /**
-     * Executes the remote functional tests and gets the result.
-     * @param system The system to retrieve the status from.
-     * @return A test object with the result of the test.
-     */
-    private Test retrieveFunctionalTests(System system) {
-        // TODO: create the functional test.
-        
-        // Create the test object which is returned.
-        Test test = new Test(
-                TestType.FUNCTIONAL,
-                new Timestamp(java.lang.System.currentTimeMillis()),
-                false);
-        
-        return test;
-    }
-    
-    /**
-     * Executes the endpoint tests and gets the result.
-     * @param system The system to retrieve the status from.
-     * @return A test object with the result of the test.
-     */
-    private Test retrieveEndpointTest(System system) {
-        // TODO: create the endpoint test.
-        
-        // Create the test object which is returned.
-        Test test = new Test(
-                TestType.FUNCTIONAL,
-                new Timestamp(java.lang.System.currentTimeMillis()),
-                false);
-        
-        return test;
     }   
+    
+    /**
+     * Retrieves the system based on its unique name.
+     * @param name The unique name of the system. 
+     * @return The system, null if the system isn't found.
+     */
     public System retrieveSystemByName(String name) {
         return this.systemDao.getSystemByName(name);
     }
     
+    /**
+     *  Creates and adds a test to a system based on its name.
+     * @param systemName The name of the system.
+     * @param result The result of the test.
+     * @param type The type of test that has to be created and added.
+     */
     public void addTest(String systemName, boolean result, TestType type){
         System system = this.systemDao.getSystemByName(systemName);
         List<Test> tests = system.getTests();
@@ -186,19 +139,62 @@ public class MonitoringManager {
         this.systemDao.edit(system);    
     }
     
+    /**
+     * Retrieves the last test for every type from a system.
+     * @param system The system where the tests are requested from.
+     * @return A list of the last test for every type of test.
+     */
     public List<Test> retrieveLatestTests(System system) {
         List<Test> returnList = new ArrayList<>();
-        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+        returnList.add(this.testDao.retrieveLatestTestForTypeForSystem(system
                 , TestType.STATUS));
-        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+        returnList.add(this.testDao.retrieveLatestTestForTypeForSystem(system
                 , TestType.FUNCTIONAL));
-        returnList.add(testDao.retrieveLatestTestForTypeForSystem(system
+        returnList.add(this.testDao.retrieveLatestTestForTypeForSystem(system
                 , TestType.ENDPOINTS));
         return returnList;
     }
     
-    public void testFunctionalStateOfSystems() throws JMSException {
-        checkRequestSender.requestChecks();
+    /**
+     * Tests the functional state of the systems. 
+     */
+    public void testFunctionalStateOfSystems() {
+        this.checkRequestSender.requestChecks();
     }
+    
+    /**
+     * Tests all systems on 3 test types. Functional, Endpoints and Status.
+     * Stores the result.
+     */
+    public void testSystems() {
+        // Sends a message into the topic so the systems can send their test
+        // results.
+        this.checkRequestSender.requestChecks();
+        
+        // For every system retrives the server status, adds this as a test
+        // to the database. Creates failed tests for functional and endpoints.
+        for(System s : this.getSystems()) {
+            Test testStatus = this.retrieveServerStatus(s);
+            s.addTest(testStatus);
+            this.testDao.create(testStatus);
+            
+            java.util.Date date= new java.util.Date();
+            Timestamp currentDate = new Timestamp(date.getTime());
+                
+            // Creates tests that will be fixed later.
+            Test testEndpoints = 
+                    new Test(TestType.ENDPOINTS, currentDate, false);
+            Test testFunctional =
+                    new Test(TestType.FUNCTIONAL, currentDate, false);
+                        
+            // Stores all the tests in the database.
+            this.testDao.create(testEndpoints);
+            this.testDao.create(testFunctional);
+            this.testDao.create(testStatus);
+
+            this.systemDao.edit(s);    
+        }
+    }
+    
 }
 

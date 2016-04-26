@@ -5,11 +5,8 @@
  */
 package service.jms;
 
-import business.RoadUsageManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import domain.CarPosition;
-import domain.Cartracker;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,7 +25,7 @@ import javax.jms.MessageListener;
 import service.CarPositionService;
 
 /**
- *
+ * The messagedriven bean for receiving carpositions from ASS.
  * @author Alexander
  */
 @MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
@@ -36,30 +33,25 @@ import service.CarPositionService;
             propertyValue = "method='receiveCarpositions'")
 })
 public class ReceiveCarpositionsBean implements MessageListener {
-
     @Inject
     private CarPositionService carPositionService;
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(ReceiveCarpositionsBean.class.getName());
 
     @Override
     public void onMessage(Message message) {
         try {
-            Logger.getLogger(ReceiveCarpositionsBean.class.getName())
-                    .log(Level.INFO, "receiveCarPositions");
-
             MapMessage mapMessage = (MapMessage) message;
-            Logger.getLogger(ReceiveCarpositionsBean.class.getName())
-                    .log(Level.INFO, mapMessage.toString());
 
             // Get values
-            Long cartrackerId = mapMessage.getLong("cartrackerId");
+            String cartrackerId = mapMessage.getString("cartrackerId");
             // TODO check
             Long serialNumber = mapMessage.getLong("serialNumber");
 
             // Get position
             String jsonPostion = mapMessage.getString("carposition");
             Gson gson = new Gson();
-            // TODO?
-            //CarPosition cp = gson.fromJson(jsonPostion, CarPosition.class);
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             Map<String, Object> position = gson.fromJson(jsonPostion, type);
 
@@ -75,12 +67,8 @@ public class ReceiveCarpositionsBean implements MessageListener {
 
             this.carPositionService.saveCarPosition(cartrackerId, moment,
                     xCoordinate, yCoordinate, roadName, meter);
-        } catch (JMSException ex) {
-            Logger.getLogger(ReceiveCarpositionsBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(ReceiveCarpositionsBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JMSException | ParseException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
-
 }

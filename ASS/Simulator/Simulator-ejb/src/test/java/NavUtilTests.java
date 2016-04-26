@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import model.DirectionInput;
@@ -10,29 +11,35 @@ import org.jglue.cdiunit.CdiRunner;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import service.IPathService;
 import service.PathService;
+import service.jms.SendPositionBean;
 import support.NavUtils;
 
 /**
- *
+ * NavUtilTests Class.
  * @author Melanie
  */
 @RunWith(CdiRunner.class)
 @AdditionalClasses(value = {PathService.class})
 public class NavUtilTests {
-    private static final Logger logger =
+    private static final Logger LOGGER =
             Logger.getLogger(NavUtilTests.class.getCanonicalName());
 
     @Inject
-    IPathService pathService;
+    private IPathService pathService;
+    
+    @Mock
+    @Produces
+    private SendPositionBean sendPositionBean;
     
     /**
      * Test method for
      * {@link frk.gpssimulator.service.impl.DefaultKmlService#getCoordinates(java.io.File)}.
      *
-     * @throws JAXBException
-     * @throws NumberFormatException
+     * @throws JAXBException .
+     * @throws NumberFormatException .
      */
     @Test
     public void testTotalDistance() throws NumberFormatException, JAXBException {
@@ -44,9 +51,17 @@ public class NavUtilTests {
 
         double totalDistance = NavUtils.getTotalDistance(points);
 
-        logger.log(Level.INFO, "totalDistance: " + totalDistance);
+        String output = "totalDistance: " + totalDistance;
+        LOGGER.log(Level.INFO, output);
     }
 
+    /**
+     * Test method for
+     * {@link frk.gpssimulator.service.impl.DefaultKmlService#getCoordinates(java.io.File)}.
+     * 
+     * @throws NumberFormatException .
+     * @throws JAXBException . 
+     */
     @Test
     public void testTotalDistance2() throws NumberFormatException, JAXBException {
         DirectionInput directionInput = new DirectionInput();
@@ -55,11 +70,13 @@ public class NavUtilTests {
 
         List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
         
-        logger.log(Level.INFO, "Number of points: " + points.size());
+        String output1 = "Number of points: " + points.size();
+        LOGGER.log(Level.INFO, output1);
 
         Double totalDistance = NavUtils.getTotalDistance(points);
 
-        logger.log(Level.INFO, "totalDistance: " + totalDistance);
+        String output2 = "totalDistance: " + totalDistance;
+        LOGGER.log(Level.INFO, output2);
         
         int distance = totalDistance.intValue();
         int distanceKM = distance / 1000;
@@ -67,6 +84,13 @@ public class NavUtilTests {
         assertEquals(51, distanceKM);
     }
     
+    /**
+     * Test method for
+     * {@link frk.gpssimulator.service.impl.DefaultKmlService#getCoordinates(java.io.File)}.
+     * 
+     * @throws NumberFormatException .
+     * @throws JAXBException .
+     */
     @Test
     public void testTotalDistance3() throws NumberFormatException, JAXBException {
         DirectionInput directionInput = new DirectionInput();
@@ -75,11 +99,13 @@ public class NavUtilTests {
 
         List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
         
-        logger.log(Level.INFO, "Number of points: " + points.size());
+        String output1 = "Number of points: " + points.size();
+        LOGGER.log(Level.INFO, output1);
 
         Double totalDistance = NavUtils.getTotalDistance(points);
 
-        logger.log(Level.INFO, "totalDistance: " + totalDistance);
+        String output2 = "totalDistance: " + totalDistance;
+        LOGGER.log(Level.INFO, output2);
         
         int distance = totalDistance.intValue();
         int distanceKM = distance / 1000;

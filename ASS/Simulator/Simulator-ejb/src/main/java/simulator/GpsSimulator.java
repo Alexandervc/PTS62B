@@ -3,6 +3,8 @@ package simulator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Leg;
 import model.Point;
 import model.PositionInfo;
@@ -10,7 +12,7 @@ import service.IGpsdService;
 import support.NavUtils;
 
 /**
- *
+ * GpsSimulator Class.
  * @author Melanie
  */
 public class GpsSimulator implements Runnable {
@@ -20,22 +22,24 @@ public class GpsSimulator implements Runnable {
 
     private IGpsdService gpsdService;
 
-    private boolean useGpsd = false;
+    private final boolean useGpsd = false;
 
-    private AtomicBoolean cancel = new AtomicBoolean();
+    private final AtomicBoolean cancel = new AtomicBoolean();
 
     private Double speedInMps; // In meters/sec
     private Boolean shouldMove;
-    private boolean exportPositionsToKml = false;
 
-    private Integer reportInterval = 500; // millisecs at which to send position reports
+    private final Integer reportInterval = 500; // millisecs at which to send position reports
     private PositionInfo currentPosition = null;
     private List<Leg> legs;
 
+    /**
+     * Runnable method for simulator.
+     */
     @Override
     public void run() {
         try {
-            if (cancel.get()) {
+            if (this.cancel.get()) {
                 destroy();
                 return;
             }
@@ -43,25 +47,27 @@ public class GpsSimulator implements Runnable {
             while (!Thread.interrupted()) {
                 long startTime = new Date().getTime();
                 
-                if (currentPosition != null) {
-                    if (shouldMove) {
+                if (this.currentPosition != null) {
+                    if (this.shouldMove) {
                         moveVehicle();
-                        currentPosition.setSpeed(speedInMps);
+                        this.currentPosition.setSpeed(this.speedInMps);
                     } else {
-                        currentPosition.setSpeed(0.0);
+                        this.currentPosition.setSpeed(0.0);
                     }
 
                     if (this.useGpsd) {
-                        this.gpsdService.updatePosition(currentPosition);
+                        this.gpsdService.updatePosition(this.currentPosition);
                     }
 
                     //messageChannel.send(MessageBuilder.withPayload(currentPosition).build());
                 }
 
-                // wait till next position report is due
+                // wait till next position report is due.
                 sleep(startTime);
             } // loop endlessly
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException iex) {
+            Logger.getLogger(GpsSimulator.class.getName())
+                    .log(Level.SEVERE, null, iex);
             destroy();
             return;
         }
@@ -73,50 +79,53 @@ public class GpsSimulator implements Runnable {
      * On thread interrupt. Send null position to all consumers to indicate that
      * sim has closed.
      */
-    void destroy() {
-        currentPosition = null;
+    public void destroy() {
+        this.currentPosition = null;
     }
 
     /**
      * Sleep till next position report is due.
      *
-     * @param startTime
-     * @throws InterruptedException
+     * @param startTime.
+     * @throws InterruptedException .
      */
     private void sleep(long startTime) throws InterruptedException {
         long endTime = new Date().getTime();
         long elapsedTime = endTime - startTime;
-        long sleepTime = reportInterval - elapsedTime > 0 ? reportInterval - elapsedTime : 0;
+        long sleepTime = this.reportInterval - elapsedTime > 0 ? 
+                this.reportInterval - elapsedTime : 0;
         Thread.sleep(sleepTime);
     }
 
     /**
      * Set new position of vehicle based on current position and vehicle speed.
      */
-    void moveVehicle() {
-        Double distance = speedInMps * reportInterval / 1000.0;
-        Double distanceFromStart = currentPosition.getDistanceFromStart() + distance;
+    public void moveVehicle() {
+        Double distance = this.speedInMps * this.reportInterval / 1000.0;
+        Double distanceFromStart = this.currentPosition.getDistanceFromStart() 
+                + distance;
         Double excess = 0.0; // amount by which next postion will exceed end
         // point of present leg
 
-        for (int i = currentPosition.getLeg().getId(); i < legs.size(); i++) {
-            Leg currentLeg = legs.get(i);
+        for (int i = this.currentPosition.getLeg().getId();
+                i < this.legs.size(); i++) {
+            Leg currentLeg = this.legs.get(i);
             excess = distanceFromStart > currentLeg.getLength() ? distanceFromStart - currentLeg.getLength() : 0.0;
 
             if (Double.doubleToRawLongBits(excess) == 0) {
                 // this means new position falls within current leg
-                currentPosition.setDistanceFromStart(distanceFromStart);
-                currentPosition.setLeg(currentLeg);
+                this.currentPosition.setDistanceFromStart(distanceFromStart);
+                this.currentPosition.setLeg(currentLeg);
                 Point newPosition = NavUtils.getPosition(currentLeg.getStartPosition(), distanceFromStart,
                         currentLeg.getHeading());
-                currentPosition.setPosition(newPosition);
+                this.currentPosition.setPosition(newPosition);
                 return;
             }
             distanceFromStart = excess;
         }
 
-        // if we've reached here it means vehicle has moved beyond end of path
-        // so go back to start of path
+        // if we've reached here it means vehicle has moved beyond end of path.
+        // so go back to start of path.
         setStartPosition();
     }
 
@@ -124,22 +133,22 @@ public class GpsSimulator implements Runnable {
      * Position vehicle at start of path.
      */
     public void setStartPosition() {
-        currentPosition = new PositionInfo();
-        Leg leg = legs.get(0);
-        currentPosition.setLeg(leg);
-        currentPosition.setPosition(leg.getStartPosition());
-        currentPosition.setDistanceFromStart(0.0);
+        this.currentPosition = new PositionInfo();
+        Leg leg = this.legs.get(0);
+        this.currentPosition.setLeg(leg);
+        this.currentPosition.setPosition(leg.getStartPosition());
+        this.currentPosition.setDistanceFromStart(0.0);
     }
 
     /**
-     * @return the speed
+     * @return the speed.
      */
     public Double getSpeedInMps() {
-        return speedInMps;
+        return this.speedInMps;
     }
 
     /**
-     * @param speed the speed to set
+     * @param speed the speed to set.
      */
     public void setSpeedInMps(Double speed) {
         this.speedInMps = speed;
@@ -157,7 +166,7 @@ public class GpsSimulator implements Runnable {
      * @return the shouldMove
      */
     public Boolean getShouldMove() {
-        return shouldMove;
+        return this.shouldMove;
     }
 
     /**
@@ -175,20 +184,17 @@ public class GpsSimulator implements Runnable {
         this.cancel.set(true);
     }
 
-    public void setExportPositionsToKml(boolean exportPositionsToKml) {
-        this.exportPositionsToKml = exportPositionsToKml;
-    }
-
     public void setGpsdService(IGpsdService gpsdService) {
         this.gpsdService = gpsdService;
     }
 
     public void setLegs(List<Leg> legs) {
-        this.legs = legs;
+        List<Leg> legs_copy = legs;
+        this.legs = legs_copy;
     }
 
     public PositionInfo getCurrentPosition() {
-        return currentPosition;
+        return this.currentPosition;
     }
 
     public void setCurrentPosition(PositionInfo currentPosition) {
@@ -196,7 +202,7 @@ public class GpsSimulator implements Runnable {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {

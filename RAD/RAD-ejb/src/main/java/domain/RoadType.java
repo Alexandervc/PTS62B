@@ -7,8 +7,8 @@ package domain;
 
 
 /**
- *
- * @author Linda
+ * RoadType enum class.
+ * @author Linda.
  */
 public enum RoadType {
     A,
@@ -16,4 +16,5 @@ public enum RoadType {
     C,
     D,
     E
+    
 }

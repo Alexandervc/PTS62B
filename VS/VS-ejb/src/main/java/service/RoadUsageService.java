@@ -5,43 +5,35 @@
  */
 package service;
 
-import business.RoadUsageManager;
-import business.RoadUsage;
-import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import business.RoadUsage;
+import business.RoadUsageManager;
 
 /**
- *
+ * The service for roadUsage.
  * @author Alexander
  */
 @Stateless
-public class RoadUsageService
-{
+public class RoadUsageService {
     @Inject
     private RoadUsageManager roadUsageManager;
-    
-    @PostConstruct
-    public void start() {
-        System.out.println("Post construct MovementService");
-    }
-    
-    // TODO
+
     /**
-     *
-     * @param cartrackerId
-     * @param begin
-     * @param end
-     * @return
-     */
-    public List<RoadUsage> generateRoadUsages(Long cartrackerId, Date begin, 
-            Date end)
-    {
-        System.out.println("generateRoadUsages");
-        return roadUsageManager.getRoadUsagesBetween(begin, end, cartrackerId);
+     * Generate the roadUsages between the given date for the given cartracker.
+     * @param begin The begin date of the period to get the roadUsages between.
+     *      Cannot be after end
+     * @param end The end date of the period to get the roadUsages between.
+     * @param cartrackerId The cartracker to get the roadUsages for.
+     * @return The roadusages between the given dates for the given 
+     *      cartrackerId.
+    */
+    public List<RoadUsage> generateRoadUsages(String cartrackerId, Date begin, 
+            Date end) {
+        return this.roadUsageManager.generateRoadUsagesBetween(begin, end, 
+                cartrackerId);
     }
     
 }

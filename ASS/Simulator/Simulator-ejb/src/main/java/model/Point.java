@@ -1,7 +1,7 @@
 package model;
 
 /**
- *
+ * Point Class.
  * @author Melanie
  */
 public class Point {
@@ -27,7 +27,7 @@ public class Point {
      * @return the latitude
      */
     public Double getLatitude() {
-        return latitude;
+        return this.latitude;
     }
 
     /**
@@ -41,7 +41,7 @@ public class Point {
      * @return the longitude
      */
     public Double getLongitude() {
-        return longitude;
+        return this.longitude;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Point {
      * @return the altitude
      */
     public Double getAltitude() {
-        return altitude;
+        return this.altitude;
     }
 
     /**
@@ -65,9 +65,14 @@ public class Point {
         this.altitude = altitude;
     }
 
+    /**
+     * ToString method.
+     * 
+     * @return String.
+     */
     @Override
     public String toString() {
-        return "Point [lat/lang:" + latitude + "," + longitude + ", altitude=" 
-                + altitude + "]";
+        return "Point [lat/lang:" + this.latitude + "," + this.longitude + ", altitude=" 
+                + this.altitude + "]";
     }
 }

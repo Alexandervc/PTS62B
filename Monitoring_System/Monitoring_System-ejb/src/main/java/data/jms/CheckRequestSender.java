@@ -5,6 +5,9 @@
  */
 package data.jms;
 
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -12,25 +15,50 @@ import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
-import javax.jms.Message;
+import javax.jms.JMSProducer;
+import javax.jms.MapMessage;
 
 /**
  *
- * @author Alexander
+ * @author Edwin.
  */
 @Stateless
 public class CheckRequestSender {
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(CheckRequestSender.class.getName()); 
+    
+    //The time to live for the messages that are being send in this class.
+    private static final int TIMEOUTTIME = 60000;
+    
+    //Connection factory for the connection with topics/queues on LMS.
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")
     private JMSContext context;
     
+    //The topic where all the test requests from monitoring will be send to.
     @Resource(lookup="jms/LMS/monitoringTopic")
     private Destination topic;
     
       
-    public void requestChecks() throws JMSException{
-        Message message = context.createMessage();
-        message.setStringProperty("method", "getFunctionalStatus");
-        context.createProducer().send(topic, message);
+    /**
+     * Sends a message in the monitoring topic to request the systems that are
+     * currently listening to the topic to validate their system and send the 
+     * state back.
+     */
+    public void requestChecks(){
+        try {
+            MapMessage message = this.context.createMapMessage();
+            message.setStringProperty("method", "getStatus");
+            java.util.Date date = new java.util.Date();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String currentTime = df.format(date);
+            message.setString("time", currentTime);
+            JMSProducer producer = this.context.createProducer();
+            producer.setTimeToLive(TIMEOUTTIME);
+            producer.send(this.topic, message);
+        } catch (JMSException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
 }

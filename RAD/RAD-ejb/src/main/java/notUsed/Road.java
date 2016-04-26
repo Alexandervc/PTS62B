@@ -11,7 +11,7 @@ package notUsed;
 import domain.RoadType;
 
 /**
- *
+ * Road class.
  * @author Linda
  */
 public class Road {
@@ -19,6 +19,12 @@ public class Road {
     private String name;
     private RoadType type;
     
+    /**
+     * Contructor.
+     * @param id Long.
+     * @param name String.
+     * @param type type RoadType.
+     */
     public Road(Long id, String name, RoadType type) {
         this.id = id;
         this.name = name;

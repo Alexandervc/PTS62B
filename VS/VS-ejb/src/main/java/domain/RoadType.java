@@ -6,7 +6,7 @@
 package domain;
 
 /**
- *
+ * Represents a type of a road.
  * @author Alexander
  */
 public enum RoadType {

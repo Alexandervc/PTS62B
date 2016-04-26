@@ -9,22 +9,34 @@ import domain.RoadType;
 import java.io.Serializable;
 
 /**
- *
+ * Helper class to store a usage of a road during a given period.
  * @author Alexander
  */
 public class RoadUsage implements Serializable{
+    private static final Double KM_TO_METER = 1000.0;
+    
     private String roadName;
     private RoadType roadType;
     private Double km;
     
+    /**
+     * Helper class to store a usage of a road during a given period.
+     * @param roadName The name of the road which this roadUsage is about.
+     *      Cannot be null or empty.
+     * @param type The type of the road which this roadUsage is about.
+     * @param km The distance in km's that is driven on the given road.
+     */
     public RoadUsage(String roadName, RoadType type, Double km) {
+        if(roadName == null || roadName.isEmpty()) {
+            throw new IllegalArgumentException("roadName null or empty");
+        }
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
     }
 
     public Double getKm() {
-        return km;
+        return this.km;
     }
 
     public void setKm(Double km) {
@@ -32,7 +44,7 @@ public class RoadUsage implements Serializable{
     }
 
     public String getRoadName() {
-        return roadName;
+        return this.roadName;
     }
 
     public void setRoadName(String roadName) {
@@ -40,7 +52,7 @@ public class RoadUsage implements Serializable{
     }
 
     public RoadType getRoadType() {
-        return roadType;
+        return this.roadType;
     }
 
     public void setRoadType(RoadType roadType) {
@@ -48,10 +60,10 @@ public class RoadUsage implements Serializable{
     }
     
     /**
-     * Add the given meter to this km
-     * @param meter 
+     * Add the given meter to this km.
+     * @param meter The distance in meter to add.
      */
     public void addMeter(Double meter) {
-        this.km += (meter / 1000);
+        this.km += meter / KM_TO_METER;
     }
 }
