@@ -1,5 +1,6 @@
 package simulator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -189,8 +190,7 @@ public class GpsSimulator implements Runnable {
     }
 
     public void setLegs(List<Leg> legs) {
-        List<Leg> legs_copy = legs;
-        this.legs = legs_copy;
+        this.legs = new ArrayList<>(legs);
     }
 
     public PositionInfo getCurrentPosition() {
