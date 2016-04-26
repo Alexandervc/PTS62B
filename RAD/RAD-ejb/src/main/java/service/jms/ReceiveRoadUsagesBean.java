@@ -23,13 +23,13 @@ import service.RadService;
 import service.RoadUsage;
 
 /**
- * Generate Bill Bean 
- * @author Alexander
+ * Generate Bill Bean. 
+ * @author Alexander.
  */
 @MessageDriven(mappedName="jms/RAD/queue", activationConfig={
-    @ActivationConfigProperty(propertyName="messageSelector", propertyValue="method='receiveRoadUsages'")
+    @ActivationConfigProperty(propertyName="messageSelector", 
+            propertyValue="method='receiveRoadUsages'")
 })
-// TODO old commits
 public class ReceiveRoadUsagesBean implements MessageListener {
 
     @Inject
@@ -38,6 +38,10 @@ public class ReceiveRoadUsagesBean implements MessageListener {
     private static final Logger LOGGER = Logger
             .getLogger(ReceiveRoadUsagesBean.class.getName());
     
+    /**
+     * Receives roadUsages from VS.
+     * @param message A TextMessage containing a jsonString with roadUsages.
+     */
     @Override
     public void onMessage(Message message) {
         try {

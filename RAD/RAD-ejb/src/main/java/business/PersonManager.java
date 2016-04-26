@@ -1,18 +1,18 @@
 package business;
 
-import dao.PersonDAO;
 import domain.Person;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import dao.PersonDao;
 
 /**
- * Manager for PersonDAO
+ * Manager for PersonDao.
  * @author Melanie.
  */
 @Stateless
 public class PersonManager {
     @Inject
-    private PersonDAO personDAO;
+    private PersonDao personDAO;
     
     /**
      * Create person in Database.

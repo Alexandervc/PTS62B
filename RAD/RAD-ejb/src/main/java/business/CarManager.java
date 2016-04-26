@@ -5,22 +5,22 @@
  */
 package business;
 
-import dao.CarDAO;
 import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import dao.CarDao;
 
 /**
- * Manager for CarDAO
+ * Manager for CarDao.
  * @author Linda.
  */
 @Stateless
 public class CarManager {
     
     @Inject
-    private CarDAO carDAO;
+    private CarDao carDAO;
     
     /**
      * Create car in Database.

@@ -12,11 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * implemented CarDAO
- * @author Linda
+ * Implemented CarDao.
+ * @author Linda.
  */
 @Stateless
-public class CarDAOJPAImp extends AbstractFacade<Car> implements CarDAO, Serializable {
+public class CarDaoImp extends AbstractFacade<Car> implements CarDao, Serializable {
 
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
@@ -26,7 +26,7 @@ public class CarDAOJPAImp extends AbstractFacade<Car> implements CarDAO, Seriali
         return em;
     }
 
-    public CarDAOJPAImp() {
+    public CarDaoImp() {
         super(Car.class);
     }
 

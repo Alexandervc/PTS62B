@@ -7,11 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Implemented RateDAO
- * @author Melanie
+ * Implemented RateDao.
+ * @author Melanie.
  */
 @Stateless
-public class RateDAOJPAImp extends AbstractFacade<Rate> implements RateDAO, Serializable {
+public class RateDaoImp extends AbstractFacade<Rate> implements RateDao, Serializable {
     @PersistenceContext(unitName ="RADpu")
     private EntityManager em;
 
@@ -20,7 +20,7 @@ public class RateDAOJPAImp extends AbstractFacade<Rate> implements RateDAO, Seri
         return em;
     }    
     
-    public RateDAOJPAImp() {
+    public RateDaoImp() {
         super(Rate.class);
     }
 }

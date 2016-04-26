@@ -4,10 +4,10 @@ import domain.Rate;
 import java.util.List;
 
 /**
- * RateDAO interface
- * @author Melanie
+ * RateDao interface.
+ * @author Melanie.
  */
-public interface RateDAO {
+public interface RateDao {
     void create(Rate rate);
     void edit(Rate rate);
     void remove(Rate rate);

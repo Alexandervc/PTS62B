@@ -11,37 +11,51 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 /**
- * Implemented PersonDAO
- * @author Linda
+ * Implemented PersonDao.
+ * @author Linda.
  */
 @Stateless
-public class PersonDAOJPAImp extends AbstractFacade<Person> implements PersonDAO, Serializable {
+public class PersonDaoImp extends AbstractFacade<Person> 
+        implements PersonDao, Serializable {
 
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
     
-    private Logger logger;
+    private static final Logger LOGGER = Logger.
+            getLogger(PersonDaoImp.class.getName());
 
+    /**
+     * Contructor.
+     */
+    public PersonDaoImp() {
+        super(Person.class);
+    }
+    
+    /**
+     * Getter EntityManager.
+     * @return EntityManager.
+     */
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
 
-    public PersonDAOJPAImp() {
-        super(Person.class);
-        logger = Logger.getLogger(PersonDAOJPAImp.class.getName());
-    }
-
+    /**
+     * Find person by name.
+     * @param name String.
+     * @return found person type Person.
+     */
     @Override
     public Person findByName(String name) {
         Person person;
         try {
-            TypedQuery<Person> query = em.createNamedQuery("person.findByName", Person.class);
+            TypedQuery<Person> query = this.em.
+                    createNamedQuery("person.findByName", Person.class);
             query.setParameter("name", name);
             person = query.getSingleResult();
             return person;
         } catch (NoResultException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         return null;
     }

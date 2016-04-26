@@ -1,19 +1,19 @@
 package business;
 
-import dao.RateDAO;
 import domain.Rate;
 import domain.RoadType;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import dao.RateDao;
 
 /**
- * Manager for RateDAO
+ * Manager for RateDao.
  * @author Melanie.
  */
 @Stateless
 public class RateManager {
     @Inject
-    private RateDAO rateDAO;
+    private RateDao rateDAO;
     
     /**
      * Create Rate in Database.
