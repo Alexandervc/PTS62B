@@ -49,7 +49,7 @@ public class CarPositionManager {
         // Find cartracker
         Cartracker cartracker = this.cartrackerDao.find(cartrackerId);
         if(cartracker == null) {
-            // TODO foreign cartracker??
+            // TODO foreign cartracker?? + checken op countrycode
             throw new IllegalArgumentException("Cartracker not found");
         }
         
