@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
  * @author Melanie.
  */
 @Stateless
-public class RateDaoImp extends AbstractFacade<Rate> implements RateDao, Serializable {
+public class RateDaoImp extends AbstractFacade<Rate> implements Serializable {
     @PersistenceContext(unitName ="RADpu")
     private EntityManager em;
 

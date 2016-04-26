@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  * @author Linda.
  */
 @Stateless
-public class CarDaoImp extends AbstractFacade<Car> implements CarDao, Serializable {
+public class CarDaoImp extends AbstractFacade<Car> implements Serializable {
 
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;

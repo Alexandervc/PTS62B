@@ -5,12 +5,12 @@
  */
 package business;
 
+import dao.CarDao;
 import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import dao.CarDao;
 
 /**
  * Manager for CarDao.
@@ -30,6 +30,6 @@ public class CarManager {
      */
     public void createCar(Person person, Long cartracker, FuelType fuel){
         Car car = new Car(person, cartracker, fuel);
-        carDAO.create(car);
+        this.carDAO.create(car);
     }
 }
