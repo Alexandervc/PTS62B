@@ -4,14 +4,21 @@ import simulator.GpsSimulator;
 import java.util.concurrent.Future;
 
 /**
- *
- * @author Melanie
+ * GpsSimulatorInstance Class.
+ * @author Melanie.
  */
 public class GpsSimulatorInstance {
     private long instanceId;
     private GpsSimulator gpsSimulator;
     private Future<?> gpsSimulatorTask;
 
+    /**
+     * GpsSimulatorInstance constructor.
+     * 
+     * @param instanceId.
+     * @param gpsSimulator.
+     * @param gpsSimulatorTask.
+     */
     public GpsSimulatorInstance(long instanceId, GpsSimulator gpsSimulator, 
             Future<?> gpsSimulatorTask) {
         super();
@@ -44,6 +51,11 @@ public class GpsSimulatorInstance {
         this.gpsSimulatorTask = gpsSimulatorTask;
     }
 
+    /**
+     * ToString method.
+     * 
+     * @return String.
+     */
     @Override
     public String toString() {
         return "GpsSimulatorInstance [instanceId=" + this.instanceId + ", "

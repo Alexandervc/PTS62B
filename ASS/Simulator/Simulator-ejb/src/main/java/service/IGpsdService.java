@@ -3,8 +3,8 @@ package service;
 import model.PositionInfo;
 
 /**
- *
- * @author Melanie
+ * GpsdService interface.
+ * @author Melanie.
  */
 public interface IGpsdService {
     /**

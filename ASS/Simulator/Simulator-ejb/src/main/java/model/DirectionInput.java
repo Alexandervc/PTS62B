@@ -1,17 +1,28 @@
 package model;
 
 /**
- *
- * @author Melanie
+ * DirectionInput Class.
+ * @author Melanie.
  */
 public class DirectionInput {
     private String from;
     private String to;
     
+    /**
+     * DirectionInput constructor for JPA.
+     * 
+     * @deprecated
+     */
     @Deprecated
     public DirectionInput() {
     }
 
+    /**
+     * DirectionInput constructor.
+     * 
+     * @param from
+     * @param to 
+     */
     public DirectionInput(String from, String to) {
         this.from = from;
         this.to = to;

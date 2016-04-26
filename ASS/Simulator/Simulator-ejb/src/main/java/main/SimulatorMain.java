@@ -7,8 +7,8 @@ import javax.ejb.Singleton;
 import service.IPathService;
 
 /**
- *
- * @author Melanie
+ * SimulatorMain Class.
+ * @author Melanie.
  */
 @Singleton
 @Startup
@@ -16,6 +16,9 @@ public class SimulatorMain {
     @Inject
     private IPathService service;
 
+    /**
+     * Generate files for roadusage.
+     */
     @PostConstruct
     public void main() {
         this.service.generateFile();

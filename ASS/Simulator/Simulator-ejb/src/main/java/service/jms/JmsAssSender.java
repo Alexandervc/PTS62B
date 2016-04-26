@@ -12,7 +12,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
 /**
- *
+ * JmsAssSender Class.
  * @author Alexander
  */
 @Stateless
@@ -24,6 +24,13 @@ public class JmsAssSender {
     @Resource(lookup = "jms/VS/queue")
     private Destination destination;
 
+    /**
+     * Send position.
+     * 
+     * @param jsonPosition.
+     * @param cartrackerId.
+     * @param serialNumber.
+     */
     public void sendPosition(String jsonPosition, Long cartrackerId, 
             Long serialNumber) {
         try {

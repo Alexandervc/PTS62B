@@ -7,8 +7,8 @@ import model.Point;
 import simulator.GpsSimulator;
 
 /**
- *
- * @author Melanie
+ * PathService interface.
+ * @author Melanie.
  */
 public interface IPathService {
     List<Point> getCoordinatesFromGoogle(DirectionInput directionInput);

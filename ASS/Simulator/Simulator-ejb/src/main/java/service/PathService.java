@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import model.Point;
@@ -26,7 +27,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,8 +43,8 @@ import simulator.GpsSimulator;
 import support.NavUtils;
 
 /**
- *
- * @author Melanie
+ * PathService Class.
+ * @author Melanie.
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
@@ -52,16 +52,19 @@ public class PathService implements IPathService, Serializable {
     private final String PROJECT_ROOT = "C:\\";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
-    private BufferedReader reader;
+    private transient BufferedReader reader;
     
     private List<String> locations;
     private final Map<Long, GpsSimulatorInstance> taskFutures = new HashMap<>();
-    private final ExecutorService taskExecutor = Executors.newSingleThreadExecutor();    
+    private final transient ExecutorService taskExecutor = Executors.newSingleThreadExecutor();    
     private long instanceCounter = 1;
     
     @Inject
     private JmsAssSender assSender;
     
+    /**
+     * Setup location info.
+     */
     @PostConstruct
     public void setupLocations() {
         this.locations = new ArrayList<>();
@@ -79,6 +82,11 @@ public class PathService implements IPathService, Serializable {
         this.locations.add("Largo da Estação,4700-223 Maximinos - Braga,Portugal");
     }
     
+    /**
+     * Setup reader.
+     * 
+     * @throws FileNotFoundException . 
+     */
     public void setupStream() throws FileNotFoundException {
         this.reader = new BufferedReader(
                 new InputStreamReader(
@@ -89,6 +97,12 @@ public class PathService implements IPathService, Serializable {
         );
     }
 
+    /**
+     * Get coordinates from google for directionInput.
+     * 
+     * @param directionInput.
+     * @return list of points.
+     */
     @Override
     public List<Point> getCoordinatesFromGoogle(DirectionInput directionInput) {
         GeoApiContext context = new GeoApiContext().setApiKey(this.APIkey);
@@ -104,8 +118,8 @@ public class PathService implements IPathService, Serializable {
             for (DirectionsRoute route : routes.routes) {
                 latlongList = route.overviewPolyline.decodePath();
             }
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
         }
 
         List<Point> points = new ArrayList<>();
@@ -117,9 +131,14 @@ public class PathService implements IPathService, Serializable {
         return points;
     }
     
+    /**
+     * Get random directioninput for start- and endposition.
+     * 
+     * @return directioninput.
+     */
     @Override
     public DirectionInput getRandomDirectioninput() {
-        Random r = new Random();
+        SecureRandom  r = new SecureRandom();
         int i1 = r.nextInt(this.locations.size());
         int i2 = 0;
         
@@ -133,6 +152,9 @@ public class PathService implements IPathService, Serializable {
         return input;
     }
     
+    /**
+     * Generate files for roadusages.
+     */
     @Override
     public void generateFile() {
         try {
@@ -169,7 +191,7 @@ public class PathService implements IPathService, Serializable {
                     meter = NavUtils.getTotalDistance(ps);
                 }
                 
-                //Create json array
+                //Create json array.
                 Map<String, Object> position = new HashMap<>();
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String momentString = df.format(moment);
@@ -178,13 +200,13 @@ public class PathService implements IPathService, Serializable {
                 position.put("yCoordinate", yCoordinate);
                 position.put("meter", meter);
                 
-                //Write file
+                //Write file.
                 Gson gson = new Gson();
                 String output = gson.toJson(position);
                 writer.write(output);
                 writer.close();
                 
-                //Send JMS
+                //Send JMS.
                 this.assSender.sendPosition(output, Long.valueOf(cartrackerID),
                         Integer.toUnsignedLong(fileIndex));
                 
@@ -198,14 +220,18 @@ public class PathService implements IPathService, Serializable {
                     + "\\config.txt", false);
             BufferedWriter writer2 = new BufferedWriter(fileWritter);
             writer2.write(output);
-            writer2.close();
-                    
+            writer2.close();                    
         } catch (IOException ex) {
             Logger.getLogger(PathService.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
     }
     
+    /**
+     * Generate GpsSimulatorInstance.
+     * 
+     * @return GpsSimulatorInstance.
+     */
     @Override
     public GpsSimulatorInstance generate() {
         DirectionInput input = getRandomDirectioninput();                
@@ -230,6 +256,13 @@ public class PathService implements IPathService, Serializable {
         return instance;
     }
 
+    /**
+     * Prepare gps simulator.
+     * 
+     * @param gpsSimulator.
+     * @param points.
+     * @return GpsSimulator.
+     */
     @Override
     public GpsSimulator prepareGpsSimulator(GpsSimulator gpsSimulator, 
             List<Point> points) {
@@ -241,9 +274,9 @@ public class PathService implements IPathService, Serializable {
     }
 
     /**
-     * Creates list of legs in the path
+     * Creates list of legs in the path.
      *
-     * @param points
+     * @param points.
      */
     private List<Leg> createLegsList(List<Point> points) {
         final List<Leg> legs = new ArrayList<>();

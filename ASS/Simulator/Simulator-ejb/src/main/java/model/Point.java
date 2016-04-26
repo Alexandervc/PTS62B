@@ -1,7 +1,7 @@
 package model;
 
 /**
- *
+ * Point Class.
  * @author Melanie
  */
 public class Point {
@@ -65,6 +65,11 @@ public class Point {
         this.altitude = altitude;
     }
 
+    /**
+     * ToString method.
+     * 
+     * @return String.
+     */
     @Override
     public String toString() {
         return "Point [lat/lang:" + this.latitude + "," + this.longitude + ", altitude=" 
