@@ -38,7 +38,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
     @Inject
     private SendRoadUsagesBean roadUsagesSender;
     
-    private Logger logger = Logger
+    private static final Logger LOGGER = Logger
             .getLogger(GenerateRoadUsagesBean.class.getName());
     
     @Override
@@ -61,7 +61,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
             // Send
             this.roadUsagesSender.sendRoadUsages(roadUsages);
         } catch (JMSException | ParseException ex) {
-            this.logger.log(Level.SEVERE, null, ex);
+            this.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

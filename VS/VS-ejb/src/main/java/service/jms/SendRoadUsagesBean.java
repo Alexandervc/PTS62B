@@ -32,7 +32,7 @@ public class SendRoadUsagesBean {
     @Resource(lookup="jms/RAD/queue")
     private Destination queue;
     
-    private Logger logger = Logger
+    private static final Logger LOGGER = Logger
             .getLogger(SendRoadUsagesBean.class.getName());
     
     /**
@@ -45,12 +45,13 @@ public class SendRoadUsagesBean {
             Gson gson = new Gson();
             String jsonString = gson.toJson(roadUsages);
             
-            TextMessage textMessage = this.context.createTextMessage(jsonString);
+            TextMessage textMessage = this.context
+                    .createTextMessage(jsonString);
             textMessage.setStringProperty("method", "receiveRoadUsages");
             
             this.context.createProducer().send(this.queue, textMessage);
         } catch (JMSException ex) {
-            this.logger.log(Level.SEVERE, null, ex);
+            this.LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }
