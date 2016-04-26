@@ -38,7 +38,7 @@ public class PersonManager {
     }
     
     public Person findPersonByName(String name){
-        Person person = personDAO.findByName(name);
+        Person person = this.personDAO.findByName(name);
         return person;
     }
 }

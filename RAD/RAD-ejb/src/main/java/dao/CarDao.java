@@ -21,11 +21,18 @@ public class CarDao extends AbstractFacade<Car> implements Serializable {
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
 
+    /**
+     * Getter EntityManager.
+     * @return em type EntityManager.
+     */
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
 
+    /**
+     * Constructor.
+     */
     public CarDao() {
         super(Car.class);
     }

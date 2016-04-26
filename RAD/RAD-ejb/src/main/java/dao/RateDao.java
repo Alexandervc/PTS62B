@@ -15,11 +15,18 @@ public class RateDao extends AbstractFacade<Rate> implements Serializable {
     @PersistenceContext(unitName ="RADpu")
     private EntityManager em;
 
+    /**
+     * Getter EntityManager.
+     * @return em type EntityManager.
+     */
     @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }    
     
+    /**
+     * Constructor.
+     */
     public RateDao() {
         super(Rate.class);
     }

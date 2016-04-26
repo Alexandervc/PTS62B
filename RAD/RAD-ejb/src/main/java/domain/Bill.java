@@ -2,8 +2,6 @@ package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -68,7 +66,7 @@ public class Bill implements Serializable {
             Long cartrackerId, String month, String year) {
         this.person2 = person;
         this.person2.addBill(this);
-        this.roadUsages = new ArrayList<RoadUsage>(roadUsages);
+        this.roadUsages = new ArrayList<>(roadUsages);
         this.totalPrice = totalPrice;
         this.paid = false;
         this.cartrackerId = cartrackerId;
@@ -118,7 +116,7 @@ public class Bill implements Serializable {
      * @return List RoadUsages.
      */
     public List<RoadUsage> getRoadUsages() {
-        return new ArrayList<RoadUsage>(this.roadUsages);
+        return new ArrayList<>(this.roadUsages);
     }
 
     /**
@@ -127,7 +125,7 @@ public class Bill implements Serializable {
      * @param roadUsages List RoadUsage.
      */
     public void setRoadUsages(List<RoadUsage> roadUsages) {
-        this.roadUsages = new ArrayList<RoadUsage>(roadUsages);
+        this.roadUsages = new ArrayList<>(roadUsages);
     }
 
     /**

@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,15 +76,16 @@ public abstract class AbstractFacade<T> {
      * @return List object T.
      */
     public List<T> findAll() {
+        List<T> objects = new ArrayList<>();
         try {
             CriteriaQuery cq = this.getEntityManager()
                     .getCriteriaBuilder().createQuery();
             cq.select(cq.from(this.entityClass));
-            return this.getEntityManager().createQuery(cq).getResultList();
+            objects = this.getEntityManager().createQuery(cq).getResultList();
         } catch (NoResultException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
-        return null;
+        return objects;
     }
 
     /**
