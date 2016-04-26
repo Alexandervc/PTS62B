@@ -40,11 +40,11 @@ public class BillBean {
     private Calendar datePast;
 
     public List<ListBoxDate> getDates() {
-        return dates;
+        return new ArrayList<ListBoxDate>(this.dates);
     }
 
     public String getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(String date) {
@@ -52,7 +52,7 @@ public class BillBean {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {

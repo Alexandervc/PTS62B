@@ -31,9 +31,10 @@ public class CarPosition {
      * @param road type Road.
      * @param km double.
      */
-    public CarPosition(Long id, Date moment, double xCoordinate, double yCoordinate, Road road, double km) {
+    public CarPosition(Long id, Date moment, double xCoordinate, 
+            double yCoordinate, Road road, double km) {
         this.id = id;
-        this.moment = moment;
+        this.moment = new Date(moment.getTime());
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.road = road;

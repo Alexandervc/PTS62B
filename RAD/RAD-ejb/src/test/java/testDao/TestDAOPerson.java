@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package testDao;
 
 import business.PersonManager;
-import domain.Person;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,37 +17,36 @@ import org.mockito.runners.MockitoJUnitRunner;
 import service.RadService;
 
 /**
- *
- * @author Linda
+ * Test PersonDao.
+ * @author Linda.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TestDAOPerson {
-    RadService service;
+    private RadService service;
     
     @Mock
-    PersonManager personManager;
+    private PersonManager personManager;
     
-    Person person1;
-    
+    /**
+     * Constructor.
+     */
     public TestDAOPerson() {
+         // Empty for start up test
     }
     
+    /**
+     * Set up at beginning test.
+     */
     @Before
     public void setUp() {
-        service = new RadService();
-        service.setPersonManager(personManager);
+        this.service = new RadService();
+        this.service.setPersonManager(this.personManager);
         
     }
     
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
     
     @Test
     public void testAddPerson(){
@@ -60,7 +59,10 @@ public class TestDAOPerson {
         String zipcode = "5654CV";
         String city = "Eindhoven";
         String country = "Nederland";
-        service.addPerson(firstname, lastname, initials, streetname, number, zipcode, city, country);
-        verify(personManager, Mockito.times(1)).createPerson(firstname, lastname, initials, streetname, number, zipcode, city, country);
+        this.service.addPerson(firstname, lastname, initials, streetname, 
+                number, zipcode, city, country);
+        verify(this.personManager, Mockito.times(1)).createPerson(firstname, 
+                lastname, initials, streetname, number, zipcode, city, 
+                country);
     }
 }

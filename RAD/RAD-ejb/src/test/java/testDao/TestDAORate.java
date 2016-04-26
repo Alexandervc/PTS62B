@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package testDao;
 
 import business.RateManager;
 import domain.RoadType;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
@@ -17,41 +17,40 @@ import org.mockito.runners.MockitoJUnitRunner;
 import service.RadService;
 
 /**
+ * Test Rate Dao.
  *
- * @author Linda
+ * @author Linda.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TestDAORate {
-    
-    RadService service;
-    
+
+    private RadService service;
+
     @Mock
-    RateManager rateManager;
+    private RateManager rateManager;
     
+    private static final double RATE = 9.76;
+    private static final RoadType TYPE = RoadType.A;
+
+    /**
+     * Constructor.
+     */
     public TestDAORate() {
-    }
-    
-    @Before
-    public void setUp() {
-        service = new RadService();
-        service.setRateManager(rateManager);
-    }
-    
-    @After
-    public void tearDown() {
+        // Empty for start up test
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
-    
+    /**
+     * Set up at beginning test.
+     */
+    @Before
+    public void setUp() {
+        this.service = new RadService();
+        this.service.setRateManager(this.rateManager);
+    }
+
     @Test
-    public void testAddRate(){
-        double rate = 9.76;
-        RoadType type = RoadType.E;
-        service.addRate(rate, type);
-        verify(rateManager, Mockito.times(1)).createRate(rate, type);
+    public void testAddRate() {
+        this.service.addRate(RATE, TYPE);
+        verify(this.rateManager, Mockito.times(1)).createRate(RATE, TYPE);
     }
 }
