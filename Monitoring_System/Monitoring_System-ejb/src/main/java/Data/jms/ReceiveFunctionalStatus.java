@@ -23,7 +23,7 @@ import service.MonitoringService;
  */
 @MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='receiveFunctionalStatus'")
+            propertyValue = "method='receiveStatus'")
 })
 public class ReceiveFunctionalStatus implements MessageListener {
 
@@ -47,7 +47,7 @@ public class ReceiveFunctionalStatus implements MessageListener {
             Boolean testresult = mapMessage.getBoolean("result");
 
             // TODO save in db
-            this.service.saveTestresult(systemName, testresult, TestType.FUNCTIONAL);
+            this.service.processTestResults(systemName, testresult);
 
         } catch (JMSException ex) {
             Logger.getLogger(ReceiveFunctionalStatus.class.getName())

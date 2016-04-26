@@ -15,6 +15,7 @@ import javax.jms.Destination;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
+import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 
 /**
@@ -39,8 +40,9 @@ public class CheckRequestSender {
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             String currentTime = df.format(date);
             message.setString("time", currentTime);
-
-            context.createProducer().send(topic, message);
+            JMSProducer producer = context.createProducer();
+            producer.setTimeToLive(60000);
+            producer.send(topic, message);
         } catch (JMSException ex) {
             Logger.getLogger(CheckRequestSender.class.getName()).log(Level.SEVERE, null, ex);
         }

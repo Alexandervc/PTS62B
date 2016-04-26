@@ -21,6 +21,7 @@ import javax.enterprise.concurrent.LastExecution;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
 import javax.enterprise.concurrent.Trigger;
 import javax.inject.Inject;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * The service that contains methods concerning the monitoring of servers.
@@ -94,14 +95,14 @@ public class MonitoringService {
      * Generates the status of the server
      *
      * @param system the Server object where the status will be generated for.
-     * @return A list
      */
     public void generateServerStatus(common.domain.System system) {
-        this.manager.generateServerStatus(system);
+        throw new NotImplementedException();
+        //this.manager.generateServerStatus(system);
     }
 
     /**
-     * Retrives the last versions of the tests. One for each test type.
+     * Retrieves the last versions of the tests. One for each test type.
      *
      * @param system The system that the tests have to be retrieved for.
      * @return A list with the 3 tests.
@@ -113,18 +114,19 @@ public class MonitoringService {
     }
 
     /**
-     * saves received testresult from sender in to DB
+     * Processes the test results of a functional and endpoints test
+     * and stores them.
      *
      * @param systemName Name of system
      * @param result boolean succeed
-     * @param type type of test
      */
-    public void saveTestresult(String systemName, Boolean result, TestType type) {
+    public void processTestResults(String systemName, Boolean result) {
         try {
-            this.manager.addTest(systemName, result, type);
+            //this.manager.addTest(systemName, result, TestType.FUNCTIONAL);
+            this.manager.addTest(systemName, true, TestType.ENDPOINTS);
         } catch (Exception ex) {
             Logger.getLogger(MonitoringService.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
-    }
+    }  
 }
