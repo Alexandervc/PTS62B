@@ -14,8 +14,7 @@ import javax.persistence.TypedQuery;
  * @author Linda.
  */
 @Stateless
-public class BillDao extends AbstractFacade<Bill> 
-        implements Serializable {
+public class BillDao extends AbstractFacade<Bill> implements Serializable {
 
     @PersistenceContext(unitName = "RADpu")
     private EntityManager em;
