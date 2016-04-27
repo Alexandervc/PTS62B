@@ -16,7 +16,7 @@ import service.MonitoringService;
 
 /**
  *
- * @author Edwin
+ * @author Melanie.
  */
 @ManagedBean
 @RequestScoped
