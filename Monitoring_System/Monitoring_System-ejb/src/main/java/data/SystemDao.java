@@ -8,9 +8,7 @@ package data;
 
 import common.domain.System;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -22,10 +20,8 @@ import javax.persistence.Query;
  */
 @Stateless
 public class SystemDao extends AbstractDao {
-
-    private static final Logger LOGGER = 
-            Logger.getLogger(SystemDao.class.getName()); 
-
+    
+    //The entity manager used by this Dao to connect to the monitoring database.
     @Inject 
     @MonitoringDB2 
     private EntityManager em;

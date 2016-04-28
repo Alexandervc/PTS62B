@@ -17,17 +17,17 @@ import javax.ejb.Stateless;
 import util.CmdHelper;
 
 /**
- * Provides the server status functionality using asadmin.
+ * <p>Provides the server status functionality using asadmin.</p>
  * 
- * This requires the C:/glassfish4/glassfish/bin 
+ * <p>This requires the C:/glassfish4/glassfish/bin 
  * (or C:/payara41/glassfish/bin) folder to be added to the PATH variable of
  * the system, as well as a password file on the PASSWORD_FILE location 
- * containing the following parameters:
+ * containing the following parameters:</p>
  * 
- * AS_ADMIN_PASSWORD=admin
+ * <p>AS_ADMIN_PASSWORD=admin
  * AS_ADMIN_ADMINPASSWORD=admin
  * AS_ADMIN_USERPASSWORD=admin
- * AS_ADMIN_MASTERPASSWORD=admin
+ * AS_ADMIN_MASTERPASSWORD=admin</p>
  * 
  * @author jesblo
  */
@@ -46,8 +46,8 @@ public class ServerStatusManager {
      * @throws IOException Thrown if the asadmin file was not found in 
      * C:/Proftaak.
      */
-    public Map<String, ServerStatus> retrieveApplicationStatus(common.domain.System system) 
-           throws IOException {
+    public Map<String, ServerStatus> retrieveApplicationStatus(
+            common.domain.System system) throws IOException {
        
         Map<String, ServerStatus> serverStatus = new HashMap();
        
@@ -90,7 +90,7 @@ public class ServerStatusManager {
             "--passwordfile " + PASSWORD_FILE,
             "-p 4848",
             "-s",
-            "list-applications"
+            "list-applications",
         };
         
         // Execute the list-applications command.
@@ -99,17 +99,13 @@ public class ServerStatusManager {
 
         // Iterate throught the output and get the status of the application.
         for (String result : asadminListApplicationsOutput) {
-            // Debug print line.
-            System.out.println(result);
-            
             // Get the application from the output.
             if (result.contains("<")) {
                 // Match on first word. This retreives the application name.
                 Pattern pattern = Pattern.compile("^[\\w]+");
                 Matcher matcher = pattern.matcher(result);
 
-                if (matcher.find())
-                {
+                if (matcher.find()) {
                     // Add the application name to the result list.
                     results.add(matcher.group(0));
                 }
@@ -141,7 +137,7 @@ public class ServerStatusManager {
             "--passwordfile " + PASSWORD_FILE,
             "-p 4848",
             "-s",
-            "show-component-status"
+            "show-component-status",
         };
         
         // Execute the show-component-status command.
@@ -151,19 +147,14 @@ public class ServerStatusManager {
         // Iterate throught the output and get the status of the 
         // application.
         for (String result : asadminShowComponentStatusOutput) {  
-            // Debug print line.
-            System.out.println(result);
-            
             // If the correct outpur line is reached, check the status.
             // An example of the output is:
             // asadmin> show-component-status TestApp
             // Status of TestApp is enabled
             // Command show-component-status executed successfully.
-            if (result.contains("Status of ")) {
+            if (result.contains("Status of ") && result.contains("enabled")) {
                 // If the status is enabled, the application is online.
-                if (result.contains("enabled")) {
-                    return ServerStatus.ONLINE;
-                } 
+                return ServerStatus.ONLINE;
             }
         }
         

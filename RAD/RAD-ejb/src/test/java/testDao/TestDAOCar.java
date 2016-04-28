@@ -31,7 +31,7 @@ public class TestDAOCar {
     
     private Person person1;
     
-    private static final Long ID = 5L;
+    private static final String ID = "PT123456789";
     private static final FuelType FUEL = FuelType.Diesel;
     
     /**

@@ -37,7 +37,7 @@ public class TestDAOBill {
     private Bill bill1;
     
     private static final double KM = 5.00;
-    private static final Long CARTRACKER = 5L;
+    private static final String CARTRACKER = "PT123456789";
     private static final double PRICE = 10.35;
     /**
      * Constructor.

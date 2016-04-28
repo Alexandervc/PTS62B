@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import model.DirectionInput;
@@ -10,8 +11,10 @@ import org.jglue.cdiunit.CdiRunner;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import service.IPathService;
 import service.PathService;
+import service.jms.SendPositionBean;
 import support.NavUtils;
 
 /**
@@ -21,11 +24,15 @@ import support.NavUtils;
 @RunWith(CdiRunner.class)
 @AdditionalClasses(value = {PathService.class})
 public class NavUtilTests {
-    private static final Logger logger =
+    private static final Logger LOGGER =
             Logger.getLogger(NavUtilTests.class.getCanonicalName());
 
     @Inject
     private IPathService pathService;
+    
+    @Mock
+    @Produces
+    private SendPositionBean sendPositionBean;
     
     /**
      * Test method for
@@ -45,7 +52,7 @@ public class NavUtilTests {
         double totalDistance = NavUtils.getTotalDistance(points);
 
         String output = "totalDistance: " + totalDistance;
-        logger.log(Level.INFO, output);
+        LOGGER.log(Level.INFO, output);
     }
 
     /**
@@ -64,12 +71,12 @@ public class NavUtilTests {
         List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
         
         String output1 = "Number of points: " + points.size();
-        logger.log(Level.INFO, output1);
+        LOGGER.log(Level.INFO, output1);
 
         Double totalDistance = NavUtils.getTotalDistance(points);
 
         String output2 = "totalDistance: " + totalDistance;
-        logger.log(Level.INFO, output2);
+        LOGGER.log(Level.INFO, output2);
         
         int distance = totalDistance.intValue();
         int distanceKM = distance / 1000;
@@ -93,12 +100,12 @@ public class NavUtilTests {
         List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
         
         String output1 = "Number of points: " + points.size();
-        logger.log(Level.INFO, output1);
+        LOGGER.log(Level.INFO, output1);
 
         Double totalDistance = NavUtils.getTotalDistance(points);
 
         String output2 = "totalDistance: " + totalDistance;
-        logger.log(Level.INFO, output2);
+        LOGGER.log(Level.INFO, output2);
         
         int distance = totalDistance.intValue();
         int distanceKM = distance / 1000;

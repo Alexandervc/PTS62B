@@ -24,7 +24,7 @@ public class Car implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private Long cartrackerId;
+    private String cartrackerId;
     
     @Enumerated(EnumType.STRING)
     private FuelType fuel;
@@ -48,9 +48,9 @@ public class Car implements Serializable {
      * @param cartracker Long.
      * @param fuel type FuelType.
      */
-    public Car(Person person, Long cartracker, FuelType fuel){
+    public Car(Person person, String cartracker, FuelType fuel){
         this.person3 = person;
-       this.person3.addCar(this);
+        this.person3.addCar(this);
         this.cartrackerId = cartracker;
         this.fuel = fuel;
     }
@@ -75,7 +75,7 @@ public class Car implements Serializable {
      * Getter Cartrackerid.
      * @return cartrackerid Long.
      */
-    public Long getCartrackerId() {
+    public String getCartrackerId() {
         return this.cartrackerId;
     }
     
@@ -83,7 +83,7 @@ public class Car implements Serializable {
      * Setter cartrackerId.
      * @param cartrackerId Long. 
      */
-    public void setCartrackerId(Long cartrackerId) {
+    public void setCartrackerId(String cartrackerId) {
         this.cartrackerId = cartrackerId;
     }
     
@@ -101,7 +101,7 @@ public class Car implements Serializable {
     public void setFuel(FuelType fuel) {
         this.fuel = fuel;
     }
-
+    
     /**
      * Getter Person of Car.
      * @return type Person.
