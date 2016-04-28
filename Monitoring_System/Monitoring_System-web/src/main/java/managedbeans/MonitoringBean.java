@@ -113,7 +113,7 @@ public class MonitoringBean implements Serializable  {
     }
 
     public void setEntries(List<Entry<String, String>> entries) {
-        this.entries = entries;
+        this.entries = new ArrayList<>(entries);
     }
     
     /**
