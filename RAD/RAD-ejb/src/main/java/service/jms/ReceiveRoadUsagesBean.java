@@ -54,7 +54,7 @@ public class ReceiveRoadUsagesBean implements MessageListener {
             List<RoadUsage> roadUsages = gson.fromJson(jsonString, type);
             
             // Call service
-            radService.receiveRoadUsages(roadUsages);
+            this.radService.receiveRoadUsages(roadUsages);
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
