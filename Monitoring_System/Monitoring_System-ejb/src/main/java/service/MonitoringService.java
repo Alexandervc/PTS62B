@@ -22,7 +22,7 @@ import javax.inject.Inject;
 @Stateless(name = "monitoring")
 public class MonitoringService {
     
-    //Interval between tests in minutes;
+    //Interval between tests in minutes.
     private static int TESTINTERVAL = 15;
 
     @Resource

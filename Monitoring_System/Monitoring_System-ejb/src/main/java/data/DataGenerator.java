@@ -42,6 +42,7 @@ public class DataGenerator {
         int hour = min * 60;
         Long time_test1 = System.currentTimeMillis() - (1 * hour);
         Long time_test2 = System.currentTimeMillis() - (20 * min);
+        Long time_test3 = System.currentTimeMillis() - (50 * min);
 
         Test t1 = new Test(TestType.STATUS,
                 new Timestamp(time_test1), false);
@@ -50,6 +51,8 @@ public class DataGenerator {
         Test t3 = new Test(TestType.ENDPOINTS,
                 new Timestamp(time_test1), true);
         
+        Test t1_mid = new Test(TestType.STATUS,
+                new Timestamp(time_test3), true);
         Test t1_end = new Test(TestType.STATUS,
                 new Timestamp(time_test2), true);
         Test t2_end = new Test(TestType.FUNCTIONAL,
@@ -88,7 +91,8 @@ public class DataGenerator {
         sys.addTest(t1);
         sys.addTest(t2);
         sys.addTest(t3);
-        sys.addTest(t1_end);
+        sys.addTest(t1_mid);
+        sys.addTest(t1_end);        
         sys.addTest(t2_end);
         sys.addTest(t3_end);
         
@@ -109,7 +113,8 @@ public class DataGenerator {
         this.testDao.create(t1);
         this.testDao.create(t2);
         this.testDao.create(t3);
-        this.testDao.create(t1_end);
+        this.testDao.create(t1_mid);
+        this.testDao.create(t1_end);        
         this.testDao.create(t2_end);
         this.testDao.create(t3_end);
         
