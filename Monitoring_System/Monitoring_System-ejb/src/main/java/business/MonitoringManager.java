@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package business;
 
 import java.io.IOException;
@@ -62,6 +57,30 @@ public class MonitoringManager {
         return this.systemDao.getSystems();
     }   
 
+    /**
+     * Generates the status of the server.
+     * @param system The system object where the status will be generated for.
+     */
+    public final void generateServerStatus(System system) {
+        List<Test> tests = new ArrayList<>();
+        
+        // Retrieve the server status.
+        Test serverStatusTest = this.retrieveServerStatus(system);
+        tests.add(serverStatusTest);
+        
+        // Retrieve the result of the functional tests.
+        Test functionalTest = this.retrieveFunctionalTests(system);
+        tests.add(functionalTest);
+        
+        // Retrieve the result of the endpoint test.
+        Test endpointTest = this.retrieveEndpointTest(system);
+        tests.add(endpointTest);
+        
+        for(Test test :tests) {
+            this.testDao.create(test);
+        }
+        this.systemDao.edit(tests);
+    }
     
     /**
      * Retrieves the server status and maps it to a Test object.
@@ -112,6 +131,40 @@ public class MonitoringManager {
         // This can be expanded by getting all the tests. The application
         // currently expects one deployed application per server (system).
         return tests.get(0);
+    }
+    
+    /**
+     * Executes the remote functional tests and gets the result.
+     * @param system The system to retrieve the status from.
+     * @return A test object with the result of the test.
+     */
+    private Test retrieveFunctionalTests(System system) {
+        // TODO: create the functional test.
+        
+        // Create the test object which is returned.
+        Test test = new Test(
+                TestType.FUNCTIONAL,
+                new Timestamp(java.lang.System.currentTimeMillis()),
+                false);
+        
+        return test;
+    }
+    
+    /**
+     * Executes the endpoint tests and gets the result.
+     * @param system The system to retrieve the status from.
+     * @return A test object with the result of the test.
+     */
+    private Test retrieveEndpointTest(System system) {
+        // TODO: create the endpoint test.
+        
+        // Create the test object which is returned.
+        Test test = new Test(
+                TestType.FUNCTIONAL,
+                new Timestamp(java.lang.System.currentTimeMillis()),
+                false);
+        
+        return test;
     }   
     
     /**
@@ -137,6 +190,22 @@ public class MonitoringManager {
         tests.add(test);
         this.testDao.create(test);
         this.systemDao.edit(system);    
+    }
+    
+    /**
+     * Retrieves all tests for every type from a system.
+     * @param system The system where the tests are requested from.
+     * @return A list of test for every type of test.
+     */
+    public List<List<Test>> retrieveTests(System system) {
+        List<List<Test>> returnList = new ArrayList<>();
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.STATUS));
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.FUNCTIONAL));
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.ENDPOINTS));
+        return returnList;
     }
     
     /**
