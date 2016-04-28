@@ -32,11 +32,12 @@ import service.RoadUsage;
 })
 public class ReceiveRoadUsagesBean implements MessageListener {
 
+    private static final Logger LOGGER = Logger
+            .getLogger(ReceiveRoadUsagesBean.class.getName());
+    
     @Inject
     private RadService radService;
     
-    private static final Logger LOGGER = Logger
-            .getLogger(ReceiveRoadUsagesBean.class.getName());
     
     /**
      * Receives roadUsages from VS.

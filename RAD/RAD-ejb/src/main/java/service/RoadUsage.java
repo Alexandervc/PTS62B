@@ -47,7 +47,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @return km in Double.
      */
     public Double getKm() {
-        return km;
+        return this.km;
     }
 
     /**
@@ -55,7 +55,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @return RoadName in String.
      */
     public String getRoadName() {
-        return roadName;
+        return this.roadName;
     }
 
     /**
@@ -63,7 +63,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @return RoadType Type RoadType.
      */
     public RoadType getRoadType() {
-        return roadType;
+        return this.roadType;
     }
 
     /**
