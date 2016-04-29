@@ -83,7 +83,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @return km in Double.
      */
     public Double getKm() {
-        return km;
+        return this.km;
     }
 
     /**

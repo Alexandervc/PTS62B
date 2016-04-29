@@ -33,6 +33,25 @@ public class CarPositionManager {
     private CarPositionDao carPositionDao;
     
     /**
+     * Process the given information of a CarPosition.
+     * @param cartrackerId The unique identifier of a cartracker.
+     * @param moment The moment in which the cartracker was at the given 
+     *      coordinates.
+     * @param xCoordinate The x-coordinate of the carPosition.
+     * @param yCoordinate The y-coordinate of the carPosition.
+     * @param roadName The name of the road on which the cartracker was.
+     * @param meter The number of meters the cartracker has measured since 
+     *      the last carPosition.
+     */
+    public void processCarPosition(String cartrackerId, Date moment,
+            Double xCoordinate, Double yCoordinate, String roadName,
+            Double meter) {
+        this.saveCarPosition(cartrackerId, moment, xCoordinate, yCoordinate, 
+                roadName, meter);
+        // TODO check foreign and send foreign
+    }
+    
+    /**
      * Save the given information into a CarPosition.
      * @param cartrackerId The unique identifier of a cartracker.
      * @param moment The moment in which the cartracker was at the given 
@@ -43,14 +62,15 @@ public class CarPositionManager {
      * @param meter The number of meters the cartracker has measured since 
      *      the last carPosition.
      */
-    public void saveCarPosition(String cartrackerId, Date moment, 
+    private void saveCarPosition(String cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
             Double meter){
         // Find cartracker
         Cartracker cartracker = this.cartrackerDao.find(cartrackerId);
         if(cartracker == null) {
-            // TODO foreign cartracker?? + checken op countrycode
-            throw new IllegalArgumentException("Cartracker not found");
+            // Create cartracker
+            this.cartrackerDao.create(new Cartracker(cartrackerId));
+            cartracker = this.cartrackerDao.find(cartrackerId);
         }
         
         // TODO road anders

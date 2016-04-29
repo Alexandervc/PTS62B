@@ -265,8 +265,7 @@ public class Person implements Serializable {
      * @param cars of person. 
      */
     public void setCars(List<Car> cars) {
-        // TODO!!
-        this.cars = new ArrayList<Car>(this.cars);
+        this.cars = new ArrayList<>(cars);
     }
     
     /**
