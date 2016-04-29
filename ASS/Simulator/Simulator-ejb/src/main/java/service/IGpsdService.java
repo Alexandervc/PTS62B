@@ -10,7 +10,7 @@ public interface IGpsdService {
     /**
      * Sends NMEA RMC report to linux gps daemon, gpsd via predetermined pipe.
      *
-     * @param position
+     * @param position coordinates.
      */
     void updatePosition(PositionInfo position);
 }
