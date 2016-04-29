@@ -43,7 +43,7 @@ public class ForeignMessage {
     }
 
     public String getCartrackerId() {
-        return cartrackerId;
+        return this.cartrackerId;
     }
 
     public void setCartrackerId(String cartrackerId) {
@@ -51,7 +51,7 @@ public class ForeignMessage {
     }
 
     public Double getTotalPrice() {
-        return totalPrice;
+        return this.totalPrice;
     }
 
     public void setTotalPrice(Double totalPrice) {
@@ -59,10 +59,10 @@ public class ForeignMessage {
     }
 
     public List<ForeignPosition> getPositions() {
-        return positions;
+        return new ArrayList<>(this.positions);
     }
 
     public void setPositions(List<ForeignPosition> positions) {
-        this.positions = positions;
+        this.positions = new ArrayList<>(positions);
     }    
 }

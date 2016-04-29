@@ -21,7 +21,7 @@ import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
 /**
- *
+ * The bean that sends foreign rides to the central queue.
  * @author Alexander
  */
 @Stateless

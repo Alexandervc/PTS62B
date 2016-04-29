@@ -27,7 +27,7 @@ public class ForeignPosition {
     }
 
     public Double getX() {
-        return x;
+        return this.x;
     }
 
     public void setX(Double x) {
@@ -35,7 +35,7 @@ public class ForeignPosition {
     }
 
     public Double getY() {
-        return y;
+        return this.y;
     }
 
     public void setY(Double y) {
@@ -43,7 +43,7 @@ public class ForeignPosition {
     }
 
     public String getDatetime() {
-        return datetime;
+        return this.datetime;
     }
 
     public void setDatetime(String datetime) {

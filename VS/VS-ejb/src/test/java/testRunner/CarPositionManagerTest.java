@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
 import service.RadWsService;
 import service.jms.SendForeignRideBean;

@@ -15,7 +15,7 @@ import service.soap.RadWs;
 import service.soap.RadWs_Service;
 
 /**
- *
+ * Helper for connecting to RAD via SOAP.
  * @author Alexander
  */
 @Stateless

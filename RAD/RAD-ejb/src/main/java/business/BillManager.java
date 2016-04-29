@@ -93,9 +93,8 @@ public class BillManager {
             }
         }        
         
-        Bill bill = new Bill(person, roadUsages, totalPrice, cartrackerId, 
-                month, year);  
-        return bill;
+        return new Bill(person, roadUsages, totalPrice, cartrackerId, 
+                month, year);
     }
 
     /**
@@ -120,7 +119,6 @@ public class BillManager {
      */
     private Double calculatePrice(RoadUsage roadUsage) {
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
-        double price = roadUsage.getKm() * rate.getRate();
-        return price;
+        return roadUsage.getKm() * rate.getRate();
     }
 }
