@@ -84,7 +84,8 @@ public class DataStorage {
             LOGGER.log(Level.INFO, "created car");
             
             // Create bill for person.
-            Bill b = new Bill(p, roadUsages, PRICE, CARTRACKERID, "April", "2016");
+            Bill b = new Bill(p, roadUsages, PRICE, CARTRACKERID, 
+                    "April", "2016");
             
             // Add bill to db.
             this.service.addBill(b);

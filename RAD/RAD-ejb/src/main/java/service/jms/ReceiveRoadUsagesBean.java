@@ -32,11 +32,12 @@ import service.RoadUsage;
 })
 public class ReceiveRoadUsagesBean implements MessageListener {
 
+    private static final Logger LOGGER = Logger
+            .getLogger(ReceiveRoadUsagesBean.class.getName());
+    
     @Inject
     private RadService radService;
     
-    private static final Logger LOGGER = Logger
-            .getLogger(ReceiveRoadUsagesBean.class.getName());
     
     /**
      * Receives roadUsages from VS.
@@ -53,7 +54,7 @@ public class ReceiveRoadUsagesBean implements MessageListener {
             List<RoadUsage> roadUsages = gson.fromJson(jsonString, type);
             
             // Call service
-            radService.receiveRoadUsages(roadUsages);
+            this.radService.receiveRoadUsages(roadUsages);
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

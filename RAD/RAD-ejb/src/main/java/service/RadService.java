@@ -18,12 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
-import javax.jms.JMSException;
 import service.jms.RequestRoadUsagesBean;
 
 /**
@@ -77,8 +74,8 @@ public class RadService {
     public Person addPerson(String firstname, String lastname, String initials,
             String streetname, String number, String zipcode,
             String city, String country) {
-        this.person = this.personManager.createPerson(firstname, lastname, initials,
-                streetname, number, zipcode, city, country);
+        this.person = this.personManager.createPerson(firstname, lastname, 
+                initials, streetname, number, zipcode, city, country);
         return this.person;
     }
 

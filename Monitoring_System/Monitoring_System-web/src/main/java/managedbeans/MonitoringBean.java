@@ -25,14 +25,12 @@ public class MonitoringBean implements Serializable  {
     private MonitoringService service;
     
     private List<common.domain.System> retrieveSystems;
-    private List<String> systemStrings;
-    private List<Entry<String, String>> entries;
     
     /**
      * Empty constructor for sonarqube.
      */
     public MonitoringBean() {
-        
+        // Comment for sonarqube.
     }
     
     /**
@@ -47,8 +45,8 @@ public class MonitoringBean implements Serializable  {
 
         for (List<Test> list_t : tests) { 
             List<Object> params = new ArrayList<>();
-            //SystemState state = new SystemState(sys.getName());
             Boolean first = true;
+            Boolean prevResult = null;
             int[] date;
 
             for (Test t : list_t) {
@@ -63,37 +61,56 @@ public class MonitoringBean implements Serializable  {
                 date[3] = calendar.get(Calendar.HOUR_OF_DAY);
                 date[4] = calendar.get(Calendar.MINUTE);
                 date[5] = calendar.get(Calendar.SECOND);
+                
+                if (prevResult != null && prevResult.booleanValue() == t.getResult().booleanValue()) {
+                    //If testresult is the same as the previous testresult,
+                    //replace the enddate.
+                    if (params.size() >= 5) {
+                        params.set(4, date);
+                    } else {
+                        params.add(4, date);
+                    }
+                } else {
+                    //If current testresult is the first record, enddate of 
+                    //previous test can't be set.
+                    if (!first) {
+                        //Set enddate for previous record on current date.
+                        if (params.size() >= 5) {
+                            params.set(4, date);
+                        } else {
+                            params.add(4, date);
+                        }
+                        
+                        Gson gson = new Gson();                    
+                        String json = gson.toJson(params);                    
+                        map.add(json);
 
-                if (!first) {
-                    //Set enddate for previous record on current date.
-                    params.add(4, date);
-                    Gson gson = new Gson();                    
-                    String json = gson.toJson(params);                    
-                    map.add(json);
+                        //Start new parameters list for current testresult
+                        params = new ArrayList<>();
+                    }
+                    
+                    params.add(0, sys.getName());
 
-                    params = new ArrayList<>();
+                    String testtype = t.getTestType().toString();
+                    params.add(1, testtype);
+
+                    Boolean result = t.getResult();
+                    prevResult = result;
+                    String testresult = "failed"; 
+
+                    if (result) {
+                        testresult = "passed";
+                    }                
+
+                    params.add(2, testresult);
+
+                    params.add(3, date);
                 }
-
-                params.add(0, sys.getName());
-
-                String testtype = t.getTestType().toString();
-                params.add(1, testtype);
-
-                Boolean result = t.getResult();
-                String testresult = "failed"; 
-
-                if (result) {
-                    testresult = "passed";
-                }                
-
-                params.add(2, testresult);
-
-                params.add(3, date);
 
                 first = false; 
             }
 
-            //Sent enddate now for last record.
+            //Set enddate now for last record.
             Calendar calendar = Calendar.getInstance();
             date = new int[6];
             date[0] = calendar.get(Calendar.YEAR);
@@ -103,17 +120,18 @@ public class MonitoringBean implements Serializable  {
             date[4] = calendar.get(Calendar.MINUTE);
             date[5] = calendar.get(Calendar.SECOND);
 
-            params.add(4, date);
+            if (params.size() >= 5) {
+                params.set(4, date);
+            } else {
+                params.add(4, date);
+            }
+            
             Gson gson = new Gson();
             String json = gson.toJson(params);
             map.add(json);
         }           
         
         return map;
-    }
-
-    public void setEntries(List<Entry<String, String>> entries) {
-        this.entries = new ArrayList<>(entries);
     }
     
     /**
