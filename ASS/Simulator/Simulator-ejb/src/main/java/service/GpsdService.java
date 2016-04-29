@@ -19,7 +19,7 @@ public class GpsdService {
             Logger.getLogger(GpsdService.class.getCanonicalName());
     
     private BufferedWriter pipeWriter;
-    public final static String GPSD_PIPE = "/tmp/gps";
+    public static final String GPSD_PIPE = "/tmp/gps";
 
     /**
      * Sends NMEA RMC report to linux gps daemon, gpsd via predetermined pipe.
@@ -113,7 +113,8 @@ public class GpsdService {
         this.startProc("mkfifo " + GpsdService.GPSD_PIPE, false);
         this.startProc("gpsd " + GpsdService.GPSD_PIPE, false);
         //writer for gpsd pipe
-        this.pipeWriter = new BufferedWriter(new FileWriter(GpsdService.GPSD_PIPE));
+        this.pipeWriter = new BufferedWriter(
+                new FileWriter(GpsdService.GPSD_PIPE));
     }
 
     /**

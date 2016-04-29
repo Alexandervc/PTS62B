@@ -96,7 +96,7 @@ public class PathService implements Serializable {
         this.reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                new File(this.PROJECT_ROOT + "\\config" 
+                                new File({PathService.PROJECT_ROOT + "\\config" 
                                         + configId + ".txt")
                         )
                 )
@@ -216,7 +216,7 @@ public class PathService implements Serializable {
 
                 //Create file for point.
                 String fileName = cartrackerID + "-" + fileIndex + ".json";
-                FileWriter fileWriter = new FileWriter(this.PROJECT_ROOT 
+                FileWriter fileWriter = new FileWriter(PathService.PROJECT_ROOT 
                         + "\\output\\" + fileName);
                 String output;
                 
@@ -240,7 +240,7 @@ public class PathService implements Serializable {
             rideID++;
             String output = "cartrackerID=" + cartrackerID + ",fileIndex=" 
                     + fileIndex + ",ride=" + rideID;
-            FileWriter fileWritter = new FileWriter(this.PROJECT_ROOT 
+            FileWriter fileWritter = new FileWriter(PathService.PROJECT_ROOT 
                     + "\\config" + configId + ".txt", false);
             
             try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {

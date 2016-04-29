@@ -104,7 +104,8 @@ public class GpsSimulator implements Runnable {
      * Set new position of vehicle based on current position and vehicle speed.
      */
     public void moveVehicle() {
-        Double distance = this.speedInMps * GpsSimulator.reportInterval / 1000.0;
+        Double distance = this.speedInMps * GpsSimulator.reportInterval 
+                / 1000.0;
         Double distanceFromStart = this.currentPosition.getDistanceFromStart() 
                 + distance;
         Double excess = 0.0; // amount by which next postion will exceed end
