@@ -1,8 +1,7 @@
 C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\model\Leg.java
 C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\support\NavUtils.java
-C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\service\IPathService.java
-C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\service\IGpsdService.java
-C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\NewMain.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\main\SimulatorMain.java
+C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\service\jms\SendPositionBean.java
 C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\service\GpsdService.java
 C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\simulator\GpsSimulator.java
 C:\Users\Melanie\Documents\GitHub\PTS62B\ASS\Simulator\Simulator-ejb\src\main\java\model\PositionInfo.java

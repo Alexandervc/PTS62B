@@ -23,9 +23,12 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(query = "select t from Test t where t.systemID = :systemId AND"
+    @NamedQuery(query = "select t from Test t where t.systemID = :systemId AND"
         + " t.testType = :type ORDER BY t.date DESC", name = "get latest"
-                + " test for system with type")
+                + " test for system with type"),
+    @NamedQuery(query = "select t from Test t where t.systemID = :systemId AND"
+        + " t.testType = :type ORDER BY t.date ASC", name = "get tests"
+                + " for system with type")
 })
 public class Test implements Serializable {
 

@@ -42,9 +42,6 @@ public class DataStorage {
     // static field for roadusage km
     private static final double KM = 12.9;
     
-    // static field for cartracker id
-    private static final String CARTRACKERID = "PT123456789";
-    
     // static field for total price bill
     private static final double PRICE = 35.2;
     @Inject
@@ -74,17 +71,32 @@ public class DataStorage {
             roadUsages.add(usage);
 
             // Create person in db
-            Person p = this.service.addPerson("Linda", "van Engelen", "LMJC",
+            Person p1 = this.service.addPerson("Fernando", "Lameirinhas", "FL",
+                    "Calçada do Lavra", "12", "1150-208",
+                    "Lisboa", "Portugal");
+            Person p2 = this.service.addPerson("Tina", "Timmermans", "TT",
+                    "Grotestraat", "14", "3600",
+                    "Genk", "België");
+            Person p3 = this.service.addPerson("Linda", "van Engelen", "LMJC",
                     "Sibeliuslaan", "83B", "5654CV",
                     "Eindhoven", "Nederland");
-            LOGGER.log(Level.INFO, "created person");
+            
+            LOGGER.log(Level.INFO, "created persons");
+            
+            String cartrackerId1 = "PT123456789";
+            String cartrackerId2 = "BE-a5eff926-e3f7-43d5-b62b-5140aa2b962f";
+            String cartrackerId3 = "NL123456789";
 
             // Create car for person in db.
-            this.service.addCar(p, CARTRACKERID, FuelType.Petrol);
-            LOGGER.log(Level.INFO, "created car");
+            this.service.addCar(p1, cartrackerId1, FuelType.Petrol);
+            this.service.addCar(p2, cartrackerId2, FuelType.Petrol);
+            this.service.addCar(p3, cartrackerId3, FuelType.Diesel);
+            
+            LOGGER.log(Level.INFO, "created cars");
             
             // Create bill for person.
-            Bill b = new Bill(p, roadUsages, PRICE, CARTRACKERID, "April", "2016");
+            Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 
+                    "April", "2016");
             
             // Add bill to db.
             this.service.addBill(b);
