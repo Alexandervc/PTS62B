@@ -50,4 +50,15 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         q.setParameter("cartrackerId", cartrackerId);
         return q.getResultList();
     }
+    
+    /**
+     * Get the carpostions for the given rideId.
+     * @param rideId The id of the ride to get the carpositions for.
+     * @return List of carpostions.
+     */
+    public List<CarPosition> getPositionsOfRide(Long rideId) {
+        Query q = this.em.createNamedQuery("CarPosition.getPositionsOfRide");
+        q.setParameter("rideId", rideId);
+        return q.getResultList();
+    }
 }

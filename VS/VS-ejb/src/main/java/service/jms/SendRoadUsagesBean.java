@@ -5,7 +5,7 @@
  */
 package service.jms;
 
-import business.RoadUsage;
+import dto.RoadUsage;
 import com.google.gson.Gson;
 import java.util.List;
 import java.util.logging.Level;

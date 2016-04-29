@@ -220,4 +220,13 @@ public class RadService {
         this.carManager = carManager;
     }
     
+    /**
+     * Get the price for the given roadUsages.
+     * @param roadUsages The roadUsages to get the price for.
+     * @return The price.
+     */
+    public Double getTotalPrice(List<RoadUsage> roadUsages) {
+        return this.billManager.calculatePrice(roadUsages);
+    }
+    
 }
