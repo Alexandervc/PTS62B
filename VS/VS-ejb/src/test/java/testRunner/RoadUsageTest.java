@@ -5,7 +5,7 @@
  */
 package testRunner;
 
-import business.RoadUsage;
+import dto.RoadUsage;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;

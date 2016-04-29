@@ -5,7 +5,7 @@
  */
 package service.jms;
 
-import business.RoadUsage;
+import dto.RoadUsage;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

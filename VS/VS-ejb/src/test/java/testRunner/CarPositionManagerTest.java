@@ -5,7 +5,6 @@
  */
 package testRunner;
 
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,8 +26,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.times;
 
 /**
  *
@@ -51,6 +51,7 @@ public class CarPositionManagerTest {
     @Produces
     private CarPositionDao carPositionDao;
     
+    // Cartracker
     private String cartrackerId;
     private Cartracker cartracker;
     
@@ -61,8 +62,21 @@ public class CarPositionManagerTest {
     private Double xCoordinate;
     private Double yCoordinate;
     private Double meters;
+    private Long rideId;
+    private Boolean lastOfRide;
     
     private CarPosition carPosition;
+    
+    // Foreign cartracker
+    private String foreignCartrackerId;
+    private Cartracker foreignCartracker;
+    
+    private Long foreignRideId;
+    private Boolean foreignNotLastLastOfRide;
+    private Boolean foreignLastLastOfRide;
+    
+    private CarPosition foreignNotLastCarPosition;
+    private CarPosition foreignLastCarPosition;
     
     /**
      * Matcher for carposition.
@@ -99,6 +113,9 @@ public class CarPositionManagerTest {
         this.cartrackerId = "PT123456789";
         this.cartracker = new Cartracker(this.cartrackerId);
         
+        this.foreignCartrackerId = "BE123456789";
+        this.foreignCartracker = new Cartracker(this.foreignCartrackerId);
+        
         this.roadName = "road";
         Road road = new Road(this.roadName, RoadType.A);
         this.roads = new ArrayList<>();
@@ -108,13 +125,27 @@ public class CarPositionManagerTest {
         this.xCoordinate = 1.0;
         this.yCoordinate = 2.0;
         this.meters = 3.0;
+        this.rideId = 1L;
+        this.lastOfRide = false;
+        
+        this.foreignRideId = 2L;
+        this.foreignNotLastLastOfRide = false;
+        this.foreignLastLastOfRide = true;
         
         this.carPosition = new CarPosition(this.cartracker, this.moment,
-                this.xCoordinate, this.yCoordinate, road, this.meters);
+                this.xCoordinate, this.yCoordinate, road, this.meters,
+                this.rideId, this.lastOfRide);
+        
+        this.foreignNotLastCarPosition = new CarPosition(this.foreignCartracker,
+                this.moment, this.xCoordinate, this.yCoordinate, road, 
+                this.meters, this.foreignRideId, this.foreignNotLastLastOfRide);
+        this.foreignLastCarPosition = new CarPosition(this.foreignCartracker,
+                this.moment, this.xCoordinate, this.yCoordinate, road,
+                this.meters, this.foreignRideId, this.foreignLastLastOfRide);
     }
     
     @Test
-    public void processCarPostionShouldCallCreate() {
+    public void processCarPositionShouldCallCreate() {
         // Define when
         when(this.cartrackerDao.find(this.cartrackerId))
                 .thenReturn(this.cartracker);
@@ -124,11 +155,59 @@ public class CarPositionManagerTest {
         // Call method
         this.carPositionManager.processCarPosition(this.cartrackerId, 
                 this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
-                this.meters);
+                this.meters, this.rideId, this.lastOfRide);
         
         // Verify
         verify(this.carPositionDao)
                 .create(argThat(new IsSameCarposition(this.carPosition)));
+    }
+    
+    @Test
+    public void processForeignCarPositionLastShouldCallGetPositions() {
+        // Define when
+        when(this.cartrackerDao.find(this.foreignCartrackerId))
+                .thenReturn(this.foreignCartracker);
+        // TODO road
+        when(this.roadDao.findAll()).thenReturn(this.roads);
+        
+        // Call method
+        this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
+                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
+                this.meters, this.foreignRideId, this.foreignLastLastOfRide);
+        
+        // Verify
+        verify(this.carPositionDao)
+                .create(argThat(new IsSameCarposition(
+                        this.foreignLastCarPosition)));
+        
+        verify(this.carPositionDao)
+                .getPositionsOfRide(this.foreignRideId);
+        
+        // TODO totalPrice + send
+    }
+    
+    @Test
+    public void processForeignCarPositionNotLastShouldNotCallGetPositions() {
+        // Define when
+        when(this.cartrackerDao.find(this.foreignCartrackerId))
+                .thenReturn(this.foreignCartracker);
+        // TODO road
+        when(this.roadDao.findAll()).thenReturn(this.roads);
+        
+        // Call method
+        this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
+                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
+                this.meters, this.foreignRideId, this.foreignNotLastLastOfRide);
+        
+        // Verify
+        verify(this.carPositionDao)
+                .create(argThat(new IsSameCarposition(
+                        this.foreignNotLastCarPosition)));
+        
+        verify(this.carPositionDao, times(0))
+                .getPositionsOfRide(this.foreignRideId);
+        
+        // TODO totalPrice + send
     }
     
     @Test
