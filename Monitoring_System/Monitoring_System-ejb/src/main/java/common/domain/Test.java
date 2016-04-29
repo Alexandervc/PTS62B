@@ -28,7 +28,7 @@ import javax.persistence.NamedQuery;
                 + " test for system with type"),
     @NamedQuery(query = "select t from Test t where t.systemID = :systemId AND"
         + " t.testType = :type ORDER BY t.date ASC", name = "get tests"
-                + " for system with type")
+                + " for system with type")       
 })
 public class Test implements Serializable {
 

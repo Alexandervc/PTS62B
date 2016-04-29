@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -144,9 +146,39 @@ public class MonitoringManager {
         List<Test> tests = system.getTests();
         java.util.Date date = new java.util.Date();
         Test test = new Test(type,new Timestamp(date.getTime()),result);
+        system.addTest(test);
         tests.add(test);
         this.testDao.create(test);
         this.systemDao.edit(system);    
+    }
+    
+    /**
+     * Updates a test to a system based on its name.
+     * @param systemName The name of the system.
+     * @param result The result of the test.
+     * @param type The type of test that has to be created and added.
+     * @param time The time the test was saved.
+     * @param newTime The correct time that should be used to update.
+     */
+    public void updateTest(String systemName, boolean result
+            , TestType type, Timestamp time, Timestamp newTime) {
+        // Gets the system based on its name.
+        System system = this.systemDao.getSystemByName(systemName);
+
+
+        // Retrieves the specific test from the system object.
+        List<Test> tests = system.getTests();
+        List<Test> filteredTests = tests.stream()
+                .filter(x -> x.getDate() == time && x.getTestType() == type)
+                .collect(Collectors.toList());
+        
+        
+        Test test = filteredTests.get(0);
+        test.setDate(newTime);
+        test.setResult(result);
+        
+        this.testDao.edit(test);
+        this.systemDao.edit(system);       
     }
     
     /**

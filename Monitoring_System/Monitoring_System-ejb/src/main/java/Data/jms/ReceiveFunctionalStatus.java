@@ -5,6 +5,10 @@
  */
 package data.jms;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
@@ -20,7 +24,7 @@ import service.MonitoringService;
  *
  * @author Linda
  */
-@MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
+@MessageDriven(mappedName = "jms/LMS/queue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "method='receiveStatus'")
 })
@@ -42,14 +46,27 @@ public class ReceiveFunctionalStatus implements MessageListener {
         try {
             MapMessage mapMessage = (MapMessage) message;
 
-            // Get system Name
+            // Get message values
             String systemName = mapMessage.getString("system");
+            String dateString = mapMessage.getString("date");
+            String newDateString = mapMessage.getString("newDate");
+            System.out.println("DateString: " + dateString);
+            System.out.println("newDateString: " + newDateString);
 
-            // Get result boolean
-            Boolean testresult = mapMessage.getBoolean("result");
+            
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        
+            Date date = null;
+            Date newDate = null;
+            try {
+                date = dateFormat.parse(dateString);
+                newDate = dateFormat.parse(newDateString);
+            } catch (ParseException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+            System.out.println("message received from" + systemName);
 
-            // TODO save in db
-            this.service.processTestResults(systemName);
+            this.service.processTestResults(systemName, date, newDate);
 
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

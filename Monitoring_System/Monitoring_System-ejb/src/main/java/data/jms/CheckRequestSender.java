@@ -5,7 +5,6 @@
  */
 package data.jms;
 
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -50,10 +49,6 @@ public class CheckRequestSender {
         try {
             MapMessage message = this.context.createMapMessage();
             message.setStringProperty("method", "getStatus");
-            java.util.Date date = new java.util.Date();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String currentTime = df.format(date);
-            message.setString("time", currentTime);
             JMSProducer producer = this.context.createProducer();
             producer.setTimeToLive(TIMEOUTTIME);
             producer.send(this.topic, message);

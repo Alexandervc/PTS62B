@@ -8,6 +8,7 @@ package data;
 
 import common.domain.Test;
 import common.domain.TestType;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -69,5 +70,27 @@ public class TestDao extends AbstractDao {
         query.setParameter("type", type);
         query.setMaxResults(1);
         return (Test) query.getSingleResult();
+    }
+    
+    /**
+     * Retrieve a test based on the primary key values.
+     * @param system The system that the test belongs to.
+     * @param type The requested test type.
+     * @param date The date of the test.
+     * @return The test object from the database.
+     */
+    public Test retrieveTestOnKey (
+            common.domain.System system,
+            TestType type,
+            java.util.Date date)
+    {
+        Query query = this.em
+                .createNamedQuery("get tests based on date, type and system");
+        query.setParameter("systemId", system.getId());
+        query.setParameter("type", type);
+        query.setParameter("date", new Timestamp(date.getTime()));
+        query.setMaxResults(1);
+        return (Test) query.getSingleResult();
+        
     }
 }
