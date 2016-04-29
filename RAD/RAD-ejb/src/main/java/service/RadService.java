@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import service.jms.RequestRoadUsagesBean;
 
 /**
@@ -192,7 +193,7 @@ public class RadService {
             // set local bill with correct fields
             this.bill = this.billManager.generateBill(this.person, roadUsages,
                     this.cartrackerId, this.month, this.year);
-        } catch (Exception ex) {
+        } catch (EntityNotFoundException ex) {
             this.bill = null;
             LOGGER.log(Level.SEVERE, null, ex);
         }

@@ -10,6 +10,7 @@ import domain.Rate;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import service.RoadUsage;
 
 /**
@@ -53,7 +54,8 @@ public class BillManager {
      * @return new Bill Type Bill.
      */
     public Bill generateBill(Person person, List<RoadUsage> roadUsages, 
-            String cartrackerId, String month, String year) throws Exception {
+            String cartrackerId, String month, String year) 
+            throws EntityNotFoundException {
         double totalPrice = 0;
         
         for (RoadUsage ru : roadUsages) {
@@ -76,8 +78,9 @@ public class BillManager {
                 if (foreignCountryRide != null) {
                     totalPrice += foreignCountryRide.getTotalPrice();
                 } else {
-                    throw new Exception("Cost of the ForeignCountryRide was "
-                            + "not found in the RAD database.");
+                    throw new EntityNotFoundException("Cost of the "
+                            + "ForeignCountryRide was not found in the RAD "
+                            + "database.");
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
