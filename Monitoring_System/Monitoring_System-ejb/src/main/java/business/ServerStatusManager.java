@@ -102,7 +102,7 @@ public class ServerStatusManager {
             // Get the application from the output.
             if (result.contains("<")) {
                 // Match on first word. This retreives the application name.
-                Pattern pattern = Pattern.compile("^[\\w]+");
+                Pattern pattern = Pattern.compile("([^\\s]+)");
                 Matcher matcher = pattern.matcher(result);
 
                 if (matcher.find()) {
