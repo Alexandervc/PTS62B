@@ -7,7 +7,6 @@ package service;
 
 import com.google.gson.Gson;
 import dto.RoadUsage;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;

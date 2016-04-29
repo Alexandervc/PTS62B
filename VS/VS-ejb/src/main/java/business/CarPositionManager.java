@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.CarPositionService;
+import service.ForeignRideService;
 import service.RadWsService;
 
 /**
@@ -51,7 +52,7 @@ public class CarPositionManager {
     private RadWsService radWsService;
     
     @Inject
-    private CarPositionService carPositionService;
+    private ForeignRideService foreignRideService;
     
     /**
      * Process the given information of a CarPosition.
@@ -92,7 +93,7 @@ public class CarPositionManager {
                         .getTotalPrice(roadUsages);
                 
                 // Send
-                this.carPositionService.sendForeignRide(cartrackerId, 
+                this.foreignRideService.sendForeignRide(cartrackerId, 
                         totalPrice, carPositions, countryCode);
             }
         } catch (IllegalArgumentException iaEx) {

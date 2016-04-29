@@ -6,12 +6,9 @@
 package service;
 
 import business.CarPositionManager;
-import domain.CarPosition;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import service.jms.SendForeignRideBean;
 
 /**
  * The service for carpositions.
@@ -21,9 +18,6 @@ import service.jms.SendForeignRideBean;
 public class CarPositionService {
     @Inject
     private CarPositionManager carPositionManager;
-    
-    @Inject
-    private SendForeignRideBean sendForeignRideBean;
 
     /**
      * Save the given information into a CarPosition.
@@ -44,19 +38,5 @@ public class CarPositionService {
             Double meter, Long rideId, Boolean lastOfRide) {
         this.carPositionManager.processCarPosition(cartrackerId, moment, 
                 xCoordinate, yCoordinate, roadName, meter, rideId, lastOfRide);
-    }
-    
-    /**
-     * Send the given information to the central queue.
-     * @param cartrackerId The foreign cartracker.
-     * @param totalPrice The total price of the ride.
-     * @param carpositions The carPositions of the ride.
-     * @param countryCode The code of the country where the foreign cartracker
-     *      is from.
-     */
-    public void sendForeignRide(String cartrackerId, Double totalPrice,
-            List<CarPosition> carpositions, String countryCode) {
-        this.sendForeignRideBean.sendForeignRide(cartrackerId, totalPrice, 
-                carpositions, countryCode);
     }
 }
