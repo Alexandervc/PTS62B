@@ -28,7 +28,7 @@ public class ServerStatusManagerTest {
     /**
      * The IP address of the system to test.
      */
-    public static final String SYSTEM_IP = "192.168.24.70";
+    public static final String SYSTEM_IP = "192.168.24.77";
         
     /**
      * <p>Tests the retrieve application status method on the LMS server.</p>

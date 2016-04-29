@@ -9,6 +9,13 @@ public class Point {
     private Double longitude;
     private Double altitude;
 
+    /**
+     * Constructor for point representing position with coordinates.
+     * 
+     * @param latitude xcoordinate.
+     * @param longitude ycoordinate.
+     * @param altitude if road is going up/down.
+     */
     public Point(Double latitude, Double longitude, Double altitude) {
         super();
         this.latitude = latitude;
@@ -16,6 +23,12 @@ public class Point {
         this.altitude = altitude;
     }
 
+    /**
+     * Constructor for point representing position with coordinates.
+     * 
+     * @param latitude xcoordinate.
+     * @param longitude ycoordinate.
+     */
     public Point(Double latitude, Double longitude) {
         super();
         this.latitude = latitude;
@@ -23,44 +36,26 @@ public class Point {
         this.altitude = null;
     }
 
-    /**
-     * @return the latitude
-     */
     public Double getLatitude() {
         return this.latitude;
     }
 
-    /**
-     * @param latitude the latitude to set
-     */
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    /**
-     * @return the longitude
-     */
     public Double getLongitude() {
         return this.longitude;
     }
 
-    /**
-     * @param longitude the longitude to set
-     */
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    /**
-     * @return the altitude
-     */
     public Double getAltitude() {
         return this.altitude;
     }
 
-    /**
-     * @param altitude the altitude to set
-     */
     public void setAltitude(Double altitude) {
         this.altitude = altitude;
     }
@@ -72,7 +67,7 @@ public class Point {
      */
     @Override
     public String toString() {
-        return "Point [lat/lang:" + this.latitude + "," + this.longitude + ", altitude=" 
-                + this.altitude + "]";
+        return "Point [lat/lang:" + this.latitude + "," + this.longitude 
+                + ", altitude=" + this.altitude + "]";
     }
 }

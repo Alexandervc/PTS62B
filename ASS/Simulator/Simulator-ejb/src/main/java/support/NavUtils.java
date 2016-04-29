@@ -9,12 +9,13 @@ import model.Point;
  * NavUtils  Class.
  * @author Melanie
  */
-public class NavUtils {
+public final class NavUtils {
     private static final double EARTH_RADIUS_IN_METERS = 
             DistanceUtils.EARTH_MEAN_RADIUS_KM * 1000;
 
     /**
-     * Private Constructor. Suppress default constructor for non-instantiability.
+     * Private Constructor.
+     * Suppress default constructor for non-instantiability.
      */
     private NavUtils() {
         throw new AssertionError();
