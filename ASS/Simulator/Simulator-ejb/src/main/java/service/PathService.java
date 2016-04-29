@@ -96,7 +96,7 @@ public class PathService implements Serializable {
         this.reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                new File({PathService.PROJECT_ROOT + "\\config" 
+                                new File(PathService.PROJECT_ROOT + "\\config" 
                                         + configId + ".txt")
                         )
                 )
