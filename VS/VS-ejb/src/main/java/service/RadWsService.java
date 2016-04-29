@@ -20,8 +20,8 @@ import service.soap.RadWs_Service;
  */
 @Stateless
 public class RadWsService {
-
-    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/RadWs/RadWs.wsdl")
+    // TODO set to server link
+    @WebServiceRef(wsdlLocation = "http://localhost:8080/RadWs/RadWs?wsdl")
     private RadWs_Service service;
 
     private RadWs port;

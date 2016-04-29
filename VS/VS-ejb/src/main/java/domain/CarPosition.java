@@ -96,6 +96,8 @@ public class CarPosition implements Serializable {
         this.yCoordinate = yCoordinate;
         this.road = road;
         this.meter = meter;
+        this.rideId = rideId;
+        this.lastOfRide = lastOfRide;
     }
 
     public Long getId() {

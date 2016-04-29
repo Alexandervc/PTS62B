@@ -7,6 +7,7 @@ package service;
 
 import domain.CarPosition;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.jms.SendForeignRideBean;
 
@@ -14,6 +15,7 @@ import service.jms.SendForeignRideBean;
  * The service for foreign rides.
  * @author Alexander
  */
+@Stateless
 public class ForeignRideService {
     @Inject
     private SendForeignRideBean sendForeignRideBean;

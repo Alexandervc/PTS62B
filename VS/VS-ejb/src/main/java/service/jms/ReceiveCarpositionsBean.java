@@ -61,7 +61,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
             Double xCoordinate = (Double) position.get("xCoordinate");
             Double yCoordinate = (Double) position.get("yCoordinate");
             Double meter = (Double) position.get("meter");
-            Long rideId = (Long) position.get("rideId");
+            Long rideId = Long.valueOf((String) position.get("rideId"));
             Boolean lastOfRide = (Boolean) position.get("last");
 
             // TODO road op andere manier??
