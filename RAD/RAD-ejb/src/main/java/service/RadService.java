@@ -194,7 +194,7 @@ public class RadService {
                     this.cartrackerId, this.month, this.year);
         } catch (Exception ex) {
             this.bill = null;
-            LOGGER.log(Level.SEVERE, ex.getMessage(), roadUsages);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
     
@@ -240,7 +240,7 @@ public class RadService {
      * Add a foreign country ride to the database, this stores the total 
      * price of the ride.
      * @param foreignCountryRideId The id of the foreign country ride, this id 
-     * is set in VS when the message is received from the central system.
+     *     is set in VS when the message is received from the central system.
      * @param totalPrice The total price of the foreign country ride.
      */
     public void addForeignCountryRide(

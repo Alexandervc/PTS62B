@@ -57,26 +57,47 @@ public class ForeignCountryRide implements Serializable {
         this.totalPrice = totalPrice;
     }
 
+    /**
+     * Gets the Id.
+     * @return The Id.
+     */
     public Long getId() {
-        return id;
+        return this.id;
     }
 
+    /**
+     * Sets the Id.
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets the ForeignCountryRideId.
+     * @return The ForeignCountryRideId.
+     */
     public Long getForeignCountryRideId() {
-        return foreignCountryRideId;
+        return this.foreignCountryRideId;
     }
 
+    /**
+     * Gets the ForeignCountryRideId.
+     */
     public void setForeignCountryRideId(Long foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
     }
 
+    /**
+     * Gets the total price.
+     * @return The total price.
+     */
     public double getTotalPrice() {
-        return totalPrice;
+        return this.totalPrice;
     }
 
+    /**
+     * Sets the total price.
+     */
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }   

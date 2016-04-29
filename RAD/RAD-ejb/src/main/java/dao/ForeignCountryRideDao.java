@@ -50,7 +50,7 @@ public class ForeignCountryRideDao extends AbstractFacade<ForeignCountryRide>
      * Finds the ForeignCountryRide by ForeignCountryRideId.
      * @param foreignCountryRideId The id of the foreignCountryRide.
      * @return Returns a ForeignCountryRide object if the query returns exactly 
-     * one result, otherwise null.
+     *     one result, otherwise null.
      */
     public ForeignCountryRide findByForeignCountryRideId(
             Long foreignCountryRideId) {
@@ -69,19 +69,14 @@ public class ForeignCountryRideDao extends AbstractFacade<ForeignCountryRide>
         // if the query did not return exactly one result.
         try {
             returnValue = query.getSingleResult();
-        } catch (NoResultException exception) {
+        } catch (NoResultException ex) {
             // If the query does not return any results, log the exception 
             // message with the foreignCountryRideId parameter.
-            LOGGER.log(
-                    Level.INFO, 
-                    exception.getMessage(), 
-                    foreignCountryRideId);
-        } catch (NonUniqueResultException exception) {
+            LOGGER.log(Level.INFO, null, ex);
+        } catch (NonUniqueResultException ex) {
             // If the query returns more then one resut, log the exception 
             // message with the foreignCountryRideId parameter.
-            LOGGER.log(Level.SEVERE, 
-                    exception.getMessage(), 
-                    foreignCountryRideId);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         
         // Returns null if the query did not return exactly one result.
