@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import static org.mockito.Matchers.anyString;
 import org.mockito.Mock;
 
 /**
@@ -114,7 +113,7 @@ public class CarPositionManagerTest {
     }
     
     @Test
-    public void processCarPostionShouldCallCreate() {
+    public void saveCarPostionShouldCallCreate() {
         // Define when
         when(this.cartrackerDao.find(this.cartrackerId))
                 .thenReturn(this.cartracker);
@@ -122,32 +121,21 @@ public class CarPositionManagerTest {
         when(this.roadDao.findAll()).thenReturn(this.roads);
         
         // Call method
-        this.carPositionManager.processCarPosition(this.cartrackerId, 
-                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
-                this.meters);
+        this.carPositionManager.saveCarPosition(this.cartrackerId, this.moment, 
+                this.xCoordinate, this.yCoordinate, this.roadName, this.meters);
         
         // Verify
         verify(this.carPositionDao)
                 .create(argThat(new IsSameCarposition(this.carPosition)));
     }
     
-    @Test
-    public void processUnknownCartrackerShouldCreate() {
-        /*
-        // TODO not testable anymore
-        
+    @Test (expected = IllegalArgumentException.class)
+    public void saveUnknownCartrackerShouldThrowIaex() {
         // Define when
-        when(this.cartrackerDao.find(anyString())).thenReturn(null);
-        when(this.roadDao.findAll()).thenReturn(this.roads);
+        when(this.cartrackerDao.find(anyLong())).thenReturn(null);
         
         // Call method
-        this.carPositionManager.processCarPosition(this.cartrackerId, 
-                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
-                this.meters);
-        
-        // Verify
-        verify(this.carPositionDao)
-                .create(argThat(new IsSameCarposition(this.carPosition)));
-        */
+        this.carPositionManager.saveCarPosition(this.cartrackerId, this.moment,
+                this.xCoordinate, this.yCoordinate, this.roadName, this.meters);
     }
 }

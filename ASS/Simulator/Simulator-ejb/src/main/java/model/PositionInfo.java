@@ -76,9 +76,8 @@ public class PositionInfo {
      */
     @Override
     public String toString() {
-        return "PositionInfo [position=" + this.position 
-                + ", leg=" + this.leg 
-                + ", distanceFromStart=" + this.distanceFromStart
+        return "PositionInfo [position=" + this.position + ", leg=" + this.leg + 
+                ", distanceFromStart=" + this.distanceFromStart
                 + ", speed=" + this.speed + "]";
     }
 }

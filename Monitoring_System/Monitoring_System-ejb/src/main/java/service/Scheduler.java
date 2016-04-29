@@ -18,10 +18,8 @@ public class Scheduler implements Runnable {
     /**
      * Runs the batch job that executes the tests.
      */
-    @Override
     public void run() {
-        System.out.println("HELLO SCHEDULER");
-        //BatchRuntime.getJobOperator().start("ExecuteTests", new Properties());
+        BatchRuntime.getJobOperator().start("ExecuteTests", new Properties());
     }
  
 }

@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -59,14 +58,12 @@ public class BillBean {
         this.datePast.add(Calendar.YEAR, -2);
         Calendar temp = this.datePast;
 
-        for (int m = 0; m < 25; m++) {
+        for (int m = 0; m < 24; m++) {
             String month = new SimpleDateFormat("MMM").format(temp.getTime());
             this.dates.add(new ListBoxDate(month + " "
                     + temp.get(Calendar.YEAR), Integer.toString(m)));
             temp.add(Calendar.MONTH, 1);
         }
-        
-        Collections.reverse(this.dates);
     }
 
     /**

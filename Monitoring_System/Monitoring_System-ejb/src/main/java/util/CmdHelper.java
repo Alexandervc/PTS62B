@@ -77,7 +77,6 @@ public class CmdHelper {
         String resultLine;
         while ((resultLine = stdInput.readLine()) != null) {            
             output.add(resultLine);
-            System.out.println(resultLine);
         }
 
         return output;
