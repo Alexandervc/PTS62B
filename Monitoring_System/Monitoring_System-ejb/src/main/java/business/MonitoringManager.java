@@ -278,7 +278,7 @@ public class MonitoringManager {
                         "http://192.168.24.70:8070/job/PTS-S62B-"
                         + s.getName()
                         + "/lastSuccessfulBuild/testReport/api/json");
-                String result = (String) json.get("failCount");
+                String result = String.valueOf(json.get("failCount"));
                 // If result "failCount" == 0 testResult is true
                 if (result.equals("0")) {
                     testResult = Boolean.TRUE;
@@ -295,6 +295,7 @@ public class MonitoringManager {
                         
             // Stores all the tests in the database.
             this.testDao.create(testEndpoints);
+            s.addTest(testEndpoints);
 
             this.systemDao.edit(s);    
         }
