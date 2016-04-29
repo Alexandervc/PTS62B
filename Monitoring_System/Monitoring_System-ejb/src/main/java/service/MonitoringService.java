@@ -51,17 +51,7 @@ public class MonitoringService {
     }
 
     /**
-     * Generates the status of the server
-     *
-     * @param system the Server object where the status will be generated for.
-     * @return A list
-     */
-    public void generateServerStatus(common.domain.System system) {
-        this.manager.generateServerStatus(system);
-    }
-    
-    /**
-     * Retrives all tests. One for each test type.
+     * Retrieves all tests. One for each test type.
      *
      * @param system The system that the tests have to be retrieved for.
      * @return A list with the 3 tests.

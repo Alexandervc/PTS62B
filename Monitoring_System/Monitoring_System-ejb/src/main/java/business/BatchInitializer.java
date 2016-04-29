@@ -5,34 +5,28 @@
  */
 package business;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.concurrent.LastExecution;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
-import javax.enterprise.concurrent.Trigger;
 import javax.inject.Inject;
-import service.Scheduler;
 
 /**
  *
- * @author Edwin
+ * @author Edwin.
  */
 @Singleton
 @Startup
 public class BatchInitializer {
     
         
+    // Interval between tests in minutes;
+    private static final int TESTINTERVAL = 900000;    
+    
     @Inject
     private MonitoringManager manager;
-    
-    //Interval between tests in minutes;
-    private static int TESTINTERVAL = 900000;
 
     @Resource
     private ManagedScheduledExecutorService executor;
@@ -43,11 +37,11 @@ public class BatchInitializer {
     @PostConstruct
     public void init() {
         TestRequestTask requestTask = new TestRequestTask();
-        requestTask.setManager(manager);
+        requestTask.setManager(this.manager);
         Timer timer = new Timer();
 
         // scheduling the task at interval
-        timer.schedule(requestTask, 0, 1000);      
+        timer.schedule(requestTask, 0, TESTINTERVAL);      
     }
    
 }

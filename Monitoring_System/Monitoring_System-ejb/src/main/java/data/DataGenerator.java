@@ -29,11 +29,11 @@ public class DataGenerator {
     @PostConstruct
     public void onStartup() {
         common.domain.System sys
-                = new common.domain.System("VS", "VS", "192.168.24.74", 8080);
+                = new common.domain.System("VS", "VS", "192.168.24.72", 8080);
         common.domain.System sys2
-                = new common.domain.System("RAD", "RAD", "192.168.24.75", 8080);
+                = new common.domain.System("RAD", "RAD", "192.168.24.74", 8080);
         common.domain.System sys3
-                = new common.domain.System("ASS", "ASS", "192.168.24.76", 8080);
+                = new common.domain.System("ASS", "ASS", "192.168.24.77", 8080);
         if (this.systemDao.getSystems().isEmpty()) {
             this.systemDao.create(sys);
             this.systemDao.create(sys2);

@@ -63,31 +63,6 @@ public class MonitoringManager {
     public List<System> getSystems() {
         return this.systemDao.getSystems();
     }   
-
-    /**
-     * Generates the status of the server.
-     * @param system The system object where the status will be generated for.
-     */
-    public final void generateServerStatus(System system) {
-        List<Test> tests = new ArrayList<>();
-        
-        // Retrieve the server status.
-        Test serverStatusTest = this.retrieveServerStatus(system);
-        tests.add(serverStatusTest);
-        
-        // Retrieve the result of the functional tests.
-        Test functionalTest = this.retrieveFunctionalTests(system);
-        tests.add(functionalTest);
-        
-        // Retrieve the result of the endpoint test.
-        Test endpointTest = this.retrieveEndpointTest(system);
-        tests.add(endpointTest);
-        
-        for(Test test :tests) {
-            this.testDao.create(test);
-        }
-        this.systemDao.edit(tests);
-    }
     
     /**
      * Retrieves the server status and maps it to a Test object.
@@ -148,40 +123,6 @@ public class MonitoringManager {
         // currently expects one deployed application per server (system).
         return tests.get(0);
     }
-    
-    /**
-     * Executes the remote functional tests and gets the result.
-     * @param system The system to retrieve the status from.
-     * @return A test object with the result of the test.
-     */
-    private Test retrieveFunctionalTests(System system) {
-        // TODO: create the functional test.
-        
-        // Create the test object which is returned.
-        Test test = new Test(
-                TestType.FUNCTIONAL,
-                new Timestamp(java.lang.System.currentTimeMillis()),
-                false);
-        
-        return test;
-    }
-    
-    /**
-     * Executes the endpoint tests and gets the result.
-     * @param system The system to retrieve the status from.
-     * @return A test object with the result of the test.
-     */
-    private Test retrieveEndpointTest(System system) {
-        // TODO: create the endpoint test.
-        
-        // Create the test object which is returned.
-        Test test = new Test(
-                TestType.FUNCTIONAL,
-                new Timestamp(java.lang.System.currentTimeMillis()),
-                false);
-        
-        return test;
-    }   
     
     /**
      * Retrieves the system based on its unique name.
@@ -270,6 +211,8 @@ public class MonitoringManager {
             Test testEndpoints = 
                     new Test(TestType.ENDPOINTS, currentDate, false);
             
+            s.addTest(testEndpoints);
+            
             Boolean testResult = false;
 
             // Get testResults from jenkins
@@ -295,7 +238,6 @@ public class MonitoringManager {
                         
             // Stores all the tests in the database.
             this.testDao.create(testEndpoints);
-            s.addTest(testEndpoints);
 
             this.systemDao.edit(s);    
         }
