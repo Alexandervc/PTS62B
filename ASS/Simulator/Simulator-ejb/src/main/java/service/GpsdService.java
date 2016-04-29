@@ -14,7 +14,7 @@ import model.PositionInfo;
  * GpsdService Class.
  * @author Melanie
  */
-public class GpsdService {
+public class GpsdService implements IGpsdService {
     private static final Logger logger =
             Logger.getLogger(GpsdService.class.getCanonicalName());
     
@@ -22,10 +22,11 @@ public class GpsdService {
     public static final String GPSD_PIPE = "/tmp/gps";
 
     /**
-     * Sends NMEA RMC report to linux gps daemon, gpsd via predetermined pipe.
-     *
-     * @param position coordinates.
+     * Update position.
+     * 
+     * @param position 
      */
+    @Override
     public void updatePosition(PositionInfo position) {
         // an NMEA RMC position sentence (report) is of form:
         // $GPRMC,124426,A,5920.7019,N,02803.2893,E,,,121212,,
@@ -108,13 +109,12 @@ public class GpsdService {
      * @throws java.lang.InterruptedException .
      */
     public void initGpsd() throws IOException, InterruptedException {
-        this.startProc("killall -9 gpsd", false);
-        this.startProc("rm -f " + GpsdService.GPSD_PIPE, false);
-        this.startProc("mkfifo " + GpsdService.GPSD_PIPE, false);
-        this.startProc("gpsd " + GpsdService.GPSD_PIPE, false);
+        startProc("killall -9 gpsd", false);
+        startProc("rm -f " + this.GPSD_PIPE, false);
+        startProc("mkfifo " + this.GPSD_PIPE, false);
+        startProc("gpsd " + this.GPSD_PIPE, false);
         //writer for gpsd pipe
-        this.pipeWriter = new BufferedWriter(
-                new FileWriter(GpsdService.GPSD_PIPE));
+        this.pipeWriter = new BufferedWriter(new FileWriter(this.GPSD_PIPE));
     }
 
     /**

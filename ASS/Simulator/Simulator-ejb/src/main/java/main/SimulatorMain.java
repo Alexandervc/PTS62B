@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.ejb.Singleton;
-import service.PathService;
+import service.IPathService;
 
 /**
  * SimulatorMain Class.
@@ -14,7 +14,7 @@ import service.PathService;
 @Startup
 public class SimulatorMain {
     @Inject
-    private PathService service;
+    private IPathService service;
 
     /**
      * Generate files for roadusage.

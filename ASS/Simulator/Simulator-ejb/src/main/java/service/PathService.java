@@ -47,20 +47,17 @@ import support.NavUtils;
  * @author Melanie.
  */
 @Stateless
-public class PathService implements Serializable {    
-    private final static String PROJECT_ROOT = 
-            "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+public class PathService implements IPathService, Serializable {    
+    private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    //private final String PROJECT_ROOT = "C:\\";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private transient BufferedReader reader;
     
     private List<String> locations;
     private final Map<Long, GpsSimulatorInstance> taskFutures = new HashMap<>();
-    private final transient ExecutorService taskExecutor = 
-            Executors.newSingleThreadExecutor();    
+    private final transient ExecutorService taskExecutor = Executors.newSingleThreadExecutor();    
     private long instanceCounter = 1;
-    
-    private final int cartrackersCount = 3;
     
     @Inject
     private SendPositionBean sendPositionBean;
@@ -74,30 +71,27 @@ public class PathService implements Serializable {
         this.locations.add("R. do Ouro,1150-060 Lisboa,Portugal");
         this.locations.add("R. Alm. Gago Coutinho,Albufeira,Portugal");
         this.locations.add("R. Dr. Faria e Silva 34,Portugal");
-        this.locations.add("Entrada da Barca, 7630-340 Zambujeira do Mar, "
-                + "7630-734, Portugal");
+        this.locations.add("Entrada da Barca, 7630-340 Zambujeira do Mar,7630-734,"
+                + "Portugal");
         this.locations.add("R. de Serpa Pinto,84,7940-172 Cuba,Portugal");
         this.locations.add("Terreiro da Sé,4050-573 Porto,Portugal");
-        this.locations.add("Rua Sara Afonso, n.º 105-117,4460-841 "
-                + "Sra. da Hora, Portugal");
+        this.locations.add("Rua Sara Afonso, n.º 105-117,4460-841 Sra. da Hora,"
+                + "Portugal");
         this.locations.add("R. Abade Inácio Pimentel,4785-273 Trofa,Portugal");
         this.locations.add("R. Marquês de Pombal,4560-682 Penafiel,Portugal");
-        this.locations.add("Largo da Estação,4700-223 Maximinos - "
-                + "Braga,Portugal");
+        this.locations.add("Largo da Estação,4700-223 Maximinos - Braga,Portugal");
     }
     
     /**
      * Setup reader.
      * 
-     * @param configId.
      * @throws FileNotFoundException . 
      */
-    public void setupStream(int configId) throws FileNotFoundException {
+    public void setupStream() throws FileNotFoundException {
         this.reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                new File(PathService.PROJECT_ROOT + "\\config" 
-                                        + configId + ".txt")
+                                new File(this.PROJECT_ROOT + "\\config.txt")
                         )
                 )
         );
@@ -109,6 +103,7 @@ public class PathService implements Serializable {
      * @param directionInput.
      * @return list of points.
      */
+    @Override
     public List<Point> getCoordinatesFromGoogle(DirectionInput directionInput) {
         GeoApiContext context = new GeoApiContext().setApiKey(this.APIkey);
         DirectionsApiRequest request = DirectionsApi.getDirections(
@@ -141,10 +136,11 @@ public class PathService implements Serializable {
      * 
      * @return directioninput.
      */
+    @Override
     public DirectionInput getRandomDirectioninput() {
         SecureRandom  r = new SecureRandom();
         int i1 = r.nextInt(this.locations.size());
-        int i2;
+        int i2 = 0;
         
         do {
             i2 = r.nextInt(this.locations.size());
@@ -159,43 +155,35 @@ public class PathService implements Serializable {
     /**
      * Generate files for roadusages.
      */
+    @Override
     public void generateFile() {
-        try {            
-            //Get random config file.
-            SecureRandom r = new SecureRandom();
-            int configId = r.nextInt(this.cartrackersCount) + 1;            
-            this.setupStream(configId);
+        try {
+            setupStream();
             
-            //Read config file.
             String file = this.reader.readLine();
             String[] fileParam = file.split(",");
             String cartrackerID = fileParam[0].substring(fileParam[0].
                     indexOf("=")+1);
             String index = fileParam[1].substring(fileParam[1].indexOf("=")+1);
-            int fileIndex = Integer.parseInt(index); 
-            String ride = fileParam[2].substring(fileParam[2].indexOf("=")+1);
-            int rideID = Integer.parseInt(ride);                      
+            int fileIndex = Integer.parseInt(index);            
             
-            //Get points from google.
-            DirectionInput input = this.getRandomDirectioninput();
-            List<Point> points = this.getCoordinatesFromGoogle(input);
+            DirectionInput input = getRandomDirectioninput();
+            List<Point> points = getCoordinatesFromGoogle(input);
             
             Point previous = null;
             
-            for (Point p : points) {                
-                //Get parameters.
+            for (Point p : points) {
+                String fileName = cartrackerID + "-" + fileIndex + ".json";
+                
+                FileWriter fileWritter = new FileWriter(this.PROJECT_ROOT 
+                        + "\\output\\" + fileName);
+                BufferedWriter writer = new BufferedWriter(fileWritter);               
+                
                 Date moment = new Date();
                 Double xCoordinate = p.getLatitude();
                 Double yCoordinate = p.getLongitude();
                 Double meter = 0.0;
-                Boolean last = false;
                 
-                //Chech if current position is last in list.
-                if (points.indexOf(p) == (points.size() - 1)) {
-                    last = true;
-                }                
-                
-                //Calculate meters between this point and previous point.
                 if (previous != null) {
                     List<Point> ps = new ArrayList<>();
                     ps.add(previous);
@@ -211,24 +199,14 @@ public class PathService implements Serializable {
                 position.put("xCoordinate", xCoordinate);
                 position.put("yCoordinate", yCoordinate);
                 position.put("meter", meter);
-                position.put("rideId", rideID);
-                position.put("last", last);
-
-                //Create file for point.
-                String fileName = cartrackerID + "-" + fileIndex + ".json";
-                FileWriter fileWriter = new FileWriter(PathService.PROJECT_ROOT 
-                        + "\\output\\" + fileName);
-                String output;
                 
                 //Write file.
-                try (BufferedWriter writer = 
-                        new BufferedWriter(fileWriter)) {
-                    Gson gson = new Gson();
-                    output = gson.toJson(position);
-                    writer.write(output);
-                }
+                Gson gson = new Gson();
+                String output = gson.toJson(position);
+                writer.write(output);
+                writer.close();
                 
-                //Send position through JMS.
+                //Send JMS.
                 this.sendPositionBean.sendPosition(output, cartrackerID,
                         Integer.toUnsignedLong(fileIndex));
                 
@@ -236,16 +214,13 @@ public class PathService implements Serializable {
                 fileIndex++;
             }
             
-            //Update config file.
-            rideID++;
             String output = "cartrackerID=" + cartrackerID + ",fileIndex=" 
-                    + fileIndex + ",ride=" + rideID;
-            FileWriter fileWritter = new FileWriter(PathService.PROJECT_ROOT 
-                    + "\\config" + configId + ".txt", false);
-            
-            try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {
-                writer2.write(output);
-            }                    
+                    + fileIndex;
+            FileWriter fileWritter = new FileWriter(this.PROJECT_ROOT 
+                    + "\\config.txt", false);
+            BufferedWriter writer2 = new BufferedWriter(fileWritter);
+            writer2.write(output);
+            writer2.close();                    
         } catch (IOException ex) {
             Logger.getLogger(PathService.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -257,19 +232,21 @@ public class PathService implements Serializable {
      * 
      * @return GpsSimulatorInstance.
      */
+    @Override
     public GpsSimulatorInstance generate() {
-        DirectionInput input = this.getRandomDirectioninput();                
+        DirectionInput input = getRandomDirectioninput();                
         
         Set<Long> instanceIds = new HashSet<>(this.taskFutures.keySet());
-        List<Point> points = this.getCoordinatesFromGoogle(input);
+        List<Point> points = getCoordinatesFromGoogle(input);
 
         GpsSimulator gpsSimulator = new GpsSimulator();
+        //gpsSimulator.setMessageChannel(messageChannel);
         gpsSimulator.setShouldMove(true);
         gpsSimulator.setSpeedInKph(40d);
         gpsSimulator.setId(this.instanceCounter);
 
         instanceIds.add(this.instanceCounter);
-        this.prepareGpsSimulator(gpsSimulator, points);
+        prepareGpsSimulator(gpsSimulator, points);
 
         Future<?> future = this.taskExecutor.submit(gpsSimulator);
         GpsSimulatorInstance instance = new GpsSimulatorInstance(
@@ -286,10 +263,11 @@ public class PathService implements Serializable {
      * @param points.
      * @return GpsSimulator.
      */
+    @Override
     public GpsSimulator prepareGpsSimulator(GpsSimulator gpsSimulator, 
             List<Point> points) {
         gpsSimulator.setCurrentPosition(null);
-        final List<Leg> legs = this.createLegsList(points);
+        final List<Leg> legs = createLegsList(points);
         gpsSimulator.setLegs(legs);
         gpsSimulator.setStartPosition();
         return gpsSimulator;

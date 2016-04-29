@@ -33,9 +33,9 @@ hs_err_pid*
 /VS/VS-ejb/target/
 /VS/VS-web/target/
 /VS/VS-ejb/nbproject/
-ASS/Simulator/Simulator-ear/target/
-ASS/Simulator/Simulator-ejb/target/
-ASS/Simulator/Simulator-web/target/
-ASS/Simulator/Simulator-ejb/nbproject/
-ASS/Simulator/output/
-ASS/Simulator/config.txt
+/ASS/Simulator/Simulator-ear/target/
+/ASS/Simulator/Simulator-ejb/target/
+/ASS/Simulator/Simulator-web/target/
+/ASS/Simulator/Simulator-ejb/nbproject/
+/ASS/Simulator/output/
+/ASS/Simulator/config.txt

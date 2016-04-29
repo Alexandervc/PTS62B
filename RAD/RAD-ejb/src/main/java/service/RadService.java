@@ -7,7 +7,6 @@ package service;
 
 import business.CarManager;
 import business.BillManager;
-import business.ForeignCountryManager;
 import business.PersonManager;
 import business.RateManager;
 import domain.Bill;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
+import javax.jms.JMSException;
 import service.jms.RequestRoadUsagesBean;
 
 /**
@@ -33,9 +32,6 @@ import service.jms.RequestRoadUsagesBean;
  */
 @Singleton
 public class RadService {
-    
-    private static final Logger LOGGER = Logger
-            .getLogger(RadService.class.getName()); 
 
     private Person person;
     private String cartrackerId;
@@ -55,9 +51,6 @@ public class RadService {
     @Inject
     private RequestRoadUsagesBean radSender;
 
-    @Inject
-    private ForeignCountryManager foreignCountryManager;
-    
     private Bill bill;
 
     /**
@@ -84,8 +77,8 @@ public class RadService {
     public Person addPerson(String firstname, String lastname, String initials,
             String streetname, String number, String zipcode,
             String city, String country) {
-        this.person = this.personManager.createPerson(firstname, lastname, 
-                initials, streetname, number, zipcode, city, country);
+        this.person = this.personManager.createPerson(firstname, lastname, initials,
+                streetname, number, zipcode, city, country);
         return this.person;
     }
 
@@ -189,17 +182,10 @@ public class RadService {
      * @param roadUsages List RoadUsage.
      */
     public void receiveRoadUsages(List<RoadUsage> roadUsages) {
-        try {
-            // set local bill with correct fields
-            this.bill = this.billManager.generateBill(this.person, roadUsages,
-                    this.cartrackerId, this.month, this.year);
-        } catch (EntityNotFoundException ex) {
-            this.bill = null;
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
+        // set local bill with correct fields
+        this.bill = this.billManager.generateBill(this.person, roadUsages,
+                this.cartrackerId, this.month, this.year);
     }
-    
-    
 
     /**
      * Set personManager for JUnittest.
@@ -235,21 +221,6 @@ public class RadService {
      */
     public void setCarManager(CarManager carManager) {
         this.carManager = carManager;
-    }
-    
-    /**
-     * Add a foreign country ride to the database, this stores the total 
-     * price of the ride.
-     * @param foreignCountryRideId The id of the foreign country ride, this id 
-     *     is set in VS when the message is received from the central system.
-     * @param totalPrice The total price of the foreign country ride.
-     */
-    public void addForeignCountryRide(
-            Long foreignCountryRideId, 
-            double totalPrice) {
-        this.foreignCountryManager.createForeignCountryRide(
-                foreignCountryRideId, 
-                totalPrice);
     }
     
 }

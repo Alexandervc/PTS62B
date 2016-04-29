@@ -17,10 +17,10 @@
                     <div class="col-sm-12 meme layer1">
                         <h1>Monitor</h1>
                         
-                        <ui:repeat var="sys" value="#{monitoringBean.retrieveSystems}">
-                            <h3>#{sys.name}</h3>
-                            <input type="hidden" id="#{sys.name}hidden" value="#{monitoringBean.getEntriesForSystem(sys)}"> </input>                      
-                            <div id="#{sys.name}" class="chart"></div>
+                        <ui:repeat var="sys" value="#{monitoringBean.entries}">
+                            <h3>#{sys.key}</h3>
+                            <input type="hidden" id="#{sys.key}hidden" value="#{sys.value}"> </input>                      
+                            <div id="#{sys.key}" class="chart"></div>
                         </ui:repeat>
                        
                     </div>                    

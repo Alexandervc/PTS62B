@@ -57,7 +57,7 @@ public class ServerStatusManager {
         // Retrieve the deployed applications on the server.
         List<String> applications = this.listApplications(host);
 
-        // Iterate though all deployed applications on the server.
+        // Iterate though all all applications.
         for (String application : applications) {
             
             // Retrieve the server status of the application.
