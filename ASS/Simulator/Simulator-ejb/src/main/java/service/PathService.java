@@ -48,7 +48,7 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
-    private final String projectRoot = 
+    private final static String PROJECT_ROOT = 
             "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
@@ -96,7 +96,7 @@ public class PathService implements IPathService, Serializable {
         this.reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                new File(this.projectRoot + "\\config" 
+                                new File(this.PROJECT_ROOT + "\\config" 
                                         + configId + ".txt")
                         )
                 )
@@ -166,7 +166,7 @@ public class PathService implements IPathService, Serializable {
         try {            
             //Get random config file.
             SecureRandom r = new SecureRandom();
-            int configId = r.nextInt(cartrackersCount) + 1;            
+            int configId = r.nextInt(this.cartrackersCount) + 1;            
             this.setupStream(configId);
             
             //Read config file.
@@ -219,7 +219,7 @@ public class PathService implements IPathService, Serializable {
 
                 //Create file for point.
                 String fileName = cartrackerID + "-" + fileIndex + ".json";
-                FileWriter fileWriter = new FileWriter(this.projectRoot 
+                FileWriter fileWriter = new FileWriter(this.PROJECT_ROOT 
                         + "\\output\\" + fileName);
                 String output;
                 
@@ -243,7 +243,7 @@ public class PathService implements IPathService, Serializable {
             rideID++;
             String output = "cartrackerID=" + cartrackerID + ",fileIndex=" 
                     + fileIndex + ",ride=" + rideID;
-            FileWriter fileWritter = new FileWriter(this.projectRoot 
+            FileWriter fileWritter = new FileWriter(this.PROJECT_ROOT 
                     + "\\config" + configId + ".txt", false);
             
             try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {

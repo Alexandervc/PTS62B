@@ -19,12 +19,12 @@ public class GpsdService implements IGpsdService {
             Logger.getLogger(GpsdService.class.getCanonicalName());
     
     private BufferedWriter pipeWriter;
-    public static final String GPSD_PIPE = "/tmp/gps";
+    public final static String GPSD_PIPE = "/tmp/gps";
 
     /**
      * Update position.
      * 
-     * @param position 
+     * @param position coordinates.
      */
     @Override
     public void updatePosition(PositionInfo position) {
@@ -109,12 +109,12 @@ public class GpsdService implements IGpsdService {
      * @throws java.lang.InterruptedException .
      */
     public void initGpsd() throws IOException, InterruptedException {
-        startProc("killall -9 gpsd", false);
-        startProc("rm -f " + this.GPSD_PIPE, false);
-        startProc("mkfifo " + this.GPSD_PIPE, false);
-        startProc("gpsd " + this.GPSD_PIPE, false);
+        this.startProc("killall -9 gpsd", false);
+        this.startProc("rm -f " + GpsdService.GPSD_PIPE, false);
+        this.startProc("mkfifo " + GpsdService.GPSD_PIPE, false);
+        this.startProc("gpsd " + GpsdService.GPSD_PIPE, false);
         //writer for gpsd pipe
-        this.pipeWriter = new BufferedWriter(new FileWriter(this.GPSD_PIPE));
+        this.pipeWriter = new BufferedWriter(new FileWriter(GpsdService.GPSD_PIPE));
     }
 
     /**

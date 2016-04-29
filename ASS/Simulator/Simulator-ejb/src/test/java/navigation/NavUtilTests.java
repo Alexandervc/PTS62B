@@ -1,3 +1,5 @@
+package navigation;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +24,7 @@ import support.NavUtils;
  * @author Melanie
  */
 @RunWith(CdiRunner.class)
-@AdditionalClasses(value = {PathService.class})
+@AdditionalClasses(value = PathService.class)
 public class NavUtilTests {
     private static final Logger LOGGER =
             Logger.getLogger(NavUtilTests.class.getCanonicalName());
@@ -36,18 +38,21 @@ public class NavUtilTests {
     
     /**
      * Test method for
-     * {@link frk.gpssimulator.service.impl.DefaultKmlService#getCoordinates(java.io.File)}.
+     * {@link frk.gpssimulator.service.impl.DefaultKmlService
+     * #getCoordinates(java.io.File)}.
      *
      * @throws JAXBException .
      * @throws NumberFormatException .
      */
     @Test
-    public void testTotalDistance() throws NumberFormatException, JAXBException {
+    public void testTotalDistance() 
+            throws NumberFormatException, JAXBException {
         DirectionInput directionInput = new DirectionInput();
         directionInput.setFrom("73-2020 Kaloko Dr, Kailua-Kona, HI 96740");
         directionInput.setTo("73-1249 Kaloko Dr, Kailua-Kona, HI 96740");
 
-        List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
+        List<Point> points = this.pathService.
+                getCoordinatesFromGoogle(directionInput);
 
         double totalDistance = NavUtils.getTotalDistance(points);
 
@@ -57,18 +62,21 @@ public class NavUtilTests {
 
     /**
      * Test method for
-     * {@link frk.gpssimulator.service.impl.DefaultKmlService#getCoordinates(java.io.File)}.
+     * {@link frk.gpssimulator.service.impl.DefaultKmlService
+     * #getCoordinates(java.io.File)}.
      * 
      * @throws NumberFormatException .
      * @throws JAXBException . 
      */
     @Test
-    public void testTotalDistance2() throws NumberFormatException, JAXBException {
+    public void testTotalDistance2() 
+            throws NumberFormatException, JAXBException {
         DirectionInput directionInput = new DirectionInput();
         directionInput.setFrom("Polderzicht 5, 4261 KK Wijk en Aalburg");
         directionInput.setTo("Rachelsmolen 1, Eindhoven");
 
-        List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
+        List<Point> points = this.pathService.
+                getCoordinatesFromGoogle(directionInput);
         
         String output1 = "Number of points: " + points.size();
         LOGGER.log(Level.INFO, output1);
@@ -86,18 +94,21 @@ public class NavUtilTests {
     
     /**
      * Test method for
-     * {@link frk.gpssimulator.service.impl.DefaultKmlService#getCoordinates(java.io.File)}.
+     * {@link frk.gpssimulator.service.impl.DefaultKmlService
+     * #getCoordinates(java.io.File)}.
      * 
      * @throws NumberFormatException .
      * @throws JAXBException .
      */
     @Test
-    public void testTotalDistance3() throws NumberFormatException, JAXBException {
+    public void testTotalDistance3() 
+            throws NumberFormatException, JAXBException {
         DirectionInput directionInput = new DirectionInput();
         directionInput.setFrom("Parallelweg 88, 4283 GS Giessen");
         directionInput.setTo("Veensesteeg 19, 4264 KG Veen");
 
-        List<Point> points = pathService.getCoordinatesFromGoogle(directionInput);
+        List<Point> points = this.pathService.
+                getCoordinatesFromGoogle(directionInput);
         
         String output1 = "Number of points: " + points.size();
         LOGGER.log(Level.INFO, output1);
