@@ -65,7 +65,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
             // TODO road op andere manier??
             String roadName = "test";
 
-            this.carPositionService.saveCarPosition(cartrackerId, moment,
+            this.carPositionService.processCarPosition(cartrackerId, moment,
                     xCoordinate, yCoordinate, roadName, meter);
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

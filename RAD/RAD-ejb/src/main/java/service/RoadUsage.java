@@ -17,9 +17,10 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     private String roadName;
     private RoadType roadType;
     private Double km;
-    
+    private Long foreignCountryRideId;
+
     /**
-     * Contructor RoadUsage.
+     * Instantiates the RoadUsage class without a ForeignCountryRideId.
      * @param roadName String.
      * @param type Type RoadType.
      * @param km in Double.
@@ -31,12 +32,47 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     }
     
     /**
-     * Contructor RoadUsage.
+     * Instantiates the RoadUsage class without a ForeignCountryRideId.
      * @param roadName String.
      * @param type Type RoadType.
      * @param km in Double.
      */
     public RoadUsage(String roadName, RoadType type, Double km) {
+        this.roadName = roadName;
+        this.roadType = type;
+        this.km = km;
+    }
+    
+    /**
+     * Instantiates the RoadUsage class with a ForeignCountryRideId.
+     * @param roadName String.
+     * @param type Type RoadType.
+     * @param km in Double.
+     * @param foreignCountryRideId The id of the foreign country ride.
+     */
+    public RoadUsage(
+            String roadName,
+            String type,
+            Double km,
+            Long foreignCountryRideId) {
+        this.roadName = roadName;
+        this.roadType = Enum.valueOf(RoadType.class, type);
+        this.km = km;
+        this.foreignCountryRideId = foreignCountryRideId;
+    }
+    
+    /**
+     * Instantiates the RoadUsage class with a ForeignCountryRideId.
+     * @param roadName String.
+     * @param type Type RoadType.
+     * @param km in Double.
+     * @param foreignCountryRideId The id of the foreign country ride.
+     */
+    public RoadUsage(
+            String roadName,
+            RoadType type,
+            Double km,
+            Long foreignCountryRideId) {
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
@@ -64,6 +100,14 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      */
     public RoadType getRoadType() {
         return this.roadType;
+    }
+    
+    public Long getForeignCountryRideId() {
+        return this.foreignCountryRideId;
+    }
+
+    public void setForeignCountryRideId(Long foreignCountryRideId) {
+        this.foreignCountryRideId = foreignCountryRideId;
     }
 
     /**

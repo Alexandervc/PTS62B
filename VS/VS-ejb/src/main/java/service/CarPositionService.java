@@ -30,10 +30,10 @@ public class CarPositionService {
      * @param meter The number of meters the cartracker has measured since
      *      the last carPosition.
      */
-    public void saveCarPosition(String cartrackerId, Date moment, 
+    public void processCarPosition(String cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
             Double meter) {
-        this.carPositionManager.saveCarPosition(cartrackerId, moment, 
+        this.carPositionManager.processCarPosition(cartrackerId, moment, 
                 xCoordinate, yCoordinate, roadName, meter);
     }
 }
