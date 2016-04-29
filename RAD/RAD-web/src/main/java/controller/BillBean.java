@@ -148,7 +148,7 @@ public class BillBean {
             Date dateEnd = DATEFORMAT.parse(tempEndDateString);
 
             // Get bill from service
-            this.bill = this.service.generateRoadUsages(this.name, 
+            this.bill = this.service.requestRoadUsages(this.name, 
                     dateBegin, dateEnd);
         } catch (NumberFormatException | ParseException e) {
             LOGGER.log(Level.SEVERE, null, e);
@@ -198,5 +198,4 @@ public class BillBean {
             return "";
         }
     }
-    
 }

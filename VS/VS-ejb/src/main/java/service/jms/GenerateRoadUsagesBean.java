@@ -45,7 +45,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
     public void onMessage(Message message) {
         try {
             MapMessage mapMessage = (MapMessage) message;
-            Long cartrackerId = mapMessage.getLong("cartrackerId");
+            String cartrackerId = mapMessage.getString("cartrackerId");
             String beginDateString = mapMessage.getString("beginDate");
             String endDateString = mapMessage.getString("endDate");
             
@@ -61,7 +61,7 @@ public class GenerateRoadUsagesBean implements MessageListener {
             // Send
             this.roadUsagesSender.sendRoadUsages(roadUsages);
         } catch (JMSException | ParseException ex) {
-            this.LOGGER.log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

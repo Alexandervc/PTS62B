@@ -12,17 +12,20 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 
 /**
- * JmsAssSender Class.
+ * SendPositionBean Class.
  * @author Alexander
  */
 @Stateless
-public class JmsAssSender {
+public class SendPositionBean {
     @Inject
     @JMSConnectionFactory("jms/VSConnectionFactory")
     private JMSContext context;
     
     @Resource(lookup = "jms/VS/queue")
     private Destination destination;
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(SendPositionBean.class.getName());
 
     /**
      * Send position.
@@ -31,22 +34,20 @@ public class JmsAssSender {
      * @param cartrackerId.
      * @param serialNumber.
      */
-    public void sendPosition(String jsonPosition, Long cartrackerId, 
+    public void sendPosition(String jsonPosition, String cartrackerId, 
             Long serialNumber) {
         try {
-            Logger.getLogger(JmsAssSender.class.getName())
-                    .log(Level.INFO, jsonPosition);
-            
+            // Make mapMessage
             MapMessage mapMessage = this.context.createMapMessage();
             mapMessage.setStringProperty("method", "receiveCarpositions");
-            mapMessage.setLong("cartrackerId", cartrackerId);
+            mapMessage.setString("cartrackerId", cartrackerId);
             mapMessage.setLong("serialNumber", serialNumber);
             mapMessage.setString("carposition", jsonPosition);
             
+            // Send mapMessage
             this.context.createProducer().send(this.destination, mapMessage);
         } catch (JMSException ex) {
-            Logger.getLogger(JmsAssSender.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }

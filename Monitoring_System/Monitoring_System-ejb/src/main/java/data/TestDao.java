@@ -8,6 +8,7 @@ package data;
 
 import common.domain.Test;
 import common.domain.TestType;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -38,6 +39,22 @@ public class TestDao extends AbstractDao {
     }
     
     /**
+     * Retrieves all tests of a specific type on a system.
+     * @param system The system the test is required for.
+     * @param type The testtype that is required.
+     * @return The test that matches the requirements.
+     */
+    public List<Test> retrieveAllTestsForTypeForSystem(
+            common.domain.System system,
+            TestType type) {
+        Query query = this.em
+                .createNamedQuery("get tests for system with type");
+        query.setParameter("systemId", system.getId());
+        query.setParameter("type", type);
+        return (List<Test>)query.getResultList();
+    }
+    
+    /**
      * Retrieves the latest test of a specific type on a system.
      * @param system The system the test is required for.
      * @param type The testtype that is required.
@@ -53,10 +70,4 @@ public class TestDao extends AbstractDao {
         query.setMaxResults(1);
         return (Test) query.getSingleResult();
     }
-
-  
-    
-    
-    
-    
 }

@@ -38,7 +38,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import model.GpsSimulatorInstance;
 import model.Leg;
-import service.jms.JmsAssSender;
+import service.jms.SendPositionBean;
 import simulator.GpsSimulator;
 import support.NavUtils;
 
@@ -48,8 +48,8 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements IPathService, Serializable {    
-    //private String PROJECT_ROOT = "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
-    private final String PROJECT_ROOT = "C:\\";
+    private String PROJECT_ROOT = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+    //private final String PROJECT_ROOT = "C:\\";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private transient BufferedReader reader;
@@ -60,7 +60,7 @@ public class PathService implements IPathService, Serializable {
     private long instanceCounter = 1;
     
     @Inject
-    private JmsAssSender assSender;
+    private SendPositionBean sendPositionBean;
     
     /**
      * Setup location info.
@@ -207,7 +207,7 @@ public class PathService implements IPathService, Serializable {
                 writer.close();
                 
                 //Send JMS.
-                this.assSender.sendPosition(output, Long.valueOf(cartrackerID),
+                this.sendPositionBean.sendPosition(output, cartrackerID,
                         Integer.toUnsignedLong(fileIndex));
                 
                 previous = p;
