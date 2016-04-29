@@ -49,7 +49,7 @@ import support.NavUtils;
 @Stateless
 public class PathService implements Serializable {    
     private final static String PROJECT_ROOT = 
-            "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+            "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private transient BufferedReader reader;
@@ -163,7 +163,7 @@ public class PathService implements Serializable {
         try {            
             //Get random config file.
             SecureRandom r = new SecureRandom();
-            int configId = r.nextInt(this.cartrackersCount) + 1;            
+            int configId = r.nextInt(this.cartrackersCount) + 1;      
             this.setupStream(configId);
             
             //Read config file.
@@ -174,7 +174,7 @@ public class PathService implements Serializable {
             String index = fileParam[1].substring(fileParam[1].indexOf("=")+1);
             int fileIndex = Integer.parseInt(index); 
             String ride = fileParam[2].substring(fileParam[2].indexOf("=")+1);
-            int rideID = Integer.parseInt(ride);                      
+            Long rideID = Long.parseLong(ride);                   
             
             //Get points from google.
             DirectionInput input = this.getRandomDirectioninput();
@@ -211,8 +211,8 @@ public class PathService implements Serializable {
                 position.put("xCoordinate", xCoordinate);
                 position.put("yCoordinate", yCoordinate);
                 position.put("meter", meter);
-                position.put("rideId", rideID);
-                position.put("last", last);
+                position.put("rideId", rideID.toString());
+                position.put("last", last); 
 
                 //Create file for point.
                 String fileName = cartrackerID + "-" + fileIndex + ".json";

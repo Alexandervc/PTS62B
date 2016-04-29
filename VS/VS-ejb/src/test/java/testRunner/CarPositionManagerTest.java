@@ -29,6 +29,8 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
+import service.RadWsService;
+import service.jms.SendForeignRideBean;
 
 /**
  *
@@ -50,6 +52,14 @@ public class CarPositionManagerTest {
     @Mock
     @Produces
     private CarPositionDao carPositionDao;
+    
+    @Mock
+    @Produces
+    private SendForeignRideBean sendForeignRideBean;
+    
+    @Mock
+    @Produces
+    private RadWsService radWsService;
     
     // Cartracker
     private String cartrackerId;

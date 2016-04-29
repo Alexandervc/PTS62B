@@ -23,11 +23,9 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name="CarPosition.getPositionsBetween", query = "SELECT cp "
             + "FROM CarPosition cp "
-            + "WHERE "
-//            + "cp.moment >= :begin "
-  //          + "AND cp.moment <= :end "
-    //        + "AND "
-            + "cp.cartracker.id = :cartrackerId "
+            + "WHERE cp.moment >= :begin "
+            + "AND cp.moment <= :end "
+            + "AND cp.cartracker.id = :cartrackerId "
             + "ORDER BY cp.road.roadType"),
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
@@ -96,6 +94,8 @@ public class CarPosition implements Serializable {
         this.yCoordinate = yCoordinate;
         this.road = road;
         this.meter = meter;
+        this.rideId = rideId;
+        this.lastOfRide = lastOfRide;
     }
 
     public Long getId() {
