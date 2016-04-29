@@ -164,8 +164,6 @@ public class PathService implements Serializable {
             //Get random config file.
             SecureRandom r = new SecureRandom();
             int configId = r.nextInt(this.cartrackersCount) + 1;      
-            // TODO remove = for testing 
-            configId = 2;
             this.setupStream(configId);
             
             //Read config file.
