@@ -47,7 +47,7 @@ import support.NavUtils;
  * @author Melanie.
  */
 @Stateless
-public class PathService implements IPathService, Serializable {    
+public class PathService implements Serializable {    
     private final static String PROJECT_ROOT = 
             "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
     
@@ -109,7 +109,6 @@ public class PathService implements IPathService, Serializable {
      * @param directionInput.
      * @return list of points.
      */
-    @Override
     public List<Point> getCoordinatesFromGoogle(DirectionInput directionInput) {
         GeoApiContext context = new GeoApiContext().setApiKey(this.APIkey);
         DirectionsApiRequest request = DirectionsApi.getDirections(
@@ -142,7 +141,6 @@ public class PathService implements IPathService, Serializable {
      * 
      * @return directioninput.
      */
-    @Override
     public DirectionInput getRandomDirectioninput() {
         SecureRandom  r = new SecureRandom();
         int i1 = r.nextInt(this.locations.size());
@@ -161,7 +159,6 @@ public class PathService implements IPathService, Serializable {
     /**
      * Generate files for roadusages.
      */
-    @Override
     public void generateFile() {
         try {            
             //Get random config file.
@@ -260,7 +257,6 @@ public class PathService implements IPathService, Serializable {
      * 
      * @return GpsSimulatorInstance.
      */
-    @Override
     public GpsSimulatorInstance generate() {
         DirectionInput input = this.getRandomDirectioninput();                
         
@@ -290,7 +286,6 @@ public class PathService implements IPathService, Serializable {
      * @param points.
      * @return GpsSimulator.
      */
-    @Override
     public GpsSimulator prepareGpsSimulator(GpsSimulator gpsSimulator, 
             List<Point> points) {
         gpsSimulator.setCurrentPosition(null);

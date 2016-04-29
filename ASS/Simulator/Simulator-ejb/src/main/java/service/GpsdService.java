@@ -14,7 +14,7 @@ import model.PositionInfo;
  * GpsdService Class.
  * @author Melanie
  */
-public class GpsdService implements IGpsdService {
+public class GpsdService {
     private static final Logger logger =
             Logger.getLogger(GpsdService.class.getCanonicalName());
     
@@ -22,11 +22,10 @@ public class GpsdService implements IGpsdService {
     public final static String GPSD_PIPE = "/tmp/gps";
 
     /**
-     * Update position.
-     * 
+     * Sends NMEA RMC report to linux gps daemon, gpsd via predetermined pipe.
+     *
      * @param position coordinates.
      */
-    @Override
     public void updatePosition(PositionInfo position) {
         // an NMEA RMC position sentence (report) is of form:
         // $GPRMC,124426,A,5920.7019,N,02803.2893,E,,,121212,,

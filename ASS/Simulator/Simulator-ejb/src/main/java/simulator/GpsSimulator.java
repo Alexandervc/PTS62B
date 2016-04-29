@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import model.Leg;
 import model.Point;
 import model.PositionInfo;
-import service.IGpsdService;
+import service.GpsdService;
 import support.NavUtils;
 
 /**
@@ -19,7 +19,7 @@ import support.NavUtils;
 public class GpsSimulator implements Runnable {
     private long id;
 
-    private IGpsdService gpsdService;
+    private GpsdService gpsdService;
 
     private static final boolean useGpsd = false;
 
@@ -176,7 +176,7 @@ public class GpsSimulator implements Runnable {
         this.shouldCancel.set(true);
     }
 
-    public void setGpsdService(IGpsdService gpsdService) {
+    public void setGpsdService(GpsdService gpsdService) {
         this.gpsdService = gpsdService;
     }
 
