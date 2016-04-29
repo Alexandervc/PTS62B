@@ -26,12 +26,6 @@ import javax.inject.Inject;
  */
 @Stateless(name = "monitoring")
 public class MonitoringService {
-    
-    //Interval between tests in minutes;
-    private static int TESTINTERVAL = 15;
-
-    @Resource
-    private ManagedScheduledExecutorService executor;
 
     @Inject
     private MonitoringManager manager;
@@ -43,43 +37,7 @@ public class MonitoringService {
         // Comment for sonarqube.
     }
 
-    /**
-     * Starts the job once the application is started.
-     */
-    @PostConstruct
-    public void init() {
-        this.runJob();
-    }
-
-    /**
-     * Starts the job that will be used to monitor the systems.
-     */
-    public void runJob() {
-        this.executor.schedule(new Scheduler(), new Trigger() {
-
-            @Override
-            public Date getNextRunTime(LastExecution lastExecutionInfo,
-                    Date taskScheduledTime) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(taskScheduledTime);
-                cal.add(Calendar.MINUTE, TESTINTERVAL);
-                return cal.getTime();
-            }
-
-            @Override
-            public boolean skipRun(LastExecution lastExecutionInfo,
-                    Date scheduledRunTime) {
-                return null == lastExecutionInfo;
-            }
-        });
-    }
-
-    /**
-     * Stops the job from running.
-     */
-    public void cancelJob() {
-        this.executor.shutdown();
-    }
+    
 
     /**
      * Retrieves a list of Systems that are currently part of the RRA

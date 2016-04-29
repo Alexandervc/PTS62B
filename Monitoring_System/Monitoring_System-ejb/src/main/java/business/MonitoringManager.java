@@ -108,6 +108,15 @@ public class MonitoringManager {
             }
         }
         
+        if(tests.isEmpty()) {
+            // Convert util.Date to sql.Date.
+                java.util.Date currentDate = new java.util.Date();
+                
+            return new Test(
+                        TestType.STATUS, 
+                        new Timestamp(currentDate.getTime()), 
+                        false);
+        }
         // If the server status was retrieved, get the first test object.
         // This can be expanded by getting all the tests. The application
         // currently expects one deployed application per server (system).
