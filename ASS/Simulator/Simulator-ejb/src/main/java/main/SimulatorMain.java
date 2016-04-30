@@ -21,6 +21,6 @@ public class SimulatorMain {
      */
     @PostConstruct
     public void main() {
-        this.service.generateFile();
+        this.service.generateFiles();
     }    
 }

@@ -71,26 +71,24 @@ public class DataStorage {
             roadUsages.add(usage);
 
             // Create person in db
-            Person p1 = this.service.addPerson("Fernando", "Lameirinhas", "FL",
+            Person p1 = this.service.addPerson("Linda", "van Engelen", "LMJC",
                     "Calçada do Lavra", "12", "1150-208",
                     "Lisboa", "Portugal");
-            Person p2 = this.service.addPerson("Tina", "Timmermans", "TT",
-                    "Grotestraat", "14", "3600",
-                    "Genk", "België");
-            Person p3 = this.service.addPerson("Linda", "van Engelen", "LMJC",
-                    "Sibeliuslaan", "83B", "5654CV",
-                    "Eindhoven", "Nederland");
+            Person p2 = this.service.addPerson("Fernando", "Lameirinhas", "FL",
+                    "Calçada do Lavra", "14", "1150-208",
+                    "Lisboa", "Portugal");
+            
             
             LOGGER.log(Level.INFO, "created persons");
             
             String cartrackerId1 = "PT123456789";
-            String cartrackerId2 = "BE-a5eff926-e3f7-43d5-b62b-5140aa2b962f";
-            String cartrackerId3 = "NL123456789";
+            String cartrackerId2 = "PT112233444";
+            String cartrackerId3 = "PT121314151";
 
             // Create car for person in db.
             this.service.addCar(p1, cartrackerId1, FuelType.Petrol);
             this.service.addCar(p2, cartrackerId2, FuelType.Petrol);
-            this.service.addCar(p3, cartrackerId3, FuelType.Diesel);
+            this.service.addCar(p2, cartrackerId3, FuelType.Diesel);
             
             LOGGER.log(Level.INFO, "created cars");
             

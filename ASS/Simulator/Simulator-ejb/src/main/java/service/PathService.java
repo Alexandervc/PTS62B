@@ -49,7 +49,7 @@ import support.NavUtils;
 @Stateless
 public class PathService implements Serializable {    
     private final static String PROJECT_ROOT = 
-            "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+            "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private transient BufferedReader reader;
@@ -60,7 +60,7 @@ public class PathService implements Serializable {
             Executors.newSingleThreadExecutor();    
     private long instanceCounter = 1;
     
-    private final int cartrackersCount = 3;
+    private final int cartrackersCount = 5;
     
     @Inject
     private SendPositionBean sendPositionBean;
@@ -157,13 +157,23 @@ public class PathService implements Serializable {
     }
     
     /**
-     * Generate files for roadusages.
+     * Generate road usages for all config files.
      */
-    public void generateFile() {
+    public void generateFiles() {
+        for (int i = 0; i < this.cartrackersCount; i++) {
+            int configId = i + 1;
+            this.generateFile(configId);
+        }
+    }
+    
+    /**
+     * Generate files for roadusages.
+     * 
+     * @param configId id for config file.
+     */
+    public void generateFile(int configId) {
         try {            
-            //Get random config file.
-            SecureRandom r = new SecureRandom();
-            int configId = r.nextInt(this.cartrackersCount) + 1;      
+            //Setup stream for configId.
             this.setupStream(configId);
             
             //Read config file.
