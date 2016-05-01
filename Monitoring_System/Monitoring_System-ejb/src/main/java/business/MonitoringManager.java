@@ -169,10 +169,22 @@ public class MonitoringManager {
         // Retrieves the specific test from the system object.
         List<Test> tests = system.getTests();
         List<Test> filteredTests = tests.stream()
-                .filter(x -> x.getDate() == time && x.getTestType() == type)
+                .filter(x -> x.getDate().equals(time) && x.getTestType() == type)
                 .collect(Collectors.toList());
         
+        /*
+        List<Test> filteredTests = new ArrayList<>();
+        for(Test t : tests) {
+            Timestamp ti = t.getDate();
+            ti.setNanos(0);
+            if(ti.equals(time)) {
+                if(t.getTestType() == type){
+                    filteredTests.add(t);
+                }
+            }
+        }*/
         
+   
         Test test = filteredTests.get(0);
         test.setDate(newTime);
         test.setResult(result);
@@ -214,30 +226,23 @@ public class MonitoringManager {
     }
     
     /**
-     * Tests the functional state of the systems. 
-     */
-    public void testFunctionalStateOfSystems() {
-        this.checkRequestSender.requestChecks();
-    }
-    
-    /**
      * Tests all systems on 3 test types. Functional, Endpoints and Status.
      * Stores the result.
      */
-    public void testSystems() {
-        // Sends a message into the topic so the systems can send their test
-        // results.
-        this.checkRequestSender.requestChecks();
+    public void testSystems() {     
+        
+        java.util.Date date= new java.util.Date();
+        Timestamp currentDate = new Timestamp(date.getTime());     
+        // The nanos are lost during communication, removing them early makes
+        // the values consistent.
+        currentDate.setNanos(0);
         
         // For every system retrives the server status, adds this as a test
         // to the database. Creates failed tests for functional and endpoints.
         for(System s : this.getSystems()) {
             Test testStatus = this.retrieveServerStatus(s);
             s.addTest(testStatus);
-            this.testDao.create(testStatus);
-            
-            java.util.Date date= new java.util.Date();
-            Timestamp currentDate = new Timestamp(date.getTime());
+            this.testDao.create(testStatus);                
                 
             // Creates tests that will be fixed later.
             Test testEndpoints = 
@@ -247,6 +252,7 @@ public class MonitoringManager {
             
             Boolean testResult = false;
 
+            
             // Get testResults from jenkins
             try {
                 JSONObject json = readJsonFromUrl(
@@ -267,12 +273,17 @@ public class MonitoringManager {
                     = new Test(TestType.FUNCTIONAL, currentDate, testResult);
             s.addTest(testFunctional);
             this.testDao.create(testFunctional);
-                        
+            
+                           
             // Stores all the tests in the database.
             this.testDao.create(testEndpoints);
 
             this.systemDao.edit(s);    
+  
         }
+        // Sends a message into the topic so the systems can send their test
+        // results.
+        this.checkRequestSender.requestChecks(date);
     }
     
     /**

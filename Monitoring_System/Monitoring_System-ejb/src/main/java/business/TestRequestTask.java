@@ -27,7 +27,6 @@ public class TestRequestTask extends TimerTask {
     
     @Override
     public void run() {
-        System.out.println("TESTING SYSTEMS");
         manager.testSystems();
     }
     

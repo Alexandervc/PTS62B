@@ -52,7 +52,7 @@ public class SendTestResultsBean {
             mapMessage.setStringProperty("method", "receiveStatus");
 
             // set message string systemName
-            mapMessage.setString("system", "VS");
+            mapMessage.setString("system", "RAD");
             // set message boolean result
             
             // Formats the date so that it can be send in a clear format.

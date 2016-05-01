@@ -5,6 +5,8 @@
  */
 package data.jms;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -44,12 +46,16 @@ public class CheckRequestSender {
      * Sends a message in the monitoring topic to request the systems that are
      * currently listening to the topic to validate their system and send the 
      * state back.
+     * @param date The date the tests were requested.
      */
-    public void requestChecks(){
+    public void requestChecks(Date date){
         try {
             MapMessage message = this.context.createMapMessage();
             message.setStringProperty("method", "getStatus");
             JMSProducer producer = this.context.createProducer();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String currentTime = df.format(date);
+            message.setString("date", currentTime);
             producer.setTimeToLive(TIMEOUTTIME);
             producer.send(this.topic, message);
         } catch (JMSException ex) {

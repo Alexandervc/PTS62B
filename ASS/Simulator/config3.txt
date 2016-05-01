@@ -1,1 +1,1 @@
-cartrackerID=NL123456789,fileIndex=1417,ride=6
+cartrackerID=PT121314151,fileIndex=1,ride=1

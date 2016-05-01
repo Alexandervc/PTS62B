@@ -62,7 +62,7 @@ public class PathService implements Serializable {
             = Executors.newSingleThreadExecutor();
     private long instanceCounter = 1;
 
-    private final int cartrackersCount = 3;
+    private final int cartrackersCount = 5;
 
     @Inject
     private SendPositionBean sendPositionBean;
@@ -159,13 +159,23 @@ public class PathService implements Serializable {
     }
 
     /**
-     * Generate files for roadusages.
+     * Generate road usages for all config files.
      */
-    public void generateFile() {
+    public void generateFiles() {
+        for (int i = 0; i < this.cartrackersCount; i++) {
+            int configId = i + 1;
+            this.generateFile(configId);
+        }
+    }
+
+    /**
+     * Generate files for roadusages.
+     *
+     * @param configId id for config file.
+     */
+    public void generateFile(int configId) {
         try {
-            //Get random config file.
-            SecureRandom r = new SecureRandom();
-            int configId = r.nextInt(this.cartrackersCount) + 1;
+            //Setup stream for configId.
             this.setupStream(configId);
 
             //Read config file.
