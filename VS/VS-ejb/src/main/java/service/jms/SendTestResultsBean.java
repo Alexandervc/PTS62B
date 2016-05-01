@@ -51,7 +51,6 @@ public class SendTestResultsBean {
             // set message string systemName
             mapMessage.setString("system", "VS");
             // set message boolean result
-            //mapMessage.setBoolean("result", result.wasSuccessful());
             
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -64,9 +63,6 @@ public class SendTestResultsBean {
             producer.setTimeToLive(60000);
             producer.send(this.queue, mapMessage);
             this.context.createProducer().send(this.queue, mapMessage);
-            System.out.println("message sent from:" +
-            mapMessage.getString("system") +
-            mapMessage.getString("date"));
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

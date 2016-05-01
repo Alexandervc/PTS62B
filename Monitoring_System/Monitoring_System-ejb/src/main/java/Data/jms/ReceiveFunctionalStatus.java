@@ -50,10 +50,7 @@ public class ReceiveFunctionalStatus implements MessageListener {
             String systemName = mapMessage.getString("system");
             String dateString = mapMessage.getString("date");
             String newDateString = mapMessage.getString("newDate");
-            System.out.println("DateString: " + dateString);
-            System.out.println("newDateString: " + newDateString);
-
-            
+    
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         
             Date date = null;
@@ -64,8 +61,6 @@ public class ReceiveFunctionalStatus implements MessageListener {
             } catch (ParseException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
-            System.out.println("message received from" + systemName);
-
             this.service.processTestResults(systemName, date, newDate);
 
         } catch (JMSException ex) {

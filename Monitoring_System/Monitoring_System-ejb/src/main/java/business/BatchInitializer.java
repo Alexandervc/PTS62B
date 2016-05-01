@@ -24,7 +24,6 @@ public class BatchInitializer {
         
     // Interval between tests in minutes;
     private static final int TESTINTERVAL = 900000;    
-    //private static final int TESTINTERVAL = 1000;  
     
     @Inject
     private MonitoringManager manager;

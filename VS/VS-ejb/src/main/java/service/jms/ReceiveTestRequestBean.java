@@ -41,27 +41,13 @@ public class ReceiveTestRequestBean implements MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
-        System.out.println("message retrieved");
         String date = null;
         try {
             date = mapMessage.getString("date");
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
-        System.out.println("Date in VS/onMessage" + date);
-        /*
-        // engine for test
-        JUnitCore engine = new JUnitCore();
-        // required to print reports
-        engine.addListener(new TextListener(System.out));
 
-        // run test RoadUsageTest
-        Result result = engine.run(junitTest.RoadUsageTest.class);
-        // TODO carPositionManagerTest
-
-        // sender will be send to LMS
-        sender.sendTestResults(result);
-        */
         sender.sendTestResults(date);
     }
 }
