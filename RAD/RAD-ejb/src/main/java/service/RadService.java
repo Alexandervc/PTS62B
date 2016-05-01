@@ -12,8 +12,8 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import business.CarManager;
 import business.BillManager;
+import business.CarManager;
 import business.ForeignCountryManager;
 import business.PersonManager;
 import business.RateManager;
@@ -210,7 +210,7 @@ public class RadService {
      * of the ride.
      *
      * @param foreignCountryRideId The id of the foreign country ride, this id
-     * is set in VS when the message is received from the central system.
+     *      is set in VS when the message is received from the central system.
      * @param totalPrice The total price of the foreign country ride.
      */
     public void addForeignCountryRide(

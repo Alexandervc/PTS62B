@@ -86,35 +86,6 @@ public class CarPositionManagerTest {
     private CarPosition foreignNotLastCarPosition;
     private CarPosition foreignLastCarPosition;
     
-    /**
-     * Matcher for carposition.
-     */
-    private class IsSameCarposition extends ArgumentMatcher<CarPosition> {
-        private final CarPosition carPosition;
-        
-        public IsSameCarposition(CarPosition carPosition) {
-            this.carPosition = carPosition;
-        }
-
-        @Override
-        public boolean matches(Object argument) {
-            CarPosition other = (CarPosition) argument;
-            return this.carPosition.getCartracker()
-                        .equals(other.getCartracker())
-                && this.carPosition.getMeter()
-                        .equals(other.getMeter())
-                && this.carPosition.getMoment()
-                        .equals(other.getMoment())
-                // TODO road juiste equals
-                && this.carPosition.getRoad().getName()
-                        .equals(other.getRoad().getName())
-                && this.carPosition.getxCoordinate()
-                        .equals(other.getxCoordinate())
-                && this.carPosition.getyCoordinate()
-                        .equals(other.getyCoordinate());
-        }
-    }
-    
     @Before
     public void beforeTest() {
         // Declare expected values
@@ -236,5 +207,34 @@ public class CarPositionManagerTest {
         verify(this.carPositionDao)
                 .create(argThat(new IsSameCarposition(this.carPosition)));
         */
+    }
+    
+    /**
+     * Matcher for carposition.
+     */
+    private class IsSameCarposition extends ArgumentMatcher<CarPosition> {
+        private final CarPosition carPosition;
+        
+        public IsSameCarposition(CarPosition carPosition) {
+            this.carPosition = carPosition;
+        }
+
+        @Override
+        public boolean matches(Object argument) {
+            CarPosition other = (CarPosition) argument;
+            return this.carPosition.getCartracker()
+                        .equals(other.getCartracker())
+                && this.carPosition.getMeter()
+                        .equals(other.getMeter())
+                && this.carPosition.getMoment()
+                        .equals(other.getMoment())
+                // TODO road juiste equals
+                && this.carPosition.getRoad().getName()
+                        .equals(other.getRoad().getName())
+                && this.carPosition.getxCoordinate()
+                        .equals(other.getxCoordinate())
+                && this.carPosition.getyCoordinate()
+                        .equals(other.getyCoordinate());
+        }
     }
 }

@@ -27,9 +27,6 @@ import service.RadService;
 @Singleton
 @Startup
 public class DataStorage {
-    private static final Logger LOGGER = Logger
-            .getLogger(DataStorage.class.getName());
-
     // Static field for Rate
     private static final double RATE1 = 1.29;
     private static final double RATE2 = 0.89;

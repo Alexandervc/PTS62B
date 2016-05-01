@@ -26,15 +26,15 @@ import javax.jms.TextMessage;
  */
 @Stateless
 public class SendForeignRideBean {
+    private static final Logger LOGGER = Logger
+            .getLogger(SendForeignRideBean.class.getName());
+    
     @Inject
     @JMSConnectionFactory("jms/CSConnectionFactory")
     private JMSContext context;
     
     @Resource(lookup="jms/CS/queue")
     private Destination queue;
-    
-    private static final Logger LOGGER = Logger
-            .getLogger(SendForeignRideBean.class.getName());
     
     /**
      * Send the given information via JMS to the central queue.
