@@ -1,7 +1,7 @@
 package model;
 
-import simulator.GpsSimulator;
 import java.util.concurrent.Future;
+import simulator.GpsSimulator;
 
 /**
  * GpsSimulatorInstance Class.

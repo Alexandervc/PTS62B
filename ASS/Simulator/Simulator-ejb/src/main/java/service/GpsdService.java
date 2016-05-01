@@ -17,7 +17,7 @@ import model.PositionInfo;
 public class GpsdService {
     private static final Logger LOGGER =
             Logger.getLogger(GpsdService.class.getCanonicalName());
-    public static final String GPSD_PIPE = "/tmp/gps";
+    private static final String GPSD_PIPE = "/tmp/gps";
     
     private BufferedWriter pipeWriter;
     

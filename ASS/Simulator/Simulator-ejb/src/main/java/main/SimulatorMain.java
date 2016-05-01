@@ -1,8 +1,8 @@
 package main;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Startup;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
 import service.PathService;
 

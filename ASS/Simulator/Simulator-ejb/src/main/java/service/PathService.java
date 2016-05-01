@@ -49,7 +49,7 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements Serializable {
-    // TODO DEPLOY: UNCOMMENT
+    // TODO DEPLOY: SET TO SERVERPATH
     private static final String PROJECT_ROOT
             = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
     private static final String API_KEY = 
