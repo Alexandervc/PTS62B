@@ -10,7 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
-import service.RoadUsage;
+import dto.RoadUsage;
 
 /**
  * Manager for BillDao.

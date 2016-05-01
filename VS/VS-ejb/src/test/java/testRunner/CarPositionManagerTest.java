@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
-import service.RadWsService;
+import service.TotalPriceService;
 import service.jms.SendForeignRideBean;
 
 /**
@@ -58,7 +58,7 @@ public class CarPositionManagerTest {
     
     @Mock
     @Produces
-    private RadWsService radWsService;
+    private TotalPriceService radWsService;
     
     // Cartracker
     private String cartrackerId;

@@ -18,7 +18,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 import service.RadService;
-import service.RoadUsage;
+import dto.RoadUsage;
 
 /**
  * Class for test datastorage. Add object of every domain type in db.

@@ -20,7 +20,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 import service.RadService;
-import service.RoadUsage;
+import dto.RoadUsage;
 
 /**
  * Test bill Dao.
