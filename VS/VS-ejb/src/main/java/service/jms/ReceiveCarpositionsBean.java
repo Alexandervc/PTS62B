@@ -33,11 +33,11 @@ import service.CarPositionService;
             propertyValue = "method='receiveCarpositions'")
 })
 public class ReceiveCarpositionsBean implements MessageListener {
-    @Inject
-    private CarPositionService carPositionService;
-    
     private static final Logger LOGGER = Logger
             .getLogger(ReceiveCarpositionsBean.class.getName());
+    
+    @Inject
+    private CarPositionService carPositionService;
 
     @Override
     public void onMessage(Message message) {

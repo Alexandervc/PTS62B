@@ -7,8 +7,8 @@ package business;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +31,7 @@ import service.TotalPriceService;
 import service.jms.SendForeignRideBean;
 
 /**
- *
+ * Test for carpositionManager.
  * @author Alexander
  */
 @RunWith(CdiRunner.class)
