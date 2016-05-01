@@ -5,30 +5,28 @@
  */
 package dao;
 
-import domain.Bill;
-import domain.FuelType;
-import domain.Person;
-import domain.RoadType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import service.RadService;
+import domain.Bill;
+import domain.FuelType;
+import domain.Person;
+import domain.RoadType;
 import dto.RoadUsage;
+import service.RadService;
 
 /**
  * Class for test datastorage. Add object of every domain type in db.
  *
- * @author Linda.
+ * @author Linda
  */
 @Singleton
 @Startup
 public class DataStorage {
-
     private static final Logger LOGGER = Logger
             .getLogger(DataStorage.class.getName());
 
@@ -55,15 +53,10 @@ public class DataStorage {
         if (this.service.findPersonByName("Linda") == null) {
             // Add rates to db.
             this.service.addRate(RATE1, RoadType.A);
-            LOGGER.log(Level.INFO, "rate-A succeed");
             this.service.addRate(RATE2, RoadType.B);
-            LOGGER.log(Level.INFO, "rate-B succeed");
             this.service.addRate(RATE3, RoadType.C);
-            LOGGER.log(Level.INFO, "rate-C succeed");
             this.service.addRate(RATE4, RoadType.D);
-            LOGGER.log(Level.INFO, "rate-D succeed");
             this.service.addRate(RATE5, RoadType.E);
-            LOGGER.log(Level.INFO, "rate-E succeed");
 
             // Make list of roadusages
             List<RoadUsage> roadUsages = new ArrayList<>();
@@ -78,9 +71,6 @@ public class DataStorage {
                     "Calçada do Lavra", "14", "1150-208",
                     "Lisboa", "Portugal");
             
-            
-            LOGGER.log(Level.INFO, "created persons");
-            
             String cartrackerId1 = "PT123456789";
             String cartrackerId2 = "PT112233444";
             String cartrackerId3 = "PT121314151";
@@ -90,15 +80,12 @@ public class DataStorage {
             this.service.addCar(p2, cartrackerId2, FuelType.Petrol);
             this.service.addCar(p2, cartrackerId3, FuelType.Diesel);
             
-            LOGGER.log(Level.INFO, "created cars");
-            
             // Create bill for person.
             Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 
                     "April", "2016");
             
             // Add bill to db.
             this.service.addBill(b);
-            LOGGER.log(Level.INFO, "add bill in db");
         }
     }
 }

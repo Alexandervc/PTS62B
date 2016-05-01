@@ -16,11 +16,10 @@ import javax.persistence.criteria.Root;
  * @param <T> ClassType.
  */
 public abstract class AbstractFacade<T> {
-
-    private Class<T> entityClass;
-
     private static final Logger LOGGER = Logger
             .getLogger(AbstractFacade.class.getName());
+    
+    private Class<T> entityClass;    
 
     /**
      * Constructor AbstractFacade.

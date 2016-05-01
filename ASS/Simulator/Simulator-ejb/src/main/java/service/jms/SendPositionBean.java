@@ -28,11 +28,10 @@ public class SendPositionBean {
             .getLogger(SendPositionBean.class.getName());
 
     /**
-     * Send position.
-     * 
-     * @param jsonPosition.
-     * @param cartrackerId.
-     * @param serialNumber.
+     * Send the position to VS.
+     * @param jsonPosition JSON string of the position to send.
+     * @param cartrackerId The cartrackerId to send the position for.
+     * @param serialNumber A number to indicate the order of the send positions.
      */
     public void sendPosition(String jsonPosition, String cartrackerId, 
             Long serialNumber) {

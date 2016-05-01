@@ -11,7 +11,8 @@ public class PositionInfo {
     private Leg leg;
     //metres from start of leg.
     private Double distanceFromStart;
-    private Double speed; // m/s
+    // m/s
+    private Double speed; 
 
     /**
      * @return the position.

@@ -1,9 +1,9 @@
 package simulator;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Leg;
@@ -17,19 +17,19 @@ import support.NavUtils;
  * @author Melanie
  */
 public class GpsSimulator implements Runnable {
-    private long id;
-
-    private GpsdService gpsdService;
-
-    private static final boolean useGpsd = false;
-
+    private static final boolean USE_GPSD = false;
+    // millisecs at which to send position reports
+    private static final Integer REPORT_INTERVAL = 500; 
+    
     private final AtomicBoolean shouldCancel = new AtomicBoolean();
-
-    private Double speedInMps; // In meters/sec
+    
+    private long id;
+    private GpsdService gpsdService;
+    // In meters/sec
+    private Double speedInMps; 
     private Boolean shouldMove;
 
-    private static final Integer reportInterval = 
-            500; // millisecs at which to send position reports
+    
     private PositionInfo currentPosition;
     private List<Leg> legs;
 
@@ -55,7 +55,7 @@ public class GpsSimulator implements Runnable {
                         this.currentPosition.setSpeed(0.0);
                     }
 
-                    if (GpsSimulator.useGpsd) {
+                    if (GpsSimulator.USE_GPSD) {
                         this.gpsdService.updatePosition(this.currentPosition);
                     }
                 }
@@ -93,8 +93,8 @@ public class GpsSimulator implements Runnable {
         
         long sleepTime = 0;
         
-        if (GpsSimulator.reportInterval - elapsedTime > 0) {
-            sleepTime = GpsSimulator.reportInterval - elapsedTime;
+        if (GpsSimulator.REPORT_INTERVAL - elapsedTime > 0) {
+            sleepTime = GpsSimulator.REPORT_INTERVAL - elapsedTime;
         }
 
         Thread.sleep(sleepTime);
@@ -104,11 +104,12 @@ public class GpsSimulator implements Runnable {
      * Set new position of vehicle based on current position and vehicle speed.
      */
     public void moveVehicle() {
-        Double distance = this.speedInMps * GpsSimulator.reportInterval 
+        Double distance = this.speedInMps * GpsSimulator.REPORT_INTERVAL 
                 / 1000.0;
         Double distanceFromStart = this.currentPosition.getDistanceFromStart() 
                 + distance;
-        Double excess = 0.0; // amount by which next postion will exceed end
+        // amount by which next postion will exceed end
+        Double excess = 0.0; 
         // point of present leg
 
         for (int i = this.currentPosition.getLeg().getId();

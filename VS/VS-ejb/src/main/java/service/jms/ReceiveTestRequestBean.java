@@ -16,28 +16,29 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 
 /**
- * The messagebean that receives the messages concerning requests from the 
+ * The messagebean that receives the messages concerning requests from the
  * monitoring system.
+ *
  * @author Edwin.
  */
 @MessageDriven(mappedName = "jms/LMS/monitoringTopic", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "method='getStatus'")//,
-        // TODO DEPLOY: UNCOMMENT
-    /*@ActivationConfigProperty(propertyName = "addressList",
+// TODO DEPLOY: UNCOMMENT
+/*@ActivationConfigProperty(propertyName = "addressList",
             propertyValue = "192.168.24.70:7676")*/
 })
 public class ReceiveTestRequestBean implements MessageListener {
 
     private static final Logger LOGGER = Logger
-            .getLogger(ReceiveTestRequestBean.class.getName()); 
-    
+            .getLogger(ReceiveTestRequestBean.class.getName());
+
     @Inject
     private SendTestResultsBean sender;
 
     /**
-     * Receives request for testresult from LMS
-     * returns a message to indicate that it has been received.
+     * Receives request for testresult from LMS returns a message to indicate
+     * that it has been received.
      * @param message contains request.
      */
     @Override
@@ -52,6 +53,6 @@ public class ReceiveTestRequestBean implements MessageListener {
 
         // Gives the date from the original message so that it can be 
         // send back.
-        sender.sendTestResults(date);
+        this.sender.sendTestResults(date);
     }
 }

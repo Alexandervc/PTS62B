@@ -1,12 +1,5 @@
 package service;
 
-import com.google.gson.Gson;
-import com.google.maps.DirectionsApi;
-import com.google.maps.DirectionsApiRequest;
-import com.google.maps.GeoApiContext;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.LatLng;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,8 +12,6 @@ import java.io.Serializable;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import model.Point;
-import model.DirectionInput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,8 +27,17 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import com.google.gson.Gson;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.LatLng;
+import model.DirectionInput;
 import model.GpsSimulatorInstance;
 import model.Leg;
+import model.Point;
 import service.jms.SendPositionBean;
 import simulator.GpsSimulator;
 import support.NavUtils;
@@ -49,20 +49,20 @@ import support.NavUtils;
  */
 @Stateless
 public class PathService implements Serializable {
-
-    private final static String PROJECT_ROOT
+    // TODO DEPLOY: UNCOMMENT
+    private static final String PROJECT_ROOT
             = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
-
-    private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
+    private static final String API_KEY = 
+            "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
+    private static final int CARTRACKERS_COUNT = 5;
+    
     private transient BufferedReader reader;
 
     private List<String> locations;
     private final Map<Long, GpsSimulatorInstance> taskFutures = new HashMap<>();
     private final transient ExecutorService taskExecutor
             = Executors.newSingleThreadExecutor();
-    private long instanceCounter = 1;
-
-    private final int cartrackersCount = 5;
+    private long instanceCounter = 1;    
 
     @Inject
     private SendPositionBean sendPositionBean;
@@ -112,7 +112,7 @@ public class PathService implements Serializable {
      * @return list of points.
      */
     public List<Point> getCoordinatesFromGoogle(DirectionInput directionInput) {
-        GeoApiContext context = new GeoApiContext().setApiKey(this.APIkey);
+        GeoApiContext context = new GeoApiContext().setApiKey(this.API_KEY);
         DirectionsApiRequest request = DirectionsApi.getDirections(
                 context,
                 directionInput.getFrom(),
@@ -162,7 +162,7 @@ public class PathService implements Serializable {
      * Generate road usages for all config files.
      */
     public void generateFiles() {
-        for (int i = 0; i < this.cartrackersCount; i++) {
+        for (int i = 0; i < CARTRACKERS_COUNT; i++) {
             int configId = i + 1;
             this.generateFile(configId);
         }

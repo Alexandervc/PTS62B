@@ -15,12 +15,12 @@ import model.PositionInfo;
  * @author Melanie
  */
 public class GpsdService {
-    private static final Logger logger =
+    private static final Logger LOGGER =
             Logger.getLogger(GpsdService.class.getCanonicalName());
+    public static final String GPSD_PIPE = "/tmp/gps";
     
     private BufferedWriter pipeWriter;
-    public static final String GPSD_PIPE = "/tmp/gps";
-
+    
     /**
      * Sends NMEA RMC report to linux gps daemon, gpsd via predetermined pipe.
      *
@@ -34,9 +34,11 @@ public class GpsdService {
         Integer minute = cal.get(Calendar.MINUTE);
         Integer second = cal.get(Calendar.SECOND);
         Integer date = cal.get(Calendar.DATE);
-        Integer month = cal.get(Calendar.MONTH) + 1; // java Calendar month
+        // java Calendar month
+        Integer month = cal.get(Calendar.MONTH) + 1; 
         // starts at 0
-        Integer year = cal.get(Calendar.YEAR) % 100; // convert to 2 digit year
+        // convert to 2 digit year
+        Integer year = cal.get(Calendar.YEAR) % 100; 
 
         String sHour = String.format("%02d", hour);
         String sMinute = String.format("%02d", minute);
@@ -68,19 +70,27 @@ public class GpsdService {
             }
             
             lon = Math.abs(lon);
-
-            long latDeg = (long) lat; // degree part
-            double latMin = (lat - latDeg) * 60; // minute part
-            long latMinWhole = (long) latMin; // whole part of minute
-            Double latMinFrac = latMin - latMinWhole; // fractional part of
+            
+            // degree part
+            long latDeg = (long) lat; 
+            // minute part
+            double latMin = (lat - latDeg) * 60; 
+            // whole part of minute
+            long latMinWhole = (long) latMin; 
+            // fractional part of
+            Double latMinFrac = latMin - latMinWhole; 
             // minute
             String sLatDeg = String.format("%02d", latDeg);
             String sLatMinWhole = String.format("%02d", latMinWhole);
             String sLatMinFrac = latMinFrac.toString().replace("0.", ".");
-            long lonDeg = (long) lon; // degree part
-            double lonMin = (lon - lonDeg) * 60; // minute part
-            long lonMinWhole = (long) lonMin; // whole part of minute
-            Double lonMinFrac = lonMin - lonMinWhole; // fractional part of
+            // degree part
+            long lonDeg = (long) lon; 
+            // minute part
+            double lonMin = (lon - lonDeg) * 60; 
+            // whole part of minute
+            long lonMinWhole = (long) lonMin; 
+            // fractional part of
+            Double lonMinFrac = lonMin - lonMinWhole;
             // minute
             String sLonDeg = String.format("%02d", lonDeg);
             String sLonMinWhole = String.format("%02d", lonMinWhole);
@@ -138,7 +148,7 @@ public class GpsdService {
         
         //empty the output buff of the proc.
         while ((line = in.readLine()) != null) {
-            logger.log(Level.INFO, line);
+            LOGGER.log(Level.INFO, line);
         }
 
         if (wait) {

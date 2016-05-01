@@ -50,7 +50,7 @@ public class RoadUsagesResource {
      *      wrong format a response with status BAD_REQUEST will be returned.
      */
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getRoadUsagesBetween(
             @PathParam("cartrackerId") String cartrackerId,
             @QueryParam("beginDate") String beginDateString,

@@ -17,8 +17,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import service.RadService;
 import dto.RoadUsage;
+import service.RadService;
 
 /**
  * The REST resource for totalPrice.
@@ -39,7 +39,7 @@ public class TotalPriceResource {
      *      price as entity.
      */
     @POST
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response getTotalPrice(String roadUsagesJson) {
         // Convert to roadUsages
         Gson gson = new Gson();

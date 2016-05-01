@@ -26,6 +26,6 @@ public class TotalPriceService {
      * @return The calculated total price.
      */
     public Double getTotalPrice(List<RoadUsage> roadUsages) {
-        return totalPriceClient.getTotalPrice(roadUsages);
+        return this.totalPriceClient.getTotalPrice(roadUsages);
     }
 }

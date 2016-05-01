@@ -5,7 +5,6 @@
  */
 package service.rest.clients;
 
-import dto.RoadUsage;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -13,8 +12,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
-import com.google.gson.Gson;
 import javax.ws.rs.core.Response;
+import com.google.gson.Gson;
+import dto.RoadUsage;
 
 /**
  * Helper for requesting the totalprice from RAD via REST.
@@ -22,10 +22,12 @@ import javax.ws.rs.core.Response;
  */
 @Stateless
 public class TotalPriceClient {
-
-    // TODO set to server link
     private static final String BASE_URL = 
             "http://localhost:8080/RAD-web/radapi";
+    
+    // TODO DEPLOY: UNCOMMENT
+    // private static final String BASE_URL = 
+    //        "http://192.168.24.74:8080/RAD/radapi";
 
     private Client client;
 
@@ -44,7 +46,7 @@ public class TotalPriceClient {
         // TODO cannot send List
         Gson gson = new Gson();
         String roadUsagesJson = gson.toJson(roadUsages);
-        Response response = client.target(BASE_URL)
+        Response response = this.client.target(BASE_URL)
                 .path("totalPrice")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(roadUsagesJson), Response.class);

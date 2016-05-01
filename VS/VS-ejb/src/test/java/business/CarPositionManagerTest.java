@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testRunner;
+package business;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import business.CarPositionManager;
 import dao.CarPositionDao;
 import dao.CartrackerDao;
 import dao.RoadDao;
@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import static org.mockito.Mockito.times;
 import service.TotalPriceService;
 import service.jms.SendForeignRideBean;
 

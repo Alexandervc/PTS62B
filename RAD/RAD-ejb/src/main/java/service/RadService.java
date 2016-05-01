@@ -5,7 +5,13 @@
  */
 package service;
 
-import dto.RoadUsage;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import business.CarManager;
 import business.BillManager;
 import business.ForeignCountryManager;
@@ -16,14 +22,7 @@ import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import dto.RoadUsage;
 
 /**
  * RAD Service class.
