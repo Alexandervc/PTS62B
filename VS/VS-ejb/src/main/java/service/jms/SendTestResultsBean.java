@@ -21,14 +21,17 @@ import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 
 /**
- *
- * @author Linda
+ *  The bean that sends the results of a test.
+ * @author Edwin.
  */
 @Stateless
 public class SendTestResultsBean {
     
     private static final Logger LOGGER = Logger
             .getLogger(GenerateRoadUsagesBean.class.getName());
+    
+    // The timeout time for messages send from this class.
+    private static final long TIMEOUT = 60000;
 
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")
@@ -44,7 +47,7 @@ public class SendTestResultsBean {
      */
     public void sendTestResults(String date) {
         try {         
-            MapMessage mapMessage = context.createMapMessage();
+            MapMessage mapMessage = this.context.createMapMessage();
             // send result to method receiveTestresults
             mapMessage.setStringProperty("method", "receiveStatus");
 
@@ -52,15 +55,15 @@ public class SendTestResultsBean {
             mapMessage.setString("system", "VS");
             // set message boolean result
             
+            // Formats the date so that it can be send in a clear format.
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-            String dateString = dateFormat.format(new Date());
-            
+            String dateString = dateFormat.format(new Date());            
 
             mapMessage.setString("date", date);
             mapMessage.setString("newDate", dateString);
-            JMSProducer producer = context.createProducer();
-            producer.setTimeToLive(60000);
+            JMSProducer producer = this.context.createProducer();
+            producer.setTimeToLive(TIMEOUT);
             producer.send(this.queue, mapMessage);
             this.context.createProducer().send(this.queue, mapMessage);
         } catch (JMSException ex) {
