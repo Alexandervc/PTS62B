@@ -112,7 +112,7 @@ public class PathService implements Serializable {
      * @return list of points.
      */
     public List<Point> getCoordinatesFromGoogle(DirectionInput directionInput) {
-        GeoApiContext context = new GeoApiContext().setApiKey(this.API_KEY);
+        GeoApiContext context = new GeoApiContext().setApiKey(API_KEY);
         DirectionsApiRequest request = DirectionsApi.getDirections(
                 context,
                 directionInput.getFrom(),
