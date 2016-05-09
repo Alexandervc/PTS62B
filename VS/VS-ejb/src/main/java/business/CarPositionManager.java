@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.ForeignRideService;
-import service.RadWsService;
+import service.TotalPriceService;
 
 /**
  * The manager of carPositions.
@@ -29,12 +29,13 @@ import service.RadWsService;
  */
 @Stateless
 public class CarPositionManager {
+
     private static final Logger LOGGER
             = Logger.getLogger(CarPositionManager.class.getName());
-    
+
     private static final int COUNTRYCODE_LENGTH = 2;
     private static final String MY_COUNTRYCODE = "PT";
-    
+
     @Inject
     private RoadUsageManager roadUsageManager;
 
@@ -46,28 +47,27 @@ public class CarPositionManager {
 
     @Inject
     private CarPositionDao carPositionDao;
-    
+
     @Inject
-    private RadWsService radWsService;
-    
+    private TotalPriceService totalPriceService;
+
     @Inject
     private ForeignRideService foreignRideService;
-    
+
     /**
      * Process the given information of a CarPosition.
-     *
      * @param cartrackerId The unique identifier of a cartracker. Cannot be null
-     * or empty.
+     *      or empty.
      * @param moment The moment in which the cartracker was at the given
-     * coordinates.
+     *      coordinates.
      * @param xCoordinate The x-coordinate of the carPosition.
      * @param yCoordinate The y-coordinate of the carPosition.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
-     * last carPosition.
+     *      last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
-     * @param lastOfRide Whether this carposition is the last of 
-     *      the ride or not.
+     * @param lastOfRide Whether this carposition is the last of the ride or
+     *      not.
      */
     public void processCarPosition(String cartrackerId, Date moment,
             Double xCoordinate, Double yCoordinate, String roadName,
@@ -78,21 +78,21 @@ public class CarPositionManager {
 
             // Get countryCode
             String countryCode = cartrackerId.substring(0, COUNTRYCODE_LENGTH);
-            
+
             // If foreign and last of ride
-            if(!MY_COUNTRYCODE.equals(countryCode) && lastOfRide) {
+            if (!MY_COUNTRYCODE.equals(countryCode) && lastOfRide) {
                 // Get carpostions and roadusages of ride
                 List<CarPosition> carPositions = this.carPositionDao
                         .getPositionsOfRide(rideId);
                 List<RoadUsage> roadUsages = this.roadUsageManager
                         .convertToRoadUsages(carPositions);
-                
+
                 // Get total price
-                double totalPrice = this.radWsService
+                double totalPrice = this.totalPriceService
                         .getTotalPrice(roadUsages);
-                
+
                 // Send
-                this.foreignRideService.sendForeignRide(cartrackerId, 
+                this.foreignRideService.sendForeignRide(cartrackerId,
                         totalPrice, carPositions, countryCode);
             }
         } catch (IllegalArgumentException iaEx) {
@@ -102,15 +102,14 @@ public class CarPositionManager {
 
     /**
      * Save the given information into a CarPosition.
-     *
      * @param cartrackerId The unique identifier of a cartracker.
      * @param moment The moment in which the cartracker was at the given
-     * coordinates.
+     *      coordinates.
      * @param xCoordinate The x-coordinate of the carPosition.
      * @param yCoordinate The y-coordinate of the carPosition.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
-     * last carPosition.
+     *      last carPosition.
      */
     private void saveCarPosition(String cartrackerId, Date moment,
             Double xCoordinate, Double yCoordinate, String roadName,

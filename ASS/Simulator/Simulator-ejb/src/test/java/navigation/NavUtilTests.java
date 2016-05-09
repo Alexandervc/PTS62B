@@ -1,5 +1,7 @@
 package navigation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,8 +12,6 @@ import model.DirectionInput;
 import model.Point;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -46,7 +46,7 @@ public class NavUtilTests {
      */
     @Test
     public void testTotalDistance() 
-            throws NumberFormatException, JAXBException {
+            throws JAXBException {
         DirectionInput directionInput = new DirectionInput(
                 "73-2020 Kaloko Dr, Kailua-Kona, HI 96740",
                 "73-1249 Kaloko Dr, Kailua-Kona, HI 96740");
@@ -72,7 +72,7 @@ public class NavUtilTests {
      */
     @Test
     public void testTotalDistance2() 
-            throws NumberFormatException, JAXBException {
+            throws JAXBException {
         DirectionInput directionInput = new DirectionInput(
                 "Polderzicht 5, 4261 KK Wijk en Aalburg", 
                 "Rachelsmolen 1, Eindhoven");
@@ -94,7 +94,7 @@ public class NavUtilTests {
      */
     @Test
     public void testTotalDistance3() 
-            throws NumberFormatException, JAXBException {
+            throws JAXBException {
         DirectionInput directionInput = new DirectionInput(
                 "Parallelweg 88, 4283 GS Giessen", 
                 "Veensesteeg 19, 4264 KG Veen");

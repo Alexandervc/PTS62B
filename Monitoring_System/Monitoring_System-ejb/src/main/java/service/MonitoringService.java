@@ -3,6 +3,7 @@ package service;
 import business.MonitoringManager;
 import common.domain.Test;
 import common.domain.TestType;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -79,8 +80,12 @@ public class MonitoringService {
      * and stores them.
      *
      * @param systemName Name of system
+     * @param date date of the original test.
+     * @param newDate date that was created in the remote system.
      */
-    public void processTestResults(String systemName) {
-        this.manager.addTest(systemName, true, TestType.ENDPOINTS);
+    public void processTestResults(String systemName, Date date, Date newDate) {
+        this.manager.updateTest(systemName, true, TestType.ENDPOINTS,
+                new Timestamp(date.getTime()),
+                new Timestamp(newDate.getTime()));
     }  
 }

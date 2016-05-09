@@ -6,7 +6,6 @@
 package business;
 
 import java.util.TimerTask;
-import javax.inject.Inject;
 
 /**
  *
@@ -28,7 +27,6 @@ public class TestRequestTask extends TimerTask {
     
     @Override
     public void run() {
-        System.out.println("TESTING SYSTEMS");
         manager.testSystems();
     }
     

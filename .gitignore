@@ -38,3 +38,7 @@ ASS/Simulator/Simulator-ejb/target/
 ASS/Simulator/Simulator-web/target/
 ASS/Simulator/Simulator-ejb/nbproject/
 ASS/Simulator/output/
+ASS/Simulator/Simulator-ear/target/maven-archiver/pom.properties
+ASS/Simulator/Simulator-ejb/target/maven-archiver/pom.properties
+*.lst
+ASS/Simulator/Simulator-web/target/maven-archiver/pom.properties

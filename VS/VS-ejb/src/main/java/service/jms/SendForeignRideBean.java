@@ -21,20 +21,20 @@ import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
 /**
- *
+ * The bean that sends foreign rides to the central queue.
  * @author Alexander
  */
 @Stateless
 public class SendForeignRideBean {
+    private static final Logger LOGGER = Logger
+            .getLogger(SendForeignRideBean.class.getName());
+    
     @Inject
     @JMSConnectionFactory("jms/CSConnectionFactory")
     private JMSContext context;
     
     @Resource(lookup="jms/CS/queue")
     private Destination queue;
-    
-    private static final Logger LOGGER = Logger
-            .getLogger(SendForeignRideBean.class.getName());
     
     /**
      * Send the given information via JMS to the central queue.

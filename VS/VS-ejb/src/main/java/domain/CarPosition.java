@@ -155,7 +155,7 @@ public class CarPosition implements Serializable {
     }
 
     public Long getRideId() {
-        return rideId;
+        return this.rideId;
     }
 
     public void setRideId(Long rideId) {
@@ -163,7 +163,7 @@ public class CarPosition implements Serializable {
     }
 
     public Boolean getLastOfRide() {
-        return lastOfRide;
+        return this.lastOfRide;
     }
 
     public void setLastOfRide(Boolean lastOfRide) {

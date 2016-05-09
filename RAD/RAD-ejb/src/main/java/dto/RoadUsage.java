@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package dto;
 
 import domain.RoadType;
 import java.io.Serializable;
 
 /**
  * Class RoadUsage.
- * @author Alexander.
+ * @author Alexander
  */
 public class RoadUsage implements Serializable, Comparable<RoadUsage> {
-    
     private String roadName;
     private RoadType roadType;
     private Double km;
@@ -77,6 +76,15 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.roadType = type;
         this.km = km;
     }
+    
+    /**
+     * Constructor for converting to and from JSON.
+     * @deprecated JSON
+     */
+    @Deprecated
+    public RoadUsage() {
+        // For converting to and from JSON
+    }
 
     /**
      * Getter Km.
@@ -108,6 +116,18 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
 
     public void setForeignCountryRideId(Long foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
+    }
+
+    public void setRoadName(String roadName) {
+        this.roadName = roadName;
+    }
+
+    public void setRoadType(RoadType roadType) {
+        this.roadType = roadType;
+    }
+
+    public void setKm(Double km) {
+        this.km = km;
     }
 
     /**

@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import dto.RoadUsage;
 import business.RoadUsageManager;
+import dto.RoadUsage;
 
 /**
  * The service for roadUsage.

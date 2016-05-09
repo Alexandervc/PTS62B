@@ -5,10 +5,6 @@
  */
 package business;
 
-import dto.RoadUsage;
-import dao.CarPositionDao;
-import domain.CarPosition;
-import domain.Road;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import dao.CarPositionDao;
+import domain.CarPosition;
+import domain.Road;
+import dto.RoadUsage;
 
 /**
  * The manager of roadUsages.
