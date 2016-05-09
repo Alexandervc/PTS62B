@@ -1,16 +1,16 @@
 package business;
 
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import dao.BillDao;
 import dao.RateDao;
 import domain.Bill;
 import domain.ForeignCountryRide;
 import domain.Person;
 import domain.Rate;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import service.RoadUsage;
+import dto.RoadUsage;
 
 /**
  * Manager for BillDao.

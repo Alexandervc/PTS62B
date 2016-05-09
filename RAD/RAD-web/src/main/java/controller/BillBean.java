@@ -22,7 +22,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import service.RadService;
-import service.RoadUsage;
+import dto.RoadUsage;
 
 /**
  * Bean for RAD-web.
@@ -151,7 +151,7 @@ public class BillBean {
             Date dateEnd = DATEFORMAT.parse(tempEndDateString);
 
             // Get bill from service
-            this.bill = this.service.requestRoadUsages(this.name, 
+            this.bill = this.service.generateBill(this.name, 
                     dateBegin, dateEnd);
         } catch (NumberFormatException | ParseException e) {
             LOGGER.log(Level.SEVERE, null, e);

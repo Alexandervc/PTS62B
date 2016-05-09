@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import service.RoadUsage;
+import dto.RoadUsage;
 
 /**
  * Bill class.

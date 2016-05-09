@@ -1,11 +1,11 @@
-model\GpsSimulatorInstance.class
-simulator\GpsSimulator.class
 model\PositionInfo.class
 model\DirectionInput.class
 service\jms\SendPositionBean.class
-service\PathService.class
 model\Point.class
 main\SimulatorMain.class
+model\Leg.class
+model\GpsSimulatorInstance.class
+simulator\GpsSimulator.class
+service\PathService.class
 service\GpsdService.class
 support\NavUtils.class
-model\Leg.class

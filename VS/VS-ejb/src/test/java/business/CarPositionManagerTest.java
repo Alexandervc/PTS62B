@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testRunner;
+package business;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import business.CarPositionManager;
 import dao.CarPositionDao;
 import dao.CartrackerDao;
 import dao.RoadDao;
@@ -27,12 +27,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import static org.mockito.Mockito.times;
-import service.RadWsService;
+import service.TotalPriceService;
 import service.jms.SendForeignRideBean;
 
 /**
- *
+ * Test for carpositionManager.
  * @author Alexander
  */
 @RunWith(CdiRunner.class)
@@ -58,7 +57,7 @@ public class CarPositionManagerTest {
     
     @Mock
     @Produces
-    private RadWsService radWsService;
+    private TotalPriceService radWsService;
     
     // Cartracker
     private String cartrackerId;
@@ -86,35 +85,6 @@ public class CarPositionManagerTest {
     
     private CarPosition foreignNotLastCarPosition;
     private CarPosition foreignLastCarPosition;
-    
-    /**
-     * Matcher for carposition.
-     */
-    private class IsSameCarposition extends ArgumentMatcher<CarPosition> {
-        private final CarPosition carPosition;
-        
-        public IsSameCarposition(CarPosition carPosition) {
-            this.carPosition = carPosition;
-        }
-
-        @Override
-        public boolean matches(Object argument) {
-            CarPosition other = (CarPosition) argument;
-            return this.carPosition.getCartracker()
-                        .equals(other.getCartracker())
-                && this.carPosition.getMeter()
-                        .equals(other.getMeter())
-                && this.carPosition.getMoment()
-                        .equals(other.getMoment())
-                // TODO road juiste equals
-                && this.carPosition.getRoad().getName()
-                        .equals(other.getRoad().getName())
-                && this.carPosition.getxCoordinate()
-                        .equals(other.getxCoordinate())
-                && this.carPosition.getyCoordinate()
-                        .equals(other.getyCoordinate());
-        }
-    }
     
     @Before
     public void beforeTest() {
@@ -237,5 +207,34 @@ public class CarPositionManagerTest {
         verify(this.carPositionDao)
                 .create(argThat(new IsSameCarposition(this.carPosition)));
         */
+    }
+    
+    /**
+     * Matcher for carposition.
+     */
+    private class IsSameCarposition extends ArgumentMatcher<CarPosition> {
+        private final CarPosition carPosition;
+        
+        public IsSameCarposition(CarPosition carPosition) {
+            this.carPosition = carPosition;
+        }
+
+        @Override
+        public boolean matches(Object argument) {
+            CarPosition other = (CarPosition) argument;
+            return this.carPosition.getCartracker()
+                        .equals(other.getCartracker())
+                && this.carPosition.getMeter()
+                        .equals(other.getMeter())
+                && this.carPosition.getMoment()
+                        .equals(other.getMoment())
+                // TODO road juiste equals
+                && this.carPosition.getRoad().getName()
+                        .equals(other.getRoad().getName())
+                && this.carPosition.getxCoordinate()
+                        .equals(other.getxCoordinate())
+                && this.carPosition.getyCoordinate()
+                        .equals(other.getyCoordinate());
+        }
     }
 }
