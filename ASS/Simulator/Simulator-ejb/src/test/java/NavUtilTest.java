@@ -1,7 +1,9 @@
-package navigation;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +15,7 @@ import model.Point;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import service.PathService;
@@ -20,14 +23,14 @@ import service.jms.SendPositionBean;
 import support.NavUtils;
 
 /**
- * NavUtilTests Class.
+ * NavUtilTests2 Class.
  * @author Melanie
  */
 @RunWith(CdiRunner.class)
 @AdditionalClasses(value = PathService.class)
-public class NavUtilTests {
+public class NavUtilTest {
     private static final Logger LOGGER =
-            Logger.getLogger(NavUtilTests.class.getCanonicalName());
+            Logger.getLogger(NavUtilTest.class.getCanonicalName());
 
     @Inject
     private PathService pathService;
