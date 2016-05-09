@@ -28,9 +28,9 @@ import support.NavUtils;
  */
 @RunWith(CdiRunner.class)
 @AdditionalClasses(value = PathService.class)
-public class NavUtilTest {
+public class NavUtilsTest {
     private static final Logger LOGGER =
-            Logger.getLogger(NavUtilTest.class.getCanonicalName());
+            Logger.getLogger(NavUtilsTest.class.getCanonicalName());
 
     @Inject
     private PathService pathService;
