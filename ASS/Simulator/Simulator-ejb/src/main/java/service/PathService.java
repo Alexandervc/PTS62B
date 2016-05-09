@@ -49,7 +49,7 @@ import support.NavUtils;
 @Stateless
 public class PathService implements Serializable {    
     private final static String PROJECT_ROOT = 
-            "C:\\Users\\Melanie\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+            "C:\\Proftaak";
     
     private final String APIkey = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private transient BufferedReader reader;

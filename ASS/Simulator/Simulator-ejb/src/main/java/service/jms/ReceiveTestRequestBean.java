@@ -42,7 +42,6 @@ public class ReceiveTestRequestBean implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
-        System.out.println("ASS RECEIVED MONITORING MESSAGE XXX");
         MapMessage mapMessage = (MapMessage) message;
         String date = null;
         try {
