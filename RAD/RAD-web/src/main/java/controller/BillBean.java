@@ -7,6 +7,7 @@ package controller;
 
 import domain.Bill;
 import domain.ListBoxDate;
+import domain.RoadType;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -169,8 +170,16 @@ public class BillBean {
      */
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(this.service.getRate(roadUsage.getRoadType())
-                .getRate());
+        if (roadUsage.getRoadType() != null) {
+            if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+                return "onbekend";
+            } else  {
+                return formatter.format(this.service.getRate(roadUsage.getRoadType())
+                    .getRate());
+            }
+        }
+        
+        return "";
     }
 
     /**

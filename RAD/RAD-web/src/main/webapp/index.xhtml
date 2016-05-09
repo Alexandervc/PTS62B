@@ -75,6 +75,9 @@
                                            <f:facet name="header">TotalPrice</f:facet> 
                                            #{billBean.getPrice(ru)}
                                         </h:column>
+                                        <f:facet name="footer">
+                                            <h:outputText value="Total: #{billBean.totalPrice}" />
+                                        </f:facet>
                                     </h:dataTable>
                                 </div>
                             </ui:fragment>
