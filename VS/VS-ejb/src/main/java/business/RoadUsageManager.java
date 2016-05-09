@@ -5,9 +5,6 @@
  */
 package business;
 
-import dao.CarPositionDao;
-import domain.CarPosition;
-import domain.Road;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import dao.CarPositionDao;
+import domain.CarPosition;
+import domain.Road;
+import dto.RoadUsage;
 
 /**
  * The manager of roadUsages.
@@ -24,6 +25,31 @@ import javax.inject.Inject;
 public class RoadUsageManager {
     @Inject
     private CarPositionDao carPositionDao;
+    
+    /**
+     * Convert the given carpositions to a list of roadUsages.
+     * @param carpositions The carpositions to convert.
+     * @return List of roadUsage.
+     */
+    public List<RoadUsage> convertToRoadUsages(List<CarPosition> carpositions) {
+        // Make roadUsages from carPositions
+        Map<Road, RoadUsage> roadUsages = new HashMap<>();
+        for(CarPosition cp : carpositions) {
+            if(!roadUsages.containsKey(cp.getRoad())){
+                // Add roadUsage
+                RoadUsage ru = new RoadUsage(cp.getRoad().getName(), 
+                                cp.getRoad().getRoadType(),
+                                cp.getMeter());
+                roadUsages.put(cp.getRoad(), ru);
+            } else {
+                // Update km
+                RoadUsage ru = (RoadUsage) roadUsages.get(cp.getRoad());
+                ru.addMeter(cp.getMeter());
+            }
+        }
+        
+        return new ArrayList<>(roadUsages.values());
+    }
     
     /**
      * Generate the roadUsages between the given date for the given cartracker.
@@ -44,22 +70,6 @@ public class RoadUsageManager {
         List<CarPosition> cps = this.carPositionDao.getPositionsBetween(begin, 
                 end, cartrackerId);
         
-        // Make roadUsages from carPositions
-        Map<Road, RoadUsage> roadUsages = new HashMap<>();
-        for(CarPosition cp : cps) {
-            if(!roadUsages.containsKey(cp.getRoad())){
-                // Add roadUsage
-                RoadUsage ru = new RoadUsage(cp.getRoad().getName(), 
-                                cp.getRoad().getRoadType(),
-                                cp.getMeter());
-                roadUsages.put(cp.getRoad(), ru);
-            } else {
-                // Update km
-                RoadUsage ru = (RoadUsage) roadUsages.get(cp.getRoad());
-                ru.addMeter(cp.getMeter());
-            }
-        }
-        
-        return new ArrayList<>(roadUsages.values());
+        return this.convertToRoadUsages(cps);
     }
 }

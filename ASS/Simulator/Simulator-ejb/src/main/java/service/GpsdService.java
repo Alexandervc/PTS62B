@@ -14,19 +14,18 @@ import model.PositionInfo;
  * GpsdService Class.
  * @author Melanie
  */
-public class GpsdService implements IGpsdService {
-    private static final Logger logger =
+public class GpsdService {
+    private static final Logger LOGGER =
             Logger.getLogger(GpsdService.class.getCanonicalName());
+    private static final String GPSD_PIPE = "/tmp/gps";
     
     private BufferedWriter pipeWriter;
-    public static final String GPSD_PIPE = "/tmp/gps";
-
+    
     /**
-     * Update position.
-     * 
-     * @param position 
+     * Sends NMEA RMC report to linux gps daemon, gpsd via predetermined pipe.
+     *
+     * @param position coordinates.
      */
-    @Override
     public void updatePosition(PositionInfo position) {
         // an NMEA RMC position sentence (report) is of form:
         // $GPRMC,124426,A,5920.7019,N,02803.2893,E,,,121212,,
@@ -35,9 +34,11 @@ public class GpsdService implements IGpsdService {
         Integer minute = cal.get(Calendar.MINUTE);
         Integer second = cal.get(Calendar.SECOND);
         Integer date = cal.get(Calendar.DATE);
-        Integer month = cal.get(Calendar.MONTH) + 1; // java Calendar month
+        // java Calendar month
+        Integer month = cal.get(Calendar.MONTH) + 1; 
         // starts at 0
-        Integer year = cal.get(Calendar.YEAR) % 100; // convert to 2 digit year
+        // convert to 2 digit year
+        Integer year = cal.get(Calendar.YEAR) % 100; 
 
         String sHour = String.format("%02d", hour);
         String sMinute = String.format("%02d", minute);
@@ -69,19 +70,27 @@ public class GpsdService implements IGpsdService {
             }
             
             lon = Math.abs(lon);
-
-            long latDeg = (long) lat; // degree part
-            double latMin = (lat - latDeg) * 60; // minute part
-            long latMinWhole = (long) latMin; // whole part of minute
-            Double latMinFrac = latMin - latMinWhole; // fractional part of
+            
+            // degree part
+            long latDeg = (long) lat; 
+            // minute part
+            double latMin = (lat - latDeg) * 60; 
+            // whole part of minute
+            long latMinWhole = (long) latMin; 
+            // fractional part of
+            Double latMinFrac = latMin - latMinWhole; 
             // minute
             String sLatDeg = String.format("%02d", latDeg);
             String sLatMinWhole = String.format("%02d", latMinWhole);
             String sLatMinFrac = latMinFrac.toString().replace("0.", ".");
-            long lonDeg = (long) lon; // degree part
-            double lonMin = (lon - lonDeg) * 60; // minute part
-            long lonMinWhole = (long) lonMin; // whole part of minute
-            Double lonMinFrac = lonMin - lonMinWhole; // fractional part of
+            // degree part
+            long lonDeg = (long) lon; 
+            // minute part
+            double lonMin = (lon - lonDeg) * 60; 
+            // whole part of minute
+            long lonMinWhole = (long) lonMin; 
+            // fractional part of
+            Double lonMinFrac = lonMin - lonMinWhole;
             // minute
             String sLonDeg = String.format("%02d", lonDeg);
             String sLonMinWhole = String.format("%02d", lonMinWhole);
@@ -109,12 +118,13 @@ public class GpsdService implements IGpsdService {
      * @throws java.lang.InterruptedException .
      */
     public void initGpsd() throws IOException, InterruptedException {
-        startProc("killall -9 gpsd", false);
-        startProc("rm -f " + this.GPSD_PIPE, false);
-        startProc("mkfifo " + this.GPSD_PIPE, false);
-        startProc("gpsd " + this.GPSD_PIPE, false);
+        this.startProc("killall -9 gpsd", false);
+        this.startProc("rm -f " + GpsdService.GPSD_PIPE, false);
+        this.startProc("mkfifo " + GpsdService.GPSD_PIPE, false);
+        this.startProc("gpsd " + GpsdService.GPSD_PIPE, false);
         //writer for gpsd pipe
-        this.pipeWriter = new BufferedWriter(new FileWriter(this.GPSD_PIPE));
+        this.pipeWriter = new BufferedWriter(
+                new FileWriter(GpsdService.GPSD_PIPE));
     }
 
     /**
@@ -138,7 +148,7 @@ public class GpsdService implements IGpsdService {
         
         //empty the output buff of the proc.
         while ((line = in.readLine()) != null) {
-            logger.log(Level.INFO, line);
+            LOGGER.log(Level.INFO, line);
         }
 
         if (wait) {

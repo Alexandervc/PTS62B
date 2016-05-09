@@ -5,47 +5,54 @@
  */
 package service.jms;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
 /**
+ * The messagebean that receives the messages concerning requests from the
+ * monitoring system.
  *
- * @author Linda
+ * @author Edwin.
  */
-@MessageDriven(mappedName = "jms/VS/queue", activationConfig = {
+@MessageDriven(mappedName = "jms/LMS/monitoringTopic", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='getStatus'")
+            propertyValue = "method='getStatus'")//,
+// TODO DEPLOY: UNCOMMENT
+/*@ActivationConfigProperty(propertyName = "addressList",
+            propertyValue = "192.168.24.70:7676")*/
 })
 public class ReceiveTestRequestBean implements MessageListener {
+
+    private static final Logger LOGGER = Logger
+            .getLogger(ReceiveTestRequestBean.class.getName());
 
     @Inject
     private SendTestResultsBean sender;
 
     /**
-     * receives request for testresult from LMS
-     * start JUnit test inside this system
-     * @param message contains request
+     * Receives request for testresult from LMS returns a message to indicate
+     * that it has been received.
+     * @param message contains request.
      */
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
-        /*
-        // engine for test
-        JUnitCore engine = new JUnitCore();
-        // required to print reports
-        engine.addListener(new TextListener(System.out));
+        String date = null;
+        try {
+            date = mapMessage.getString("date");
+        } catch (JMSException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
 
-        // run test RoadUsageTest
-        Result result = engine.run(junitTest.RoadUsageTest.class);
-        // TODO carPositionManagerTest
-
-        // sender will be send to LMS
-        sender.sendTestResults(result);
-        */
-        sender.sendTestResults();
+        // Gives the date from the original message so that it can be 
+        // send back.
+        this.sender.sendTestResults(date);
     }
 }

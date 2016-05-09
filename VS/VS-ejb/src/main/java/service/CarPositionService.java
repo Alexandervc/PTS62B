@@ -29,11 +29,14 @@ public class CarPositionService {
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since
      *      the last carPosition.
+     * @param rideId The id of the ride this carposition is a part of.
+     * @param lastOfRide Whether this carposition is the last of 
+     *      the ride or not.
      */
-    public void saveCarPosition(String cartrackerId, Date moment, 
+    public void processCarPosition(String cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
-            Double meter) {
-        this.carPositionManager.saveCarPosition(cartrackerId, moment, 
-                xCoordinate, yCoordinate, roadName, meter);
+            Double meter, Long rideId, Boolean lastOfRide) {
+        this.carPositionManager.processCarPosition(cartrackerId, moment, 
+                xCoordinate, yCoordinate, roadName, meter, rideId, lastOfRide);
     }
 }

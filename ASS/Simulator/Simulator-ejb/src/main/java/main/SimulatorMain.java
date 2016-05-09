@@ -1,10 +1,10 @@
 package main;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.ejb.Singleton;
-import service.IPathService;
+import service.PathService;
 
 /**
  * SimulatorMain Class.
@@ -14,13 +14,13 @@ import service.IPathService;
 @Startup
 public class SimulatorMain {
     @Inject
-    private IPathService service;
+    private PathService service;
 
     /**
      * Generate files for roadusage.
      */
     @PostConstruct
     public void main() {
-        this.service.generateFile();
+        this.service.generateFiles();
     }    
 }

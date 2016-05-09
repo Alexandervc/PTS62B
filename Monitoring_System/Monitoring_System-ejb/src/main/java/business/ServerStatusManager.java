@@ -57,7 +57,7 @@ public class ServerStatusManager {
         // Retrieve the deployed applications on the server.
         List<String> applications = this.listApplications(host);
 
-        // Iterate though all all applications.
+        // Iterate though all deployed applications on the server.
         for (String application : applications) {
             
             // Retrieve the server status of the application.
@@ -102,7 +102,7 @@ public class ServerStatusManager {
             // Get the application from the output.
             if (result.contains("<")) {
                 // Match on first word. This retreives the application name.
-                Pattern pattern = Pattern.compile("^[\\w]+");
+                Pattern pattern = Pattern.compile("([^\\s]+)");
                 Matcher matcher = pattern.matcher(result);
 
                 if (matcher.find()) {

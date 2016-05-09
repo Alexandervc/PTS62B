@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import business.RoadUsage;
 import business.RoadUsageManager;
+import dto.RoadUsage;
 
 /**
  * The service for roadUsage.
@@ -35,5 +35,4 @@ public class RoadUsageService {
         return this.roadUsageManager.generateRoadUsagesBetween(begin, end, 
                 cartrackerId);
     }
-    
 }

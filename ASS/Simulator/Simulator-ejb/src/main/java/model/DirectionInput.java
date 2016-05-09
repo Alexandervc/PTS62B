@@ -11,17 +11,18 @@ public class DirectionInput {
     /**
      * DirectionInput constructor for JPA.
      * 
-     * @deprecated
+     * @deprecated for JPA only.
      */
     @Deprecated
     public DirectionInput() {
+        //Comment for SonarQube
     }
 
     /**
      * DirectionInput constructor.
      * 
-     * @param from
-     * @param to 
+     * @param from starting point.
+     * @param to end point.
      */
     public DirectionInput(String from, String to) {
         this.from = from;

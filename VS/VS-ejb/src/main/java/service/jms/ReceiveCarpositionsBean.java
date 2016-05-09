@@ -33,11 +33,11 @@ import service.CarPositionService;
             propertyValue = "method='receiveCarpositions'")
 })
 public class ReceiveCarpositionsBean implements MessageListener {
-    @Inject
-    private CarPositionService carPositionService;
-    
     private static final Logger LOGGER = Logger
             .getLogger(ReceiveCarpositionsBean.class.getName());
+    
+    @Inject
+    private CarPositionService carPositionService;
 
     @Override
     public void onMessage(Message message) {
@@ -61,12 +61,15 @@ public class ReceiveCarpositionsBean implements MessageListener {
             Double xCoordinate = (Double) position.get("xCoordinate");
             Double yCoordinate = (Double) position.get("yCoordinate");
             Double meter = (Double) position.get("meter");
+            Long rideId = Long.valueOf((String) position.get("rideId"));
+            Boolean lastOfRide = (Boolean) position.get("last");
 
             // TODO road op andere manier??
             String roadName = "test";
 
-            this.carPositionService.saveCarPosition(cartrackerId, moment,
-                    xCoordinate, yCoordinate, roadName, meter);
+            this.carPositionService.processCarPosition(cartrackerId, moment,
+                    xCoordinate, yCoordinate, roadName, meter, rideId, 
+                    lastOfRide);
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

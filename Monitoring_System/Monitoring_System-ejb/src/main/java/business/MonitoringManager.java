@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package business;
 
 import java.io.IOException;
@@ -22,6 +17,15 @@ import common.domain.TestType;
 import data.SystemDao;
 import data.TestDao;
 import data.jms.CheckRequestSender;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -61,7 +65,6 @@ public class MonitoringManager {
     public List<System> getSystems() {
         return this.systemDao.getSystems();
     }   
-
     
     /**
      * Retrieves the server status and maps it to a Test object.
@@ -108,11 +111,20 @@ public class MonitoringManager {
             }
         }
         
+        if(tests.isEmpty()) {
+            // Convert util.Date to sql.Date.
+                java.util.Date currentDate = new java.util.Date();
+                
+            return new Test(
+                        TestType.STATUS, 
+                        new Timestamp(currentDate.getTime()), 
+                        false);
+        }
         // If the server status was retrieved, get the first test object.
         // This can be expanded by getting all the tests. The application
         // currently expects one deployed application per server (system).
         return tests.get(0);
-    }   
+    }
     
     /**
      * Retrieves the system based on its unique name.
@@ -134,9 +146,68 @@ public class MonitoringManager {
         List<Test> tests = system.getTests();
         java.util.Date date = new java.util.Date();
         Test test = new Test(type,new Timestamp(date.getTime()),result);
+        system.addTest(test);
         tests.add(test);
         this.testDao.create(test);
         this.systemDao.edit(system);    
+    }
+    
+    /**
+     * Updates a test to a system based on its name.
+     * @param systemName The name of the system.
+     * @param result The result of the test.
+     * @param type The type of test that has to be created and added.
+     * @param time The time the test was saved.
+     * @param newTime The correct time that should be used to update.
+     */
+    public void updateTest(String systemName, boolean result
+            , TestType type, Timestamp time, Timestamp newTime) {
+        // Gets the system based on its name.
+        System system = this.systemDao.getSystemByName(systemName);
+
+
+        // Retrieves the specific test from the system object.
+        List<Test> tests = system.getTests();
+        java.lang.System.out.println("DATE: " + time + "nano: " + time.getNanos());
+        List<Test> filteredTests = tests.stream()
+                .filter(x -> x.getDate().equals(time) && x.getTestType() == type)
+                .collect(Collectors.toList());
+        
+        /*
+        List<Test> filteredTests = new ArrayList<>();
+        for(Test t : tests) {
+            Timestamp ti = t.getDate();
+            ti.setNanos(0);
+            if(ti.equals(time)) {
+                if(t.getTestType() == type){
+                    filteredTests.add(t);
+                }
+            }
+        }*/
+        
+   
+        Test test = filteredTests.get(0);
+        test.setDate(newTime);
+        test.setResult(result);
+        
+        this.testDao.edit(test);
+        this.systemDao.edit(system);       
+    }
+    
+    /**
+     * Retrieves all tests for every type from a system.
+     * @param system The system where the tests are requested from.
+     * @return A list of test for every type of test.
+     */
+    public List<List<Test>> retrieveTests(System system) {
+        List<List<Test>> returnList = new ArrayList<>();
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.STATUS));
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.FUNCTIONAL));
+        returnList.add(this.testDao.retrieveAllTestsForTypeForSystem(system
+                , TestType.ENDPOINTS));
+        return returnList;
     }
     
     /**
@@ -156,43 +227,95 @@ public class MonitoringManager {
     }
     
     /**
-     * Tests the functional state of the systems. 
-     */
-    public void testFunctionalStateOfSystems() {
-        this.checkRequestSender.requestChecks();
-    }
-    
-    /**
      * Tests all systems on 3 test types. Functional, Endpoints and Status.
      * Stores the result.
      */
-    public void testSystems() {
-        // Sends a message into the topic so the systems can send their test
-        // results.
-        this.checkRequestSender.requestChecks();
+    public void testSystems() {     
+        
+        java.util.Date date= new java.util.Date();
+        Timestamp currentDate = new Timestamp(date.getTime());     
+        // The nanos are lost during communication, removing them early makes
+        // the values consistent.
+        currentDate.setNanos(0);
         
         // For every system retrives the server status, adds this as a test
         // to the database. Creates failed tests for functional and endpoints.
         for(System s : this.getSystems()) {
             Test testStatus = this.retrieveServerStatus(s);
             s.addTest(testStatus);
-            this.testDao.create(testStatus);
-            
-            java.util.Date date= new java.util.Date();
-            Timestamp currentDate = new Timestamp(date.getTime());
+            this.testDao.create(testStatus);                
                 
             // Creates tests that will be fixed later.
             Test testEndpoints = 
                     new Test(TestType.ENDPOINTS, currentDate, false);
-            Test testFunctional =
-                    new Test(TestType.FUNCTIONAL, currentDate, false);
-                        
+            
+            s.addTest(testEndpoints);
+            
+            Boolean testResult = false;
+
+            
+            // Get testResults from jenkins
+            try {
+                JSONObject json = readJsonFromUrl(
+                        "http://192.168.24.70:8070/job/PTS-S62B-"
+                        + s.getName()
+                    // TODO: UNCOMMENT FOR DEPLOYMENT
+                    //  + "-deploy"
+                        + "/lastSuccessfulBuild/testReport/api/json");
+                String result = String.valueOf(json.get("failCount"));
+                // If result "failCount" == 0 testResult is true
+                if (result.equals("0")) {
+                    testResult = Boolean.TRUE;
+                }
+            } catch (IOException | JSONException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+
+            // create testFunctional with correct result
+            Test testFunctional
+                    = new Test(TestType.FUNCTIONAL, currentDate, testResult);
+            s.addTest(testFunctional);
+            this.testDao.create(testFunctional);
+            
+                           
             // Stores all the tests in the database.
             this.testDao.create(testEndpoints);
-            this.testDao.create(testFunctional);
-            this.testDao.create(testStatus);
 
             this.systemDao.edit(s);    
+  
+        }
+        // Sends a message into the topic so the systems can send their test
+        // results.
+        this.checkRequestSender.requestChecks(date);
+    }
+    
+    /**
+     * Read JSON from jenkins.
+     *
+     * @param url correct url for testresults.
+     * @return JSON object with testresults.
+     * @throws IOException fail at reading inputstream.
+     * @throws JSONException fail at JSON parse.
+     */
+    public static JSONObject readJsonFromUrl(String url)
+            throws IOException, JSONException {
+        InputStream is = new URL(url).openStream();
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is,
+                    Charset.forName("UTF-8")));
+
+            StringBuilder sb = new StringBuilder();
+            int cp;
+            while ((cp = rd.read()) != -1) {
+                sb.append((char) cp);
+            }
+            String jsonText = sb.toString();
+
+            JSONObject json = new JSONObject(jsonText);
+
+            return json;
+        } finally {
+            is.close();
         }
     }
     

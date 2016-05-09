@@ -11,7 +11,8 @@ public class PositionInfo {
     private Leg leg;
     //metres from start of leg.
     private Double distanceFromStart;
-    private Double speed; // m/s
+    // m/s
+    private Double speed; 
 
     /**
      * @return the position.
@@ -76,8 +77,9 @@ public class PositionInfo {
      */
     @Override
     public String toString() {
-        return "PositionInfo [position=" + this.position + ", leg=" + this.leg + 
-                ", distanceFromStart=" + this.distanceFromStart
+        return "PositionInfo [position=" + this.position 
+                + ", leg=" + this.leg 
+                + ", distanceFromStart=" + this.distanceFromStart
                 + ", speed=" + this.speed + "]";
     }
 }
