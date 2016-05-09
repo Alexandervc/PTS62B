@@ -53,6 +53,10 @@ public class BillBean {
      */
     public BillBean() {
         this.bill = null;
+        this.loadDates();
+    }
+    
+    public void loadDates() {
         this.dates = new ArrayList<>();
         this.datePast = new GregorianCalendar();
 
@@ -131,23 +135,23 @@ public class BillBean {
     public void generateBill() {
         bill = null;
         try {
-            // Calc begin date
+            // Calc begin date month
             Calendar temp = this.datePast;
             temp.add(Calendar.YEAR, -2);
             temp.add(Calendar.MONTH, Integer.parseInt(this.date));
 
             String tempBeginDateString = "01" + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
+            
+            Date dateBegin = DATEFORMAT.parse(tempBeginDateString);
 
-            // Calc end Date
+            // Calc end date month
             temp.add(Calendar.MONTH, 1);
             temp.set(Calendar.DATE, 1);
             temp.add(Calendar.DATE, -1);
             String tempEndDateString = temp.get(Calendar.DAY_OF_MONTH) + "/"
                     + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
-
-            // Convert Calendar tot Date
-            Date dateBegin = DATEFORMAT.parse(tempBeginDateString);
+            
             Date dateEnd = DATEFORMAT.parse(tempEndDateString);
 
             // Get bill from service
