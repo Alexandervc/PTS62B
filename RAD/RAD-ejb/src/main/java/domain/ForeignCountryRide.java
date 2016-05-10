@@ -33,7 +33,7 @@ public class ForeignCountryRide implements Serializable {
      * Id of the foreign country ride, this is also stored in a the RoadUsage
      * object.
      */
-    private Long foreignCountryRideId;
+    private String foreignCountryRideId;
     
     /**
      * Total price of the foreign country ride.
@@ -52,7 +52,7 @@ public class ForeignCountryRide implements Serializable {
      * @param foreignCountryRideId The id of the foreign country ride.
      * @param totalPrice The total price of the foreign country ride.
      */
-    public ForeignCountryRide(Long foreignCountryRideId, double totalPrice) {
+    public ForeignCountryRide(String foreignCountryRideId, double totalPrice) {
         this.foreignCountryRideId = foreignCountryRideId;
         this.totalPrice = totalPrice;
     }
@@ -76,14 +76,14 @@ public class ForeignCountryRide implements Serializable {
      * Gets the ForeignCountryRideId.
      * @return The ForeignCountryRideId.
      */
-    public Long getForeignCountryRideId() {
+    public String getForeignCountryRideId() {
         return this.foreignCountryRideId;
     }
 
     /**
      * Gets the ForeignCountryRideId.
      */
-    public void setForeignCountryRideId(Long foreignCountryRideId) {
+    public void setForeignCountryRideId(String foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
     }
 

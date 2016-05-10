@@ -26,7 +26,7 @@ public class ForeignCountryManager {
      * @return 
      */
     public ForeignCountryRide findRideByForeignCountryRideId(
-            Long foreignCountryRideId) {
+            String foreignCountryRideId) {
         
         return this.foreignCountryRideDao.findByForeignCountryRideId(
                 foreignCountryRideId);
@@ -38,7 +38,7 @@ public class ForeignCountryManager {
      * @param totalPrice The total price of the foreign country ride.
      */
     public void createForeignCountryRide(
-            Long foreignCountryRideId, 
+            String foreignCountryRideId, 
             double totalPrice) {
         this.foreignCountryRideDao.create(
                 new ForeignCountryRide(foreignCountryRideId, totalPrice));

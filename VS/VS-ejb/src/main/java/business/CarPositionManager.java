@@ -21,6 +21,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.ForeignRideService;
 import service.TotalPriceService;
+import service.rest.clients.ForeignCountryRideClient;
 
 /**
  * The manager of carPositions.
@@ -54,6 +55,9 @@ public class CarPositionManager {
     @Inject
     private ForeignRideService foreignRideService;
 
+    @Inject
+    private ForeignCountryRideClient foreignCountryRideClient;
+    
     /**
      * Process the given information of a CarPosition.
      * @param cartrackerId The unique identifier of a cartracker. Cannot be null
@@ -71,7 +75,7 @@ public class CarPositionManager {
      */
     public void processCarPosition(String cartrackerId, Date moment,
             Double xCoordinate, Double yCoordinate, String roadName,
-            Double meter, Long rideId, Boolean lastOfRide) {
+            Double meter, String rideId, Boolean lastOfRide) {
         try {
             this.saveCarPosition(cartrackerId, moment, xCoordinate, yCoordinate,
                     roadName, meter, rideId, lastOfRide);
@@ -90,7 +94,7 @@ public class CarPositionManager {
                 // Get total price
                 double totalPrice = this.totalPriceService
                         .getTotalPrice(roadUsages);
-
+                
                 // Send
                 this.foreignRideService.sendForeignRide(cartrackerId,
                         totalPrice, carPositions, countryCode);
@@ -98,6 +102,29 @@ public class CarPositionManager {
         } catch (IllegalArgumentException iaEx) {
             LOGGER.log(Level.SEVERE, null, iaEx);
         }
+    }
+    
+    /**
+     * Stores the car positions into the database and creates a 
+     * ForeignCountryRide in RAD.
+     * @param carPositions The car positions of the ForeignCountryRide.
+     * @param foreignCountryRideId The id of the ForeignCountryRide, this is 
+     *      equal to the RideId of the CarPositions.
+     * @param totalPrice The total price of the ForeignCountryRide.
+     */
+    public void processForeignCarRide(
+            List<CarPosition> carPositions, 
+            String foreignCountryRideId,
+            double totalPrice) {
+        
+        // Save the CarPositions.
+        for(CarPosition carPosition : carPositions) {
+            this.carPositionDao.create(carPosition);
+        }
+        
+        this.foreignCountryRideClient
+                .addForeignCountryRide(foreignCountryRideId, totalPrice);
+        
     }
 
     /**
@@ -113,14 +140,9 @@ public class CarPositionManager {
      */
     private void saveCarPosition(String cartrackerId, Date moment,
             Double xCoordinate, Double yCoordinate, String roadName,
-            Double meter, Long rideId, Boolean lastOfRide) {
+            Double meter, String rideId, Boolean lastOfRide) {
         // Find cartracker
-        Cartracker cartracker = this.cartrackerDao.find(cartrackerId);
-        if (cartracker == null) {
-            // Create cartracker
-            this.cartrackerDao.create(new Cartracker(cartrackerId));
-            cartracker = this.cartrackerDao.find(cartrackerId);
-        }
+        Cartracker cartracker = this.findCartracker(cartrackerId);
 
         // TODO road anders
         List<Road> roads = this.roadDao.findAll();
@@ -132,5 +154,27 @@ public class CarPositionManager {
                 yCoordinate, road, meter, rideId, lastOfRide);
 
         this.carPositionDao.create(cp);
+    }
+    
+    public Cartracker findCartracker(String cartrackerId) {
+        // Find cartracker
+        Cartracker cartracker = this.cartrackerDao.find(cartrackerId);
+        if (cartracker == null) {
+            // Create cartracker
+            this.cartrackerDao.create(new Cartracker(cartrackerId));
+            cartracker = this.cartrackerDao.find(cartrackerId);
+        }
+        
+        return cartracker;
+    }
+    
+    /**
+     * Gets the next ride id of a carposition for a country code.
+     * @param countryCode The country code to sort on. For example: "PT".
+     * @return The next ride id.
+     */
+    public Integer getNextRideIdOfCountryCode(String countryCode) {
+        int id = this.carPositionDao.getLastIdOfCountryCode(countryCode);
+        return id++;
     }
 }

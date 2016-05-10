@@ -55,9 +55,31 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      * @param rideId The id of the ride to get the carpositions for.
      * @return List of carpostions.
      */
-    public List<CarPosition> getPositionsOfRide(Long rideId) {
+    public List<CarPosition> getPositionsOfRide(String rideId) {
         Query q = this.em.createNamedQuery("CarPosition.getPositionsOfRide");
         q.setParameter("rideId", rideId);
         return q.getResultList();
+    }
+    
+    /**
+     * Get the last ride id of a carposition from a countrycode.
+     * @param countryCode The country code to sort on. For example: "PT".
+     * @return The last ride id.
+     */
+    public Integer getLastIdOfCountryCode(String countryCode) {
+        Query q = this.em.createNamedQuery("CarPosition.getLastIdOfCountryCode");
+        q.setParameter("countryCode", countryCode + "%");
+        
+        List<String> result = q.getResultList();
+        Integer maxRideId = 0;
+        
+        for(String rideId : result) {
+            Integer parsedRideId = Integer.parseInt(rideId.substring(2)); 
+            if (maxRideId < parsedRideId) {
+                maxRideId = parsedRideId;
+            }
+        }
+        
+        return maxRideId;
     }
 }

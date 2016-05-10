@@ -16,7 +16,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     private String roadName;
     private RoadType roadType;
     private Double km;
-    private Long foreignCountryRideId;
+    private String foreignCountryRideId;
 
     /**
      * Instantiates the RoadUsage class without a ForeignCountryRideId.
@@ -53,7 +53,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
             String roadName,
             String type,
             Double km,
-            Long foreignCountryRideId) {
+            String foreignCountryRideId) {
         this.roadName = roadName;
         this.roadType = Enum.valueOf(RoadType.class, type);
         this.km = km;
@@ -71,7 +71,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
             String roadName,
             RoadType type,
             Double km,
-            Long foreignCountryRideId) {
+            String foreignCountryRideId) {
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
@@ -110,11 +110,11 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         return this.roadType;
     }
     
-    public Long getForeignCountryRideId() {
+    public String getForeignCountryRideId() {
         return this.foreignCountryRideId;
     }
 
-    public void setForeignCountryRideId(Long foreignCountryRideId) {
+    public void setForeignCountryRideId(String foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
     }
 
