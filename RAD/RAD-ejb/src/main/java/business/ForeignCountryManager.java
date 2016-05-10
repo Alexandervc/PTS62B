@@ -23,7 +23,7 @@ public class ForeignCountryManager {
      * Find the ForeignCountryRide by foreignCountryRideId. This uses the
      * ForeignCountryRideDao.
      * @param foreignCountryRideId The id of the foreignCountryRide.
-     * @return 
+     * @return The ForeignCountryRide with foreignCountryRideId.
      */
     public ForeignCountryRide findRideByForeignCountryRideId(
             String foreignCountryRideId) {
@@ -50,7 +50,7 @@ public class ForeignCountryManager {
      * @return The ForeignCountryRideDao object.
      */
     public ForeignCountryRideDao getForeignCountryRideDao() {
-        return foreignCountryRideDao;
+        return this.foreignCountryRideDao;
     }
     
     /**
@@ -58,7 +58,8 @@ public class ForeignCountryManager {
      * Set the ForeignCountryRideDao.
      * @param foreignCountryRideDao The ForeignCountryRideDao object.
      */
-    public void setForeignCountryRideDao(ForeignCountryRideDao foreignCountryRideDao) {
+    public void setForeignCountryRideDao(
+            ForeignCountryRideDao foreignCountryRideDao) {
         this.foreignCountryRideDao = foreignCountryRideDao;
     }    
 }
