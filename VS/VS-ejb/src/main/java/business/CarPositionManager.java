@@ -174,7 +174,6 @@ public class CarPositionManager {
      * @return The next ride id.
      */
     public Integer getNextRideIdOfCountryCode(String countryCode) {
-        int id = this.carPositionDao.getLastIdOfCountryCode(countryCode);
-        return id++;
+        return 1 + this.carPositionDao.getLastIdOfCountryCode(countryCode);
     }
 }
