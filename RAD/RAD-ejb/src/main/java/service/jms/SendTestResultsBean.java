@@ -21,15 +21,16 @@ import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 
 /**
- *  The bean that sends the results of a test.
+ * The bean that sends the results of a test.
+ *
  * @author Edwin.
  */
 @Stateless
 public class SendTestResultsBean {
-    
+
     private static final Logger LOGGER = Logger
             .getLogger(SendTestResultsBean.class.getName());
-    
+
     // The timeout time for messages send from this class.
     private static final long TIMEOUT = 60000;
 
@@ -41,12 +42,12 @@ public class SendTestResultsBean {
     private Destination queue;
 
     /**
-     * send result to LMS
-     * param Result result
+     * send result to LMS param Result result
+     *
      * @param date The date of the test.
      */
     public void sendTestResults(String date) {
-        try {         
+        try {
             MapMessage mapMessage = this.context.createMapMessage();
             // send result to method receiveTestresults
             mapMessage.setStringProperty("method", "receiveStatus");
@@ -54,11 +55,11 @@ public class SendTestResultsBean {
             // set message string systemName
             mapMessage.setString("system", "RAD");
             // set message boolean result
-            
+
             // Formats the date so that it can be send in a clear format.
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-            String dateString = dateFormat.format(new Date());            
+            String dateString = dateFormat.format(new Date());
 
             mapMessage.setString("date", date);
             mapMessage.setString("newDate", dateString);

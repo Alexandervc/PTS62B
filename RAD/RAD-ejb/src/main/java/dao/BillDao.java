@@ -17,7 +17,7 @@ import javax.persistence.TypedQuery;
 public class BillDao extends AbstractFacade<Bill> 
         implements Serializable {
 
-    @PersistenceContext(unitName = "RADpu")
+    @PersistenceContext
     private EntityManager em;
 
     /**
@@ -44,7 +44,7 @@ public class BillDao extends AbstractFacade<Bill>
     public List<Bill> findAllForUser(Person person) {
         List<Bill> messages;
         TypedQuery<Bill> query = this.em
-                .createNamedQuery("bill.findAllForUser", Bill.class);
+                .createNamedQuery("Bill.findAllForUser", Bill.class);
         query.setParameter("person", person);
         messages = query.getResultList();
         return messages;

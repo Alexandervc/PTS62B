@@ -14,25 +14,28 @@ import service.rest.clients.RoadUsagesClient;
 
 /**
  * The service for road usages.
+ *
  * @author Alexander
  */
 @Stateless
 public class RoadUsagesService {
+
     @Inject
     private RoadUsagesClient roadUsagesClient;
-    
+
     /**
      * Get the roadUsages for the given cartrackerId between the given beginDate
-     *      and endDate.
+     * and endDate.
+     *
      * @param cartrackerId The cartracker id to get the roadUsages for.
-     * @param beginDate The begin of the period to get the roadUsages 
-     *      in between.
+     * @param beginDate The begin of the period to get the roadUsages in
+     * between.
      * @param endDate The end of the period to get the roadUsages in between.
      * @return List of RoadUsage.
      */
     public List<RoadUsage> getRoadUsages(String cartrackerId, Date beginDate,
             Date endDate) {
-        return this.roadUsagesClient.getRoadUsages(cartrackerId, beginDate, 
+        return this.roadUsagesClient.getRoadUsages(cartrackerId, beginDate,
                 endDate);
     }
 }

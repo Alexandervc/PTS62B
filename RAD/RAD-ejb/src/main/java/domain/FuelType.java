@@ -15,5 +15,4 @@ public enum FuelType {
     Gas,
     Hybrid,
     Electric
-    
 }

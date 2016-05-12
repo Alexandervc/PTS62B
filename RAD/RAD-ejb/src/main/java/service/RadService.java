@@ -31,6 +31,7 @@ import dto.RoadUsage;
  */
 @Stateless
 public class RadService {
+
     @Inject
     private PersonManager personManager;
     @Inject
@@ -127,6 +128,7 @@ public class RadService {
 
     /**
      * Generate the bill for the given user between the given dates.
+     *
      * @param username The user to generate a bill for.
      * @param begin The begin date of the period to generate the bill for.
      * @param end The end date of the period to generate the bill for.
@@ -210,7 +212,7 @@ public class RadService {
      * of the ride.
      *
      * @param foreignCountryRideId The id of the foreign country ride, this id
-     *      is set in VS when the message is received from the central system.
+     * is set in VS when the message is received from the central system.
      * @param totalPrice The total price of the foreign country ride.
      */
     public void addForeignCountryRide(

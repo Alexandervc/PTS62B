@@ -20,17 +20,18 @@ import javax.ws.rs.core.Response;
 
 /**
  * Helper for requesting roadUsages from VS via REST.
+ *
  * @author Alexander
  */
 @Stateless
 public class RoadUsagesClient {
-    private static final String BASE_URL = 
-            "http://localhost:8080/VS-web/vsapi";
-    
+
+    private static final String BASE_URL
+            = "http://localhost:8080/VS-web/vsapi";
+
     // TODO DEPLOY: UNCOMMENT
     //private static final String BASE_URL =
     //        "http://192.168.24.72:8080/VS-web/vsapi";
-
     private Client client;
 
     @PostConstruct
@@ -40,10 +41,11 @@ public class RoadUsagesClient {
 
     /**
      * Get the roadUsages for the given cartrackerId between the given beginDate
-     *      and endDate.
+     * and endDate.
+     *
      * @param cartrackerId The cartracker id to get the roadUsages for.
-     * @param beginDate The begin of the period to get the roadUsages 
-     *      in between.
+     * @param beginDate The begin of the period to get the roadUsages in
+     * between.
      * @param endDate The end of the period to get the roadUsages in between.
      * @return List of RoadUsage.
      */
@@ -71,7 +73,8 @@ public class RoadUsagesClient {
 
         // Read entity
         GenericType<List<RoadUsage>> roadUsageType
-                = new GenericType<List<RoadUsage>>() {};
+                = new GenericType<List<RoadUsage>>() {
+        };
         return response.readEntity(roadUsageType);
     }
 }

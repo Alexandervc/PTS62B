@@ -7,6 +7,7 @@ package controller;
 
 import domain.Bill;
 import domain.ListBoxDate;
+import domain.Person;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import service.RadService;
 import dto.RoadUsage;
+import service.PersonService;
 
 /**
  * Bean for RAD-web.
@@ -40,6 +42,9 @@ public class BillBean {
     
     @EJB
     private RadService service;
+    
+    @EJB
+    private PersonService personService;
 
     private Bill bill;
     private String name;
@@ -149,6 +154,8 @@ public class BillBean {
             // Convert Calendar tot Date
             Date dateBegin = DATEFORMAT.parse(tempBeginDateString);
             Date dateEnd = DATEFORMAT.parse(tempEndDateString);
+            
+            List<Person> persons = this.personService.searchPersons(this.name);
 
             // Get bill from service
             this.bill = this.service.generateBill(this.name, 
@@ -194,9 +201,9 @@ public class BillBean {
      * @return String person name.
      */
     public String getPersonName() {
-        if (this.bill.getPerson2() != null) {
-            return this.bill.getPerson2().getInitials() + " " + 
-                    this.bill.getPerson2().getLastName();
+        if (this.bill.getPerson() != null) {
+            return this.bill.getPerson().getInitials() + " " + 
+                    this.bill.getPerson().getLastName();
         } else {
             return "";
         }
