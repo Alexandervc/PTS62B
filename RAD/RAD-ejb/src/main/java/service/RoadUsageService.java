@@ -18,7 +18,7 @@ import service.rest.clients.RoadUsagesClient;
  * @author Alexander
  */
 @Stateless
-public class RoadUsagesService {
+public class RoadUsageService {
 
     @Inject
     private RoadUsagesClient roadUsagesClient;
