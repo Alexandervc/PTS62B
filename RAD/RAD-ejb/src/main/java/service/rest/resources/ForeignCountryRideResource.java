@@ -11,12 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
+import javax.persistence.EntityExistsException;
+import javax.persistence.TransactionRequiredException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.RadService;
 
@@ -48,7 +46,13 @@ public class ForeignCountryRideResource {
                     input.getTotalPrice());
             
             return Response.status(Response.Status.OK).build();
-        } catch (Exception ex) {
+        } catch (EntityExistsException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (IllegalArgumentException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (TransactionRequiredException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

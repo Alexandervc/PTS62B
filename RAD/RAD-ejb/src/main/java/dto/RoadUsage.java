@@ -75,6 +75,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
+        this.foreignCountryRideId = foreignCountryRideId;
     }
     
     /**
