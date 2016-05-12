@@ -4,8 +4,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <f:metadata>
+        <f:viewParam name="personId" value="#{invoiceBean.personId}"/>
+        <f:event type="postAddToView" listener="#{invoiceBean.setup()}"/>
+    </f:metadata>
 
     <h:body>         
         <ui:composition template="templates/template.xhtml">
@@ -15,58 +19,53 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
-                            <h:form class="form-horizontal">
-                                <div class="input-group">
-                                    <span id="form-span" class="input-group-btn">
-                                        <h:selectOneMenu class="form-control" 
-                                                            id="dateBox1"
-                                                            value="#{billBean.date}">
-                                            <ui:repeat var="month" value="#{billBean.dates}">
-                                                <f:selectItem itemValue="#{month.months}" 
-                                                              itemLabel="#{month.date}">
-                                                </f:selectItem>
-                                            </ui:repeat> 
-                                        </h:selectOneMenu>
-                                    </span>                  
-                                </div>
+                            <h:form>
+                                <h:selectOneMenu class="form-control" 
+                                                    id="dateBox1"
+                                                    value="#{invoiceBean.date}">                                    
+                                    <f:selectItems var="month" 
+                                            value="#{invoiceBean.dates}"
+                                            itemValue="#{month.months}" 
+                                            itemLabel="#{month.date}">
+                                    </f:selectItems>
+                                </h:selectOneMenu> 
                             </h:form>
                         </div>
                         <div class="col-sm-12" id="billDiv">
-                            <ui:fragment rendered="#{billBean.bill != null}">
+                            <ui:fragment rendered="#{invoiceBean.bills.size() > 0}">
                                 <h1>Factuur</h1>
-                                <h3>#{billBean.personName}</h3>
+                                <h3>#{invoiceBean.personName}</h3>
 
                                 <div class="table-responsive">
-                                    <h:dataTable class="table table-striped table-bordered"
-                                                value="#{billBean.bill.roadUsages}" var="ru">
-                                        <h:column>
-                                           <f:facet name="header">RoadName</f:facet> 
-                                           #{ru.roadName}
-                                        </h:column>
-                                        <h:column>
-                                           <f:facet name="header">RoadType</f:facet> 
-                                           #{ru.roadType}
-                                        </h:column>
-                                        <h:column class="txt-right">
-                                           <f:facet name="header">Km</f:facet> 
-                                           #{ru.km}
-                                        </h:column>
-                                        <h:column class="txt-right">
-                                           <f:facet name="header">Price/km</f:facet> 
-                                           #{billBean.getRate(ru)}
-                                        </h:column>
-                                        <h:column class="txt-right">
-                                           <f:facet name="header">TotalPrice</f:facet> 
-                                           #{billBean.getPrice(ru)}
-                                        </h:column>
-                                        <f:facet name="footer">
-                                            <h:outputText value="Total: #{billBean.totalPrice}" />
-                                        </f:facet>
-                                    </h:dataTable>
+                                    <ui:repeat var="bill" value="#{invoiceBean.bills}">
+                                        <h:dataTable class="table table-striped table-bordered"
+                                                    value="#{bill.roadUsages}" var="ru">
+                                            <h:column>
+                                               <f:facet name="header">RoadName</f:facet> 
+                                               ru.roadName
+                                            </h:column>
+                                            <h:column>
+                                               <f:facet name="header">RoadType</f:facet> 
+                                               ru.roadType
+                                            </h:column>
+                                            <h:column class="txt-right">
+                                               <f:facet name="header">Km</f:facet> 
+                                               ru.km
+                                            </h:column>
+                                            <h:column class="txt-right">
+                                               <f:facet name="header">Price/km</f:facet> 
+                                               invoice.getRate(ru)
+                                            </h:column>
+                                            <h:column class="txt-right">
+                                               <f:facet name="header">TotalPrice</f:facet> 
+                                               invoice.getPrice(ru)
+                                            </h:column>
+                                            <f:facet name="footer">
+                                                <h:outputText value="Total: #{invoiceBean.getTotalPrice(bill)}" />
+                                            </f:facet>
+                                        </h:dataTable>
+                                    </ui:repeat>
                                 </div>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{billBean.bill == null}">
-                                <h3>Geen persoon geselecteerd</h3>
                             </ui:fragment>
                         </div>
                     </div>                    

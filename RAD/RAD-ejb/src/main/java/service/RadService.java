@@ -84,6 +84,16 @@ public class RadService {
     public Person findPersonByName(String name) {
         return this.personManager.findPersonByName(name);
     }
+    
+    /**
+     * Find person in database by personId.
+     * 
+     * @param personId id of person.
+     * @return found person.
+     */
+    public Person findPersonById(Long personId) {
+        return this.personManager.findPersonById(personId);
+    }
 
     /**
      * Add Rate to database.

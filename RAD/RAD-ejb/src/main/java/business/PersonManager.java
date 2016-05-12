@@ -38,7 +38,10 @@ public class PersonManager {
     }
     
     public Person findPersonByName(String name){
-        Person person = this.personDAO.findByName(name);
-        return person;
+        return this.personDAO.findByName(name);
+    }
+    
+    public Person findPersonById(Long personId) {
+        return this.personDAO.find(personId);
     }
 }
