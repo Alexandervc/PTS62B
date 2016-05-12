@@ -30,7 +30,11 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
-            + "ORDER BY cp.id")
+            + "ORDER BY cp.id"),
+    @NamedQuery(name="CarPosition.getLastIdOfCountryCode", query = "SELECT "
+            + "cp.rideId "
+            + "FROM CarPosition cp "
+            + "WHERE cp.rideId LIKE :countryCode")
 })
 public class CarPosition implements Serializable {
     @Id
@@ -41,7 +45,7 @@ public class CarPosition implements Serializable {
     private Double xCoordinate;
     private Double yCoordinate;
     private Double meter;
-    private Long rideId;
+    private String rideId;
     private Boolean lastOfRide;
     
     @ManyToOne
@@ -74,7 +78,7 @@ public class CarPosition implements Serializable {
      *      the ride or not.
      */
     public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
-            Double yCoordinate, Road road, Double meter, Long rideId, 
+            Double yCoordinate, Road road, Double meter, String rideId, 
             Boolean lastOfRide) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
@@ -154,11 +158,11 @@ public class CarPosition implements Serializable {
         this.meter = meter;
     }
 
-    public Long getRideId() {
+    public String getRideId() {
         return this.rideId;
     }
 
-    public void setRideId(Long rideId) {
+    public void setRideId(String rideId) {
         this.rideId = rideId;
     }
 

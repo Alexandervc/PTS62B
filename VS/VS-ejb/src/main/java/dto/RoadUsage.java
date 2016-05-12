@@ -9,54 +9,128 @@ import domain.RoadType;
 import java.io.Serializable;
 
 /**
- * Helper class to store a usage of a road during a given period.
+ * Class RoadUsage.
  * @author Alexander
  */
-public class RoadUsage implements Serializable{
+public class RoadUsage implements Serializable, Comparable<RoadUsage> {
+    
     private static final Double KM_TO_METER = 1000.0;
     
     private String roadName;
     private RoadType roadType;
     private Double km;
+    private Long foreignCountryRideId;
+
+    /**
+     * Instantiates the RoadUsage class without a ForeignCountryRideId.
+     * @param roadName String.
+     * @param type Type RoadType.
+     * @param km in Double.
+     */
+    public RoadUsage(String roadName, String type, Double km) {
+        this.roadName = roadName;
+        this.roadType = Enum.valueOf(RoadType.class, type);
+        this.km = km;
+    }
     
     /**
-     * Helper class to store a usage of a road during a given period.
-     * @param roadName The name of the road which this roadUsage is about.
-     *      Cannot be null or empty.
-     * @param type The type of the road which this roadUsage is about.
-     * @param km The distance in km's that is driven on the given road.
+     * Instantiates the RoadUsage class without a ForeignCountryRideId.
+     * @param roadName String.
+     * @param type Type RoadType.
+     * @param km in Double.
      */
     public RoadUsage(String roadName, RoadType type, Double km) {
-        if(roadName == null || roadName.isEmpty()) {
-            throw new IllegalArgumentException("roadName null or empty");
-        }
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
     }
+    
+    /**
+     * Instantiates the RoadUsage class with a ForeignCountryRideId.
+     * @param roadName String.
+     * @param type Type RoadType.
+     * @param km in Double.
+     * @param foreignCountryRideId The id of the foreign country ride.
+     */
+    public RoadUsage(
+            String roadName,
+            String type,
+            Double km,
+            Long foreignCountryRideId) {
+        this.roadName = roadName;
+        this.roadType = Enum.valueOf(RoadType.class, type);
+        this.km = km;
+        this.foreignCountryRideId = foreignCountryRideId;
+    }
+    
+    /**
+     * Instantiates the RoadUsage class with a ForeignCountryRideId.
+     * @param roadName String.
+     * @param type Type RoadType.
+     * @param km in Double.
+     * @param foreignCountryRideId The id of the foreign country ride.
+     */
+    public RoadUsage(
+            String roadName,
+            RoadType type,
+            Double km,
+            Long foreignCountryRideId) {
+        this.roadName = roadName;
+        this.roadType = type;
+        this.km = km;
+    }
+    
+    /**
+     * Constructor for converting to and from JSON.
+     * @deprecated JSON
+     */
+    @Deprecated
+    public RoadUsage() {
+        // For converting to and from JSON
+    }
 
+    /**
+     * Getter Km.
+     * @return km in Double.
+     */
     public Double getKm() {
         return this.km;
     }
 
-    public void setKm(Double km) {
-        this.km = km;
-    }
-
+    /**
+     * Getter RoadName.
+     * @return RoadName in String.
+     */
     public String getRoadName() {
         return this.roadName;
+    }
+
+    /**
+     * Getter RoadType.
+     * @return RoadType Type RoadType.
+     */
+    public RoadType getRoadType() {
+        return this.roadType;
+    }
+    
+    public Long getForeignCountryRideId() {
+        return this.foreignCountryRideId;
+    }
+
+    public void setForeignCountryRideId(Long foreignCountryRideId) {
+        this.foreignCountryRideId = foreignCountryRideId;
     }
 
     public void setRoadName(String roadName) {
         this.roadName = roadName;
     }
 
-    public RoadType getRoadType() {
-        return this.roadType;
-    }
-
     public void setRoadType(RoadType roadType) {
         this.roadType = roadType;
+    }
+
+    public void setKm(Double km) {
+        this.km = km;
     }
     
     /**
@@ -65,5 +139,15 @@ public class RoadUsage implements Serializable{
      */
     public void addMeter(Double meter) {
         this.km += meter / KM_TO_METER;
+    }
+
+    /**
+     * Compares RoadName from two RoadUsages.
+     * @param t Type RoadUsage.
+     * @return integer.
+     */
+    @Override
+    public int compareTo(RoadUsage t) {
+        return this.getRoadName().compareTo(t.getRoadName());
     }
 }

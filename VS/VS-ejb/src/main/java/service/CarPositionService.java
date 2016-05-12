@@ -35,7 +35,7 @@ public class CarPositionService {
      */
     public void processCarPosition(String cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
-            Double meter, Long rideId, Boolean lastOfRide) {
+            Double meter, String rideId, Boolean lastOfRide) {
         this.carPositionManager.processCarPosition(cartrackerId, moment, 
                 xCoordinate, yCoordinate, roadName, meter, rideId, lastOfRide);
     }

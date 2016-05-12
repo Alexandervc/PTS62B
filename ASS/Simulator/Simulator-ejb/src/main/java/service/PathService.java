@@ -48,10 +48,10 @@ import support.NavUtils;
  * @author Melanie.
  */
 @Stateless
-public class PathService implements Serializable {
-    // TODO DEPLOY: SET TO SERVERPATH
-    private static final String PROJECT_ROOT
-            = "C:\\Users\\Alexander\\Documents\\GitHub\\PTS62B\\ASS\\Simulator";
+public class PathService implements Serializable {    
+    private final static String PROJECT_ROOT = 
+            "C:\\Proftaak";
+
     private static final String API_KEY = 
             "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
     private static final int CARTRACKERS_COUNT = 5;

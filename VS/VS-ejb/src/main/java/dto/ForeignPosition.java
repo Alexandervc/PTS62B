@@ -9,7 +9,7 @@ package dto;
  * Helper class for sending positions to foreign countries.
  * @author Alexander
  */
-public class ForeignPosition {
+public class ForeignPosition implements Comparable<ForeignPosition> {
     private Double x;
     private Double y;
     private String datetime;
@@ -50,5 +50,9 @@ public class ForeignPosition {
         this.datetime = datetime;
     }
     
+    @Override
+    public int compareTo(ForeignPosition o) {
+        return getDatetime().compareTo(o.getDatetime());
+    }
     
 }

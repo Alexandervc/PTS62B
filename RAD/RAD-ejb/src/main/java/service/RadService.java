@@ -214,7 +214,7 @@ public class RadService {
      * @param totalPrice The total price of the foreign country ride.
      */
     public void addForeignCountryRide(
-            Long foreignCountryRideId,
+            String foreignCountryRideId,
             double totalPrice) {
         this.foreignCountryManager.createForeignCountryRide(
                 foreignCountryRideId,

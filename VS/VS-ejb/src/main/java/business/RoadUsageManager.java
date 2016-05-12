@@ -35,11 +35,23 @@ public class RoadUsageManager {
         // Make roadUsages from carPositions
         Map<Road, RoadUsage> roadUsages = new HashMap<>();
         for(CarPosition cp : carpositions) {
-            if(!roadUsages.containsKey(cp.getRoad())){
-                // Add roadUsage
-                RoadUsage ru = new RoadUsage(cp.getRoad().getName(), 
-                                cp.getRoad().getRoadType(),
-                                cp.getMeter());
+            if(!roadUsages.containsKey(cp.getRoad())) {
+                RoadUsage ru = null;
+                
+                if (cp.getRideId().startsWith("PT")) {
+                    // Add roadUsage
+                    ru = new RoadUsage(cp.getRoad().getName(), 
+                                    cp.getRoad().getRoadType(),
+                                    cp.getMeter(),
+                                    Long.parseLong(
+                                            cp.getRideId().substring(2)));
+                } else {
+                    // Add roadUsage
+                    ru = new RoadUsage(cp.getRoad().getName(), 
+                                    cp.getRoad().getRoadType(),
+                                    cp.getMeter());
+                }
+                
                 roadUsages.put(cp.getRoad(), ru);
             } else {
                 // Update km

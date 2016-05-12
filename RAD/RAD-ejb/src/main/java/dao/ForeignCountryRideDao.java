@@ -53,7 +53,7 @@ public class ForeignCountryRideDao extends AbstractFacade<ForeignCountryRide>
      *     one result, otherwise null.
      */
     public ForeignCountryRide findByForeignCountryRideId(
-            Long foreignCountryRideId) {
+            String foreignCountryRideId) {
         
         ForeignCountryRide returnValue = null;
         

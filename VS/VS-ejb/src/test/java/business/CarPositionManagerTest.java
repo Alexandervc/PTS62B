@@ -29,6 +29,7 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import service.TotalPriceService;
 import service.jms.SendForeignRideBean;
+import service.rest.clients.ForeignCountryRideClient;
 
 /**
  * Test for carpositionManager.
@@ -59,6 +60,10 @@ public class CarPositionManagerTest {
     @Produces
     private TotalPriceService radWsService;
     
+    @Mock
+    @Produces
+    private ForeignCountryRideClient foreignCountryRideClient;
+    
     // Cartracker
     private String cartrackerId;
     private Cartracker cartracker;
@@ -70,7 +75,7 @@ public class CarPositionManagerTest {
     private Double xCoordinate;
     private Double yCoordinate;
     private Double meters;
-    private Long rideId;
+    private String rideId;
     private Boolean lastOfRide;
     
     private CarPosition carPosition;
@@ -79,7 +84,7 @@ public class CarPositionManagerTest {
     private String foreignCartrackerId;
     private Cartracker foreignCartracker;
     
-    private Long foreignRideId;
+    private String foreignRideId;
     private Boolean foreignNotLastLastOfRide;
     private Boolean foreignLastLastOfRide;
     
@@ -104,10 +109,10 @@ public class CarPositionManagerTest {
         this.xCoordinate = 1.0;
         this.yCoordinate = 2.0;
         this.meters = 3.0;
-        this.rideId = 1L;
+        this.rideId = "1";
         this.lastOfRide = false;
         
-        this.foreignRideId = 2L;
+        this.foreignRideId = "2";
         this.foreignNotLastLastOfRide = false;
         this.foreignLastLastOfRide = true;
         

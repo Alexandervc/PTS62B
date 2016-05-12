@@ -168,6 +168,7 @@ public class MonitoringManager {
 
         // Retrieves the specific test from the system object.
         List<Test> tests = system.getTests();
+        java.lang.System.out.println("DATE: " + time + "nano: " + time.getNanos());
         List<Test> filteredTests = tests.stream()
                 .filter(x -> x.getDate().equals(time) && x.getTestType() == type)
                 .collect(Collectors.toList());
@@ -258,6 +259,8 @@ public class MonitoringManager {
                 JSONObject json = readJsonFromUrl(
                         "http://192.168.24.70:8070/job/PTS-S62B-"
                         + s.getName()
+                    // TODO: UNCOMMENT FOR DEPLOYMENT
+                    //  + "-deploy"
                         + "/lastSuccessfulBuild/testReport/api/json");
                 String result = String.valueOf(json.get("failCount"));
                 // If result "failCount" == 0 testResult is true
