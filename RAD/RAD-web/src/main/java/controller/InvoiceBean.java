@@ -29,7 +29,7 @@ import service.RadService;
 @RequestScoped
 public class InvoiceBean {
     private static final Logger LOGGER = Logger
-            .getLogger(BillBean.class.getName());
+            .getLogger(InvoiceBean.class.getName());
 
     @EJB
     private RadService service;
@@ -40,6 +40,7 @@ public class InvoiceBean {
     
     //Month from combobox
     private String date;
+    //private Calendar date;
     
     //Dates for combobox
     private List<ListBoxDate> dates;
@@ -59,6 +60,10 @@ public class InvoiceBean {
     public void setup() {
         //Get person by personId
         this.person = this.service.findPersonById(personId);
+        
+        //Setup dates (new test)
+        //GregorianCalendar cal = new GregorianCalendar();
+        //this.date = cal.
         
         //Setup dates
         this.date = "0";
@@ -97,17 +102,20 @@ public class InvoiceBean {
         temp.add(Calendar.DATE, -1);
         String tempEndDateString = temp.get(Calendar.DAY_OF_MONTH) + "/"
                 + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
+        
+        Date dateBegin = null;
+        Date dateEnd = null;
 
         try {
             // Convert Calendar tot Date
-            Date dateBegin = DATEFORMAT.parse(tempBeginDateString);
-            Date dateEnd = DATEFORMAT.parse(tempEndDateString);
+            dateBegin = DATEFORMAT.parse(tempBeginDateString);
+            dateEnd = DATEFORMAT.parse(tempEndDateString);
         } catch (ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }        
         
         //Get all bills
-        //this.bills = this.service.generateBill(this.name, dateBegin, dateEnd);
+        this.bills = this.service.generateBill(person.getFirstName(), dateBegin, dateEnd);
     }
     
     /**
