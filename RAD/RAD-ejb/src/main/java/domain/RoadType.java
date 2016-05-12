@@ -15,6 +15,6 @@ public enum RoadType {
     B,
     C,
     D,
-    E
-    
+    E,
+    FOREIGN_COUNTRY_ROAD
 }
