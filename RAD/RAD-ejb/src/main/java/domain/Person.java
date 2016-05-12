@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,12 +42,8 @@ public class Person implements Serializable {
     private String lastName;
     private String initials;
     
-    // Adress
-    private String streetName;
-    private String housenumber;
-    private String zipCode;
-    private String city;
-    private String country;
+    @Embedded
+    private Address address;
     
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Bill> bills;
@@ -79,23 +76,14 @@ public class Person implements Serializable {
      * @param firstname of person.
      * @param lastname of person.
      * @param initials of person.
-     * @param streetname of person.
-     * @param housenumber of person.
-     * @param zipcode of person.
-     * @param city of person.
-     * @param country of person.
+     * @param address of person.
      */
     public Person(String firstname, String lastname, String initials,
-            String streetname, String housenumber, String zipcode, 
-            String city, String country) {
+            Address address) {
         this.firstName = firstname;
         this.lastName = lastname;
         this.initials = initials;
-        this.streetName = streetname;
-        this.housenumber = housenumber;
-        this.zipCode = zipcode;
-        this.city = city;
-        this.country = country;
+        this.address = address;
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
     }
@@ -132,44 +120,12 @@ public class Person implements Serializable {
         this.initials = initials;
     }
 
-    public String getStreetName() {
-        return this.streetName;
-    }
-    
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public Address getAddress() {
+        return address;
     }
 
-    public String getHousenumber() {
-        return this.housenumber;
-    }
-
-    public void setHousenumber(String housenumber) {
-        this.housenumber = housenumber;
-    }
-
-    public String getZipCode() {
-        return this.zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-    
-    public String getCity() {
-        return this.city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return this.country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public List<Bill> getBills() {
@@ -205,5 +161,4 @@ public class Person implements Serializable {
         this.cars.add(c);
         c.setOwner(this);
     }
-    
 }

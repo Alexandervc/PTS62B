@@ -15,7 +15,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import service.RadService;
+import service.BillService;
+import service.PersonService;
+import service.RateService;
 
 /**
  * Request scoped bean for invoice page.
@@ -29,7 +31,13 @@ public class InvoiceBean {
             .getLogger(InvoiceBean.class.getName());
 
     @EJB
-    private RadService service;
+    private PersonService personService;
+    
+    @EJB
+    private BillService billService;
+    
+    @EJB
+    private RateService rateService;
     
     @Inject
     private InvoiceSession session;
@@ -52,7 +60,7 @@ public class InvoiceBean {
     public void setup() {
         //Get person by personId
         Long personId = this.session.getPersonId();
-        Person person = this.service.findPersonById(personId);
+        Person person = this.personService.findPersonById(personId);
         this.session.setPerson(person);
 
         //Setup dates
@@ -84,7 +92,7 @@ public class InvoiceBean {
     
     public void generateBills() {
         //Get all bills
-        //this.bills = this.service.generateBill(session.getPersonId(), this.month, this.year);
+        //this.bills = this.billService.generateBill(session.getPersonId(), this.month, this.year);
     }
     
     public void changeDate() {
@@ -95,6 +103,7 @@ public class InvoiceBean {
         this.year = cal.get(Calendar.YEAR);
         this.month = cal.get(Calendar.MONTH) + 1;
         
+        //Get all bills
         this.generateBills();
     }
     
@@ -106,7 +115,7 @@ public class InvoiceBean {
      */
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(this.service.getRate(roadUsage.getRoadType())
+        return formatter.format(this.rateService.getRate(roadUsage.getRoadType())
                 .getRate());
     }
 
@@ -118,7 +127,7 @@ public class InvoiceBean {
      */
     public String getPrice(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(roadUsage.getKm() * this.service
+        return formatter.format(roadUsage.getKm() * this.rateService
                 .getRate(roadUsage.getRoadType()).getRate());
     }
 

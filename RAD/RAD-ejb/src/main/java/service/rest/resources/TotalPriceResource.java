@@ -18,7 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import dto.RoadUsage;
-import service.RadService;
+import service.TotalPriceService;
 
 /**
  * The REST resource for totalPrice.
@@ -30,7 +30,7 @@ import service.RadService;
 public class TotalPriceResource {
 
     @Inject
-    private RadService radService;
+    private TotalPriceService totalPriceService;
 
     /**
      * Get the total price for the given roadUsages.
@@ -49,7 +49,7 @@ public class TotalPriceResource {
         }.getType();
         List<RoadUsage> roadUsages = gson.fromJson(roadUsagesJson, type);
 
-        Double totalPrice = this.radService.getTotalPrice(roadUsages);
+        Double totalPrice = this.totalPriceService.getTotalPrice(roadUsages);
 
         return Response.status(Response.Status.OK)
                 .entity(totalPrice)

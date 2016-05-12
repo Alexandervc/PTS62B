@@ -28,8 +28,6 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
-import service.RadService;
-import service.RoadUsagesService;
 
 /**
  *
@@ -37,7 +35,7 @@ import service.RoadUsagesService;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MultipleCarBillsTest {
-    
+    /*
     private RadService service;
         
     @Mock
@@ -186,5 +184,5 @@ public class MultipleCarBillsTest {
         this.roadUsage = new ArrayList<>();
         this.roadUsage.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
         this.roadUsage.add(new RoadUsage("Frederickplein", RoadType.A, 45.00));
-    }
+    }*/
 }

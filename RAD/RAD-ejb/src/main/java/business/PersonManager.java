@@ -1,6 +1,7 @@
 package business;
 
 import dao.PersonDao;
+import domain.Address;
 import domain.Person;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -20,19 +21,12 @@ public class PersonManager {
      * @param firstname String.
      * @param lastname String.
      * @param initials String.
-     * @param streetname String.
-     * @param number String.
-     * @param zipcode String.
-     * @param city String.
-     * @param country String.
+     * @param address Address.
      * @return new person Type Person.
      */
     public Person createPerson(String firstname, String lastname, 
-            String initials,String streetname, String number, String zipcode, 
-            String city, String country) {
-        
-        Person person = new Person(firstname, lastname, initials,
-            streetname, number, zipcode, city, country);
+            String initials, Address address) {
+        Person person = new Person(firstname, lastname, initials, address);
         this.personDAO.create(person);
         
         return person;
