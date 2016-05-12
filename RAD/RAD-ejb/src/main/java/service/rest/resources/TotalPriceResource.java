@@ -36,17 +36,16 @@ public class TotalPriceResource {
      * Get the total price for the given roadUsages.
      *
      * @param roadUsagesJson JSON-string of the given roadUsages to get the
-     * price for.
+     *      price for.
      * @return If successfull Response with status OK and Double price as
-     * entity.
+     *      entity.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getTotalPrice(String roadUsagesJson) {
         // Convert to roadUsages
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<RoadUsage>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<RoadUsage>>() {}.getType();
         List<RoadUsage> roadUsages = gson.fromJson(roadUsagesJson, type);
 
         Double totalPrice = this.totalPriceService.getTotalPrice(roadUsages);

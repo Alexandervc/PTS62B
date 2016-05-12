@@ -52,7 +52,7 @@ public class ForeignPosition implements Comparable<ForeignPosition> {
     
     @Override
     public int compareTo(ForeignPosition o) {
-        return getDatetime().compareTo(o.getDatetime());
+        return this.getDatetime().compareTo(o.getDatetime());
     }
     
 }

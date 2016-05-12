@@ -9,11 +9,8 @@ import business.BillManager;
 import domain.Bill;
 import domain.Car;
 import domain.Person;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -42,25 +39,18 @@ public class BillService {
     }
     
     /**
-     * Generate the bill for the given user between the given dates.
+     * Generate the bill for the given user and the given month.
      *
-     * @param username The user to generate a bill for.
-     * @param begin The begin date of the period to generate the bill for.
-     * @param end The end date of the period to generate the bill for.
+     * @param userId The user to generate a bill for.
+     * @param month The month to generate the bill for.
+     * @param year The year to generate the bill for.
      * @return The List of bills specific month and year.
      */
-    public List<Bill> generateBill(String username, Date begin, Date end) {
+    public List<Bill> generateBill(Long userId, int month, int year) {
         List<Bill> carBills = new ArrayList<>();
-        // format date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
-                Locale.getDefault());
-        // set month for bill
-        String month = dateFormat.format(begin);
-        // set year for bill
-        String year = Integer.toString(begin.getYear() + 1900);
-
+        
         // find person for bill
-        Person person = this.personService.findPersonByName(username);
+        Person person = this.personService.findPersonById(userId);
         if (person == null) {
             throw new IllegalArgumentException("user not found");
         }
@@ -70,14 +60,14 @@ public class BillService {
             Boolean exists = false;
             // ask roadUsages from VS
             List<dto.RoadUsage> roadUsages = this.roadUsageService.
-                getRoadUsages(c.getCartrackerId(), begin, end);
+                getRoadUsages(c.getCartrackerId(), month, year);
             
             // search if bill exists
             for(Bill b : person.getBills()){
                 // if equals cartrackerid, billMonth and billYear
                 if(b.getCartrackerId().equals(c.getCartrackerId()) &&
-                        b.getBillMonth().equals(month) &&
-                        b.getBillYear().equals(year))
+                        b.getBillMonth() == month &&
+                        b.getBillYear() == year)
                 {
                     // set RoadUsages
                     b.setRoadUsages(roadUsages);

@@ -74,10 +74,10 @@ public class DataStorage {
             roadUsages.add(usage);
 
             // Create person in db
-            Address address1 = new Address("Calçada do Lavra", "12", "1150-208",
-                    "Lisboa");
-            Address address2 = new Address("Calçada do Lavra", "14", "1150-208", 
-                    "Lisboa");
+            Address address1 = new Address("Calçada do Lavra", "12", 
+                    "1150-208", "Lisboa");
+            Address address2 = new Address("Calçada do Lavra", "14", 
+                    "1150-208", "Lisboa");
             Person p1 = this.personService.addPerson("Linda", "van Engelen", 
                     "LMJC", address1);
             Person p2 = this.personService.addPerson("Fernando", "Lameirinhas", 
@@ -93,8 +93,7 @@ public class DataStorage {
             this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
             
             // Create bill for person.
-            Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 
-                    "April", "2016");
+            Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 4, 2016);
             
             // Add bill to db.
             this.billService.addBill(b);
