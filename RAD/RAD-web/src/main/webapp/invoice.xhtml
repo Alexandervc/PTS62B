@@ -4,10 +4,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
     
     <f:metadata>
-        <f:viewParam name="personId" value="#{invoiceBean.personId}"/>
+        <f:viewParam name="personId" value="#{invoiceSession.personId}"/>
         <f:event type="postAddToView" listener="#{invoiceBean.setup()}"/>
     </f:metadata>
 
@@ -19,17 +20,18 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
-                            <h:form>
+                            <o:form includeViewParams="true">
                                 <h:selectOneMenu class="form-control" 
                                                     id="dateBox1"
-                                                    value="#{invoiceBean.date}">                                    
-                                    <f:selectItems var="month" 
-                                            value="#{invoiceBean.dates}"
-                                            itemValue="#{month.months}" 
-                                            itemLabel="#{month.date}">
+                                                    value="#{invoiceBean.dateIndex}">                                    
+                                    <f:selectItems value="#{invoiceBean.dates}"
+                                            var="date" 
+                                            itemValue="#{date.months}" 
+                                            itemLabel="#{date.date}">
                                     </f:selectItems>
+                                    <f:ajax listener="#{invoiceBean.changeDate()}"/>
                                 </h:selectOneMenu> 
-                            </h:form>
+                            </o:form>
                         </div>
                         <div class="col-sm-12" id="billDiv">
                             <ui:fragment rendered="#{invoiceBean.bills.size() > 0}">
@@ -39,7 +41,7 @@
                                 <div class="table-responsive">
                                     <ui:repeat var="bill" value="#{invoiceBean.bills}">
                                         <h:dataTable class="table table-striped table-bordered"
-                                                    value="#{bill.roadUsages}" var="ru">
+                                                value="#{bill.roadUsages}" var="ru">
                                             <h:column>
                                                <f:facet name="header">RoadName</f:facet> 
                                                ru.roadName
