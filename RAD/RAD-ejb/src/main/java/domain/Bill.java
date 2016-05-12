@@ -38,8 +38,8 @@ public class Bill implements Serializable {
     private double totalPrice;
     private boolean paid;
     private String cartrackerId;
-    private String billMonth;
-    private String billYear;
+    private int billMonth;
+    private int billYear;
 
     /**
      * Empty constructor.
@@ -59,11 +59,11 @@ public class Bill implements Serializable {
      * @param roadUsages List Roadusage.
      * @param totalPrice double.
      * @param cartrackerId Long.
-     * @param month String.
-     * @param year String.
+     * @param month int.
+     * @param year int.
      */
     public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
-           String cartrackerId, String month, String year) {
+           String cartrackerId, int month, int year) {
         this.person = person;
         this.person.addBill(this);
         this.roadUsages = new ArrayList<>(roadUsages);
@@ -122,19 +122,19 @@ public class Bill implements Serializable {
         this.cartrackerId = cartrackerId;
     }
 
-    public String getBillMonth() {
+    public int getBillMonth() {
         return this.billMonth;
     }
     
-    public void setBillMonth(String billMonth) {
+    public void setBillMonth(int billMonth) {
         this.billMonth = billMonth;
     }
 
-    public String getBillYear() {
+    public int getBillYear() {
         return this.billYear;
     }
     
-    public void setBillYear(String billYear) {
+    public void setBillYear(int billYear) {
         this.billYear = billYear;
     }
 }

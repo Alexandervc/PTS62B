@@ -58,7 +58,7 @@ public class BillManager {
      * @return new Bill Type Bill.
      */
     public Bill generateBill(Person person, List<RoadUsage> roadUsages, 
-            String cartrackerId, String month, String year) 
+            String cartrackerId, int month, int year) 
             throws EntityNotFoundException {
         double totalPrice = this.calculatePrice(roadUsages);
         

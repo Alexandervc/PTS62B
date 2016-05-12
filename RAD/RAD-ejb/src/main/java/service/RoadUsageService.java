@@ -24,18 +24,16 @@ public class RoadUsageService {
     private RoadUsagesClient roadUsagesClient;
 
     /**
-     * Get the roadUsages for the given cartrackerId between the given beginDate
-     * and endDate.
+     * Get the roadUsages for the given cartrackerId and the given month.
      *
      * @param cartrackerId The cartracker id to get the roadUsages for.
-     * @param beginDate The begin of the period to get the roadUsages in
-     * between.
-     * @param endDate The end of the period to get the roadUsages in between.
+     * @param month The month to get the roadUsages for.
+     * @param year The year to get the roadUsages for.
      * @return List of RoadUsage.
      */
-    public List<RoadUsage> getRoadUsages(String cartrackerId, Date beginDate,
-            Date endDate) {
-        return this.roadUsagesClient.getRoadUsages(cartrackerId, beginDate,
-                endDate);
+    public List<RoadUsage> getRoadUsages(String cartrackerId, int month,
+            int year) {
+        return this.roadUsagesClient.getRoadUsages(cartrackerId, month,
+                year);
     }
 }

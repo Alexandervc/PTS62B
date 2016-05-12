@@ -35,17 +35,17 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
     }
     
     /**
-     * Get the carpositions between the given dates for the given cartracker.
-     * @param begin The begin date of the period to get the carpositions for.
-     * @param end The end date of the period to get the carpositions for.
+     * Get the carpositions for the given month for the given cartracker.
+     * @param month The month to get the carpositions for.
+     * @param year The year to get the carpositions for.
      * @param cartrackerId The cartracker to get the carpositions for.
      * @return A list of carpositions.
      */
-    public List<CarPosition> getPositionsBetween(Date begin, Date end, 
+    public List<CarPosition> getPositionsOfMonth(int month, int year, 
             String cartrackerId) {
-        Query q = this.em.createNamedQuery("CarPosition.getPositionsBetween");
-        q.setParameter("begin", begin);
-        q.setParameter("end", end);
+        Query q = this.em.createNamedQuery("CarPosition.getPositionsOfMonth");
+        q.setParameter("month", month);
+        q.setParameter("year", year);
         q.setParameter("cartrackerId", cartrackerId);
         return q.getResultList();
     }

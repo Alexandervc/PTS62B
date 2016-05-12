@@ -93,8 +93,7 @@ public class DataStorage {
             this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
             
             // Create bill for person.
-            Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 
-                    "April", "2016");
+            Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 4, 2016);
             
             // Add bill to db.
             this.billService.addBill(b);

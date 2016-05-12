@@ -21,10 +21,10 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="CarPosition.getPositionsBetween", query = "SELECT cp "
+    @NamedQuery(name="CarPosition.getPositionsOfMonth", query = "SELECT cp "
             + "FROM CarPosition cp "
-            + "WHERE cp.moment >= :begin "
-            + "AND cp.moment <= :end "
+            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
+            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
             + "AND cp.cartracker.id = :cartrackerId "
             + "ORDER BY cp.road.roadType"),
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "

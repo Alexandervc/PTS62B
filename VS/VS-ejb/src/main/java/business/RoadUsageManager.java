@@ -64,23 +64,18 @@ public class RoadUsageManager {
     }
     
     /**
-     * Generate the roadUsages between the given date for the given cartracker.
-     * @param begin The begin date of the period to get the roadUsages between.
-     *      Cannot be after end
-     * @param end The end date of the period to get the roadUsages between.
+     * Generate the roadUsages for the given month for the given cartracker.
+     * @param month The month to generate the roadUsages for.
+     * @param year The year to generate the roadUsages for.
      * @param cartrackerId The cartracker to get the roadUsages for.
      * @return The roadusages between the given dates for the given 
      *      cartrackerId.
      */
-    public List<RoadUsage> generateRoadUsagesBetween(Date begin, Date end, 
-            String cartrackerId) {
-        if(begin.after(end)) {
-            throw new IllegalArgumentException("begin after end");
-        }
-        
+    public List<RoadUsage> generateRoadUsagesOfMonth(int month, int year, 
+            String cartrackerId) {        
         // Get carPositions
-        List<CarPosition> cps = this.carPositionDao.getPositionsBetween(begin, 
-                end, cartrackerId);
+        List<CarPosition> cps = this.carPositionDao.getPositionsOfMonth(month, 
+                year, cartrackerId);
         
         return this.convertToRoadUsages(cps);
     }
