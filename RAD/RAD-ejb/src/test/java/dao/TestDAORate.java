@@ -28,7 +28,7 @@ public class TestDAORate {
 
     @Mock
     private RateManager rateManager;
-    
+
     private static final double RATE = 9.76;
     private static final RoadType TYPE = RoadType.A;
 

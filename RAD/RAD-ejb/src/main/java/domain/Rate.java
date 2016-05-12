@@ -13,7 +13,6 @@ import javax.persistence.Id;
  */
 @Entity
 public class Rate implements Serializable {
-
     @Id
     @Enumerated(EnumType.STRING)
     private RoadType type;
@@ -41,40 +40,19 @@ public class Rate implements Serializable {
         this.type = type;
     }
 
-    /**
-     * Getter RoadType.
-     *
-     * @return RoadType.
-     */
     public RoadType getType() {
         return this.type;
     }
 
-    /**
-     * Setter RoadType.
-     *
-     * @param type RoadType.
-     */
     public void setType(RoadType type) {
         this.type = type;
     }
 
-    /**
-     * Getter Rate.
-     *
-     * @return rate double
-     */
     public double getRate() {
         return this.rate;
     }
 
-    /**
-     * Setter Rate.
-     *
-     * @param rate double.
-     */
     public void setRate(double rate) {
         this.rate = rate;
     }
-
 }

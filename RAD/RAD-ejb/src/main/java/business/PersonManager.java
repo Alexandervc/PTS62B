@@ -2,6 +2,7 @@ package business;
 
 import dao.PersonDao;
 import domain.Person;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -38,7 +39,23 @@ public class PersonManager {
     }
     
     public Person findPersonByName(String name){
-        Person person = this.personDAO.findByName(name);
-        return person;
+        return this.personDAO.findByName(name);
+    }
+    
+    public Person findPersonById(Long personId) {
+        return this.personDAO.find(personId);
+    }
+    
+    /**
+     * Search the persons with the given searchText in the 
+     *      first name or last name.
+     * @param searchText The text to search for. Cannot be null or empty.
+     * @return List of found persons.
+     */
+    public List<Person> searchPersonsWithText(String searchText) {
+        if(searchText == null || searchText.isEmpty()) {
+            throw new IllegalArgumentException("searchText null or empty");
+        }
+        return this.personDAO.findPersonsWithText(searchText);
     }
 }

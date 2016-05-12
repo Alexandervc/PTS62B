@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
+    
+    <f:metadata>
+        <f:viewParam name="personId" value="#{invoiceSession.personId}"/>
+        <f:event type="postAddToView" listener="#{invoiceBean.setup()}"/>
+    </f:metadata>
+
+    <h:body>         
+        <ui:composition template="templates/template.xhtml">
+            <ui:define name="content">
+                <script>
+                </script> 
+                <div class="row">
+                    <div class="col-sm-12 meme layer1">
+                        <div class="col-sm-12" id="searchDiv">
+                            <o:form includeViewParams="true">
+                                <h:selectOneMenu class="form-control" 
+                                                    id="dateBox1"
+                                                    value="#{invoiceBean.dateIndex}">                                    
+                                    <f:selectItems value="#{invoiceBean.dates}"
+                                            var="date" 
+                                            itemValue="#{date.months}" 
+                                            itemLabel="#{date.date}">
+                                    </f:selectItems>
+                                    <f:ajax listener="#{invoiceBean.changeDate()}"/>
+                                </h:selectOneMenu> 
+                            </o:form>
+                        </div>
+                        <div class="col-sm-12" id="billDiv">
+                            <ui:fragment rendered="#{invoiceBean.bills.size() > 0}">
+                                <h1>Factuur</h1>
+                                <h3>#{invoiceBean.personName}</h3>
+
+                                <div class="table-responsive">
+                                    <ui:repeat var="bill" value="#{invoiceBean.bills}">
+                                        <h:dataTable class="table table-striped table-bordered"
+                                                value="#{bill.roadUsages}" var="ru">
+                                            <h:column>
+                                               <f:facet name="header">RoadName</f:facet> 
+                                               ru.roadName
+                                            </h:column>
+                                            <h:column>
+                                               <f:facet name="header">RoadType</f:facet> 
+                                               ru.roadType
+                                            </h:column>
+                                            <h:column class="txt-right">
+                                               <f:facet name="header">Km</f:facet> 
+                                               ru.km
+                                            </h:column>
+                                            <h:column class="txt-right">
+                                               <f:facet name="header">Price/km</f:facet> 
+                                               invoice.getRate(ru)
+                                            </h:column>
+                                            <h:column class="txt-right">
+                                               <f:facet name="header">TotalPrice</f:facet> 
+                                               invoice.getPrice(ru)
+                                            </h:column>
+                                            <f:facet name="footer">
+                                                <h:outputText value="Total: #{invoiceBean.getTotalPrice(bill)}" />
+                                            </f:facet>
+                                        </h:dataTable>
+                                    </ui:repeat>
+                                </div>
+                            </ui:fragment>
+                        </div>
+                    </div>                    
+                </div>
+            </ui:define>
+        </ui:composition>    	
+    </h:body>
+</html>

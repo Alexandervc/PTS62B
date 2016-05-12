@@ -25,7 +25,6 @@ body {
 
 header {
     width: 100%;
-    height: 120px;
     text-align: center;
     background-color: $white;
     margin-bottom: 20px;
@@ -36,6 +35,7 @@ header {
     z-index: 1;
     position: fixed;
     opacity: 0.8;
+    height: 50px;
 }
 
 .top {
@@ -75,6 +75,12 @@ header {
     width: 100%;
     padding: 10px 0 20px 0;
 }
+
+/* -------------------------------- Text -------------------------------- */
+
+.txt-right {
+    text-align: right;
+}
     
 /* -------------------------------- Links -------------------------------- */
 
@@ -92,6 +98,10 @@ header {
 
 textarea {
     resize: none;
+}
+
+#form-span {
+    width: 150px;
 }
 
 /* -------------------------------- Charts -------------------------------- */

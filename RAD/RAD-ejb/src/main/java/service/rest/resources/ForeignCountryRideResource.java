@@ -20,17 +20,19 @@ import service.RadService;
 
 /**
  * The REST resource for ForeignCountryRides.
+ *
  * @author Jesse
  */
 @Path("/foreignCountryRides")
 @Stateless
 public class ForeignCountryRideResource {
-    private static final Logger LOGGER =
-            Logger.getLogger(ForeignCountryRideResource.class.getName());
-    
+
+    private static final Logger LOGGER
+            = Logger.getLogger(ForeignCountryRideResource.class.getName());
+
     @Inject
     private RadService radService;
-    
+
     /**
      * Add a foreign country ride to the database, this stores the total price
      * of the ride.
@@ -42,9 +44,9 @@ public class ForeignCountryRideResource {
     public Response addForeignCountryRide(final ForeignCountryRide input) {
         try {
             this.radService.addForeignCountryRide(
-                    input.getForeignCountryRideId(), 
+                    input.getForeignCountryRideId(),
                     input.getTotalPrice());
-            
+
             return Response.status(Response.Status.OK).build();
         } catch (EntityExistsException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

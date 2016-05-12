@@ -20,48 +20,50 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * Tests the ForeignCountryRide.
+ *
  * @author Jesse
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ForeignCountryManagerTest {
+
     private ForeignCountryManager foreignCountryManager;
-    
+
     @Mock
     private ForeignCountryRideDao foreignCountryRideDao;
-    
+
     /**
      * Initializes the test class before testing.
      */
     @Before
     public void setUp() {
         this.foreignCountryManager = new ForeignCountryManager();
-        
+
         // Set the mocked ForeignCountryRideDao.
         this.foreignCountryManager.setForeignCountryRideDao(
                 foreignCountryRideDao);
     }
-    
+
     /**
      * Tests the createForeignCountryRide method.
      */
     @Test
     public void createForeignCountryRideTest() {
         ForeignCountryRide foreignCountryRide = new ForeignCountryRide("PT29", 13.37);
-        
+
         this.foreignCountryManager.createForeignCountryRide("PT29", 13.37);
         verify(this.foreignCountryManager.getForeignCountryRideDao())
                 .create(argThat(
                         new IsSameForeignCountryRide(foreignCountryRide)));
     }
-    
+
     /**
      * Matcher for ForeignCountryRide.
      */
-    private class IsSameForeignCountryRide 
+    private class IsSameForeignCountryRide
             extends ArgumentMatcher<ForeignCountryRide> {
-        
+
         private final ForeignCountryRide foreignCountryRide;
-        
+
         public IsSameForeignCountryRide(ForeignCountryRide foreignCountryRide) {
             this.foreignCountryRide = foreignCountryRide;
         }
@@ -70,8 +72,8 @@ public class ForeignCountryManagerTest {
         public boolean matches(Object argument) {
             ForeignCountryRide other = (ForeignCountryRide) argument;
             return this.foreignCountryRide.getForeignCountryRideId()
-                        .equals(other.getForeignCountryRideId())
-                && this.foreignCountryRide.getTotalPrice() 
+                    .equals(other.getForeignCountryRideId())
+                    && this.foreignCountryRide.getTotalPrice()
                     == other.getTotalPrice();
         }
     }

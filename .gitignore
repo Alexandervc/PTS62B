@@ -47,3 +47,5 @@ ASS/Simulator/Simulator-ear/target/maven-archiver/pom.properties
 ASS/Simulator/Simulator-ejb/target/maven-archiver/pom.properties
 ASS/Simulator/Simulator-ejb/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 ASS/Simulator/Simulator-web/target/maven-archiver/pom.properties
+ASS/Simulator/Simulator-ear/target/maven-archiver/pom.properties
+ASS/Simulator/Simulator-ejb/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
