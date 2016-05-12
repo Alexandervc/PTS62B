@@ -38,6 +38,7 @@ public class DataStorage {
     
     // static field for total price bill
     private static final double PRICE = 35.2;
+    
     @Inject
     private RadService service;
 

@@ -18,11 +18,13 @@ import business.ForeignCountryManager;
 import business.PersonManager;
 import business.RateManager;
 import domain.Bill;
+import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
 import dto.RoadUsage;
+import java.util.ArrayList;
 
 /**
  * RAD Service class.
@@ -140,9 +142,10 @@ public class RadService {
      * @param username The user to generate a bill for.
      * @param begin The begin date of the period to generate the bill for.
      * @param end The end date of the period to generate the bill for.
-     * @return The generated bill.
+     * @return The List of bills specific month and year.
      */
-    public Bill generateBill(String username, Date begin, Date end) {
+    public List<Bill> generateBill(String username, Date begin, Date end) {
+        List<Bill> carBills = new ArrayList<>();
         // format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
                 Locale.getDefault());
@@ -157,16 +160,39 @@ public class RadService {
             throw new IllegalArgumentException("user not found");
         }
 
-        // set cartracker id for bill
-        String cartrackerId = person.getCars().get(0).getCartrackerId();
-
-        // ask roadUsages from VS
-        List<RoadUsage> roadUsages = this.roadUsagesService.
-                getRoadUsages(cartrackerId, begin, end);
-
-        // generate empty temp bill
-        return this.billManager.generateBill(person,
-                roadUsages, cartrackerId, month, year);
+        // foreach car in person
+        for(Car c : person.getCars()){
+            Boolean exists = false;
+            // ask roadUsages from VS
+            List<RoadUsage> roadUsages = this.roadUsagesService.
+                getRoadUsages(c.getCartrackerId(), begin, end);
+            
+            // search if bill exists
+            for(Bill b : person.getBills()){
+                // if equals cartrackerid, billMonth and billYear
+                if(b.getCartrackerId().equals(c.getCartrackerId()) &&
+                        b.getBillMonth().equals(month) &&
+                        b.getBillYear().equals(year))
+                {
+                    // set RoadUsages
+                    b.setRoadUsages(roadUsages);
+                    // add to list carBills
+                    carBills.add(b);
+                    // set exists to true
+                    exists = true;
+                }
+            }
+            
+            // if bill doesn't exists, create new Bill in Database
+            if(!exists){
+                Bill newBill = this.billManager.generateBill(person,
+                roadUsages, c.getCartrackerId(), month, year);
+                // add to list carBills
+                carBills.add(newBill);
+            }
+        }
+        // return list carBills
+        return carBills;
     }
 
     /**
