@@ -4,14 +4,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>         
         <ui:composition template="templates/template.xhtml">
             <ui:define name="content">
-                <script>
-                </script> 
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
@@ -19,21 +17,33 @@
                                 <div class="input-group">
                                     <h:inputText class="form-control input"  
                                                  id="nameBox"
-                                                 value="#{billBean.name}"
-                                                 a:placeholder="Vul je naam in">
+                                                 value="#{searchBean.searchString}"
+                                                 a:placeholder="Fill in a name...">
                                     </h:inputText>
+
                                     <span class="input-group-btn">
                                         <h:commandButton type="submit"
-                                                         value="Zoeken"
+                                                         id="searchButton"
+                                                         value="Search"
                                                          class="form-control"
-                                                         action="#{billBean.generateBill()}">
-                                            <span class="form-control-feedback 
-                                                glyphicon glyphicon-search">                                                  
-                                            </span>
+                                                         action="#{searchBean.Search()}">
+                                            <f:ajax event="action"  execute="nameBox searchButton" render="nameBox searchResult"/>
                                         </h:commandButton>
-                                    </span>                    
+                                    </span>                            
                                 </div>
                             </h:form>
+                        </div>
+                        
+                        <div class="col-sm-12" id="searchDiv" >
+                            <h:panelGroup id="searchResult">
+                                <ul class="list-group">
+                                    <ui:repeat var="Person" value="#{searchBean.persons}">
+                                        <a href= "invoice.xhtml?personId=#{Person.id}">
+                                        <li class="list-group-item">#{Person.firstName} #{Person.lastName} - #{Person.id}</li>
+                                        </a>
+                                    </ui:repeat>
+                                </ul>
+                            </h:panelGroup>
                         </div>
                     </div>                    
                 </div>

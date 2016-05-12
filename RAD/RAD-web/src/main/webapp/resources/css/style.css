@@ -121,6 +121,10 @@ textarea {
   width: 100%;
   height: 175px; }
 
+/* -------------------------------- Lists -------------------------------- */
+a .list-group-item {
+  color: black; }
+
 /* -------------------------------- Footer -------------------------------- */
 footer {
   position: absolute;
