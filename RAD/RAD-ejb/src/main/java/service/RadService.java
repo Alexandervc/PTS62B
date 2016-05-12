@@ -198,6 +198,22 @@ public class RadService {
     }
 
     /**
+     * Getter RoadUsagesService.
+     * @return object RoadUsagesService.
+     */
+    public RoadUsagesService getRoadUsagesService() {
+        return roadUsagesService;
+    }
+
+    /**
+     * Setter RoadUsagesService.
+     * @param object roadUsagesService. 
+     */
+    public void setRoadUsagesService(RoadUsagesService roadUsagesService) {
+        this.roadUsagesService = roadUsagesService;
+    }
+
+    /**
      * Set personManager for JUnittest.
      *
      * @param personManager PersonManager.
