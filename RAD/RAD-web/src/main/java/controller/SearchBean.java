@@ -6,24 +6,20 @@
 package controller;
 
 import domain.Person;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.validation.constraints.NotNull;
 import service.PersonService;
 
 /**
- *
- * @author Edwin
+ * Managed bean for the index page.
+ * @author Edwin.
  */
 @Named
 @RequestScoped
 public class SearchBean {
-    
-    private static final Logger LOGGER = Logger
-            .getLogger(SearchBean.class.getName());
     
     @EJB
     private PersonService service;
@@ -37,7 +33,7 @@ public class SearchBean {
     }
 
     public void setPersons(List<Person> persons) {
-        this.persons = persons;
+        this.persons = new ArrayList<>(persons);
     }
     
     public String getSearchString() {
@@ -48,8 +44,13 @@ public class SearchBean {
         this.searchString = searchString;
     }
     
-    public void Search() {
+
+    /**
+     * Search for persons that have the searchString in their name.
+     * Updates the lists of persons.
+     */
+    public void searchPersons() {
         if(this.searchString.isEmpty()) return;
-        this.persons = service.searchPersons(this.searchString);
+        this.persons = this.service.searchPersons(this.searchString);
     }
 }
