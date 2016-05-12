@@ -5,18 +5,15 @@ import domain.ListBoxDate;
 import domain.Person;
 import dto.RoadUsage;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Locale;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import service.BillService;
 import service.PersonService;
@@ -42,23 +39,18 @@ public class InvoiceBean {
     @EJB
     private RateService rateService;
     
-    private Long personId;
-    private Person person;
+    @Inject
+    private InvoiceSession session;
+
     private List<Bill> bills;
     
-    //Month from combobox
-    private String date;
-    //private Calendar date;
+    //Current month and year
+    private int year;
+    private int month;
     
     //Dates for combobox
+    private String dateIndex;
     private List<ListBoxDate> dates;
-    
-    //Date for begin of month
-    private Calendar datePast;
-    
-    //Format to convert string to date
-    private final SimpleDateFormat DATEFORMAT = 
-            new SimpleDateFormat("dd/MM/yyyy");
     
     /**
      * Setup application data.
@@ -67,63 +59,52 @@ public class InvoiceBean {
      */
     public void setup() {
         //Get person by personId
-        this.person = this.personService.findPersonById(personId);
-        
-        //Setup dates (new test)
-        //GregorianCalendar cal = new GregorianCalendar();
-        //this.date = cal.
-        
+        Long personId = this.session.getPersonId();
+        Person person = this.personService.findPersonById(personId);
+        this.session.setPerson(person);
+
         //Setup dates
-        this.date = "0";
+        //Current date
+        GregorianCalendar cal = new GregorianCalendar();
+        this.year = cal.get(GregorianCalendar.YEAR);
+        this.month = cal.get(GregorianCalendar.MONTH) + 1;
+        this.dateIndex = "0";
+
+        //Create list with ListBoxDate's
         this.dates = new ArrayList<>();
-        this.datePast = new GregorianCalendar();
-        this.datePast.add(Calendar.YEAR, -2);
-        
-        Calendar temp = this.datePast;
-        
+
         for (int m = 0; m < 25; m++) {
-            String month = new SimpleDateFormat("MMM").format(temp.getTime());
-            this.dates.add(new ListBoxDate(month + " "
-                    + temp.get(Calendar.YEAR), Integer.toString(m)));
-            temp.add(Calendar.MONTH, 1);
-        }
-        
-        Collections.reverse(this.dates);
-        
+            GregorianCalendar m_cal = new GregorianCalendar();
+            m_cal.add(Calendar.MONTH, -m);
+            int m_year = m_cal.get(Calendar.YEAR);
+            String m_month_string = m_cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+
+            //Add date to list
+            String index = Integer.toString(m);
+            String value = m_month_string + " " + m_year;            
+            this.dates.add(new ListBoxDate(value, index));            
+        }        
+
         //Generate bills for person
         this.bills = new ArrayList<>();
         this.generateBills();
     }
     
     public void generateBills() {
-        // Calc begin date
-        Calendar temp = this.datePast;
-        temp.add(Calendar.YEAR, -2);
-        temp.add(Calendar.MONTH, Integer.parseInt(this.date));
-
-        String tempBeginDateString = "01" + "/"
-                + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
-
-        // Calc end Date
-        temp.add(Calendar.MONTH, 1);
-        temp.set(Calendar.DATE, 1);
-        temp.add(Calendar.DATE, -1);
-        String tempEndDateString = temp.get(Calendar.DAY_OF_MONTH) + "/"
-                + temp.get(Calendar.MONTH) + "/" + temp.get(Calendar.YEAR);
+        //Get all bills
+        //this.bills = this.billService.generateBill(session.getPersonId(), this.month, this.year);
+    }
+    
+    public void changeDate() {
+        int index = Integer.parseInt(this.dateIndex);
         
-        Date dateBegin = null;
-        Date dateEnd = null;
-
-        try {
-            // Convert Calendar tot Date
-            dateBegin = DATEFORMAT.parse(tempBeginDateString);
-            dateEnd = DATEFORMAT.parse(tempEndDateString);
-        } catch (ParseException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }        
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.add(Calendar.MONTH, -index);
+        this.year = cal.get(Calendar.YEAR);
+        this.month = cal.get(Calendar.MONTH) + 1;
         
         //Get all bills
-        this.bills = this.billService.generateBill(person.getFirstName(), dateBegin, dateEnd);
+        this.generateBills();
     }
     
     /**
@@ -161,34 +142,16 @@ public class InvoiceBean {
         return formatter.format(bill.getTotalPrice());
     }
 
-    /**
-     * Get full person name.
-     * 
-     * @return String person name.
-     */
-    public String getPersonName() {
-        return this.person.getInitials() + " " + 
-                this.person.getLastName();
-    }
-
-    public Long getPersonId() {
-        return this.personId;
-    }
-
-    public void setPersonId(Long personId) {
-        this.personId = personId;
-    }
-
     public List<Bill> getBills() {
         return new ArrayList<>(this.bills);
     }
 
-    public String getDate() {
-        return this.date;
+    public String getDateIndex() {
+        return dateIndex;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateIndex(String dateIndex) {
+        this.dateIndex = dateIndex;
     }
 
     public List<ListBoxDate> getDates() {
