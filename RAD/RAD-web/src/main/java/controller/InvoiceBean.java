@@ -18,7 +18,9 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import service.RadService;
+import service.BillService;
+import service.PersonService;
+import service.RateService;
 
 /**
  * Request scoped bean for invoice page.
@@ -32,7 +34,13 @@ public class InvoiceBean {
             .getLogger(InvoiceBean.class.getName());
 
     @EJB
-    private RadService service;
+    private PersonService personService;
+    
+    @EJB
+    private BillService billService;
+    
+    @EJB
+    private RateService rateService;
     
     private Long personId;
     private Person person;
@@ -59,7 +67,7 @@ public class InvoiceBean {
      */
     public void setup() {
         //Get person by personId
-        this.person = this.service.findPersonById(personId);
+        this.person = this.personService.findPersonById(personId);
         
         //Setup dates (new test)
         //GregorianCalendar cal = new GregorianCalendar();
@@ -115,7 +123,7 @@ public class InvoiceBean {
         }        
         
         //Get all bills
-        this.bills = this.service.generateBill(person.getFirstName(), dateBegin, dateEnd);
+        this.bills = this.billService.generateBill(person.getFirstName(), dateBegin, dateEnd);
     }
     
     /**
@@ -126,7 +134,7 @@ public class InvoiceBean {
      */
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(this.service.getRate(roadUsage.getRoadType())
+        return formatter.format(this.rateService.getRate(roadUsage.getRoadType())
                 .getRate());
     }
 
@@ -138,7 +146,7 @@ public class InvoiceBean {
      */
     public String getPrice(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(roadUsage.getKm() * this.service
+        return formatter.format(roadUsage.getKm() * this.rateService
                 .getRate(roadUsage.getRoadType()).getRate());
     }
 

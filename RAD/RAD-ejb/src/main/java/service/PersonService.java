@@ -6,6 +6,7 @@
 package service;
 
 import business.PersonManager;
+import domain.Address;
 import domain.Person;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -21,6 +22,21 @@ public class PersonService {
     private PersonManager personManager;
     
     /**
+     * Add person to database.
+     *
+     * @param firstname String.
+     * @param lastname String.
+     * @param initials String.
+     * @param address Address.
+     * @return created person type Person.
+     */
+    public Person addPerson(String firstname, String lastname, String initials,
+            Address address) {
+        return this.personManager.createPerson(firstname, lastname,
+                initials, address);
+    }
+    
+    /**
      * Search the persons with the given searchText in the 
      *      first name or last name.
      * @param searchText The text to search for.
@@ -28,5 +44,25 @@ public class PersonService {
      */
     public List<Person> searchPersons(String searchText) {
         return this.personManager.searchPersonsWithText(searchText);
+    }
+
+    /**
+     * Find person in database with name can be null.
+     *
+     * @param name String.
+     * @return found person.
+     */
+    public Person findPersonByName(String name) {
+        return this.personManager.findPersonByName(name);
+    }
+    
+    /**
+     * Find person in database by personId.
+     * 
+     * @param personId id of person.
+     * @return found person.
+     */
+    public Person findPersonById(Long personId) {
+        return this.personManager.findPersonById(personId);
     }
 }

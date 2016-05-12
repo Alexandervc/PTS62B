@@ -16,7 +16,7 @@ import javax.persistence.TransactionRequiredException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import service.RadService;
+import service.ForeignCountryRideService;
 
 /**
  * The REST resource for ForeignCountryRides.
@@ -31,7 +31,7 @@ public class ForeignCountryRideResource {
             = Logger.getLogger(ForeignCountryRideResource.class.getName());
 
     @Inject
-    private RadService radService;
+    private ForeignCountryRideService foreignCountryRideService;
 
     /**
      * Add a foreign country ride to the database, this stores the total price
@@ -43,7 +43,7 @@ public class ForeignCountryRideResource {
     @POST
     public Response addForeignCountryRide(final ForeignCountryRide input) {
         try {
-            this.radService.addForeignCountryRide(
+            this.foreignCountryRideService.addForeignCountryRide(
                     input.getForeignCountryRideId(),
                     input.getTotalPrice());
 

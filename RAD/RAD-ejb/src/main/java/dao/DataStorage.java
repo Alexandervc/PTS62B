@@ -5,6 +5,7 @@
  */
 package dao;
 
+import domain.Address;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -16,7 +17,10 @@ import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
 import dto.RoadUsage;
-import service.RadService;
+import service.BillService;
+import service.CarService;
+import service.PersonService;
+import service.RateService;
 
 /**
  * Class for test datastorage. Add object of every domain type in db.
@@ -40,20 +44,29 @@ public class DataStorage {
     private static final double PRICE = 35.2;
     
     @Inject
-    private RadService service;
+    private PersonService personService;
+    
+    @Inject
+    private RateService rateService;
+    
+    @Inject
+    private CarService carService;
+    
+    @Inject
+    private BillService billService;
 
     /**
      * Method runs at start-up ejb.
      */
     @PostConstruct
     public void onStartup() {
-        if (this.service.findPersonByName("Linda") == null) {
+        if (this.personService.findPersonByName("Linda") == null) {
             // Add rates to db.
-            this.service.addRate(RATE1, RoadType.A);
-            this.service.addRate(RATE2, RoadType.B);
-            this.service.addRate(RATE3, RoadType.C);
-            this.service.addRate(RATE4, RoadType.D);
-            this.service.addRate(RATE5, RoadType.E);
+            this.rateService.addRate(RATE1, RoadType.A);
+            this.rateService.addRate(RATE2, RoadType.B);
+            this.rateService.addRate(RATE3, RoadType.C);
+            this.rateService.addRate(RATE4, RoadType.D);
+            this.rateService.addRate(RATE5, RoadType.E);
 
             // Make list of roadusages
             List<RoadUsage> roadUsages = new ArrayList<>();
@@ -61,28 +74,30 @@ public class DataStorage {
             roadUsages.add(usage);
 
             // Create person in db
-            Person p1 = this.service.addPerson("Linda", "van Engelen", "LMJC",
-                    "Calçada do Lavra", "12", "1150-208",
-                    "Lisboa", "Portugal");
-            Person p2 = this.service.addPerson("Fernando", "Lameirinhas", "FL",
-                    "Calçada do Lavra", "14", "1150-208",
-                    "Lisboa", "Portugal");
+            Address address1 = new Address("Calçada do Lavra", "12", "1150-208",
+                    "Lisboa");
+            Address address2 = new Address("Calçada do Lavra", "14", "1150-208", 
+                    "Lisboa");
+            Person p1 = this.personService.addPerson("Linda", "van Engelen", 
+                    "LMJC", address1);
+            Person p2 = this.personService.addPerson("Fernando", "Lameirinhas", 
+                    "FL", address2);
             
             String cartrackerId1 = "PT123456789";
             String cartrackerId2 = "PT112233444";
             String cartrackerId3 = "PT121314151";
 
             // Create car for person in db.
-            this.service.addCar(p1, cartrackerId1, FuelType.Petrol);
-            this.service.addCar(p2, cartrackerId2, FuelType.Petrol);
-            this.service.addCar(p2, cartrackerId3, FuelType.Diesel);
+            this.carService.addCar(p1, cartrackerId1, FuelType.Petrol);
+            this.carService.addCar(p2, cartrackerId2, FuelType.Petrol);
+            this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
             
             // Create bill for person.
             Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 
                     "April", "2016");
             
             // Add bill to db.
-            this.service.addBill(b);
+            this.billService.addBill(b);
         }
     }
 }
