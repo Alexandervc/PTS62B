@@ -18,11 +18,13 @@ import business.ForeignCountryManager;
 import business.PersonManager;
 import business.RateManager;
 import domain.Bill;
+import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
 import dto.RoadUsage;
+import java.util.ArrayList;
 
 /**
  * RAD Service class.
@@ -31,6 +33,7 @@ import dto.RoadUsage;
  */
 @Stateless
 public class RadService {
+
     @Inject
     private PersonManager personManager;
     @Inject
@@ -84,6 +87,16 @@ public class RadService {
     public Person findPersonByName(String name) {
         return this.personManager.findPersonByName(name);
     }
+    
+    /**
+     * Find person in database by personId.
+     * 
+     * @param personId id of person.
+     * @return found person.
+     */
+    public Person findPersonById(Long personId) {
+        return this.personManager.findPersonById(personId);
+    }
 
     /**
      * Add Rate to database.
@@ -127,12 +140,14 @@ public class RadService {
 
     /**
      * Generate the bill for the given user between the given dates.
+     *
      * @param username The user to generate a bill for.
      * @param begin The begin date of the period to generate the bill for.
      * @param end The end date of the period to generate the bill for.
-     * @return The generated bill.
+     * @return The List of bills specific month and year.
      */
-    public Bill generateBill(String username, Date begin, Date end) {
+    public List<Bill> generateBill(String username, Date begin, Date end) {
+        List<Bill> carBills = new ArrayList<>();
         // format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
                 Locale.getDefault());
@@ -147,16 +162,55 @@ public class RadService {
             throw new IllegalArgumentException("user not found");
         }
 
-        // set cartracker id for bill
-        String cartrackerId = person.getCars().get(0).getCartrackerId();
+        // foreach car in person
+        for(Car c : person.getCars()){
+            Boolean exists = false;
+            // ask roadUsages from VS
+            List<RoadUsage> roadUsages = this.roadUsagesService.
+                getRoadUsages(c.getCartrackerId(), begin, end);
+            
+            // search if bill exists
+            for(Bill b : person.getBills()){
+                // if equals cartrackerid, billMonth and billYear
+                if(b.getCartrackerId().equals(c.getCartrackerId()) &&
+                        b.getBillMonth().equals(month) &&
+                        b.getBillYear().equals(year))
+                {
+                    // set RoadUsages
+                    b.setRoadUsages(roadUsages);
+                    // add to list carBills
+                    carBills.add(b);
+                    // set exists to true
+                    exists = true;
+                }
+            }
+            
+            // if bill doesn't exists, create new Bill in Database
+            if(!exists){
+                Bill newBill = this.billManager.generateBill(person,
+                roadUsages, c.getCartrackerId(), month, year);
+                // add to list carBills
+                carBills.add(newBill);
+            }
+        }
+        // return list carBills
+        return carBills;
+    }
 
-        // ask roadUsages from VS
-        List<RoadUsage> roadUsages = this.roadUsagesService.
-                getRoadUsages(cartrackerId, begin, end);
+    /**
+     * Getter RoadUsagesService.
+     * @return object RoadUsagesService.
+     */
+    public RoadUsagesService getRoadUsagesService() {
+        return roadUsagesService;
+    }
 
-        // generate empty temp bill
-        return this.billManager.generateBill(person,
-                roadUsages, cartrackerId, month, year);
+    /**
+     * Setter RoadUsagesService.
+     * @param object roadUsagesService. 
+     */
+    public void setRoadUsagesService(RoadUsagesService roadUsagesService) {
+        this.roadUsagesService = roadUsagesService;
     }
 
     /**
@@ -210,7 +264,7 @@ public class RadService {
      * of the ride.
      *
      * @param foreignCountryRideId The id of the foreign country ride, this id
-     *      is set in VS when the message is received from the central system.
+     * is set in VS when the message is received from the central system.
      * @param totalPrice The total price of the foreign country ride.
      */
     public void addForeignCountryRide(

@@ -12,6 +12,7 @@ import domain.CarPosition;
 import domain.Cartracker;
 import domain.Road;
 import dto.RoadUsage;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -146,7 +147,7 @@ public class CarPositionManager {
 
         // TODO road anders
         List<Road> roads = this.roadDao.findAll();
-        Random random = new Random();
+        Random random = new SecureRandom();
         Road road = roads.get(random.nextInt(roads.size()));
 
         // Make carPosition

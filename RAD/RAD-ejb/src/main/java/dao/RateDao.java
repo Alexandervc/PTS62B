@@ -12,8 +12,15 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class RateDao extends AbstractFacade<Rate> implements Serializable {
-    @PersistenceContext(unitName ="RADpu")
+    @PersistenceContext
     private EntityManager em;
+    
+    /**
+     * Constructor.
+     */
+    public RateDao() {
+        super(Rate.class);
+    }
 
     /**
      * Getter EntityManager.
@@ -22,12 +29,5 @@ public class RateDao extends AbstractFacade<Rate> implements Serializable {
     @Override
     protected EntityManager getEntityManager() {
         return this.em;
-    }    
-    
-    /**
-     * Constructor.
-     */
-    public RateDao() {
-        super(Rate.class);
     }
 }

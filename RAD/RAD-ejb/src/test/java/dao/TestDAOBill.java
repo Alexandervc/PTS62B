@@ -24,28 +24,31 @@ import dto.RoadUsage;
 
 /**
  * Test bill Dao.
+ *
  * @author Linda.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TestDAOBill {
+
     private RadService service;
-        
+
     @Mock
     private BillManager billManager;
-    
+
     private Person person1;
     private Bill bill1;
-    
+
     private static final double KM = 5.00;
     private static final String CARTRACKER = "PT123456789";
     private static final double PRICE = 10.35;
+
     /**
      * Constructor.
      */
-    public TestDAOBill() {       
+    public TestDAOBill() {
         // Empty for start up test
     }
-    
+
     /**
      * Do first after start test
      */
@@ -53,24 +56,24 @@ public class TestDAOBill {
     public void setUp() {
         this.service = new RadService();
         this.service.setBillManager(this.billManager);
-                
+
         this.person1 = new Person("Linda", "van Engelen", "LMJC",
                 "Sibeliuslaan", "83", "5654CV", "Eindhoven", "Nederland");
-        
+
         List<RoadUsage> roadUsages = new ArrayList<>();
         roadUsages.add(new RoadUsage("Rachelsmolen", RoadType.C, KM));
-        
-        this.bill1 = new Bill(this.person1, roadUsages, PRICE, 
+
+        this.bill1 = new Bill(this.person1, roadUsages, PRICE,
                 CARTRACKER, "april", "2016");
     }
-    
+
     /**
      * Test adding bill.
      */
     @Test
-    public void testAddBill(){
-       this.service.addBill(this.bill1);
+    public void testAddBill() {
+        this.service.addBill(this.bill1);
         verify(this.billManager, Mockito.times(1)).createBill(this.bill1);
     }
-    
+
 }

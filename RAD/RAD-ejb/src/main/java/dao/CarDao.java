@@ -18,8 +18,15 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class CarDao extends AbstractFacade<Car> implements Serializable {
 
-    @PersistenceContext(unitName = "RADpu")
+    @PersistenceContext
     private EntityManager em;
+    
+    /**
+     * Constructor.
+     */
+    public CarDao() {
+        super(Car.class);
+    }
 
     /**
      * Getter EntityManager.
@@ -29,12 +36,4 @@ public class CarDao extends AbstractFacade<Car> implements Serializable {
     protected EntityManager getEntityManager() {
         return this.em;
     }
-
-    /**
-     * Constructor.
-     */
-    public CarDao() {
-        super(Car.class);
-    }
-
 }

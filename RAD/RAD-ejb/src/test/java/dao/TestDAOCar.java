@@ -20,27 +20,29 @@ import service.RadService;
 
 /**
  * Test Car Dao
+ *
  * @author Linda
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TestDAOCar {
+
     private RadService service;
-    
+
     @Mock
     private CarManager carManager;
-    
+
     private Person person1;
-    
+
     private static final String ID = "PT123456789";
     private static final FuelType FUEL = FuelType.Diesel;
-    
+
     /**
      * Constructor.
      */
     public TestDAOCar() {
         // Empty for start up test
     }
-    
+
     /**
      * Set up at beginning test.
      */
@@ -48,16 +50,16 @@ public class TestDAOCar {
     public void setUp() {
         this.service = new RadService();
         this.service.setCarManager(this.carManager);
-        
-        this.person1 = new Person("Linda", "van Engelen", "LMJC", "Sibeliuslaan", 
+
+        this.person1 = new Person("Linda", "van Engelen", "LMJC", "Sibeliuslaan",
                 "83", "5654CV", "Eindhoven", "Nederland");
     }
-    
+
     /**
      * Test adding car.
      */
     @Test
-    public void testAddCar(){
+    public void testAddCar() {
         this.service.addCar(this.person1, ID, FUEL);
         verify(carManager, Mockito.times(1)).createCar(person1, ID, FUEL);
     }
