@@ -34,7 +34,6 @@ body {
 /* -------------------------------- Header -------------------------------- */
 header {
   width: 100%;
-  height: 120px;
   text-align: center;
   background-color: #fff;
   margin-bottom: 20px; }
@@ -43,7 +42,8 @@ header {
   top: 0;
   z-index: 1;
   position: fixed;
-  opacity: 0.8; }
+  opacity: 0.8;
+  height: 50px; }
 
 .top {
   margin-top: 140px; }
@@ -99,6 +99,10 @@ header {
   width: 100%;
   padding: 10px 0 20px 0; }
 
+/* -------------------------------- Text -------------------------------- */
+.txt-right {
+  text-align: right; }
+
 /* -------------------------------- Links -------------------------------- */
 .refs a {
   color: #8BD4A7; }
@@ -108,6 +112,9 @@ header {
 /* -------------------------------- Forms -------------------------------- */
 textarea {
   resize: none; }
+
+#form-span {
+  width: 150px; }
 
 /* -------------------------------- Charts -------------------------------- */
 .chart {

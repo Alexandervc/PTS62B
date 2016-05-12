@@ -42,6 +42,10 @@ public class PersonManager {
         return this.personDAO.findByName(name);
     }
     
+    public Person findPersonById(Long personId) {
+        return this.personDAO.find(personId);
+    }
+    
     /**
      * Search the persons with the given searchText in the 
      *      first name or last name.
