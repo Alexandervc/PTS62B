@@ -5,7 +5,6 @@
  */
 package service;
 
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

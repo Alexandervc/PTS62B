@@ -7,7 +7,6 @@ package service.rest.resources;
 
 import dto.RoadUsage;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -27,9 +26,6 @@ import service.RoadUsageService;
 @Path("/cartrackers/{cartrackerId}/roadUsages")
 @Stateless
 public class RoadUsagesResource {
-    private static final Logger LOGGER
-            = Logger.getLogger(RoadUsagesResource.class.getName());
-
     @Inject
     private RoadUsageService roadUsageService;
 

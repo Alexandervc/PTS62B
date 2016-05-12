@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -67,7 +66,8 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      * @return The last ride id.
      */
     public Integer getLastIdOfCountryCode(String countryCode) {
-        Query q = this.em.createNamedQuery("CarPosition.getLastIdOfCountryCode");
+        Query q = this.em
+                .createNamedQuery("CarPosition.getLastIdOfCountryCode");
         q.setParameter("countryCode", countryCode + "%");
         
         List<String> result = q.getResultList();

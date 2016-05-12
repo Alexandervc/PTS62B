@@ -6,7 +6,6 @@
 package business;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class RoadUsageManager {
         Map<Road, RoadUsage> roadUsages = new HashMap<>();
         for(CarPosition cp : carpositions) {
             if(!roadUsages.containsKey(cp.getRoad())) {
-                RoadUsage ru = null;
+                RoadUsage ru;
                 
                 if (cp.getRideId().startsWith("PT")) {
                     // Add roadUsage

@@ -74,10 +74,10 @@ public class DataStorage {
             roadUsages.add(usage);
 
             // Create person in db
-            Address address1 = new Address("Calçada do Lavra", "12", "1150-208",
-                    "Lisboa");
-            Address address2 = new Address("Calçada do Lavra", "14", "1150-208", 
-                    "Lisboa");
+            Address address1 = new Address("Calçada do Lavra", "12", 
+                    "1150-208", "Lisboa");
+            Address address2 = new Address("Calçada do Lavra", "14", 
+                    "1150-208", "Lisboa");
             Person p1 = this.personService.addPerson("Linda", "van Engelen", 
                     "LMJC", address1);
             Person p2 = this.personService.addPerson("Fernando", "Lameirinhas", 

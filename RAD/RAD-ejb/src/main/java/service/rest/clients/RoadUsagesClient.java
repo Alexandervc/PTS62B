@@ -6,9 +6,6 @@
 package service.rest.clients;
 
 import dto.RoadUsage;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -67,8 +64,7 @@ public class RoadUsagesClient {
 
         // Read entity
         GenericType<List<RoadUsage>> roadUsageType
-                = new GenericType<List<RoadUsage>>() {
-        };
+                = new GenericType<List<RoadUsage>>() {};
         return response.readEntity(roadUsageType);
     }
 }
