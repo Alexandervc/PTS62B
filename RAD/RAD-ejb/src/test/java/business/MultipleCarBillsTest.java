@@ -33,7 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  *
  * @author Linda
  */
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class MultipleCarBillsTest {
     /*
     private RadService service;

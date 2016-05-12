@@ -47,6 +47,9 @@ public class PersonManager {
      * @return List of found persons.
      */
     public List<Person> searchPersonsWithText(String searchText) {
+        if(searchText != null) {
+            searchText = searchText.trim();
+        }
         if(searchText == null || searchText.isEmpty()) {
             throw new IllegalArgumentException("searchText null or empty");
         }

@@ -92,7 +92,7 @@ public class InvoiceBean {
     
     public void generateBills() {
         //Get all bills
-        //this.bills = this.billService.generateBill(session.getPersonId(), this.month, this.year);
+        this.bills = this.billService.generateBill(session.getPersonId(), this.month, this.year);
     }
     
     public void changeDate() {

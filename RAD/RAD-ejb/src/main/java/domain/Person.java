@@ -121,7 +121,7 @@ public class Person implements Serializable {
     }
 
     public Address getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(Address address) {
