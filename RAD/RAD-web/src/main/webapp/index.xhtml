@@ -48,46 +48,42 @@
                             </h:form>
                         </div>
                         <div class="col-sm-12" id="billDiv">
-                            <c:set var="bill" scope="session" value="#{billBean.bill}"/>
-                            <c:choose>
-                                <c:when test="${bill != null}">
-                                    <h1>Factuur</h1>
-                                    <h3>#{billBean.personName}</h3>
+                            <ui:fragment rendered="#{billBean.bill != null}">
+                                <h1>Factuur</h1>
+                                <h3>#{billBean.personName}</h3>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered">
-                                            <thead>
-                                                <th>RoadName</th>
-                                                <th>RoadType</th>
-                                                <th>Km</th>
-                                                <th>Price/km</th>
-                                                <th>TotalPrice</th>
-                                            </thead>
-
-                                            <c:forEach var="ru" items="#{billBean.bill.roadUsages}">                                    
-                                                <tr>
-                                                    <td>#{ru.roadName}</td>
-                                                    <td>#{ru.roadType}</td>
-                                                    <td class="txt-right">#{ru.km}</td>
-                                                    <td class="txt-right">#{billBean.getRate(ru)}</td>
-                                                    <td class="txt-right">#{billBean.getPrice(ru)}</td>
-                                                </tr>
-                                            </c:forEach> 
-
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="txt-right"><b>Totaal</b></td>
-                                                <td class="txt-right"><b>#{billBean.totalPrice}</b></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <h3>Geen persoon geselecteerd</h3>
-                                </c:otherwise>
-                            </c:choose>
+                                <div class="table-responsive">
+                                    <h:dataTable class="table table-striped table-bordered"
+                                                value="#{billBean.bill.roadUsages}" var="ru">
+                                        <h:column>
+                                           <f:facet name="header">RoadName</f:facet> 
+                                           #{ru.roadName}
+                                        </h:column>
+                                        <h:column>
+                                           <f:facet name="header">RoadType</f:facet> 
+                                           #{ru.roadType}
+                                        </h:column>
+                                        <h:column class="txt-right">
+                                           <f:facet name="header">Km</f:facet> 
+                                           #{ru.km}
+                                        </h:column>
+                                        <h:column class="txt-right">
+                                           <f:facet name="header">Price/km</f:facet> 
+                                           #{billBean.getRate(ru)}
+                                        </h:column>
+                                        <h:column class="txt-right">
+                                           <f:facet name="header">TotalPrice</f:facet> 
+                                           #{billBean.getPrice(ru)}
+                                        </h:column>
+                                        <f:facet name="footer">
+                                            <h:outputText value="Total: #{billBean.totalPrice}" />
+                                        </f:facet>
+                                    </h:dataTable>
+                                </div>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{billBean.bill == null}">
+                                <h3>Geen persoon geselecteerd</h3>
+                            </ui:fragment>
                         </div>
                     </div>                    
                 </div>
