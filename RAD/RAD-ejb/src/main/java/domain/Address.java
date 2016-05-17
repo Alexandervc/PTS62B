@@ -78,7 +78,7 @@ public class Address implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("{0} {1}, {2} {3}", this.streetname,
-                this.housenumber, this.zipcode, this.city);
+        return this.streetname + " " + this.housenumber + ", " +
+                this.zipcode + " " + this.city;
     }
 }
