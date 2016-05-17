@@ -56,6 +56,8 @@ public class PersonService {
      *
      * @param name String.
      * @return found person.
+     * 
+     * @Deprecated contructor person.
      */
     @Deprecated
     public Person findPersonByName(String name) {

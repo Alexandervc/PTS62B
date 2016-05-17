@@ -33,7 +33,8 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class BillManagerTest {
-
+    private static final String CARID1 = "PT123456789";
+    
     private BillManager billManager;
 
     @Mock
@@ -47,19 +48,20 @@ public class BillManagerTest {
 
     private Person person;
     private Bill bill;
-    private static final String CARID1 = "PT123456789";
+    
     private Integer month;
     private Integer year;
 
     public BillManagerTest() {
+        // Empty for JPA.
     }
 
     @Before
     public void setUp() {
         this.billManager = new BillManager();
-        this.billManager.setBillDao(billDao);
-        this.billManager.setForeignCountryManager(countryManager);
-        this.billManager.setRateDAO(rateDao);
+        this.billManager.setBillDao(this.billDao);
+        this.billManager.setForeignCountryManager(this.countryManager);
+        this.billManager.setRateDAO(this.rateDao);
 
         this.createBillPerson();
     }

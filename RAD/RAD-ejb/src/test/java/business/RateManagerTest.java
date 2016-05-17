@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 public class RateManagerTest {
     
     public RateManagerTest() {
+        // Empty for JPA.
     }
     
     @BeforeClass

@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 public class CarManagerTest {
     
     public CarManagerTest() {
+        // Empty for JPA.
     }
     
     @BeforeClass

@@ -14,9 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
-import service.PersonService;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -32,12 +30,13 @@ public class PersonManagerTest {
     private PersonDao dao;
     
     public PersonManagerTest() {
+        // Empty for JPA.
     }
     
     @Before
     public void setUp() {
         this.manager = new PersonManager();
-        this.manager.setPersonDAO(dao);
+        this.manager.setPersonDAO(this.dao);
         
     }
     
