@@ -1,4 +1,4 @@
-package data1;
+package data;
 
 import common.domain.Test;
 import common.domain.TestType;
