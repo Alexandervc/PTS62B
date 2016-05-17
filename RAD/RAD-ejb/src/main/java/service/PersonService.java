@@ -64,5 +64,6 @@ public class PersonService {
      */
     public Person findPersonById(Long personId) {
         return this.personManager.findPersonById(personId);
-    }
+    }    
+    
 }

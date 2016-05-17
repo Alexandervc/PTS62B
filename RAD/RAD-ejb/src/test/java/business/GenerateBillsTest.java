@@ -12,33 +12,28 @@ import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
 import dto.RoadUsage;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 import service.BillService;
 import service.PersonService;
 import service.RoadUsageService;
+import static org.mockito.Mockito.verify;
 
 /**
  *
  * @author Linda
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MultipleCarBillsTest {
+public class GenerateBillsTest {
    
     private BillService billService;
         
@@ -50,15 +45,6 @@ public class MultipleCarBillsTest {
     
     @Mock
     private PersonService personService;
-    
-    @Mock
-    private PersonManager personManager;
-    
-    @Mock
-    private CarManager carManager;
-    
-    @Mock
-    private RateManager rateManager;
     
     private Person person1;
     private Person person2;
@@ -77,7 +63,7 @@ public class MultipleCarBillsTest {
     
     private List<RoadUsage> roadUsage;
     
-    public MultipleCarBillsTest() {
+    public GenerateBillsTest() {
     }
     
     @Before

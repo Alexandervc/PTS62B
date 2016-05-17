@@ -90,14 +90,26 @@ public class BillService {
         return carBills;
     }
 
+    /**
+     * Setter BillManager.
+     * @param billManager object. 
+     */
     public void setBillManager(BillManager billManager) {
         this.billManager = billManager;
     }
 
+    /**
+     * Setter PersonService.
+     * @param personService object.
+     */
     public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
 
+    /**
+     * Setter RoadUsageService.
+     * @param roadUsageService object. 
+     */
     public void setRoadUsageService(RoadUsageService roadUsageService) {
         this.roadUsageService = roadUsageService;
     }

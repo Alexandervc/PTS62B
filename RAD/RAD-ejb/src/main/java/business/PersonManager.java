@@ -55,4 +55,13 @@ public class PersonManager {
         }
         return this.personDAO.findPersonsWithText(searchText);
     }
+
+    /**
+     * Setter PersonDAO.
+     * @param personDAO object. 
+     */
+    public void setPersonDAO(PersonDao personDAO) {
+        this.personDAO = personDAO;
+    }
+    
 }
