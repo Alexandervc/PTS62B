@@ -89,4 +89,17 @@ public class BillService {
         // return list carBills
         return carBills;
     }
+
+    public void setBillManager(BillManager billManager) {
+        this.billManager = billManager;
+    }
+
+    public void setPersonService(PersonService personService) {
+        this.personService = personService;
+    }
+
+    public void setRoadUsageService(RoadUsageService roadUsageService) {
+        this.roadUsageService = roadUsageService;
+    }
+    
 }

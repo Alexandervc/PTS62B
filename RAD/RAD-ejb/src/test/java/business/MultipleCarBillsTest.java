@@ -5,6 +5,7 @@
  */
 package business;
 
+import domain.Address;
 import domain.Bill;
 import domain.Car;
 import domain.FuelType;
@@ -28,21 +29,27 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+import service.BillService;
+import service.PersonService;
+import service.RoadUsageService;
 
 /**
  *
  * @author Linda
  */
-//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class MultipleCarBillsTest {
-    /*
-    private RadService service;
+   
+    private BillService billService;
         
     @Mock
-    private RoadUsagesService roadUsagesService;
+    private RoadUsageService roadUsagesService;
         
     @Mock
     private BillManager billManager;
+    
+    @Mock
+    private PersonService personService;
     
     @Mock
     private PersonManager personManager;
@@ -56,11 +63,17 @@ public class MultipleCarBillsTest {
     private Person person1;
     private Person person2;
     
+    private static final Long PERSONID1 =1L;
+    private static final Long PERSONID2 = 2L;
+    
+    private static final String CARID1 = "PT123456789";
+    private static final String CARID2 = "PT987654321";
+    
     private Date begin;
     private Date end;
     
-    private String month;
-    private String year;
+    private Integer month;
+    private Integer year;
     
     private List<RoadUsage> roadUsage;
     
@@ -69,23 +82,19 @@ public class MultipleCarBillsTest {
     
     @Before
     public void setUp() {
-        this.service = new RadService();
+        this.billService = new BillService();
         // set managers and service with Mock
-        this.service.setRoadUsagesService(this.roadUsagesService);
-        this.service.setPersonManager(this.personManager);
-        this.service.setBillManager(this.billManager);
-        this.service.setCarManager(this.carManager);
-        this.service.setRateManager(this.rateManager);
+        this.billService.setBillManager(billManager);
+        this.billService.setPersonService(personService);
+        this.billService.setRoadUsageService(roadUsagesService);
         
         this.begin = new Date();
         this.end = new Date();
-        // format date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM",
-                Locale.getDefault());
+        
         // set month for bill
-        this.month = dateFormat.format(begin);
+        this.month = this.begin.getMonth();
         // set year for bill
-        this.year = Integer.toString(begin.getYear() + 1900);
+        this.year = begin.getYear() + 1900;
         
         this.createPerson();
         
@@ -95,94 +104,96 @@ public class MultipleCarBillsTest {
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
     
-    
+    @Test     
     public void getmultipleNewBillsTest(){        
         // Define when
-        when(this.service.findPersonByName(this.person1.getFirstName()))
+        when(this.personService.findPersonById(PERSONID1))
                 .thenReturn(this.person1);
         
-        when(this.roadUsagesService.getRoadUsages("PT123456789", begin, end))
+        when(this.roadUsagesService.getRoadUsages(CARID1, 
+                this.month, this.year))
                 .thenReturn(this.roadUsage);
-         when(this.roadUsagesService.getRoadUsages("PT987654321", begin, end))
+         when(this.roadUsagesService.getRoadUsages(CARID2, 
+                 this.month, this.year))
                 .thenReturn(this.roadUsage);
         
-        this.service.generateBill(this.person1.getFirstName(), begin, end);
+        this.billService.generateBill(PERSONID1,  this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
-                .getRoadUsages("PT123456789", begin, end);
+                .getRoadUsages(CARID1,  this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
-                .getRoadUsages("PT987654321", begin, end);
+                .getRoadUsages(CARID2,  this.month, this.year);
         
         verify(this.billManager, Mockito.times(1))
-                .generateBill(this.person1, this.roadUsage, "PT123456789", 
+                .generateBill(this.person1, this.roadUsage, CARID1, 
                         this.month, this.year);
         verify(this.billManager, Mockito.times(1))
-                .generateBill(this.person1, this.roadUsage, "PT987654321", 
+                .generateBill(this.person1, this.roadUsage, CARID2, 
                         this.month, this.year);
     }
     
     @Test
     public void getmultipleOldBillsTest(){
         // Define when
-        when(this.service.findPersonByName(this.person2.getFirstName()))
+        // Define when
+        when(this.personService.findPersonById(PERSONID2))
                 .thenReturn(this.person2);
         
-         when(this.roadUsagesService.getRoadUsages("PT123456789", begin, end))
+        when(this.roadUsagesService.getRoadUsages(CARID1, 
+                this.month, this.year))
                 .thenReturn(this.roadUsage);
-         when(this.roadUsagesService.getRoadUsages("PT987654321", begin, end))
+         when(this.roadUsagesService.getRoadUsages(CARID2, 
+                 this.month, this.year))
                 .thenReturn(this.roadUsage);
          
-        this.service.generateBill(this.person2.getFirstName(), begin, end);
+        this.billService.generateBill(PERSONID2, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
-                .getRoadUsages("PT123456789", begin, end);
+                .getRoadUsages(CARID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
-                .getRoadUsages("PT987654321", begin, end);
+                .getRoadUsages(CARID2, this.month, this.year);
         
         verify(this.billManager, Mockito.times(1))
                 .generateBill(this.person2, this.roadUsage, 
-                        "PT987654321", this.month, this.year);
+                        CARID2, this.month, this.year);
         verify(this.billManager, Mockito.times(0))
                 .generateBill(this.person2, this.roadUsage, 
-                        "PT123456789", this.month, this.year);
+                        CARID1, this.month, this.year);
     }
     
     private void createPerson(){
         String firstname= "Linda";
         String lastname ="van Engelen";
         String initials = "LMJC";
-  
+        
         String streetname = "Sibeliuslaan";
         String number = "83";
         String zipcode = "5654CV";
         String city = "Eindhoven";
-        String country = "Nederland";
+        Address adres = new Address(streetname, number, zipcode, city);
+        
         this.person1 = new Person(firstname, lastname, initials, 
-                streetname, number, zipcode, city, country);
+                adres);
+        this.person1.setId(PERSONID1);
+        
         this.person2 = new Person(firstname, lastname, initials, 
-                streetname, number, zipcode, city, country);
+                adres);
+        this.person2.setId(PERSONID2);
         
-        String id1 ="PT123456789";
-        String id2 ="PT987654321";
-        Car c1 = new Car(this.person1, id1 , FuelType.Diesel);
-        Car c2 = new Car(this.person1, id2, FuelType.Petrol);
         
-        Car c3 = new Car(this.person2, id1 , FuelType.Diesel);
-        Car c4 = new Car(this.person2, id2, FuelType.Petrol);
+        Car c1 = new Car(this.person1, CARID1 , FuelType.Diesel);
+        Car c2 = new Car(this.person1, CARID2, FuelType.Petrol);
+        
+        Car c3 = new Car(this.person2, CARID1 , FuelType.Diesel);
+        Car c4 = new Car(this.person2, CARID2, FuelType.Petrol);
         
         Bill b = new Bill();
         b.setBillMonth(this.month);
         b.setBillYear(this.year);
-        b.setCartrackerId("PT123456789");
+        b.setCartrackerId(CARID1);
         this.person2.addBill(b);
         
         this.roadUsage = new ArrayList<>();
         this.roadUsage.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
         this.roadUsage.add(new RoadUsage("Frederickplein", RoadType.A, 45.00));
-    }*/
+    }
 }
