@@ -21,7 +21,8 @@ public class InvoiceSession implements Serializable {
      * @return String person name.
      */
     public String getPersonName() {
-        return this.person.getInitials() + " " + 
+        return this.person.getFirstName() + " " +
+                this.person.getInitials() + " " + 
                 this.person.getLastName();
     }
 
