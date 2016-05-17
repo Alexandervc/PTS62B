@@ -47,7 +47,6 @@ public class BillService {
      * @return The List of bills specific month and year.
      */
     public List<Bill> generateBill(Long userId, int month, int year) {
-        List<Bill> carBills = new ArrayList<>();
         
         // find person for bill
         Person person = this.personService.findPersonById(userId);
@@ -55,6 +54,7 @@ public class BillService {
             throw new IllegalArgumentException("user not found");
         }
 
+        List<Bill> carBills = new ArrayList<>();
         // foreach car in person
         for(Car c : person.getCars()){
             Boolean exists = false;
@@ -67,8 +67,7 @@ public class BillService {
                 // if equals cartrackerid, billMonth and billYear
                 if(b.getCartrackerId().equals(c.getCartrackerId()) &&
                         b.getBillMonth() == month &&
-                        b.getBillYear() == year)
-                {
+                        b.getBillYear() == year){
                     // set RoadUsages
                     b.setRoadUsages(roadUsages);
                     // add to list carBills

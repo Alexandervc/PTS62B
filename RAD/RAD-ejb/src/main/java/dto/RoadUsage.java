@@ -30,6 +30,8 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @param roadName String.
      * @param type Type RoadType.
      * @param km in Double.
+     * 
+     * @deprecated contructor.
      */
     @Deprecated
     public RoadUsage(String roadName, String type, Double km) {
@@ -59,6 +61,8 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @param type Type RoadType.
      * @param km in Double.
      * @param foreignCountryRideId The id of the foreign country ride.
+     * 
+     * @deprecated contructor.
      */
     @Deprecated
     public RoadUsage(

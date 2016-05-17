@@ -88,7 +88,7 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
-                double price = ru.getKm() * rate.getRate();
+                double price = ru.getKm() * rate.getPrice();
                 totalPrice += price;
             }
         }        
@@ -124,7 +124,7 @@ public class BillManager {
      */
     private Double calculatePrice(RoadUsage roadUsage) {
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
-        return roadUsage.getKm() * rate.getRate();
+        return roadUsage.getKm() * rate.getPrice();
     }
 
     /**
