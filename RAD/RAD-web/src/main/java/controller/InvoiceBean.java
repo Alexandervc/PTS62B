@@ -27,9 +27,6 @@ import service.RateService;
 @Named
 @RequestScoped
 public class InvoiceBean {
-    private static final Logger LOGGER = Logger
-            .getLogger(InvoiceBean.class.getName());
-
     @EJB
     private PersonService personService;
     
@@ -44,11 +41,11 @@ public class InvoiceBean {
 
     private List<Bill> bills;
     
-    //Current month and year
+    //Current month and year.
     private int year;
     private int month;
     
-    //Dates for combobox
+    //Dates for combobox.
     private String dateIndex;
     private List<ListBoxDate> dates;
     
@@ -58,41 +55,43 @@ public class InvoiceBean {
      * Get all related data.
      */
     public void setup() {
-        //Get person by personId
+        //Get person by personId.
         Long personId = this.session.getPersonId();
         Person person = this.personService.findPersonById(personId);
         this.session.setPerson(person);
 
-        //Setup dates
-        //Current date
+        //Setup dates.
+        //Current date.
         GregorianCalendar cal = new GregorianCalendar();
         this.year = cal.get(GregorianCalendar.YEAR);
         this.month = cal.get(GregorianCalendar.MONTH) + 1;
         this.dateIndex = "0";
 
-        //Create list with ListBoxDate's
+        //Create list with ListBoxDate's.
         this.dates = new ArrayList<>();
 
         for (int m = 0; m < 25; m++) {
             GregorianCalendar m_cal = new GregorianCalendar();
             m_cal.add(Calendar.MONTH, -m);
             int m_year = m_cal.get(Calendar.YEAR);
-            String m_month_string = m_cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+            String m_month_string = m_cal.getDisplayName(
+                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
 
-            //Add date to list
+            //Add date to list.
             String index = Integer.toString(m);
             String value = m_month_string + " " + m_year;            
             this.dates.add(new ListBoxDate(value, index));            
         }        
 
-        //Generate bills for person
+        //Generate bills for person.
         this.bills = new ArrayList<>();
         this.generateBills();
     }
     
     public void generateBills() {
-        //Get all bills
-        this.bills = this.billService.generateBill(session.getPersonId(), this.month, this.year);
+        //Get all bills.
+        this.bills = this.billService.generateBill(
+                this.session.getPersonId(), this.month, this.year);
     }
     
     public void changeDate() {
@@ -103,7 +102,7 @@ public class InvoiceBean {
         this.year = cal.get(Calendar.YEAR);
         this.month = cal.get(Calendar.MONTH) + 1;
         
-        //Get all bills
+        //Get all bills.
         this.generateBills();
     }
     
@@ -115,8 +114,8 @@ public class InvoiceBean {
      */
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(this.rateService.getRate(roadUsage.getRoadType())
-                .getRate());
+        return formatter.format(
+                this.rateService.getRate(roadUsage.getRoadType()).getRate());
     }
 
     /**
@@ -134,7 +133,7 @@ public class InvoiceBean {
     /**
      * Get total price for bill.
      * 
-     * @param bill
+     * @param bill bill reference to get price.
      * @return String total price bill.
      */
     public String getTotalPrice(Bill bill) {
@@ -147,7 +146,7 @@ public class InvoiceBean {
     }
 
     public String getDateIndex() {
-        return dateIndex;
+        return this.dateIndex;
     }
 
     public void setDateIndex(String dateIndex) {

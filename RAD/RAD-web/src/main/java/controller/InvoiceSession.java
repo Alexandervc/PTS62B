@@ -6,7 +6,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
- *
+ * Session bean to manage invoicebean data.
+ * 
  * @author Melanie
  */
 @Named
