@@ -9,6 +9,8 @@ import business.PersonManager;
 import domain.Address;
 import domain.Person;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -18,6 +20,9 @@ import javax.inject.Inject;
  */
 @Stateless
 public class PersonService {
+    private static final Logger LOGGER =
+            Logger.getLogger(PersonService.class.getName());
+    
     @Inject
     private PersonManager personManager;
     
@@ -52,7 +57,9 @@ public class PersonService {
      * @param name String.
      * @return found person.
      */
+    @Deprecated
     public Person findPersonByName(String name) {
+        LOGGER.log(Level.WARNING, "use of deprecated findPersonByName");
         return this.personManager.findPersonByName(name);
     }
     
