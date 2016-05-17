@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package data.jms;
+package data1.jms;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
