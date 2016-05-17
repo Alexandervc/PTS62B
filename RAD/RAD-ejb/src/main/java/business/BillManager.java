@@ -92,9 +92,14 @@ public class BillManager {
                 totalPrice += price;
             }
         }        
-        
-        return new Bill(person, roadUsages, totalPrice, cartrackerId, 
+        Bill temp = new Bill(person, roadUsages, totalPrice, cartrackerId, 
                 month, year);
+        
+        //  TODO
+        // Save bill in db if month ended
+        
+        
+        return temp;
     }
 
     /**
@@ -121,4 +126,31 @@ public class BillManager {
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
         return roadUsage.getKm() * rate.getRate();
     }
+
+    /**
+     * Setter BillDao.
+     * @param billDao object. 
+     */
+    public void setBillDao(BillDao billDao) {
+        this.billDao = billDao;
+    }
+
+    /**
+     * Setter RateDao.
+     * @param rateDAO object. 
+     */
+    public void setRateDAO(RateDao rateDAO) {
+        this.rateDAO = rateDAO;
+    }
+
+    /**
+     * Setter ForeignCountryManager.
+     * @param foreignCountryManager object. 
+     */
+    public void setForeignCountryManager(ForeignCountryManager 
+            foreignCountryManager) {
+        this.foreignCountryManager = foreignCountryManager;
+    }
+    
+    
 }

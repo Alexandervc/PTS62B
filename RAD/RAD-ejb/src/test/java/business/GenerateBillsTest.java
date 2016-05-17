@@ -29,8 +29,8 @@ import service.RoadUsageService;
 import static org.mockito.Mockito.verify;
 
 /**
- *
- * @author Linda
+ * Test for Generate bill with multiple cars.
+ * @author Linda.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class GenerateBillsTest {
@@ -56,7 +56,6 @@ public class GenerateBillsTest {
     private static final String CARID2 = "PT987654321";
     
     private Date begin;
-    private Date end;
     
     private Integer month;
     private Integer year;
@@ -75,7 +74,6 @@ public class GenerateBillsTest {
         this.billService.setRoadUsageService(roadUsagesService);
         
         this.begin = new Date();
-        this.end = new Date();
         
         // set month for bill
         this.month = this.begin.getMonth();
