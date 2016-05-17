@@ -15,7 +15,6 @@ import dto.RoadUsage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,10 +83,6 @@ public class GenerateBillsTest {
 
         this.createPerson();
 
-    }
-
-    @After
-    public void tearDown() {
     }
 
     @Test

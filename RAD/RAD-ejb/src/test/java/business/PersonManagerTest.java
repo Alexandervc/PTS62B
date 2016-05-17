@@ -8,7 +8,6 @@ package business;
 import dao.PersonDao;
 import domain.Address;
 import domain.Person;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,10 +37,6 @@ public class PersonManagerTest {
         this.manager = new PersonManager();
         this.manager.setPersonDAO(this.dao);
         
-    }
-    
-    @After
-    public void tearDown() {
     }
     
     @Test
