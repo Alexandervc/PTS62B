@@ -67,6 +67,9 @@ public class DataStorage {
             this.rateService.addRate(RATE3, RoadType.C);
             this.rateService.addRate(RATE4, RoadType.D);
             this.rateService.addRate(RATE5, RoadType.E);
+            // TODO
+            // have to be solved.
+            this.rateService.addRate(0.00, RoadType.FOREIGN_COUNTRY_ROAD);
 
             // Make list of roadusages
             List<RoadUsage> roadUsages = new ArrayList<>();
