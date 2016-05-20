@@ -6,7 +6,9 @@
 package service;
 
 import business.CarPositionManager;
+import dto.Coordinate;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -38,5 +40,19 @@ public class CarPositionService {
             Double meter, String rideId, Boolean lastOfRide) {
         this.carPositionManager.processCarPosition(cartrackerId, moment, 
                 xCoordinate, yCoordinate, roadName, meter, rideId, lastOfRide);
+    }
+    
+    /**
+     * Get the coordinates in the given month and year for the given 
+     *      cartrackerId.
+     * @param month The month to get the coordinates for.
+     * @param year The year to get the coordinates for.
+     * @param cartrackerId The cartracker to get the coordinates for.
+     * @return A list of coordinates.
+     */
+    public List<Coordinate> getCoordinates(int month, int year,
+            String cartrackerId) {
+        return this.carPositionManager.getCoordinates(month, year, 
+                cartrackerId);
     }
 }

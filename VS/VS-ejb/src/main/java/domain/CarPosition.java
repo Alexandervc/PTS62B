@@ -34,7 +34,13 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="CarPosition.getLastIdOfCountryCode", query = "SELECT "
             + "cp.rideId "
             + "FROM CarPosition cp "
-            + "WHERE cp.rideId LIKE :countryCode")
+            + "WHERE cp.rideId LIKE :countryCode"),
+    @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
+            + "cp.xCoordinate, cp.yCoordinate "
+            + "FROM CarPosition cp "
+            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
+            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
+            + "AND cp.cartracker.id = :cartrackerId")
 })
 public class CarPosition implements Serializable {
     @Id
