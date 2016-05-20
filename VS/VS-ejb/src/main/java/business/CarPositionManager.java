@@ -82,7 +82,8 @@ public class CarPositionManager {
                     roadName, meter, rideId, lastOfRide);
 
             // Get countryCode
-            String countryCodeTo = cartrackerId.substring(0, COUNTRYCODE_LENGTH);
+            String countryCodeTo = cartrackerId
+                    .substring(0, COUNTRYCODE_LENGTH);
 
             // If foreign and last of ride
             if (!MY_COUNTRYCODE.equals(countryCodeTo) && lastOfRide) {
