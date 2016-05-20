@@ -25,12 +25,14 @@ public class ForeignRideService {
      * @param cartrackerId The foreign cartracker.
      * @param totalPrice The total price of the ride.
      * @param carpositions The carPositions of the ride.
-     * @param countryCode The code of the country where the foreign cartracker
+     * @param countryCodeTo The code of the country where the foreign cartracker
      *      is from.
+     * @param countryCodeFrom The code of our own country.
      */
     public void sendForeignRide(String cartrackerId, Double totalPrice,
-            List<CarPosition> carpositions, String countryCode) {
+            List<CarPosition> carpositions, String countryCodeTo, 
+            String countryCodeFrom) {
         this.sendForeignRideBean.sendForeignRide(cartrackerId, totalPrice, 
-                carpositions, countryCode);
+                carpositions, countryCodeTo, countryCodeFrom);
     }
 }

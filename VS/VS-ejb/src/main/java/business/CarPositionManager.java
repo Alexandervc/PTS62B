@@ -82,10 +82,10 @@ public class CarPositionManager {
                     roadName, meter, rideId, lastOfRide);
 
             // Get countryCode
-            String countryCode = cartrackerId.substring(0, COUNTRYCODE_LENGTH);
+            String countryCodeTo = cartrackerId.substring(0, COUNTRYCODE_LENGTH);
 
             // If foreign and last of ride
-            if (!MY_COUNTRYCODE.equals(countryCode) && lastOfRide) {
+            if (!MY_COUNTRYCODE.equals(countryCodeTo) && lastOfRide) {
                 // Get carpostions and roadusages of ride
                 List<CarPosition> carPositions = this.carPositionDao
                         .getPositionsOfRide(rideId);
@@ -97,8 +97,9 @@ public class CarPositionManager {
                         .getTotalPrice(roadUsages);
                 
                 // Send
-                this.foreignRideService.sendForeignRide(cartrackerId,
-                        totalPrice, carPositions, countryCode);
+                this.foreignRideService.sendForeignRide(cartrackerId, 
+                        totalPrice, carPositions, countryCodeTo, 
+                        MY_COUNTRYCODE);
             }
         } catch (IllegalArgumentException iaEx) {
             LOGGER.log(Level.SEVERE, null, iaEx);
