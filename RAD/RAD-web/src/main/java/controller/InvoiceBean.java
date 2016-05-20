@@ -94,12 +94,18 @@ public class InvoiceBean {
         this.generateBills();
     }
     
+    /**
+     * Generate bill.
+     */
     public void generateBills() {
         //Get all bills.
         this.bills = this.billService.generateBill(
                 this.session.getPersonId(), this.month, this.year);
     }
     
+    /**
+     * Listener for date dropdown menu.
+     */
     public void changeDate() {
         int index = Integer.parseInt(this.dateIndex);
         
@@ -112,6 +118,12 @@ public class InvoiceBean {
         this.generateBills();
     }
     
+    /**
+     * Get km with two decimals.
+     * 
+     * @param roadUsage.
+     * @return kilometers with two decimals.
+     */
     public String getKm(RoadUsage roadUsage) {
         DecimalFormat formatter = new DecimalFormat("#.00"); 
         return formatter.format(roadUsage.getKm());
@@ -149,6 +161,7 @@ public class InvoiceBean {
     
     /**
      * Get fuel of the car with the given cartrackerId.
+     * 
      * @param cartrackerId The cartracker id.
      * @return The name of the fuel type.
      */
