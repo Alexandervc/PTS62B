@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>         
+        <ui:composition template="templates/template.xhtml">
+            <ui:define name="content">
+                <div class="row">
+                    <div class="col-sm-12 meme layer1">
+                        <div class="col-sm-12" id="searchDiv">
+                            <h:form class="form-horizontal">
+                                <div class="input-group">
+                                    <h:inputText class="form-control input"  
+                                                 id="nameBox"
+                                                 value=""
+                                                 a:placeholder="Fill in a name...">
+                                    </h:inputText>
+
+                                    <span class="input-group-btn">
+                                        <h:commandButton type="submit"
+                                                         id="searchButton"
+                                                         value="Search"
+                                                         class="form-control">
+                                            <f:ajax event="action"  execute="nameBox searchButton" render="nameBox searchResult"/>
+                                        </h:commandButton>
+                                    </span>                            
+                                </div>
+                            </h:form>
+                        </div>
+                        
+                        <div class="col-sm-12" id="searchDiv" >
+                            <h:panelGroup id="searchResult">
+                                <ul class="list-group">
+                                    
+                                </ul>
+                            </h:panelGroup>
+                        </div>
+                    </div>                    
+                </div>
+            </ui:define>
+        </ui:composition>    	
+    </h:body>
+</html>
