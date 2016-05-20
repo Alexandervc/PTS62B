@@ -1,11 +1,12 @@
 model\PositionInfo.class
 model\DirectionInput.class
+service\jms\ReceiveTestRequestBean.class
 service\jms\SendPositionBean.class
 model\Point.class
-main\SimulatorMain.class
 model\Leg.class
 model\GpsSimulatorInstance.class
 simulator\GpsSimulator.class
 service\PathService.class
 service\GpsdService.class
+service\jms\SendTestResultsBean.class
 support\NavUtils.class

@@ -54,7 +54,6 @@ public class PathService implements Serializable {
 
     private static final String API_KEY = 
             "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
-    private static final int CARTRACKERS_COUNT = 5;
     
     private transient BufferedReader reader;
 
@@ -63,6 +62,8 @@ public class PathService implements Serializable {
     private final transient ExecutorService taskExecutor
             = Executors.newSingleThreadExecutor();
     private long instanceCounter = 1;    
+    
+    private List<String> cartrackers;
 
     @Inject
     private SendPositionBean sendPositionBean;
@@ -71,7 +72,17 @@ public class PathService implements Serializable {
      * Setup location info.
      */
     @PostConstruct
-    public void setupLocations() {
+    public void setup() {
+        //Setup list of all cartrackers
+        this.cartrackers = new ArrayList<>();
+        this.cartrackers.add("PT112233444");
+        this.cartrackers.add("PT121312141");
+        this.cartrackers.add("PT123456789");
+        this.cartrackers.add("BE-a5eff926-e3f7-43d5-b62b-5140aa2b962f");
+        this.cartrackers.add("LU203647582746");
+        this.cartrackers.add("NL123456789");
+        
+        //Setup locations
         this.locations = new ArrayList<>();
         this.locations.add("R. do Ouro,1150-060 Lisboa,Portugal");
         this.locations.add("R. Alm. Gago Coutinho,Albufeira,Portugal");
@@ -87,19 +98,28 @@ public class PathService implements Serializable {
         this.locations.add("Largo da Estação,4700-223 Maximinos - "
                 + "Braga,Portugal");
     }
+    
+    /**
+     * Get all cartrackers.
+     * 
+     * @return List of cartrackers.
+     */
+    public List<String> getCartrackers() {
+        return this.cartrackers;
+    }
 
     /**
      * Setup reader.
      *
-     * @param configId.
+     * @param cartracker.
      * @throws FileNotFoundException .
      */
-    public void setupStream(int configId) throws FileNotFoundException {
+    public void setupStream(String cartracker) throws FileNotFoundException {
         this.reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                new File(PathService.PROJECT_ROOT + "\\config"
-                                        + configId + ".txt")
+                                new File(PathService.PROJECT_ROOT + "\\config_"
+                                        + cartracker + ".txt")
                         )
                 )
         );
@@ -159,108 +179,101 @@ public class PathService implements Serializable {
     }
 
     /**
-     * Generate road usages for all config files.
-     */
-    public void generateFiles() {
-        for (int i = 0; i < CARTRACKERS_COUNT; i++) {
-            int configId = i + 1;
-            this.generateFile(configId);
-        }
-    }
-
-    /**
      * Generate files for roadusages.
      *
-     * @param configId id for config file.
+     * @param cartracker id for config file.
+     * @param date date for generating roadusages.
      */
-    public void generateFile(int configId) {
-        try {
-            //Setup stream for configId.
-            this.setupStream(configId);
+    public void generateFiles(String cartracker, Date date) {
+        if (cartracker != null && !cartracker.isEmpty() && date != null &&
+                this.cartrackers.contains(cartracker)) {        
+            try {
+                //Setup stream for configId.                
+                this.setupStream(cartracker);
 
-            //Read config file.
-            String file = this.reader.readLine();
-            String[] fileParam = file.split(",");
-            String cartrackerID = fileParam[0].substring(fileParam[0].
-                    indexOf("=") + 1);
-            String index = fileParam[1].substring(fileParam[1].indexOf("=") + 1);
-            int fileIndex = Integer.parseInt(index);
-            String ride = fileParam[2].substring(fileParam[2].indexOf("=") + 1);
-            Long rideID = Long.parseLong(ride);
+                //Read config file.
+                String file = this.reader.readLine();
+                String[] fileParam = file.split(",");
+                String index = fileParam[1].substring(fileParam[1].indexOf("=") + 1);
+                int fileIndex = Integer.parseInt(index);
+                String ride = fileParam[2].substring(fileParam[2].indexOf("=") + 1);
+                Long rideID = Long.parseLong(ride);
 
-            //Get points from google.
-            DirectionInput input = this.getRandomDirectioninput();
-            List<Point> points = this.getCoordinatesFromGoogle(input);
+                //Get points from google.
+                DirectionInput input = this.getRandomDirectioninput();
+                List<Point> points = this.getCoordinatesFromGoogle(input);
 
-            Point previous = null;
+                Point previous = null;
 
-            for (Point p : points) {
-                //Get parameters.
-                Date moment = new Date();
-                Double xCoordinate = p.getLatitude();
-                Double yCoordinate = p.getLongitude();
-                Double meter = 0.0;
-                Boolean last = false;
+                for (Point p : points) {
+                    //Get parameters.
+                    Double xCoordinate = p.getLatitude();
+                    Double yCoordinate = p.getLongitude();
+                    Double meter = 0.0;
+                    Boolean last = false;
 
-                //Chech if current position is last in list.
-                if (points.indexOf(p) == (points.size() - 1)) {
-                    last = true;
+                    //Chech if current position is last in list.
+                    if (points.indexOf(p) == (points.size() - 1)) {
+                        last = true;
+                    }
+
+                    //Calculate meters between this point and previous point.
+                    if (previous != null) {
+                        List<Point> ps = new ArrayList<>();
+                        ps.add(previous);
+                        ps.add(p);
+                        meter = NavUtils.getTotalDistance(ps);
+                    }
+
+                    //Create json array.
+                    Map<String, Object> position = new HashMap<>();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    String momentString = df.format(date);
+                    position.put("moment", momentString);
+                    position.put("xCoordinate", xCoordinate);
+                    position.put("yCoordinate", yCoordinate);
+                    position.put("meter", meter);
+                    position.put("rideId", rideID.toString());
+                    position.put("last", last);
+
+                    //Create file for point.
+                    String fileName = cartracker + "-" + fileIndex + ".json";
+                    FileWriter fileWriter = new FileWriter(PathService.PROJECT_ROOT
+                            + "\\output\\" + fileName);
+                    String output;
+
+                    //Write file.
+                    try (BufferedWriter writer
+                            = new BufferedWriter(fileWriter)) {
+                        Gson gson = new Gson();
+                        output = gson.toJson(position);
+                        writer.write(output);
+                    }
+
+                    //Send position through JMS.
+                    this.sendPositionBean.sendPosition(output, cartracker,
+                            Integer.toUnsignedLong(fileIndex));
+
+                    previous = p;
+                    fileIndex++;
                 }
 
-                //Calculate meters between this point and previous point.
-                if (previous != null) {
-                    List<Point> ps = new ArrayList<>();
-                    ps.add(previous);
-                    ps.add(p);
-                    meter = NavUtils.getTotalDistance(ps);
+                //Update config file.
+                rideID++;
+                String output = "cartrackerID=" + cartracker + ",fileIndex="
+                        + fileIndex + ",ride=" + rideID;
+                FileWriter fileWritter = new FileWriter(PathService.PROJECT_ROOT
+                        + "\\config_" + cartracker + ".txt", false);
+
+                try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {
+                    writer2.write(output);
                 }
-
-                //Create json array.
-                Map<String, Object> position = new HashMap<>();
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String momentString = df.format(moment);
-                position.put("moment", momentString);
-                position.put("xCoordinate", xCoordinate);
-                position.put("yCoordinate", yCoordinate);
-                position.put("meter", meter);
-                position.put("rideId", rideID.toString());
-                position.put("last", last);
-
-                //Create file for point.
-                String fileName = cartrackerID + "-" + fileIndex + ".json";
-                FileWriter fileWriter = new FileWriter(PathService.PROJECT_ROOT
-                        + "\\output\\" + fileName);
-                String output;
-
-                //Write file.
-                try (BufferedWriter writer
-                        = new BufferedWriter(fileWriter)) {
-                    Gson gson = new Gson();
-                    output = gson.toJson(position);
-                    writer.write(output);
-                }
-
-                //Send position through JMS.
-                this.sendPositionBean.sendPosition(output, cartrackerID,
-                        Integer.toUnsignedLong(fileIndex));
-
-                previous = p;
-                fileIndex++;
+            } catch (IOException ex) {
+                Logger.getLogger(PathService.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
-
-            //Update config file.
-            rideID++;
-            String output = "cartrackerID=" + cartrackerID + ",fileIndex="
-                    + fileIndex + ",ride=" + rideID;
-            FileWriter fileWritter = new FileWriter(PathService.PROJECT_ROOT
-                    + "\\config" + configId + ".txt", false);
-
-            try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {
-                writer2.write(output);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(PathService.class.getName())
-                    .log(Level.SEVERE, null, ex);
+        } else {
+            throw new IllegalArgumentException("Parameters not valid");
         }
     }
 
