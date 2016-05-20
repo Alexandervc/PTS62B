@@ -60,7 +60,7 @@ public class DataStorage {
      */
     @PostConstruct
     public void onStartup() {
-        if (this.personService.findPersonByName("Linda") == null) {
+        if (this.personService.searchPersons("Linda").isEmpty()) {
             // Add rates to db.
             this.rateService.addRate(RATE1, RoadType.A);
             this.rateService.addRate(RATE2, RoadType.B);

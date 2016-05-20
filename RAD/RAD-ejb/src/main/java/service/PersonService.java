@@ -50,20 +50,6 @@ public class PersonService {
     public List<Person> searchPersons(String searchText) {
         return this.personManager.searchPersonsWithText(searchText);
     }
-
-    /**
-     * Find person in database with name can be null.
-     *
-     * @param name String.
-     * @return found person.
-     * 
-     * @Deprecated contructor person.
-     */
-    @Deprecated
-    public Person findPersonByName(String name) {
-        LOGGER.log(Level.WARNING, "use of deprecated findPersonByName");
-        return this.personManager.findPersonByName(name);
-    }
     
     /**
      * Find person in database by personId.
