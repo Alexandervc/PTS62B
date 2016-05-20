@@ -4,7 +4,9 @@ import domain.Bill;
 import domain.Car;
 import domain.ListBoxDate;
 import domain.Person;
+import domain.RoadType;
 import dto.RoadUsage;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -110,6 +112,11 @@ public class InvoiceBean {
         this.generateBills();
     }
     
+    public String getKm(RoadUsage roadUsage) {
+        DecimalFormat formatter = new DecimalFormat("#.00"); 
+        return formatter.format(roadUsage.getKm());
+    }
+    
     /**
      * Get rate for roadusage.
      * 
@@ -117,7 +124,12 @@ public class InvoiceBean {
      * @return String rate.
      */
     public String getRate(RoadUsage roadUsage) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+            return "unknown";
+        }
+        
+        Locale locale = new Locale("nl", "NL");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(
                 this.rateService.getRate(roadUsage.getRoadType()).getPrice());
     }
@@ -129,7 +141,8 @@ public class InvoiceBean {
      * @return String price.
      */
     public String getPrice(RoadUsage roadUsage) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        Locale locale = new Locale("nl", "NL");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(roadUsage.getKm() * this.rateService
                 .getRate(roadUsage.getRoadType()).getPrice());
     }
@@ -151,7 +164,8 @@ public class InvoiceBean {
      * @return String total price bill.
      */
     public String getTotalPrice(Bill bill) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        Locale locale = new Locale("nl", "NL");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(bill.getTotalPrice());
     }
 

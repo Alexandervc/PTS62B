@@ -70,7 +70,7 @@
                                                                         <th>RoadType</th>
                                                                         <th>Km</th>
                                                                         <th>Price/km</th>
-                                                                        <th>RoadType</th>
+                                                                        <th>Price</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>                                            
@@ -79,7 +79,7 @@
                                                                             <td>#{ru.roadName}</td>
                                                                             <td>#{ru.roadType}</td>
                                                                             <td class="txt-right">
-                                                                                #{ru.km}
+                                                                                #{invoiceBean.getKm(ru)}
                                                                             </td>
                                                                             <td class="txt-right">
                                                                                 #{invoiceBean.getRate(ru)}
