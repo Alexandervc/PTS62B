@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -138,7 +137,7 @@ public class InvoiceBean {
     /**
      * Get fuel of the car with the given cartrackerId.
      * @param cartrackerId The cartracker id.
-     * @return 
+     * @return The name of the fuel type.
      */
     public String getFuel(String cartrackerId) {
         Car car = this.carService.getCar(cartrackerId);
