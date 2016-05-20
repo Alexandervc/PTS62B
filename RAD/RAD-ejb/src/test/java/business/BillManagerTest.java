@@ -48,8 +48,6 @@ public class BillManagerTest {
     private Person person;
     private Bill bill;
     private Bill bill2;
-    @Mock
-    private Bill bill3;
     
     private Integer monthToday;
     private Integer yearToday;
@@ -109,8 +107,9 @@ public class BillManagerTest {
         when(this.rateDao.find(RoadType.A))
                 .thenReturn(rate);
         
-        Bill bill3 = this.billManager.generateBill(this.person, this.bill2.getRoadUsages(), 
-                CARID1, this.monthToday, this.yearFuture);
+        Bill bill3 = this.billManager.generateBill(this.person, 
+                this.bill2.getRoadUsages(), CARID1, this.monthToday, 
+                this.yearFuture);
         
         verify(this.billDao, Mockito.times(1)).create(bill3);
     }
