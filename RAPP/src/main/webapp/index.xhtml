@@ -13,30 +13,45 @@
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
-                            <h:form class="form-horizontal">
-                                <div class="input-group">
-                                    <h:inputText class="form-control input"  
-                                                 id="nameBox"
-                                                 value=""
-                                                 a:placeholder="Fill in a name...">
-                                    </h:inputText>
-
-                                    <span class="input-group-btn">
-                                        <h:commandButton type="submit"
+                            <h:form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" 
+                                           for="email">Email:</label>
+                                    <div class="col-sm-10">
+                                        <input type="name" 
+                                               class="form-control" 
+                                               id="name" 
+                                               placeholder="Enter name">
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" 
+                                           for="pwd">Password:</label>
+                                    <div class="col-sm-10"> 
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="pwd" 
+                                               placeholder="Enter password">
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="form-group"> 
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <h:commandButton type="submit" 
                                                          id="searchButton"
-                                                         value="Search"
-                                                         class="form-control">
-                                            <f:ajax event="action"  execute="nameBox searchButton" render="nameBox searchResult"/>
+                                                         class="btn btn-default"
+                                                         value="Search">
                                         </h:commandButton>
-                                    </span>                            
+                                    </div>
                                 </div>
                             </h:form>
                         </div>
-                        
+
                         <div class="col-sm-12" id="searchDiv" >
                             <h:panelGroup id="searchResult">
                                 <ul class="list-group">
-                                    
+
                                 </ul>
                             </h:panelGroup>
                         </div>
