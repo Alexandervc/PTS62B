@@ -47,10 +47,14 @@ public class BillManagerTest {
 
     private Person person;
     private Bill bill;
+    private Bill bill2;
+    @Mock
+    private Bill bill3;
     
-    private Integer month;
-    private Integer year;
-
+    private Integer monthToday;
+    private Integer yearToday;
+    private Integer yearFuture;
+    
     public BillManagerTest() {
         // Empty for JPA.
     }
@@ -80,11 +84,11 @@ public class BillManagerTest {
     @Test
     public void createBill() {
         this.billManager.createBill(this.bill);
-         verify(this.billDao, Mockito.times(1)).create(bill);
+         verify(this.billDao, Mockito.times(1)).create(this.bill);
     }
     
     @Test
-    public void generateBill(){
+    public void generateBillNotSaved(){
         
         Rate rate = new Rate(1.00, RoadType.A);
         // Define when
@@ -92,7 +96,23 @@ public class BillManagerTest {
                 .thenReturn(rate);
         
         this.billManager.generateBill(this.person, this.bill.getRoadUsages(), 
-                CARID1, this.month, this.year);
+                CARID1, this.monthToday, this.yearToday);
+        
+        verify(this.billDao, Mockito.times(0)).create(bill);
+    }
+    
+    @Test
+    public void generateBillWillBeSaved(){
+        
+        Rate rate = new Rate(1.00, RoadType.A);
+        // Define when
+        when(this.rateDao.find(RoadType.A))
+                .thenReturn(rate);
+        
+        Bill bill3 = this.billManager.generateBill(this.person, this.bill2.getRoadUsages(), 
+                CARID1, this.monthToday, this.yearFuture);
+        
+        verify(this.billDao, Mockito.times(1)).create(bill3);
     }
 
     private void createBillPerson() {
@@ -111,9 +131,12 @@ public class BillManagerTest {
         List<RoadUsage> roadusages = new ArrayList<>();
         roadusages.add(new RoadUsage("A", RoadType.A, 5.21));
         Date billdate = new Date();
-        this.month = billdate.getMonth();
-        this.year = billdate.getYear() + 1900;
+        this.monthToday = billdate.getMonth()+1;
+        this.yearToday = billdate.getYear() + 1900;
+        this.yearFuture = billdate.getYear() + 1901;
         this.bill = new Bill(this.person, roadusages, 8.21,
-                CARID1, this.month, this.year);
+                CARID1, this.monthToday, this.yearToday);
+        this.bill2 = new Bill(this.person, roadusages, 5.21,
+                CARID1, this.monthToday, this.yearFuture);
     }
 }
