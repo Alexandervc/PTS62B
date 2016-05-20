@@ -1,6 +1,7 @@
 package controller;
 
 import domain.Bill;
+import domain.Car;
 import domain.ListBoxDate;
 import domain.Person;
 import dto.RoadUsage;
@@ -16,6 +17,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import service.BillService;
+import service.CarService;
 import service.PersonService;
 import service.RateService;
 
@@ -36,11 +38,14 @@ public class InvoiceBean {
     @EJB
     private RateService rateService;
     
+    @EJB
+    private CarService carService;
+    
     @Inject
     private InvoiceSession session;
 
     private List<Bill> bills;
-    
+       
     //Current month and year.
     private int year;
     private int month;
@@ -128,6 +133,16 @@ public class InvoiceBean {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(roadUsage.getKm() * this.rateService
                 .getRate(roadUsage.getRoadType()).getPrice());
+    }
+    
+    /**
+     * Get fuel of the car with the given cartrackerId.
+     * @param cartrackerId The cartracker id.
+     * @return 
+     */
+    public String getFuel(String cartrackerId) {
+        Car car = this.carService.getCar(cartrackerId);
+        return car.getFuel().name();
     }
 
     /**

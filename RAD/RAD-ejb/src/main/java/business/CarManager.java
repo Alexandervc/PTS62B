@@ -25,11 +25,20 @@ public class CarManager {
     /**
      * Create car in Database.
      * @param person Type Person.
-     * @param cartracker Long.
+     * @param cartracker String.
      * @param fuel Type FuelType.
      */
     public void createCar(Person person, String cartracker, FuelType fuel){
         Car car = new Car(person, cartracker, fuel);
         this.carDAO.create(car);
+    }
+    
+    /**
+     * Get car with the given cartrackerId.
+     * @param cartrackerId The unique cartrackerId.
+     * @return The car with the given cartrackerId.
+     */
+    public Car getCar(String cartrackerId){
+        return this.carDAO.find(cartrackerId);
     }
 }
