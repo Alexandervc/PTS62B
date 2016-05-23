@@ -175,6 +175,7 @@ public class CarPositionManager {
      * @return The next ride id.
      */
     public Integer getNextRideIdOfCountryCode(String countryCode) {
+        // TODO: fix concurrency
         return 1 + this.carPositionDao.getLastIdOfCountryCode(countryCode);
     }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service.jms;
+package service.jms.listener;
 
 import business.CarPositionManager;
 import com.google.gson.Gson;
@@ -21,70 +21,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.JMSConnectionFactory;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.Session;
 import javax.jms.TextMessage;
-import service.jms.listener.ForeignCountryMessageListener;
+import service.jms.ReceiveForeignCountryMessagesBean;
 
 /**
- * Provides functionality regarding receiving messages from the Central System.
+ *
  * @author Jesse
  */
-//@MessageDriven(mappedName = "jms/CS/queue", activationConfig = {
-//    @ActivationConfigProperty(propertyName = "messageSelector",
-//            propertyValue = "countryCode='PT'")
-//})
-//public class ReceiveForeignCountryMessagesBean implements MessageListener {
-@Startup
-@Singleton
-public class ReceiveForeignCountryMessagesBean {
+public class ForeignCountryMessageListener implements MessageListener {
     
     private static final Logger LOGGER = Logger
-            .getLogger(ReceiveForeignCountryMessagesBean.class.getName());
-
-    @Inject
-    @JMSConnectionFactory("jms/CSConnectionFactory")
-    //@Resource(lookup = "jms/CSConnectionFactory")
-    private JMSContext context;
-
-    //@Resource(lookup = "jms/CS/queue")
-    @Resource(lookup = "jms/CS/queue")
-    private Destination queue;
+            .getLogger(ForeignCountryMessageListener.class.getName());
     
-    @Inject 
+    @Inject
     private CarPositionManager carPositionManager;
     
-//    @Inject
-//    private ForeignCountryMessageListener listener;
-
-    private JMSConsumer consumer;
-
-    @PostConstruct
-    public void init() {
-        this.consumer = context.createConsumer(queue, "countryCode='PT'");
-        //this.consumer.setMessageListener(listener);
-        
-//        context.start();
-        
-        while(true) {
-            this.onMessage(this.consumer.receive());
-        }
-    }
-    
+    @Override
     public void onMessage(Message message) {
         try {
             LOGGER.log(Level.INFO, "Received foreign country message.");
@@ -127,14 +83,12 @@ public class ReceiveForeignCountryMessagesBean {
                         .findCartracker(foreignMessage.getCartrackerId());
 
                 // Create the foreign country road.
-                // TODO: name = country name
                 Road road = new Road(
                         "Foreign Country Road", 
                         RoadType.FOREIGN_COUNTRY_ROAD);
 
                 // Calculate the distance in meters between the current and 
                 // previous positions.
-                // TODO: distance = 0;
                 Double distanceToPrevious = (previousPosition != null) ?
                         Math.hypot(
                             previousPosition.getX() - currentPosition.getX(),

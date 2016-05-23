@@ -115,8 +115,8 @@ public class InvoiceBean {
      */
     public String getRate(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(this.rateService.getRate(roadUsage.getRoadType())
-                .getRate());
+        return formatter.format(
+                this.rateService.getRate(roadUsage.getRoadType()).getPrice());
     }
 
     /**
@@ -128,7 +128,7 @@ public class InvoiceBean {
     public String getPrice(RoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return formatter.format(roadUsage.getKm() * this.rateService
-                .getRate(roadUsage.getRoadType()).getRate());
+                .getRate(roadUsage.getRoadType()).getPrice());
     }
 
     /**

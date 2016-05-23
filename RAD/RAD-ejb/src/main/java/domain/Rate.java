@@ -17,7 +17,7 @@ public class Rate implements Serializable {
     @Enumerated(EnumType.STRING)
     private RoadType type;
 
-    private double rate;
+    private double price;
 
     /**
      * Empty constructor.
@@ -32,11 +32,11 @@ public class Rate implements Serializable {
     /**
      * Contructor.
      *
-     * @param rate double.
+     * @param price double.
      * @param type RoadType.
      */
-    public Rate(double rate, RoadType type) {
-        this.rate = rate;
+    public Rate(double price, RoadType type) {
+        this.price = price;
         this.type = type;
     }
 
@@ -48,11 +48,11 @@ public class Rate implements Serializable {
         this.type = type;
     }
 
-    public double getRate() {
-        return this.rate;
+    public double getPrice() {
+        return this.price;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public void setPrice(double rate) {
+        this.price = rate;
     }
 }
