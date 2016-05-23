@@ -66,9 +66,11 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             
             for (int i = 0; i < foreignPositions.size(); i++) {
                 ForeignPosition currentPosition = foreignPositions.get(i);
-                ForeignPosition previousPosition = i > 0 ? 
-                        foreignPositions.get(i - 1) 
-                        : null;
+                ForeignPosition previousPosition = null;
+                
+                if (i > 0) { 
+                    previousPosition = foreignPositions.get(i - 1);
+                }
                                 
                 // Get the cartracker from the foreignMessage.                
                 Cartracker carTracker = this.carPositionManager
@@ -81,11 +83,21 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 
                 // Calculate the distance in meters between the current and 
                 // previous positions.
-                Double distanceToPrevious = (previousPosition != null) ?
-                        Math.hypot(
+                Double distanceToPrevious = 0.0;
+                        
+                if (previousPosition != null) {
+                    distanceToPrevious = Math.hypot(
                             previousPosition.getX() - currentPosition.getX(),
-                            previousPosition.getY() - currentPosition.getY())
-                        : 0;
+                            previousPosition.getY() - currentPosition.getY());
+                }
+                
+                //Check if position is last of ride.
+                // True if last element of carPositions.
+                Boolean lastOfRide = false;
+                
+                if (i >= foreignPositions.size() - 1) {
+                    lastOfRide = true;
+                }
                 
                 // Map the foreign position to the carPosition.
                 CarPosition carPosition = new CarPosition(
@@ -95,9 +107,8 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         currentPosition.getY(),
                         road,
                         distanceToPrevious,
-                        foreignCountryRideId,
-                        // True if last element of carPositions.
-                        (i >= foreignPositions.size() - 1)); 
+                        foreignCountryRideId,                        
+                        lastOfRide); 
                 
                 carPositions.add(carPosition);
             }

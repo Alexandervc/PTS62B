@@ -50,6 +50,7 @@ public class SearchBean {
      * Updates the lists of persons.
      */
     public void searchPersons() {
+        this.searchString = this.searchString.trim();
         if(this.searchString.isEmpty()) return;
         this.persons = this.service.searchPersons(this.searchString);
     }

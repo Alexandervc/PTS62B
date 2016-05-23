@@ -1,0 +1,1 @@
+cartrackerID=PT112233444,fileIndex=1,ride=1,position=0

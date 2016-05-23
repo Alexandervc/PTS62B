@@ -78,6 +78,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.roadName = roadName;
         this.roadType = type;
         this.km = km;
+        this.foreignCountryRideId = foreignCountryRideId;
     }
     
     /**
@@ -141,13 +142,20 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.km += meter / KM_TO_METER;
     }
 
-    /**
-     * Compares RoadName from two RoadUsages.
-     * @param t Type RoadUsage.
-     * @return integer.
-     */
     @Override
-    public int compareTo(RoadUsage t) {
-        return this.getRoadName().compareTo(t.getRoadName());
+    public int compareTo(RoadUsage other) {
+        // Compare by roadType and roadName
+        // Foreign_Country_Road on the bottom
+        if(this.getRoadType().equals(other.getRoadType())) {
+            return this.getRoadName().compareTo(other.getRoadName());
+        } else {
+            if(this.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+                return 1;
+            } else if (other.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+                return -1;
+            } else {
+                return this.getRoadType().compareTo(other.getRoadType());
+            }
+        }
     }
 }

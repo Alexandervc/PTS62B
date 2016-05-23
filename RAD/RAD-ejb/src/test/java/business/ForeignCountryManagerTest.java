@@ -7,14 +7,12 @@ package business;
 
 import dao.ForeignCountryRideDao;
 import domain.ForeignCountryRide;
-import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import static org.mockito.Matchers.argThat;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 
