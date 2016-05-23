@@ -10,17 +10,17 @@ package dto;
  * @author Alexander
  */
 public class Coordinate {
-    private Double x;
-    private Double y;
+    private double lat;
+    private double lng;
     
     /**
      * Helper class for coordinates.
-     * @param x xCoordinate.
-     * @param y yCoordinate.
+     * @param lat xCoordinate.
+     * @param lng yCoordinate.
      */
-    public Coordinate(Double x, Double y) {
-        this.x = x;
-        this.y = y;
+    public Coordinate(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
     }
     
     /**
@@ -32,19 +32,19 @@ public class Coordinate {
         // To convert to and from json
     }
 
-    public Double getX() {
-        return this.x;
+    public double getLat() {
+        return this.lat;
+    }
+    
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public void setX(Double x) {
-        this.x = x;
+    public double getLng() {
+        return this.lng;
     }
 
-    public Double getY() {
-        return this.y;
-    }
-
-    public void setY(Double y) {
-        this.y = y;
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }
