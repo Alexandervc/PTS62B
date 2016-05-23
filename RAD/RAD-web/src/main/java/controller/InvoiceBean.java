@@ -1,21 +1,24 @@
 package controller;
 
 import domain.Bill;
+import domain.Car;
 import domain.ListBoxDate;
 import domain.Person;
+import domain.RoadType;
 import dto.RoadUsage;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import service.BillService;
+import service.CarService;
 import service.PersonService;
 import service.RateService;
 
@@ -36,11 +39,14 @@ public class InvoiceBean {
     @EJB
     private RateService rateService;
     
+    @EJB
+    private CarService carService;
+    
     @Inject
     private InvoiceSession session;
 
     private List<Bill> bills;
-    
+       
     //Current month and year.
     private int year;
     private int month;
@@ -88,12 +94,18 @@ public class InvoiceBean {
         this.generateBills();
     }
     
+    /**
+     * Generate bill.
+     */
     public void generateBills() {
         //Get all bills.
         this.bills = this.billService.generateBill(
                 this.session.getPersonId(), this.month, this.year);
     }
     
+    /**
+     * Listener for date dropdown menu.
+     */
     public void changeDate() {
         int index = Integer.parseInt(this.dateIndex);
         
@@ -107,13 +119,47 @@ public class InvoiceBean {
     }
     
     /**
+     * Get roadtype for roadusage
+     * 
+     * @param roadUsage.
+     * @return roadtype string format.
+     */
+    public String getRoadType(RoadUsage roadUsage) {
+        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+            return "Foreign country road";
+        }
+        
+        return roadUsage.getRoadType().toString();
+    }
+    
+    /**
+     * Get km with two decimals.
+     * 
+     * @param roadUsage.
+     * @return kilometers with two decimals.
+     */
+    public String getKm(RoadUsage roadUsage) {
+        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+            return "-";
+        }
+                
+        DecimalFormat formatter = new DecimalFormat("#.00"); 
+        return formatter.format(roadUsage.getKm());
+    }
+    
+    /**
      * Get rate for roadusage.
      * 
      * @param roadUsage type RoadUsage.
      * @return String rate.
      */
     public String getRate(RoadUsage roadUsage) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+            return "-";
+        }
+        
+        Locale locale = new Locale("nl", "NL");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(
                 this.rateService.getRate(roadUsage.getRoadType()).getPrice());
     }
@@ -124,10 +170,22 @@ public class InvoiceBean {
      * @param roadUsage type RoadUsage.
      * @return String price.
      */
-    public String getPrice(RoadUsage roadUsage) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+    public String getPrice(RoadUsage roadUsage) {        
+        Locale locale = new Locale("nl", "NL");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(roadUsage.getKm() * this.rateService
                 .getRate(roadUsage.getRoadType()).getPrice());
+    }
+    
+    /**
+     * Get fuel of the car with the given cartrackerId.
+     * 
+     * @param cartrackerId The cartracker id.
+     * @return The name of the fuel type.
+     */
+    public String getFuel(String cartrackerId) {
+        Car car = this.carService.getCar(cartrackerId);
+        return car.getFuel().name();
     }
 
     /**
@@ -137,7 +195,8 @@ public class InvoiceBean {
      * @return String total price bill.
      */
     public String getTotalPrice(Bill bill) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        Locale locale = new Locale("nl", "NL");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(bill.getTotalPrice());
     }
 

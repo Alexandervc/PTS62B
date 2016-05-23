@@ -52,6 +52,6 @@ public class ReceiveTestRequestBean implements MessageListener {
 
         // Gives the date from the original message so that it can be 
         // send back.
-        sender.sendTestResults(date);
+        this.sender.sendTestResults(date);
     }
 }
