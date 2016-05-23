@@ -19,14 +19,12 @@ public class SimulatorBean {
     
     private List<String> cartrackers;
     private String cartracker;
-    private Date date;
     
     /**
      * Genereate file for chosen cartracker and date.
      */
     public void generate() {
-        if (this.cartracker != null && !this.cartracker.isEmpty() 
-                && this.date != null) {
+        if (this.cartracker != null && !this.cartracker.isEmpty()) {
             this.service.generateFiles(this.cartracker);
         }
     }
@@ -50,13 +48,5 @@ public class SimulatorBean {
 
     public void setCartracker(String cartracker) {
         this.cartracker = cartracker;
-    }
-
-    public Date getDate() {
-        return this.date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

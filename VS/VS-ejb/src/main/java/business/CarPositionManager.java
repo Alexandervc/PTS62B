@@ -148,7 +148,7 @@ public class CarPositionManager {
         Cartracker cartracker = this.findCartracker(cartrackerId);
 
         // TODO road anders
-        List<Road> roads = this.roadDao.findAll();
+        List<Road> roads = this.roadDao.findAllInternal();
         Random random = new SecureRandom();
         Road road = roads.get(random.nextInt(roads.size()));
 
