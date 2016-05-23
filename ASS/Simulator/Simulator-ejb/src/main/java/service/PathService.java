@@ -149,10 +149,9 @@ public class PathService implements Serializable {
      * Generate files for roadusages.
      *
      * @param cartracker id for config file.
-     * @param date date for generating roadusages.
      */
-    public void generateFiles(String cartracker, Date date) {
-        if (cartracker != null && !cartracker.isEmpty() && date != null &&
+    public void generateFiles(String cartracker) {
+        if (cartracker != null && !cartracker.isEmpty() &&
                 this.cartrackers.contains(cartracker)) {        
             try {
                 //Setup stream for configId.                
@@ -192,6 +191,7 @@ public class PathService implements Serializable {
 
                 for (Point p : points) {
                     //Get parameters.
+                    Date moment = new Date();
                     Double xCoordinate = p.getLatitude();
                     Double yCoordinate = p.getLongitude();
                     Double meter = 0.0;
@@ -213,7 +213,7 @@ public class PathService implements Serializable {
                     //Create json array.
                     Map<String, Object> position = new HashMap<>();
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    String momentString = df.format(date);
+                    String momentString = df.format(moment);
                     position.put("moment", momentString);
                     position.put("xCoordinate", xCoordinate);
                     position.put("yCoordinate", yCoordinate);

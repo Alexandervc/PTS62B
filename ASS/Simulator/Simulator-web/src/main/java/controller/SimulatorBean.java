@@ -27,7 +27,7 @@ public class SimulatorBean {
     public void generate() {
         if (this.cartracker != null && !this.cartracker.isEmpty() 
                 && this.date != null) {
-            this.service.generateFiles(this.cartracker, this.date);
+            this.service.generateFiles(this.cartracker);
         }
     }
     
