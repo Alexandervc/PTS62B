@@ -10,6 +10,7 @@ import dao.CartrackerDao;
 import dao.RoadDao;
 import domain.CarPosition;
 import domain.Cartracker;
+import domain.ForeignCountryRideIdGen;
 import domain.Road;
 import dto.RoadUsage;
 import java.security.SecureRandom;
@@ -20,6 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import service.ForeignRideService;
 import service.TotalPriceService;
 import service.rest.clients.ForeignCountryRideClient;
@@ -37,6 +40,9 @@ public class CarPositionManager {
 
     private static final int COUNTRYCODE_LENGTH = 2;
     private static final String MY_COUNTRYCODE = "PT";
+    
+    @PersistenceContext
+    private EntityManager em;
 
     @Inject
     private RoadUsageManager roadUsageManager;
@@ -71,20 +77,23 @@ public class CarPositionManager {
      * @param meter The number of meters the cartracker has measured since the
      *      last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
+     * @param foreignCountryRideId The id of the foreign country ride this 
+     *      carposition is a part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
      *      not.
      */
     public void processCarPosition(String cartrackerId, Date moment,
             Double xCoordinate, Double yCoordinate, String roadName,
-            Double meter, String rideId, Boolean lastOfRide) {
+            Double meter, Integer rideId, Long foreignCountryRideId, 
+            Boolean lastOfRide) {
         try {
             this.saveCarPosition(cartrackerId, moment, xCoordinate, yCoordinate,
-                    roadName, meter, rideId, lastOfRide);
+                    roadName, meter, rideId, foreignCountryRideId, lastOfRide);
 
             // Get countryCode
             String countryCode = cartrackerId.substring(0, COUNTRYCODE_LENGTH);
 
-            // If foreign and last of ride
+            // If foreign car and last of ride
             if (!MY_COUNTRYCODE.equals(countryCode) && lastOfRide) {
                 // Get carpostions and roadusages of ride
                 List<CarPosition> carPositions = this.carPositionDao
@@ -115,7 +124,7 @@ public class CarPositionManager {
      */
     public void processForeignCarRide(
             List<CarPosition> carPositions, 
-            String foreignCountryRideId,
+            Long foreignCountryRideId,
             double totalPrice) {
         
         // Save the CarPositions.
@@ -141,7 +150,8 @@ public class CarPositionManager {
      */
     private void saveCarPosition(String cartrackerId, Date moment,
             Double xCoordinate, Double yCoordinate, String roadName,
-            Double meter, String rideId, Boolean lastOfRide) {
+            Double meter, Integer rideId, Long foreignCountryRideId,
+            Boolean lastOfRide) {
         // Find cartracker
         Cartracker cartracker = this.findCartracker(cartrackerId);
 
@@ -152,7 +162,8 @@ public class CarPositionManager {
 
         // Make carPosition
         CarPosition cp = new CarPosition(cartracker, moment, xCoordinate,
-                yCoordinate, road, meter, rideId, lastOfRide);
+                yCoordinate, road, meter, rideId, foreignCountryRideId,
+                lastOfRide);
 
         this.carPositionDao.create(cp);
     }
@@ -170,12 +181,14 @@ public class CarPositionManager {
     }
     
     /**
-     * Gets the next ride id of a carposition for a country code.
-     * @param countryCode The country code to sort on. For example: "PT".
+     * Gets the next foreign country ride id of a carposition.
      * @return The next ride id.
      */
-    public Integer getNextRideIdOfCountryCode(String countryCode) {
+    public Long getNextRideIdOfCountryCode() {
         // TODO: fix concurrency
-        return 1 + this.carPositionDao.getLastIdOfCountryCode(countryCode);
+        ForeignCountryRideIdGen foreignCountryRideId = new ForeignCountryRideIdGen();
+        this.em.persist(foreignCountryRideId);
+        
+        return foreignCountryRideId.getId();
     }
 }

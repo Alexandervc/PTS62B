@@ -59,7 +59,8 @@ public class SendForeignRideBean {
             TextMessage textMessage = this.context
                     .createTextMessage(jsonForeignMessage);
 //            textMessage.setStringProperty("countryCode", countryCode);
-            textMessage.setStringProperty("countryCode", "PT");
+            textMessage.setStringProperty("countryCodeTo", "PT");
+            textMessage.setStringProperty("countryCodeFrom", "PT");
             
             // Send message
             this.context.createProducer().send(this.queue, textMessage);

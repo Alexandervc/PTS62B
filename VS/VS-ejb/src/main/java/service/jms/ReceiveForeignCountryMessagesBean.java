@@ -6,6 +6,7 @@
 package service.jms;
 
 import business.CarPositionManager;
+import business.RoadManager;
 import com.google.gson.Gson;
 import domain.CarPosition;
 import domain.Cartracker;
@@ -18,73 +19,50 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.JMSConnectionFactory;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.Session;
 import javax.jms.TextMessage;
-import service.jms.listener.ForeignCountryMessageListener;
 
 /**
  * Provides functionality regarding receiving messages from the Central System.
  * @author Jesse
  */
-//@MessageDriven(mappedName = "jms/CS/queue", activationConfig = {
-//    @ActivationConfigProperty(propertyName = "messageSelector",
-//            propertyValue = "countryCode='PT'")
-//})
-//public class ReceiveForeignCountryMessagesBean implements MessageListener {
-@Startup
-@Singleton
-public class ReceiveForeignCountryMessagesBean {
+@MessageDriven(mappedName = "jms/CS/queue", activationConfig = {
+    @ActivationConfigProperty(propertyName = "messageSelector",
+            propertyValue = "countryCodeTo='PT'")
+})
+public class ReceiveForeignCountryMessagesBean implements MessageListener {
     
     private static final Logger LOGGER = Logger
             .getLogger(ReceiveForeignCountryMessagesBean.class.getName());
-
-    @Inject
-    @JMSConnectionFactory("jms/CSConnectionFactory")
-    //@Resource(lookup = "jms/CSConnectionFactory")
-    private JMSContext context;
-
-    //@Resource(lookup = "jms/CS/queue")
-    @Resource(lookup = "jms/CS/queue")
-    private Destination queue;
     
+    private static final Map<String, String> COUNTRY_NAMES = createMap();
+
+    private static Map<String, String> createMap() {
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("PT", "Portugal");
+        result.put("BE", "Belgium");
+        result.put("NL", "The Netherlands");
+        result.put("LU", "Luxembourg");
+        return Collections.unmodifiableMap(result);
+    }
+
     @Inject 
     private CarPositionManager carPositionManager;
     
-//    @Inject
-//    private ForeignCountryMessageListener listener;
-
-    private JMSConsumer consumer;
-
-    @PostConstruct
-    public void init() {
-        this.consumer = context.createConsumer(queue, "countryCode='PT'");
-        //this.consumer.setMessageListener(listener);
+    @Inject
+    private RoadManager roadManager;
         
-//        context.start();
-        
-        while(true) {
-            this.onMessage(this.consumer.receive());
-        }
-    }
-    
+    @Override
     public void onMessage(Message message) {
         try {
             LOGGER.log(Level.INFO, "Received foreign country message.");
@@ -108,9 +86,9 @@ public class ReceiveForeignCountryMessagesBean {
             Collections.sort(foreignPositions);
 
             LOGGER.log(Level.INFO, "ForeignPositions sorted.");
-
-            String foreignCountryRideId = "PT" + this.carPositionManager
-                    .getNextRideIdOfCountryCode("PT");
+            
+            Long foreignCountryRideId = this.carPositionManager
+                    .getNextRideIdOfCountryCode();
 
             LOGGER.log(
                     Level.INFO,
@@ -126,11 +104,20 @@ public class ReceiveForeignCountryMessagesBean {
                 Cartracker carTracker = this.carPositionManager
                         .findCartracker(foreignMessage.getCartrackerId());
 
+                String roadName = COUNTRY_NAMES.get(
+                        textMessage.getStringProperty("countryCodeFrom"));
+                
+                Road road = this.roadManager.findRoadByName(roadName);
+                
                 // Create the foreign country road.
                 // TODO: name = country name
-                Road road = new Road(
-                        "Foreign Country Road", 
+                if (road == null) {
+                    road = new Road(
+                        roadName, 
                         RoadType.FOREIGN_COUNTRY_ROAD);
+                    
+                    this.roadManager.save(road);
+                }
 
                 // Calculate the distance in meters between the current and 
                 // previous positions.
@@ -164,6 +151,7 @@ public class ReceiveForeignCountryMessagesBean {
                         currentPosition.getY(),
                         road,
                         distanceToPrevious,
+                        null,
                         foreignCountryRideId,
                         // True if last element of carPositions.
                         (i >= foreignPositions.size() - 1)); 

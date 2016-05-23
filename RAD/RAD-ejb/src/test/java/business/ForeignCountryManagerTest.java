@@ -7,14 +7,12 @@ package business;
 
 import dao.ForeignCountryRideDao;
 import domain.ForeignCountryRide;
-import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import static org.mockito.Matchers.argThat;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -48,9 +46,9 @@ public class ForeignCountryManagerTest {
      */
     @Test
     public void createForeignCountryRideTest() {
-        ForeignCountryRide foreignCountryRide = new ForeignCountryRide("PT29", 13.37);
+        ForeignCountryRide foreignCountryRide = new ForeignCountryRide(29L, 13.37);
 
-        this.foreignCountryManager.createForeignCountryRide("PT29", 13.37);
+        this.foreignCountryManager.createForeignCountryRide(29L, 13.37);
         verify(this.foreignCountryManager.getForeignCountryRideDao())
                 .create(argThat(
                         new IsSameForeignCountryRide(foreignCountryRide)));

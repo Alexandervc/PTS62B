@@ -31,10 +31,11 @@ import javax.persistence.NamedQuery;
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
             + "ORDER BY cp.id"),
-    @NamedQuery(name="CarPosition.getLastIdOfCountryCode", query = "SELECT "
-            + "cp.rideId "
+    @NamedQuery(name="CarPosition.getPositionsOfForeignCountryRide", query = 
+            "SELECT cp "
             + "FROM CarPosition cp "
-            + "WHERE cp.rideId LIKE :countryCode")
+            + "WHERE cp.foreignCountryRideId = :foreignCountryRideId "
+            + "ORDER BY cp.id")
 })
 public class CarPosition implements Serializable {
     @Id
@@ -45,7 +46,9 @@ public class CarPosition implements Serializable {
     private Double xCoordinate;
     private Double yCoordinate;
     private Double meter;
-    private String rideId;
+    private Integer rideId;
+    private Long foreignCountryRideId;
+    
     private Boolean lastOfRide;
     
     @ManyToOne
@@ -74,12 +77,14 @@ public class CarPosition implements Serializable {
      * @param meter The distance in meters the cartracker movement since the 
      *      last carposition. Cannot be negative.
      * @param rideId The id of the ride this carposition is a part of.
+     * @param foreignCountryRideId The id of the foreign ride this carposition 
+     *      is part of.
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
      */
     public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
-            Double yCoordinate, Road road, Double meter, String rideId, 
-            Boolean lastOfRide) {
+            Double yCoordinate, Road road, Double meter, Integer rideId, 
+            Long foreignCountryRideId, Boolean lastOfRide) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
         }
@@ -99,6 +104,7 @@ public class CarPosition implements Serializable {
         this.road = road;
         this.meter = meter;
         this.rideId = rideId;
+        this.foreignCountryRideId = foreignCountryRideId;
         this.lastOfRide = lastOfRide;
     }
 
@@ -158,14 +164,22 @@ public class CarPosition implements Serializable {
         this.meter = meter;
     }
 
-    public String getRideId() {
+    public Integer getRideId() {
         return this.rideId;
     }
 
-    public void setRideId(String rideId) {
+    public void setRideId(Integer rideId) {
         this.rideId = rideId;
     }
 
+    public Long getForeignCountryRideId() {
+        return this.foreignCountryRideId;
+    }
+
+    public void setForeignCountryRideId(Long foreignCountryRideId) {
+        this.foreignCountryRideId = foreignCountryRideId;
+    }
+    
     public Boolean getLastOfRide() {
         return this.lastOfRide;
     }

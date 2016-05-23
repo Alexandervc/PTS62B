@@ -27,7 +27,7 @@ public class ForeignCountryRideService {
      * @param totalPrice The total price of the foreign country ride.
      */
     public void addForeignCountryRide(
-            String foreignCountryRideId,
+            Long foreignCountryRideId,
             double totalPrice) {
         this.foreignCountryManager.createForeignCountryRide(
                 foreignCountryRideId,

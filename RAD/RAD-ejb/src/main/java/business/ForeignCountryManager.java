@@ -38,7 +38,7 @@ public class ForeignCountryManager {
      * @param totalPrice The total price of the foreign country ride.
      */
     public void createForeignCountryRide(
-            String foreignCountryRideId, 
+            Long foreignCountryRideId, 
             double totalPrice) {
         this.foreignCountryRideDao.create(
                 new ForeignCountryRide(foreignCountryRideId, totalPrice));

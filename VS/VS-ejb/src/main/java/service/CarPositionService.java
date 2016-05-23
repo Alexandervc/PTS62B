@@ -30,13 +30,16 @@ public class CarPositionService {
      * @param meter The number of meters the cartracker has measured since
      *      the last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
+     * @param foreignCountryRideId THe foreign country ride of this carposition.
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
      */
     public void processCarPosition(String cartrackerId, Date moment, 
             Double xCoordinate, Double yCoordinate, String roadName, 
-            Double meter, String rideId, Boolean lastOfRide) {
+            Double meter, Integer rideId, Long foreignCountryRideId, 
+            Boolean lastOfRide) {
         this.carPositionManager.processCarPosition(cartrackerId, moment, 
-                xCoordinate, yCoordinate, roadName, meter, rideId, lastOfRide);
+                xCoordinate, yCoordinate, roadName, meter, rideId, 
+                foreignCountryRideId, lastOfRide);
     }
 }
