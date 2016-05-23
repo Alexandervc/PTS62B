@@ -119,12 +119,30 @@ public class InvoiceBean {
     }
     
     /**
+     * Get roadtype for roadusage
+     * 
+     * @param roadUsage.
+     * @return roadtype string format.
+     */
+    public String getRoadType(RoadUsage roadUsage) {
+        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+            return "Foreign country road";
+        }
+        
+        return roadUsage.getRoadType().toString();
+    }
+    
+    /**
      * Get km with two decimals.
      * 
      * @param roadUsage.
      * @return kilometers with two decimals.
      */
     public String getKm(RoadUsage roadUsage) {
+        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
+            return "-";
+        }
+                
         DecimalFormat formatter = new DecimalFormat("#.00"); 
         return formatter.format(roadUsage.getKm());
     }
@@ -137,7 +155,7 @@ public class InvoiceBean {
      */
     public String getRate(RoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
-            return "unknown";
+            return "-";
         }
         
         Locale locale = new Locale("nl", "NL");
@@ -152,7 +170,7 @@ public class InvoiceBean {
      * @param roadUsage type RoadUsage.
      * @return String price.
      */
-    public String getPrice(RoadUsage roadUsage) {
+    public String getPrice(RoadUsage roadUsage) {        
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(roadUsage.getKm() * this.rateService
