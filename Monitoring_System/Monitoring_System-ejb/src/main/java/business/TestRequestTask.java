@@ -8,15 +8,15 @@ package business;
 import java.util.TimerTask;
 
 /**
- *
- * @author Edwin
+ *  Task that makes the Monitoring Manager execute tests.
+ * @author Edwin.
  */
 public class TestRequestTask extends TimerTask {
 
     private MonitoringManager manager;     
 
     public MonitoringManager getManager() {
-        return manager;
+        return this.manager;
     }
 
     public void setManager(MonitoringManager manager) {
@@ -27,7 +27,7 @@ public class TestRequestTask extends TimerTask {
     
     @Override
     public void run() {
-        manager.testSystems();
+        this.manager.testSystems();
     }
     
 }

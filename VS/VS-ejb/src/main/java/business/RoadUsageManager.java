@@ -76,6 +76,8 @@ public class RoadUsageManager {
         List<CarPosition> cps = this.carPositionDao.getPositionsOfMonth(month, 
                 year, cartrackerId);
         
-        return this.convertToRoadUsages(cps);
+        List<RoadUsage> roadUsages = this.convertToRoadUsages(cps);
+        roadUsages.sort(null);
+        return roadUsages;
     }
 }

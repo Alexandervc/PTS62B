@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -20,10 +18,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Car implements Serializable {
-    @Id 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
+    @Id    
     private String cartrackerId;
     
     @Enumerated(EnumType.STRING)
@@ -53,14 +48,6 @@ public class Car implements Serializable {
         this.owner.addCar(this);
         this.cartrackerId = cartracker;
         this.fuel = fuel;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCartrackerId() {

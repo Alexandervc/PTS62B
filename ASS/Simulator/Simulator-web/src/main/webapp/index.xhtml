@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Simulator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
+        <link rel="shortcut icon" href="favicon.ico"/>
+    </h:head>
+    <h:body>
+        <div class="container">
+            <h1>Simulator</h1>
+        
+            <h:form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="cartackerBox">
+                        Cartracker:
+                    </label>
+                    <div class="col-sm-10">
+                        <h:selectOneMenu id="cartackerBox" class="form-control" 
+                                         value="#{simulatorBean.cartracker}">                                    
+                            <f:selectItems value="#{simulatorBean.cartrackers}">
+                            </f:selectItems>
+                        </h:selectOneMenu> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="dateInput">
+                        Date:
+                    </label>
+                    <div class="col-sm-10">
+                        <h:inputText id="dateInput" class="form-control"
+                                     value="#{simulatorBean.date}" 
+                                     required="true" a:placeholder="dd-mm-yyyy">
+                           <f:convertDateTime pattern="dd-MM-yyyy"/>
+                        </h:inputText>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <h:commandButton class="btn btn-default" value="submit" 
+                                action="#{simulatorBean.generate}"/>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </h:body>
+</html>
