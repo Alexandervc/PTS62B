@@ -3,7 +3,7 @@ function initMap() {
     
     Array.prototype.forEach.call(divs, function(el) {
         var id = el.id;
-        var data = document.getElementById(id + "hidden");
+        var data = document.getElementById(id + "hidden").value;
         alert(data);
         
         var map = new google.maps.Map(document.getElementById(id), {
