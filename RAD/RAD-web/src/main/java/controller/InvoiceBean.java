@@ -1,12 +1,10 @@
 package controller;
 
-import com.google.gson.Gson;
 import domain.Bill;
 import domain.Car;
 import domain.ListBoxDate;
 import domain.Person;
 import domain.RoadType;
-import dto.Coordinate;
 import dto.RoadUsage;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
