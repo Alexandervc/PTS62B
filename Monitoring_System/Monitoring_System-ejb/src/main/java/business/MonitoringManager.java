@@ -246,8 +246,7 @@ public class MonitoringManager {
                 JSONObject json = readJsonFromUrl(
                         "http://192.168.24.70:8070/job/PTS-S62B-"
                         + s.getName()
-                    // TODO: UNCOMMENT FOR DEPLOYMENT
-                        //+ "-deploy"
+                        + "-deploy"
                         + "/lastSuccessfulBuild/testReport/api/json");
                 String result = String.valueOf(json.get("failCount"));
                 // If result "failCount" == 0 testResult is true

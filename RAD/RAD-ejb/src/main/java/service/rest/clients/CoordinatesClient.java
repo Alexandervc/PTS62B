@@ -21,12 +21,12 @@ import javax.ws.rs.core.Response;
  */
 @Stateless
 public class CoordinatesClient {
-    private static final String BASE_URL = 
-            "http://localhost:8080/VS-web/vsapi";
+    //private static final String BASE_URL = 
+    //        "http://localhost:8080/VS-web/vsapi";
     
     // TODO DEPLOY: UNCOMMENT
-    //private static final String BASE_URL =
-    //        "http://192.168.24.72:8080/VS-web/vsapi";
+    private static final String BASE_URL =
+            "http://192.168.24.72:8080/VS-web/vsapi";
     
     private Client client;
     
