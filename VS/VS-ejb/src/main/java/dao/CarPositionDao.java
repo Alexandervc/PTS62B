@@ -61,7 +61,8 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         return q.getResultList();
     }
     
-    public List<CarPosition> getPositionsOfForeignCountryRide(Long foreignCountryRideId) {
+    public List<CarPosition> getPositionsOfForeignCountryRide(
+            Long foreignCountryRideId) {
         Query q = this.em.createNamedQuery(
                 "CarPosition.getPositionsOfForeignCountryRide");
         q.setParameter("rideId", foreignCountryRideId);

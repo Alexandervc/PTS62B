@@ -5,10 +5,10 @@
  */
 package business;
 
-import dao.CarPositionDao;
 import dao.RoadDao;
 import domain.Road;
-import domain.RoadType;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -18,11 +18,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
  * @author Jesse
  */
 @Stateless
 public class RoadManager {
+    private static final Logger LOGGER
+            = Logger.getLogger(RoadManager.class.getName());
     @Inject
     private RoadDao roadDao;
     
@@ -43,7 +44,8 @@ public class RoadManager {
         try {
             road = (Road) q.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
-            // Do nothing.
+            // Do nothing. Null will be returned.
+            LOGGER.log(Level.FINE, "Road: ''{0}'' does not yet exist.", name);
         }
         
         return road;

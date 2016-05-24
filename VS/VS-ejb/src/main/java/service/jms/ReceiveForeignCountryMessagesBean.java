@@ -48,7 +48,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
     private static final Map<String, String> COUNTRY_NAMES = createMap();
 
     private static Map<String, String> createMap() {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         result.put("PT", "Portugal");
         result.put("BE", "Belgium");
         result.put("NL", "The Netherlands");
@@ -56,11 +56,11 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
         return Collections.unmodifiableMap(result);
     }
 
-    @Inject 
-    private CarPositionManager carPositionManager;
-    
     @Inject
     private RoadManager roadManager;
+    
+    @Inject 
+    private CarPositionManager carPositionManager;
         
     @Override
     public void onMessage(Message message) {
@@ -90,43 +90,22 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
 
             for (int i = 0; i < foreignPositions.size(); i++) {
                 ForeignPosition currentPosition = foreignPositions.get(i);
-                ForeignPosition previousPosition = i > 0 ? 
-                        foreignPositions.get(i - 1) 
-                        : null;
-
-                // Get the cartracker from the foreignMessage.                
-                Cartracker carTracker = this.carPositionManager
-                        .findCartracker(foreignMessage.getCartrackerId());
 
                 String roadName = COUNTRY_NAMES.get(
                         textMessage.getStringProperty("countryCodeFrom"));
                 
-                Road road = this.roadManager.findRoadByName(roadName);
+                Road road = this.findOrReplaceRoadByName(roadName);
+                Date date = parseDate(currentPosition.getDatetime());
                 
-                // Create the foreign country road.
-                if (road == null) {
-                    road = new Road(
-                        roadName, 
-                        RoadType.FOREIGN_COUNTRY_ROAD);
-                    
-                    this.roadManager.save(road);
-                }
-                
-                Date date = new Date();
-
-                try {
-                    date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
-                            .parse(currentPosition.getDatetime());
-                } catch (ParseException ex) {
-                    LOGGER.log(
-                            Level.SEVERE, 
-                            currentPosition.getDatetime() + " - " + ex);
-
-                    // If the date does not follow the date conventions, skip 
-                    // the message.
+                // Skip the message if date could not be parsed.
+                if (date == null) {
                     return;
                 }
 
+                // Get the cartracker from the foreignMessage.                
+                Cartracker carTracker = this.carPositionManager
+                        .findCartracker(foreignMessage.getCartrackerId());
+                
                 // Map the foreign position to the carPosition.
                 CarPosition carPosition = new CarPosition(
                         carTracker,
@@ -134,11 +113,11 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         currentPosition.getX(),
                         currentPosition.getY(),
                         road,
-                        0d,
+                        0D,
                         null,
                         foreignCountryRideId,
                         // True if last element of carPositions.
-                        (i >= foreignPositions.size() - 1)); 
+                        i >= foreignPositions.size() - 1); 
 
                 carPositions.add(carPosition);
             }
@@ -155,4 +134,36 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             LOGGER.log(Level.SEVERE, null, ex);
         }
     }    
+    
+    private Road findOrReplaceRoadByName(String name) {
+        Road road = this.roadManager.findRoadByName(name);
+                
+        // Create the foreign country road.
+        if (road == null) {
+            road = new Road(
+                name, 
+                RoadType.FOREIGN_COUNTRY_ROAD);
+
+            this.roadManager.save(road);
+        }
+        
+        return road;
+    }
+    
+    private Date parseDate(String dateToParse) {
+        Date date = null;
+        
+        try {
+            date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+                    .parse(dateToParse);
+        } catch (ParseException ex) {
+            // If the date does not follow the date conventions, return null and,
+            // skip the message.
+            LOGGER.log(
+                    Level.SEVERE, 
+                    dateToParse + " - " + ex);
+        }
+        
+        return date;
+    }
 }
