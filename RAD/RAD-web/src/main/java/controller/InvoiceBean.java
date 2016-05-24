@@ -222,6 +222,5 @@ public class InvoiceBean {
     
     public String getCoordinates(String cartrackerId) {
         return this.positionService.getCoordinates(cartrackerId, this.month, this.year);
-        //return "test";
     }
 }

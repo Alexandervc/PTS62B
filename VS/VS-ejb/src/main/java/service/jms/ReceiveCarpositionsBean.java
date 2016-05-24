@@ -49,7 +49,6 @@ public class ReceiveCarpositionsBean implements MessageListener {
             String cartrackerId = mapMessage.getString("cartrackerId");
             // TODO check
             Long serialNumber = mapMessage.getLong("serialNumber");
-
             // Get position
             String jsonPostion = mapMessage.getString("carposition");
             Gson gson = new Gson();
@@ -71,7 +70,7 @@ public class ReceiveCarpositionsBean implements MessageListener {
 
             this.carPositionService.processCarPosition(cartrackerId, moment,
                     coordinate, roadName, meter, 
-                    Integer.parseInt(rideId), null, lastOfRide);
+                    Integer.parseInt(rideId), null, lastOfRide, serialNumber);
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

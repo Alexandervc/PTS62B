@@ -117,16 +117,15 @@ public class CarPositionManagerTest {
         
         this.carPosition = new CarPosition(this.cartracker, this.moment,
                 this.coordinate, road, this.meters,
-                this.rideId, null, this.lastOfRide);
-        
+                this.rideId, null, this.lastOfRide, 0L);        
         this.foreignNotLastCarPosition = new CarPosition(this.foreignCartracker,
                 this.moment, this.coordinate, road, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignNotLastLastOfRide);
+                this.foreignNotLastLastOfRide, 0L);
         this.foreignLastCarPosition = new CarPosition(this.foreignCartracker,
                 this.moment, this.coordinate, road,
                 this.meters, null, this.foreignRideId, 
-                this.foreignLastLastOfRide);
+                this.foreignLastLastOfRide, 0L);
     }
     
     @Test
@@ -140,7 +139,7 @@ public class CarPositionManagerTest {
         // Call method
         this.carPositionManager.processCarPosition(this.cartrackerId, 
                 this.moment, this.coordinate, this.roadName, 
-                this.meters, this.rideId, null, this.lastOfRide);
+                this.meters, this.rideId, null, this.lastOfRide, 0L);
         
         // Verify
         verify(this.carPositionDao)
@@ -159,7 +158,7 @@ public class CarPositionManagerTest {
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
                 this.moment, this.coordinate, this.roadName, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignLastLastOfRide);
+                this.foreignLastLastOfRide, 0L);
         
         // Verify
         verify(this.carPositionDao)
@@ -184,7 +183,7 @@ public class CarPositionManagerTest {
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
                 this.moment, this.coordinate, this.roadName, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignNotLastLastOfRide);
+                this.foreignNotLastLastOfRide, 0L);
         
         // Verify
         verify(this.carPositionDao)
