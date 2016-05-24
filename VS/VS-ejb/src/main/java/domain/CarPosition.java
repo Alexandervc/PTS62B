@@ -42,7 +42,8 @@ import javax.persistence.NamedQuery;
             + "FROM CarPosition cp "
             + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
             + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
-            + "AND cp.cartracker.id = :cartrackerId")
+            + "AND cp.cartracker.id = :cartrackerId "
+            + "ORDER BY cp.id")
 })
 public class CarPosition implements Serializable {
     @Id
