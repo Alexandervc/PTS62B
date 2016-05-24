@@ -90,26 +90,14 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         // For converting to and from JSON
     }
 
-    /**
-     * Getter Km.
-     * @return km in Double.
-     */
     public Double getKm() {
         return this.km;
     }
-
-    /**
-     * Getter RoadName.
-     * @return RoadName in String.
-     */
+    
     public String getRoadName() {
         return this.roadName;
     }
-
-    /**
-     * Getter RoadType.
-     * @return RoadType Type RoadType.
-     */
+    
     public RoadType getRoadType() {
         return this.roadType;
     }

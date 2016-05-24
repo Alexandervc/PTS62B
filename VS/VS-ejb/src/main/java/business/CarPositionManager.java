@@ -12,6 +12,7 @@ import domain.CarPosition;
 import domain.Cartracker;
 import domain.ForeignCountryRideIdGen;
 import domain.Road;
+import dto.Coordinate;
 import dto.RoadUsage;
 import java.security.SecureRandom;
 import java.util.Date;
@@ -34,7 +35,6 @@ import service.rest.clients.ForeignCountryRideClient;
  */
 @Stateless
 public class CarPositionManager {
-
     private static final Logger LOGGER
             = Logger.getLogger(CarPositionManager.class.getName());
 
@@ -192,5 +192,18 @@ public class CarPositionManager {
         this.em.persist(foreignCountryRideId);
         
         return foreignCountryRideId.getId();
+    }
+    
+    /**
+     * Get the coordinates in the given month and year for the given 
+     *      cartrackerId.
+     * @param month The month to get the coordinates for.
+     * @param year The year to get the coordinates for.
+     * @param cartrackerId The cartracker to get the coordinates for.
+     * @return A list of coordinates.
+     */
+    public List<Coordinate> getCoordinates(int month, int year,
+            String cartrackerId) {
+        return this.carPositionDao.getCoordinates(month, year, cartrackerId);
     }
 }

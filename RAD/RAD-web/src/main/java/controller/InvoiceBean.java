@@ -18,6 +18,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import service.BillService;
+import service.CarPositionService;
 import service.CarService;
 import service.PersonService;
 import service.RateService;
@@ -41,6 +42,9 @@ public class InvoiceBean {
     
     @EJB
     private CarService carService;
+    
+    @EJB
+    private CarPositionService positionService;
     
     @Inject
     private InvoiceSession session;
@@ -214,5 +218,10 @@ public class InvoiceBean {
 
     public List<ListBoxDate> getDates() {
         return new ArrayList<>(this.dates);
+    }
+    
+    public String getCoordinates(String cartrackerId) {
+        //return this.positionService.getCoordinates(cartrackerId, this.month, this.year);
+        return "test";
     }
 }
