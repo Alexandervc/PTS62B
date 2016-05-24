@@ -42,6 +42,8 @@ public class ForeignCountryRideResource {
     @POST
     public Response addForeignCountryRide(final ForeignCountryRide input) {
         try {
+            System.out.println("adding: " + input.getForeignCountryRideId());
+            
             this.foreignCountryRideService.addForeignCountryRide(
                     input.getForeignCountryRideId(),
                     input.getTotalPrice());

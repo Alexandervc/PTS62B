@@ -46,9 +46,9 @@ public class ForeignCountryManagerTest {
      */
     @Test
     public void createForeignCountryRideTest() {
-        ForeignCountryRide foreignCountryRide = new ForeignCountryRide("PT29", 13.37);
+        ForeignCountryRide foreignCountryRide = new ForeignCountryRide(29L, 13.37);
 
-        this.foreignCountryManager.createForeignCountryRide("PT29", 13.37);
+        this.foreignCountryManager.createForeignCountryRide(29L, 13.37);
         verify(this.foreignCountryManager.getForeignCountryRideDao())
                 .create(argThat(
                         new IsSameForeignCountryRide(foreignCountryRide)));

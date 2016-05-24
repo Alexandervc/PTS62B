@@ -144,6 +144,7 @@ public class BillManager {
      * @return The price.
      */
     private Double calculatePrice(RoadUsage roadUsage) {
+        System.out.println("Get price for: " + roadUsage.getRoadType());
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
         return roadUsage.getKm() * rate.getPrice();
     }

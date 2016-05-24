@@ -44,11 +44,15 @@ public class TestDataStorage {
             Road road3 = new Road("C1", RoadType.C);
             Road road4 = new Road("D1", RoadType.D);
             Road road5 = new Road("E1", RoadType.E);
+            Road road6 = new Road(
+                        "Foreign Country Road", 
+                        RoadType.FOREIGN_COUNTRY_ROAD);
             this.roadDao.create(road);
             this.roadDao.create(road2);
             this.roadDao.create(road3);
             this.roadDao.create(road4);
             this.roadDao.create(road5);
+            this.roadDao.create(road6);
         }
     }
 }
