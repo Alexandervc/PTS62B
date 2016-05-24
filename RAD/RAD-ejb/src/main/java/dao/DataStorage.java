@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import domain.Bill;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
@@ -39,9 +38,6 @@ public class DataStorage {
     
     // static field for roadusage km
     private static final double KM = 12.9;
-    
-    // static field for total price bill
-    private static final double PRICE = 35.2;
     
     @Inject
     private PersonService personService;

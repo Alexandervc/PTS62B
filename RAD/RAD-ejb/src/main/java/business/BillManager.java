@@ -171,7 +171,8 @@ public class BillManager {
      *
      * @param foreignCountryManager object.
      */
-    public void setForeignCountryManager(ForeignCountryManager foreignCountryManager) {
+    public void setForeignCountryManager(
+            ForeignCountryManager foreignCountryManager) {
         this.foreignCountryManager = foreignCountryManager;
     }
 

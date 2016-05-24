@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
@@ -44,7 +45,9 @@ public class ReceiveTestRequestBean implements MessageListener {
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
         String date = null;
+        Destination queue = null;
         try {
+            queue = mapMessage.getJMSReplyTo();
             date = mapMessage.getString("date");
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -52,6 +55,6 @@ public class ReceiveTestRequestBean implements MessageListener {
 
         // Gives the date from the original message so that it can be 
         // send back.
-        this.sender.sendTestResults(date);
+        this.sender.sendTestResults(date,queue);
     }
 }

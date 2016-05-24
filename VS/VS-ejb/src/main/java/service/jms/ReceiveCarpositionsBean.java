@@ -70,7 +70,8 @@ public class ReceiveCarpositionsBean implements MessageListener {
             String roadName = "test";
 
             this.carPositionService.processCarPosition(cartrackerId, moment,
-                    coordinate, roadName, meter, rideId, lastOfRide);
+                    coordinate, roadName, meter, 
+                    Integer.parseInt(rideId), null, lastOfRide);
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
