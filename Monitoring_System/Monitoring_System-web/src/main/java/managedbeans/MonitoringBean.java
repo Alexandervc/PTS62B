@@ -39,7 +39,8 @@ public class MonitoringBean implements Serializable  {
      * @param sys.
      * @return List of entries.
      */
-    public List<Entry<String, String>> getEntriesForSystem(common.domain.System sys) {
+    public List<Entry<String, String>> getEntriesForSystem(
+            common.domain.System sys) {
         List map = new ArrayList();
         List<List<Test>> tests = this.service.retrieveTests(sys);           
 
@@ -62,7 +63,8 @@ public class MonitoringBean implements Serializable  {
                 date[4] = calendar.get(Calendar.MINUTE);
                 date[5] = calendar.get(Calendar.SECOND);
                 
-                if (prevResult != null && prevResult.booleanValue() == t.getResult().booleanValue()) {
+                if (prevResult != null && prevResult.booleanValue() == 
+                        t.getResult().booleanValue()) {
                     //If testresult is the same as the previous testresult,
                     //replace the enddate.
                     if (params.size() >= 5) {
