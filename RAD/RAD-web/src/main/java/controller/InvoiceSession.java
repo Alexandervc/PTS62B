@@ -6,7 +6,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
- *
+ * Session bean to manage invoicebean data.
+ * 
  * @author Melanie
  */
 @Named
@@ -21,7 +22,8 @@ public class InvoiceSession implements Serializable {
      * @return String person name.
      */
     public String getPersonName() {
-        return this.person.getInitials() + " " + 
+        return this.person.getFirstName() + " " +
+                this.person.getInitials() + " " + 
                 this.person.getLastName();
     }
 

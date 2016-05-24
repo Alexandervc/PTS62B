@@ -38,7 +38,7 @@
                             <h:panelGroup id="searchResult">
                                 <ul class="list-group">
                                     <ui:repeat var="Person" value="#{searchBean.persons}">
-                                        <a href= "invoice.xhtml?personId=#{Person.id}">
+                                        <a href= "faces/invoice.xhtml?personId=#{Person.id}">
                                         <li class="list-group-item">#{Person.firstName} #{Person.lastName} - #{Person.id}</li>
                                         </a>
                                     </ui:repeat>

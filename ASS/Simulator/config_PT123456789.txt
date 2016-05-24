@@ -1,0 +1,1 @@
+cartrackerID=PT123456789,fileIndex=1,ride=1,position=0

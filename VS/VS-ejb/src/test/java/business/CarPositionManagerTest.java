@@ -134,7 +134,7 @@ public class CarPositionManagerTest {
         when(this.cartrackerDao.find(this.cartrackerId))
                 .thenReturn(this.cartracker);
         // TODO road
-        when(this.roadDao.findAll()).thenReturn(this.roads);
+        when(this.roadDao.findAllInternal()).thenReturn(this.roads);
         
         // Call method
         this.carPositionManager.processCarPosition(this.cartrackerId, 
@@ -152,7 +152,7 @@ public class CarPositionManagerTest {
         when(this.cartrackerDao.find(this.foreignCartrackerId))
                 .thenReturn(this.foreignCartracker);
         // TODO road
-        when(this.roadDao.findAll()).thenReturn(this.roads);
+        when(this.roadDao.findAllInternal()).thenReturn(this.roads);
         
         // Call method
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
@@ -176,7 +176,7 @@ public class CarPositionManagerTest {
         when(this.cartrackerDao.find(this.foreignCartrackerId))
                 .thenReturn(this.foreignCartracker);
         // TODO road
-        when(this.roadDao.findAll()).thenReturn(this.roads);
+        when(this.roadDao.findAllInternal()).thenReturn(this.roads);
         
         // Call method
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
@@ -201,7 +201,7 @@ public class CarPositionManagerTest {
         
         // Define when
         when(this.cartrackerDao.find(anyString())).thenReturn(null);
-        when(this.roadDao.findAll()).thenReturn(this.roads);
+        when(this.roadDao.findAllInternal()).thenReturn(this.roads);
         
         // Call method
         this.carPositionManager.processCarPosition(this.cartrackerId, 
