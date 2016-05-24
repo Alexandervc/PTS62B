@@ -81,7 +81,7 @@ public class ForeignCountryManagerTest {
             return this.foreignCountryRide.getForeignCountryRideId()
                     .equals(other.getForeignCountryRideId())
                     && this.foreignCountryRide.getTotalPrice()
-                    == other.getTotalPrice();
+                            .equals(other.getTotalPrice());
         }
     }
 }
