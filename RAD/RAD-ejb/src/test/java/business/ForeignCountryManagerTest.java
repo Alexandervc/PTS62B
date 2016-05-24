@@ -28,6 +28,9 @@ public class ForeignCountryManagerTest {
 
     @Mock
     private ForeignCountryRideDao foreignCountryRideDao;
+    
+    private static final Long FOREIGN_COUNTRY_RIDE_ID = 29L;
+    private static final Double TOTAL_PRICE = 13.37;
 
     /**
      * Initializes the test class before testing.
@@ -38,7 +41,7 @@ public class ForeignCountryManagerTest {
 
         // Set the mocked ForeignCountryRideDao.
         this.foreignCountryManager.setForeignCountryRideDao(
-                foreignCountryRideDao);
+                this.foreignCountryRideDao);
     }
 
     /**
@@ -46,9 +49,11 @@ public class ForeignCountryManagerTest {
      */
     @Test
     public void createForeignCountryRideTest() {
-        ForeignCountryRide foreignCountryRide = new ForeignCountryRide(29L, 13.37);
+        ForeignCountryRide foreignCountryRide = 
+                new ForeignCountryRide(FOREIGN_COUNTRY_RIDE_ID, TOTAL_PRICE);
 
-        this.foreignCountryManager.createForeignCountryRide(29L, 13.37);
+        this.foreignCountryManager.createForeignCountryRide(
+                FOREIGN_COUNTRY_RIDE_ID, TOTAL_PRICE);
         verify(this.foreignCountryManager.getForeignCountryRideDao())
                 .create(argThat(
                         new IsSameForeignCountryRide(foreignCountryRide)));
@@ -62,6 +67,10 @@ public class ForeignCountryManagerTest {
 
         private final ForeignCountryRide foreignCountryRide;
 
+        /**
+         * Instantiates the IsSameForeignCountryRide class.
+         * @param foreignCountryRide 
+         */
         public IsSameForeignCountryRide(ForeignCountryRide foreignCountryRide) {
             this.foreignCountryRide = foreignCountryRide;
         }

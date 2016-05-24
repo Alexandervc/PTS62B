@@ -144,7 +144,6 @@ public class BillManager {
      * @return The price.
      */
     private Double calculatePrice(RoadUsage roadUsage) {
-        System.out.println("Get price for: " + roadUsage.getRoadType());
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
         return roadUsage.getKm() * rate.getPrice();
     }
@@ -172,7 +171,8 @@ public class BillManager {
      *
      * @param foreignCountryManager object.
      */
-    public void setForeignCountryManager(ForeignCountryManager foreignCountryManager) {
+    public void setForeignCountryManager(
+            ForeignCountryManager foreignCountryManager) {
         this.foreignCountryManager = foreignCountryManager;
     }
 
