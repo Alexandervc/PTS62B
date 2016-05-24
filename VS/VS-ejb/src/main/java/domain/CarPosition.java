@@ -7,6 +7,7 @@ package domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,7 +37,7 @@ import javax.persistence.NamedQuery;
             + "FROM CarPosition cp "
             + "WHERE cp.rideId LIKE :countryCode"),
     @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
-            + "cp.xCoordinate, cp.yCoordinate "
+            + "cp.coordinate "
             + "FROM CarPosition cp "
             + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
             + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
@@ -48,8 +49,10 @@ public class CarPosition implements Serializable {
     private Long id;
     
     private Date moment;
-    private Double xCoordinate;
-    private Double yCoordinate;
+    
+    @Embedded
+    private Coordinate coordinate;
+    
     private Double meter;
     private String rideId;
     private Boolean lastOfRide;
@@ -74,8 +77,7 @@ public class CarPosition implements Serializable {
      * @param cartracker The cartracker which this is a position for.
      * @param moment The moment on which the cartracker was on the given 
      *      coordinates. Cannot be null.
-     * @param xCoordinate The x-coordinate of this position.
-     * @param yCoordinate The y-coordinate of this position.
+     * @param coordinate The coordinate of this carposition.
      * @param road The road on which this position was. Cannot be null.
      * @param meter The distance in meters the cartracker movement since the 
      *      last carposition. Cannot be negative.
@@ -83,8 +85,8 @@ public class CarPosition implements Serializable {
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
      */
-    public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
-            Double yCoordinate, Road road, Double meter, String rideId, 
+    public CarPosition(Cartracker cartracker, Date moment, 
+            Coordinate coordinate, Road road, Double meter, String rideId, 
             Boolean lastOfRide) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
@@ -100,8 +102,7 @@ public class CarPosition implements Serializable {
         }
         this.cartracker = cartracker;
         this.moment = new Date(moment.getTime());
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.coordinate = coordinate;
         this.road = road;
         this.meter = meter;
         this.rideId = rideId;
@@ -132,20 +133,12 @@ public class CarPosition implements Serializable {
         this.cartracker = cartracker;
     }
 
-    public Double getxCoordinate() {
-        return this.xCoordinate;
+    public Coordinate getCoordinate() {
+        return this.coordinate;
     }
 
-    public void setxCoordinate(Double xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public Double getyCoordinate() {
-        return this.yCoordinate;
-    }
-
-    public void setyCoordinate(Double yCoordinate) {
-        this.yCoordinate = yCoordinate;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public Road getRoad() {

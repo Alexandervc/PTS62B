@@ -19,6 +19,7 @@ import dao.CartrackerDao;
 import dao.RoadDao;
 import domain.CarPosition;
 import domain.Cartracker;
+import domain.Coordinate;
 import domain.Road;
 import domain.RoadType;
 import org.jglue.cdiunit.CdiRunner;
@@ -72,8 +73,7 @@ public class CarPositionManagerTest {
     private List<Road> roads;
     
     private Date moment;
-    private Double xCoordinate;
-    private Double yCoordinate;
+    private Coordinate coordinate;
     private Double meters;
     private String rideId;
     private Boolean lastOfRide;
@@ -106,8 +106,7 @@ public class CarPositionManagerTest {
         this.roads.add(road);
         
         this.moment = new Date();
-        this.xCoordinate = 1.0;
-        this.yCoordinate = 2.0;
+        this.coordinate = new Coordinate(1.0, 2.0);
         this.meters = 3.0;
         this.rideId = "1";
         this.lastOfRide = false;
@@ -117,15 +116,15 @@ public class CarPositionManagerTest {
         this.foreignLastLastOfRide = true;
         
         this.carPosition = new CarPosition(this.cartracker, this.moment,
-                this.xCoordinate, this.yCoordinate, road, this.meters,
+                this.coordinate, road, this.meters,
                 this.rideId, this.lastOfRide);
         
         this.foreignNotLastCarPosition = new CarPosition(this.foreignCartracker,
-                this.moment, this.xCoordinate, this.yCoordinate, road, 
-                this.meters, this.foreignRideId, this.foreignNotLastLastOfRide);
+                this.moment, this.coordinate, road, this.meters, 
+                this.foreignRideId, this.foreignNotLastLastOfRide);
         this.foreignLastCarPosition = new CarPosition(this.foreignCartracker,
-                this.moment, this.xCoordinate, this.yCoordinate, road,
-                this.meters, this.foreignRideId, this.foreignLastLastOfRide);
+                this.moment, this.coordinate, road, this.meters, 
+                this.foreignRideId, this.foreignLastLastOfRide);
     }
     
     @Test
@@ -138,7 +137,7 @@ public class CarPositionManagerTest {
         
         // Call method
         this.carPositionManager.processCarPosition(this.cartrackerId, 
-                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
+                this.moment, this.coordinate, this.roadName, 
                 this.meters, this.rideId, this.lastOfRide);
         
         // Verify
@@ -156,7 +155,7 @@ public class CarPositionManagerTest {
         
         // Call method
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
-                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
+                this.moment, this.coordinate, this.roadName, 
                 this.meters, this.foreignRideId, this.foreignLastLastOfRide);
         
         // Verify
@@ -180,7 +179,7 @@ public class CarPositionManagerTest {
         
         // Call method
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
-                this.moment, this.xCoordinate, this.yCoordinate, this.roadName, 
+                this.moment, this.coordinate, this.roadName, 
                 this.meters, this.foreignRideId, this.foreignNotLastLastOfRide);
         
         // Verify
@@ -236,10 +235,8 @@ public class CarPositionManagerTest {
                 // TODO road juiste equals
                 && this.carPosition.getRoad().getName()
                         .equals(other.getRoad().getName())
-                && this.carPosition.getxCoordinate()
-                        .equals(other.getxCoordinate())
-                && this.carPosition.getyCoordinate()
-                        .equals(other.getyCoordinate());
+                && this.carPosition.getCoordinate()
+                        .equals(other.getCoordinate());
         }
     }
 }

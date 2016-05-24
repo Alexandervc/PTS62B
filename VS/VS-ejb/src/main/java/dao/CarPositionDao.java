@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
-import dto.Coordinate;
+import domain.Coordinate;
 
 /**
  * The dao for carPosition.

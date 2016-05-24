@@ -9,6 +9,7 @@ import business.CarPositionManager;
 import com.google.gson.Gson;
 import domain.CarPosition;
 import domain.Cartracker;
+import domain.Coordinate;
 import domain.Road;
 import domain.RoadType;
 import dto.ForeignMessage;
@@ -87,8 +88,10 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         
                 if (previousPosition != null) {
                     distanceToPrevious = Math.hypot(
-                            previousPosition.getX() - currentPosition.getX(),
-                            previousPosition.getY() - currentPosition.getY());
+                            previousPosition.getCoordinate().getLat() - 
+                                    currentPosition.getCoordinate().getLat(),
+                            previousPosition.getCoordinate().getLng() - 
+                                    currentPosition.getCoordinate().getLng());
                 }
                 
                 //Check if position is last of ride.
@@ -103,8 +106,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 CarPosition carPosition = new CarPosition(
                         carTracker,
                         new Date(currentPosition.getDatetime()),
-                        currentPosition.getX(),
-                        currentPosition.getY(),
+                        currentPosition.getCoordinate(),
                         road,
                         distanceToPrevious,
                         foreignCountryRideId,                        
