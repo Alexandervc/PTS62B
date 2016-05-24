@@ -111,8 +111,10 @@ public class BillManager {
 
             // If Date today after the last Day of the Month
             // Save in Database
-            if(today.after(lastDayOfMonth)){
-                this.billDao.create(temp);
+            if (today.after(lastDayOfMonth)) {
+                if (!roadUsages.isEmpty()) {
+                    this.billDao.create(temp);
+                }
             }
         } catch (ParseException ex) {
             LOG.log(Level.SEVERE, null, ex);

@@ -73,15 +73,10 @@ public class BillService {
 
             // if bill doesn't exists, create new Bill in Database
             if (!exists) {
-                if (!roadUsages.isEmpty()) {
-                    Bill newBill = this.billManager.generateBill(person,
-                            roadUsages, c.getCartrackerId(), month, year);
-                    // add to list carBills
-                    carBills.add(newBill);
-                } else {
-                    carBills.add(new Bill(person, roadUsages, 0.00,
-                            c.getCartrackerId(), month, year));
-                }
+                Bill newBill = this.billManager.generateBill(person,
+                        roadUsages, c.getCartrackerId(), month, year);
+                // add to list carBills
+                carBills.add(newBill);
             }
         }
         // return list carBills
