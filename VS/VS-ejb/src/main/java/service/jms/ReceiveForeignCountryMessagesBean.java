@@ -111,7 +111,8 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 CarPosition carPosition = new CarPosition(
                         carTracker,
                         date,
-                        currentPosition.getCoordinate(),
+                        new Coordinate(currentPosition.getX(), 
+                                currentPosition.getY()),
                         road,
                         0D,
                         null,

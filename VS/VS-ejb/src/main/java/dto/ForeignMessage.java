@@ -36,8 +36,8 @@ public class ForeignMessage {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         
         for(CarPosition cp : carpositions) {
-            // TODO
-            this.positions.add(new ForeignPosition(cp.getCoordinate(),
+            this.positions.add(new ForeignPosition(cp.getCoordinate().getLat(),
+                    cp.getCoordinate().getLng(),
                     dateFormat.format(cp.getMoment())));
         }
     }
