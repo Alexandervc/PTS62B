@@ -5,7 +5,7 @@
  */
 package service.rest.resources;
 
-import dto.Coordinate;
+import domain.Coordinate;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

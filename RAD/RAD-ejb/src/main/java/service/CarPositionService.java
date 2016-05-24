@@ -26,9 +26,9 @@ public class CarPositionService {
      * @param month The month to get the coordinates for.
      * @param year The year to get the coordinates for.
      * @param cartrackerId The cartracker to get the coordinates for.
-     * @return List of coordinates.
+     * @return JSON-string of coordinates.
      */
-    public List<Coordinate> getCoordinates(String cartrackerId, 
+    public String getCoordinates(String cartrackerId, 
             int month, int year) {
         return this.coordinatesClient.getCoordinates(cartrackerId, month, year);
     }

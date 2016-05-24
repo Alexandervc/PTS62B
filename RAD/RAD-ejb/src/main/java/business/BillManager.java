@@ -47,15 +47,6 @@ public class BillManager {
     }
 
     /**
-     * Create bill in Database.
-     *
-     * @param bill Type Bill.
-     */
-    public void createBill(Bill bill) {
-        this.billDao.create(bill);
-    }
-
-    /**
      * Generate bill.
      *
      * @param person Type Person.
@@ -120,7 +111,7 @@ public class BillManager {
 
             // If Date today after the last Day of the Month
             // Save in Database
-            if(today.before(lastDayOfMonth)){
+            if(today.after(lastDayOfMonth)){
                 this.billDao.create(temp);
             }
         } catch (ParseException ex) {
@@ -180,7 +171,8 @@ public class BillManager {
      *
      * @param foreignCountryManager object.
      */
-    public void setForeignCountryManager(ForeignCountryManager foreignCountryManager) {
+    public void setForeignCountryManager(
+            ForeignCountryManager foreignCountryManager) {
         this.foreignCountryManager = foreignCountryManager;
     }
 

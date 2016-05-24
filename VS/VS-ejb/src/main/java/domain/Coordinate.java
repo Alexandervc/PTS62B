@@ -3,22 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package domain;
+
+import java.io.Serializable;
+import javax.persistence.Embeddable;
 
 /**
  * Helper class for coordinates.
  * @author Alexander
  */
-public class Coordinate {
-    private double lat;
-    private double lng;
+@Embeddable
+public class Coordinate implements Serializable {
+    private Double lat;
+    private Double lng;
     
     /**
      * Helper class for coordinates.
      * @param lat xCoordinate.
      * @param lng yCoordinate.
      */
-    public Coordinate(double lat, double lng) {
+    public Coordinate(Double lat, Double lng) {
         this.lat = lat;
         this.lng = lng;
     }
@@ -32,19 +36,29 @@ public class Coordinate {
         // To convert to and from json
     }
 
-    public double getLat() {
+    public Double getLat() {
         return this.lat;
     }
     
-    public void setLat(double lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public double getLng() {
+    public Double getLng() {
         return this.lng;
     }
 
-    public void setLng(double lng) {
+    public void setLng(Double lng) {
         this.lng = lng;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof Coordinate)) {
+            return false;
+        }
+        Coordinate other = (Coordinate) o;
+        return this.getLat().equals(other.getLat())
+                && this.getLng().equals(other.getLng());
     }
 }

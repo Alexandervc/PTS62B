@@ -51,7 +51,7 @@ public class BillManagerTest {
     
     private Integer monthToday;
     private Integer yearToday;
-    private Integer yearFuture;
+    private Integer yearPast;
     
     public BillManagerTest() {
         // Empty for JPA.
@@ -78,12 +78,6 @@ public class BillManagerTest {
         this.billManager.findBills(this.person);
         verify(this.billDao, Mockito.times(1)).findAllForUser(this.person);
     }
-
-    @Test
-    public void createBill() {
-        this.billManager.createBill(this.bill);
-         verify(this.billDao, Mockito.times(1)).create(this.bill);
-    }
     
     @Test
     public void generateBillNotSaved(){
@@ -93,10 +87,10 @@ public class BillManagerTest {
         when(this.rateDao.find(RoadType.A))
                 .thenReturn(rate);
         
-        this.billManager.generateBill(this.person, this.bill.getRoadUsages(), 
+        Bill bill3 = this.billManager.generateBill(this.person, this.bill.getRoadUsages(), 
                 CARID1, this.monthToday, this.yearToday);
         
-        verify(this.billDao, Mockito.times(0)).create(bill);
+        verify(this.billDao, Mockito.times(0)).create(bill3);
     }
     
     @Test
@@ -109,7 +103,7 @@ public class BillManagerTest {
         
         Bill bill3 = this.billManager.generateBill(this.person, 
                 this.bill2.getRoadUsages(), CARID1, this.monthToday, 
-                this.yearFuture);
+                this.yearPast);
         
         verify(this.billDao, Mockito.times(1)).create(bill3);
     }
@@ -132,10 +126,10 @@ public class BillManagerTest {
         Date billdate = new Date();
         this.monthToday = billdate.getMonth()+1;
         this.yearToday = billdate.getYear() + 1900;
-        this.yearFuture = billdate.getYear() + 1901;
+        this.yearPast = billdate.getYear() + 1899;
         this.bill = new Bill(this.person, roadusages, 8.21,
                 CARID1, this.monthToday, this.yearToday);
         this.bill2 = new Bill(this.person, roadusages, 5.21,
-                CARID1, this.monthToday, this.yearFuture);
+                CARID1, this.monthToday, this.yearPast);
     }
 }

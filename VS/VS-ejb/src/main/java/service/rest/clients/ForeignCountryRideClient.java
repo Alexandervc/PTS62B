@@ -40,7 +40,7 @@ public class ForeignCountryRideClient {
      * @param totalPrice total price for ride.
      */
     public void addForeignCountryRide(
-            String foreignCountryRideId, 
+            Long foreignCountryRideId, 
             double totalPrice) {
         
         ForeignCountryRide foreignCountryRide = new ForeignCountryRide();

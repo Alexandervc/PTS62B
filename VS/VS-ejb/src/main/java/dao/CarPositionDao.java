@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
-import dto.Coordinate;
+import domain.Coordinate;
 
 /**
  * The dao for carPosition.
@@ -55,9 +55,17 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      * @param rideId The id of the ride to get the carpositions for.
      * @return List of carpostions.
      */
-    public List<CarPosition> getPositionsOfRide(String rideId) {
+    public List<CarPosition> getPositionsOfRide(Integer rideId) {
         Query q = this.em.createNamedQuery("CarPosition.getPositionsOfRide");
         q.setParameter("rideId", rideId);
+        return q.getResultList();
+    }
+    
+    public List<CarPosition> getPositionsOfForeignCountryRide(
+            Long foreignCountryRideId) {
+        Query q = this.em.createNamedQuery(
+                "CarPosition.getPositionsOfForeignCountryRide");
+        q.setParameter("rideId", foreignCountryRideId);
         return q.getResultList();
     }
     
