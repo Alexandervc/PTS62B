@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
+import dto.Coordinate;
 
 /**
  * The dao for carPosition.
@@ -54,9 +55,16 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      * @param rideId The id of the ride to get the carpositions for.
      * @return List of carpostions.
      */
-    public List<CarPosition> getPositionsOfRide(String rideId) {
+    public List<CarPosition> getPositionsOfRide(Integer rideId) {
         Query q = this.em.createNamedQuery("CarPosition.getPositionsOfRide");
         q.setParameter("rideId", rideId);
+        return q.getResultList();
+    }
+    
+    public List<CarPosition> getPositionsOfForeignCountryRide(Long foreignCountryRideId) {
+        Query q = this.em.createNamedQuery(
+                "CarPosition.getPositionsOfForeignCountryRide");
+        q.setParameter("rideId", foreignCountryRideId);
         return q.getResultList();
     }
     
@@ -81,5 +89,23 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         }
         
         return maxRideId;
+    }
+    
+    /**
+     * Get the coordinates in the given month and year for the given 
+     *      cartrackerId.
+     * @param month The month to get the coordinates for.
+     * @param year The year to get the coordinates for.
+     * @param cartrackerId The cartracker to get the coordinates for.
+     * @return A list of coordinates.
+     */
+    public List<Coordinate> getCoordinates(int month, int year,
+            String cartrackerId) {
+        Query q = this.em.createNamedQuery("CarPosition.getCoordinates");
+        q.setParameter("month", month);
+        q.setParameter("year", year);
+        q.setParameter("cartrackerId", cartrackerId);
+        
+        return q.getResultList();
     }
 }

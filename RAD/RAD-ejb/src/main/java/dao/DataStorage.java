@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import domain.Bill;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
@@ -40,9 +39,6 @@ public class DataStorage {
     // static field for roadusage km
     private static final double KM = 12.9;
     
-    // static field for total price bill
-    private static final double PRICE = 35.2;
-    
     @Inject
     private PersonService personService;
     
@@ -60,13 +56,16 @@ public class DataStorage {
      */
     @PostConstruct
     public void onStartup() {
-        if (this.personService.findPersonByName("Linda") == null) {
+        if (this.personService.searchPersons("Linda").isEmpty()) {
             // Add rates to db.
             this.rateService.addRate(RATE1, RoadType.A);
             this.rateService.addRate(RATE2, RoadType.B);
             this.rateService.addRate(RATE3, RoadType.C);
             this.rateService.addRate(RATE4, RoadType.D);
             this.rateService.addRate(RATE5, RoadType.E);
+            // TODO
+            // have to be solved.
+            this.rateService.addRate(0.00, RoadType.FOREIGN_COUNTRY_ROAD);
 
             // Make list of roadusages
             List<RoadUsage> roadUsages = new ArrayList<>();
@@ -93,10 +92,10 @@ public class DataStorage {
             this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
             
             // Create bill for person.
-            Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 4, 2016);
+            //Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 4, 2016);
             
             // Add bill to db.
-            this.billService.addBill(b);
+            //this.billService.addBill(b);
         }
     }
 }

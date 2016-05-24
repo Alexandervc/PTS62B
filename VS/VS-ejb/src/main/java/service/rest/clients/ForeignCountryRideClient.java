@@ -36,11 +36,11 @@ public class ForeignCountryRideClient {
     
     /**
      * Stores a ForeignCountryRide in the RAD database.
-     * @param foreignCountryRideId
-     * @param totalPrice 
+     * @param foreignCountryRideId id for foreign country ride.
+     * @param totalPrice total price for ride.
      */
     public void addForeignCountryRide(
-            String foreignCountryRideId, 
+            Long foreignCountryRideId, 
             double totalPrice) {
         
         ForeignCountryRide foreignCountryRide = new ForeignCountryRide();

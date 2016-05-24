@@ -7,14 +7,12 @@ package business;
 
 import dao.ForeignCountryRideDao;
 import domain.ForeignCountryRide;
-import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import static org.mockito.Matchers.argThat;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -30,6 +28,9 @@ public class ForeignCountryManagerTest {
 
     @Mock
     private ForeignCountryRideDao foreignCountryRideDao;
+    
+    private static final Long FOREIGN_COUNTRY_RIDE_ID = 29L;
+    private static final Double TOTAL_PRICE = 13.37;
 
     /**
      * Initializes the test class before testing.
@@ -40,7 +41,7 @@ public class ForeignCountryManagerTest {
 
         // Set the mocked ForeignCountryRideDao.
         this.foreignCountryManager.setForeignCountryRideDao(
-                foreignCountryRideDao);
+                this.foreignCountryRideDao);
     }
 
     /**
@@ -48,9 +49,11 @@ public class ForeignCountryManagerTest {
      */
     @Test
     public void createForeignCountryRideTest() {
-        ForeignCountryRide foreignCountryRide = new ForeignCountryRide("PT29", 13.37);
+        ForeignCountryRide foreignCountryRide = 
+                new ForeignCountryRide(FOREIGN_COUNTRY_RIDE_ID, TOTAL_PRICE);
 
-        this.foreignCountryManager.createForeignCountryRide("PT29", 13.37);
+        this.foreignCountryManager.createForeignCountryRide(
+                FOREIGN_COUNTRY_RIDE_ID, TOTAL_PRICE);
         verify(this.foreignCountryManager.getForeignCountryRideDao())
                 .create(argThat(
                         new IsSameForeignCountryRide(foreignCountryRide)));
@@ -64,6 +67,10 @@ public class ForeignCountryManagerTest {
 
         private final ForeignCountryRide foreignCountryRide;
 
+        /**
+         * Instantiates the IsSameForeignCountryRide class.
+         * @param foreignCountryRide 
+         */
         public IsSameForeignCountryRide(ForeignCountryRide foreignCountryRide) {
             this.foreignCountryRide = foreignCountryRide;
         }

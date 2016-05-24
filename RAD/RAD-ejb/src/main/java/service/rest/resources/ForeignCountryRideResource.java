@@ -47,13 +47,10 @@ public class ForeignCountryRideResource {
                     input.getTotalPrice());
 
             return Response.status(Response.Status.OK).build();
-        } catch (EntityExistsException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        } catch (IllegalArgumentException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        } catch (TransactionRequiredException ex) {
+        } catch (EntityExistsException 
+                | IllegalArgumentException 
+                | TransactionRequiredException ex) {
+            
             LOGGER.log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

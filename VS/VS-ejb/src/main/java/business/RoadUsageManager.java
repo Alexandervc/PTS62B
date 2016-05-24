@@ -37,13 +37,12 @@ public class RoadUsageManager {
             if(!roadUsages.containsKey(cp.getRoad())) {
                 RoadUsage ru;
                 
-                if (cp.getRideId().startsWith("PT")) {
-                    // Add roadUsage
+                if (cp.getRideId() == null) {
+                    // Add foreign country roadUsage
                     ru = new RoadUsage(cp.getRoad().getName(), 
                                     cp.getRoad().getRoadType(),
                                     cp.getMeter(),
-                                    Long.parseLong(
-                                            cp.getRideId().substring(2)));
+                                    cp.getForeignCountryRideId());
                 } else {
                     // Add roadUsage
                     ru = new RoadUsage(cp.getRoad().getName(), 
@@ -76,6 +75,8 @@ public class RoadUsageManager {
         List<CarPosition> cps = this.carPositionDao.getPositionsOfMonth(month, 
                 year, cartrackerId);
         
-        return this.convertToRoadUsages(cps);
+        List<RoadUsage> roadUsages = this.convertToRoadUsages(cps);
+        roadUsages.sort(null);
+        return roadUsages;
     }
 }

@@ -32,10 +32,20 @@ public class PersonManager {
         return person;
     }
     
+    /**
+     * Find person by name.
+     * @param name of person.
+     * @return object person.
+     */
     public Person findPersonByName(String name){
         return this.personDAO.findByName(name);
     }
     
+    /**
+     * Find person by personId.
+     * @param personId of person.
+     * @return object person.
+     */
     public Person findPersonById(Long personId) {
         return this.personDAO.find(personId);
     }
@@ -47,12 +57,22 @@ public class PersonManager {
      * @return List of found persons.
      */
     public List<Person> searchPersonsWithText(String searchText) {
+        String trimSearchText = null;
         if(searchText != null) {
-            searchText = searchText.trim();
+            trimSearchText = searchText.trim();
         }
-        if(searchText == null || searchText.isEmpty()) {
+        if(trimSearchText == null || trimSearchText.isEmpty()) {
             throw new IllegalArgumentException("searchText null or empty");
         }
-        return this.personDAO.findPersonsWithText(searchText);
+        return this.personDAO.findPersonsWithText(trimSearchText);
     }
+
+    /**
+     * Setter PersonDAO.
+     * @param personDAO object. 
+     */
+    public void setPersonDAO(PersonDao personDAO) {
+        this.personDAO = personDAO;
+    }
+    
 }

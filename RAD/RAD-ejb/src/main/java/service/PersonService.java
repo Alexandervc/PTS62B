@@ -9,6 +9,8 @@ import business.PersonManager;
 import domain.Address;
 import domain.Person;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -18,6 +20,9 @@ import javax.inject.Inject;
  */
 @Stateless
 public class PersonService {
+    private static final Logger LOGGER =
+            Logger.getLogger(PersonService.class.getName());
+    
     @Inject
     private PersonManager personManager;
     
@@ -45,16 +50,6 @@ public class PersonService {
     public List<Person> searchPersons(String searchText) {
         return this.personManager.searchPersonsWithText(searchText);
     }
-
-    /**
-     * Find person in database with name can be null.
-     *
-     * @param name String.
-     * @return found person.
-     */
-    public Person findPersonByName(String name) {
-        return this.personManager.findPersonByName(name);
-    }
     
     /**
      * Find person in database by personId.
@@ -64,5 +59,6 @@ public class PersonService {
      */
     public Person findPersonById(Long personId) {
         return this.personManager.findPersonById(personId);
-    }
+    }    
+    
 }
