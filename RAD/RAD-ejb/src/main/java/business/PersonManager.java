@@ -1,7 +1,9 @@
 package business;
 
 import dao.PersonDao;
+import domain.Address;
 import domain.Person;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -19,26 +21,58 @@ public class PersonManager {
      * @param firstname String.
      * @param lastname String.
      * @param initials String.
-     * @param streetname String.
-     * @param number String.
-     * @param zipcode String.
-     * @param city String.
-     * @param country String.
+     * @param address Address.
      * @return new person Type Person.
      */
     public Person createPerson(String firstname, String lastname, 
-            String initials,String streetname, String number, String zipcode, 
-            String city, String country) {
-        
-        Person person = new Person(firstname, lastname, initials,
-            streetname, number, zipcode, city, country);
+            String initials, Address address) {
+        Person person = new Person(firstname, lastname, initials, address);
         this.personDAO.create(person);
         
         return person;
     }
     
+    /**
+     * Find person by name.
+     * @param name of person.
+     * @return object person.
+     */
     public Person findPersonByName(String name){
-        Person person = this.personDAO.findByName(name);
-        return person;
+        return this.personDAO.findByName(name);
     }
+    
+    /**
+     * Find person by personId.
+     * @param personId of person.
+     * @return object person.
+     */
+    public Person findPersonById(Long personId) {
+        return this.personDAO.find(personId);
+    }
+    
+    /**
+     * Search the persons with the given searchText in the 
+     *      first name or last name.
+     * @param searchText The text to search for. Cannot be null or empty.
+     * @return List of found persons.
+     */
+    public List<Person> searchPersonsWithText(String searchText) {
+        String trimSearchText = null;
+        if(searchText != null) {
+            trimSearchText = searchText.trim();
+        }
+        if(trimSearchText == null || trimSearchText.isEmpty()) {
+            throw new IllegalArgumentException("searchText null or empty");
+        }
+        return this.personDAO.findPersonsWithText(trimSearchText);
+    }
+
+    /**
+     * Setter PersonDAO.
+     * @param personDAO object. 
+     */
+    public void setPersonDAO(PersonDao personDAO) {
+        this.personDAO = personDAO;
+    }
+    
 }

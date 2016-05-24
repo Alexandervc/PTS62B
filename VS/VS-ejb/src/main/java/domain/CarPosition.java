@@ -7,6 +7,7 @@ package domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,16 +22,27 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="CarPosition.getPositionsBetween", query = "SELECT cp "
+    @NamedQuery(name="CarPosition.getPositionsOfMonth", query = "SELECT cp "
             + "FROM CarPosition cp "
-            + "WHERE cp.moment >= :begin "
-            + "AND cp.moment <= :end "
+            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
+            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
             + "AND cp.cartracker.id = :cartrackerId "
             + "ORDER BY cp.road.roadType"),
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
-            + "ORDER BY cp.id")
+            + "ORDER BY cp.id"),
+    @NamedQuery(name="CarPosition.getPositionsOfForeignCountryRide", query = 
+            "SELECT cp "
+            + "FROM CarPosition cp "
+            + "WHERE cp.foreignCountryRideId = :foreignCountryRideId "
+            + "ORDER BY cp.id"),
+    @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
+            + "cp.coordinate "
+            + "FROM CarPosition cp "
+            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
+            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
+            + "AND cp.cartracker.id = :cartrackerId")
 })
 public class CarPosition implements Serializable {
     @Id
@@ -38,10 +50,14 @@ public class CarPosition implements Serializable {
     private Long id;
     
     private Date moment;
-    private Double xCoordinate;
-    private Double yCoordinate;
+    
+    @Embedded
+    private Coordinate coordinate;
+    
     private Double meter;
-    private Long rideId;
+    private Integer rideId;
+    private Long foreignCountryRideId;
+    
     private Boolean lastOfRide;
     
     @ManyToOne
@@ -64,18 +80,19 @@ public class CarPosition implements Serializable {
      * @param cartracker The cartracker which this is a position for.
      * @param moment The moment on which the cartracker was on the given 
      *      coordinates. Cannot be null.
-     * @param xCoordinate The x-coordinate of this position.
-     * @param yCoordinate The y-coordinate of this position.
+     * @param coordinate The coordinate of this carposition.
      * @param road The road on which this position was. Cannot be null.
      * @param meter The distance in meters the cartracker movement since the 
      *      last carposition. Cannot be negative.
      * @param rideId The id of the ride this carposition is a part of.
+     * @param foreignCountryRideId The id of the foreign ride this carposition 
+     *      is part of.
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
      */
-    public CarPosition(Cartracker cartracker, Date moment, Double xCoordinate, 
-            Double yCoordinate, Road road, Double meter, Long rideId, 
-            Boolean lastOfRide) {
+    public CarPosition(Cartracker cartracker, Date moment, 
+            Coordinate coordinate, Road road, Double meter, Integer rideId, 
+            Long foreignCountryRideId, Boolean lastOfRide) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
         }
@@ -90,11 +107,11 @@ public class CarPosition implements Serializable {
         }
         this.cartracker = cartracker;
         this.moment = new Date(moment.getTime());
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.coordinate = coordinate;
         this.road = road;
         this.meter = meter;
         this.rideId = rideId;
+        this.foreignCountryRideId = foreignCountryRideId;
         this.lastOfRide = lastOfRide;
     }
 
@@ -122,20 +139,12 @@ public class CarPosition implements Serializable {
         this.cartracker = cartracker;
     }
 
-    public Double getxCoordinate() {
-        return this.xCoordinate;
+    public Coordinate getCoordinate() {
+        return this.coordinate;
     }
 
-    public void setxCoordinate(Double xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public Double getyCoordinate() {
-        return this.yCoordinate;
-    }
-
-    public void setyCoordinate(Double yCoordinate) {
-        this.yCoordinate = yCoordinate;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public Road getRoad() {
@@ -154,14 +163,22 @@ public class CarPosition implements Serializable {
         this.meter = meter;
     }
 
-    public Long getRideId() {
+    public Integer getRideId() {
         return this.rideId;
     }
 
-    public void setRideId(Long rideId) {
+    public void setRideId(Integer rideId) {
         this.rideId = rideId;
     }
 
+    public Long getForeignCountryRideId() {
+        return this.foreignCountryRideId;
+    }
+
+    public void setForeignCountryRideId(Long foreignCountryRideId) {
+        this.foreignCountryRideId = foreignCountryRideId;
+    }
+    
     public Boolean getLastOfRide() {
         return this.lastOfRide;
     }

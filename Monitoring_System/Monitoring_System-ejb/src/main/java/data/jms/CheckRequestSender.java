@@ -41,6 +41,10 @@ public class CheckRequestSender {
     @Resource(lookup="jms/LMS/monitoringTopic")
     private Destination topic;
     
+    @Resource(lookup = "jms/LMS/queue")
+    private Destination queue;
+
+    
       
     /**
      * Sends a message in the monitoring topic to request the systems that are
@@ -56,6 +60,9 @@ public class CheckRequestSender {
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             String currentTime = df.format(date);
             message.setString("date", currentTime);
+            message.setJMSReplyTo(queue);
+            System.out.println("injected : " +queue);
+            System.out.println("inside message: " + message.getJMSReplyTo());
             producer.setTimeToLive(TIMEOUTTIME);
             producer.send(this.topic, message);
         } catch (JMSException ex) {

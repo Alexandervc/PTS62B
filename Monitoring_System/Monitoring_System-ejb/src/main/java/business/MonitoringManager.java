@@ -113,7 +113,7 @@ public class MonitoringManager {
         
         if(tests.isEmpty()) {
             // Convert util.Date to sql.Date.
-                java.util.Date currentDate = new java.util.Date();
+            java.util.Date currentDate = new java.util.Date();
                 
             return new Test(
                         TestType.STATUS, 
@@ -168,23 +168,10 @@ public class MonitoringManager {
 
         // Retrieves the specific test from the system object.
         List<Test> tests = system.getTests();
-        java.lang.System.out.println("DATE: " + time + "nano: " + time.getNanos());
         List<Test> filteredTests = tests.stream()
-                .filter(x -> x.getDate().equals(time) && x.getTestType() == type)
-                .collect(Collectors.toList());
-        
-        /*
-        List<Test> filteredTests = new ArrayList<>();
-        for(Test t : tests) {
-            Timestamp ti = t.getDate();
-            ti.setNanos(0);
-            if(ti.equals(time)) {
-                if(t.getTestType() == type){
-                    filteredTests.add(t);
-                }
-            }
-        }*/
-        
+                .filter(x -> x.getDate().equals(time)
+                        && x.getTestType() == type)
+                .collect(Collectors.toList());        
    
         Test test = filteredTests.get(0);
         test.setDate(newTime);
@@ -260,7 +247,7 @@ public class MonitoringManager {
                         "http://192.168.24.70:8070/job/PTS-S62B-"
                         + s.getName()
                     // TODO: UNCOMMENT FOR DEPLOYMENT
-                        + "-deploy"
+                        //+ "-deploy"
                         + "/lastSuccessfulBuild/testReport/api/json");
                 String result = String.valueOf(json.get("failCount"));
                 // If result "failCount" == 0 testResult is true
@@ -311,9 +298,7 @@ public class MonitoringManager {
             }
             String jsonText = sb.toString();
 
-            JSONObject json = new JSONObject(jsonText);
-
-            return json;
+            return new JSONObject(jsonText);
         } finally {
             is.close();
         }

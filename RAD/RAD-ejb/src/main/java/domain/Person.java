@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,11 +24,15 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="person.findByName", 
-            query="SELECT p FROM Person p WHERE p.firstName = :name")
+    @NamedQuery(name="Person.findByName", 
+            query="SELECT p FROM Person p WHERE p.firstName = :name"),
+    @NamedQuery(name="Person.findPersonsWithText", query = "SELECT p "
+            + "FROM Person p "
+            + "WHERE UPPER(p.firstName) LIKE UPPER(:searchText) "
+            + "OR UPPER(p.lastName) LIKE UPPER(:searchText) "
+            + "ORDER BY p.firstName, p.lastName")
 })
 public class Person implements Serializable {
-
     @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -37,17 +42,13 @@ public class Person implements Serializable {
     private String lastName;
     private String initials;
     
-    // Adress
-    private String streetName;
-    private String housenumber;
-    private String zipCode;
-    private String city;
-    private String country;
+    @Embedded
+    private Address address;
     
-    @OneToMany(mappedBy = "person2", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Bill> bills;
     
-    @OneToMany(mappedBy = "person3", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private List<Car> cars;
     
     /**
@@ -75,195 +76,70 @@ public class Person implements Serializable {
      * @param firstname of person.
      * @param lastname of person.
      * @param initials of person.
-     * @param streetname of person.
-     * @param housenumber of person.
-     * @param zipcode of person.
-     * @param city of person.
-     * @param country of person.
+     * @param address of person.
      */
     public Person(String firstname, String lastname, String initials,
-            String streetname, String housenumber, String zipcode, 
-            String city, String country) {
+            Address address) {
         this.firstName = firstname;
         this.lastName = lastname;
         this.initials = initials;
-        this.streetName = streetname;
-        this.housenumber = housenumber;
-        this.zipCode = zipcode;
-        this.city = city;
-        this.country = country;
+        this.address = address;
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
     }
     
-    /**
-     * Getter Id.
-     * @return Id.
-     */
     public Long getId() {
         return this.id;
     }
-    /**
-     * Setter Id.
-     * @param id of person. 
-     */
+    
     public void setId(Long id){
         this.id = id;
     }
 
-    /**
-     * Getter First name.
-     * @return String first name.
-     */
     public String getFirstName() {
         return this.firstName;
     }
 
-    /**
-     * Setter First name.
-     * @param firstName of person. 
-     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    /**
-     * Getter last name.
-     * @return String Last name.
-     */
     public String getLastName() {
         return this.lastName;
     }
 
-    /**
-     * Setter Last name.
-     * @param lastName of person.
-     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    /**
-     * Getter Initials.
-     * @return String initials.
-     */
+    
     public String getInitials() {
         return this.initials;
     }
 
-    /**
-     * Setter Initials.
-     * @param initials of person.
-     */
     public void setInitials(String initials) {
         this.initials = initials;
     }
 
-    /**
-     * Getter Streetname.
-     * @return String streetname.
-     */
-    public String getStreetName() {
-        return this.streetName;
-    }
-    /**
-     * Setter Streetname.
-     * @param streetName of person. 
-     */
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public Address getAddress() {
+        return this.address;
     }
 
-    /**
-     * Getter Housenumber.
-     * @return String Housenumber.
-     */
-    public String getHousenumber() {
-        return this.housenumber;
-    }
-/**
- * Setter Housenumber.
- * @param housenumber of person. 
- */
-    public void setHousenumber(String housenumber) {
-        this.housenumber = housenumber;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    /**
-     * Getter Zipcode.
-     * @return String zipcode.
-     */
-    public String getZipCode() {
-        return this.zipCode;
-    }
-
-    /**
-     * Setter Zipcode.
-     * @param zipCode of person. 
-     */
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-    
-    /**
-     * Getter City.
-     * @return String City.
-     */
-    public String getCity() {
-        return this.city;
-    }
-
-    /**
-     * Setter City.
-     * @param city of person. 
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    /**
-     * Getter Country.
-     * @return String Country.
-     */
-    public String getCountry() {
-        return this.country;
-    }
-
-    /**
-     * Setter Country.
-     * @param country of person. 
-     */
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    /**
-     * Getter bills.
-     * @return list bills.
-     */
     public List<Bill> getBills() {
         return new ArrayList<>(this.bills);
     }
     
-    /**
-     * Setter bills.
-     * @param bills of person.
-     */
     public void setBills(List<Bill> bills) {
         this.bills = new ArrayList<>(bills);
     }
 
-    /**
-     * Getter cars.
-     * @return List cars.
-     */
     public List<Car> getCars() {
         return new ArrayList<>(this.cars);
     }
 
-    /**
-     * Setter cars.
-     * @param cars of person. 
-     */
     public void setCars(List<Car> cars) {
         this.cars = new ArrayList<>(cars);
     }
@@ -274,7 +150,7 @@ public class Person implements Serializable {
      */
     public void addBill(Bill b){
         this.bills.add(b);
-        b.setPerson2(this);
+        b.setPerson(this);
     }
     
     /**
@@ -283,7 +159,6 @@ public class Person implements Serializable {
      */
     public void addCar(Car c){
         this.cars.add(c);
-        c.setPerson3(this);
+        c.setOwner(this);
     }
-    
 }

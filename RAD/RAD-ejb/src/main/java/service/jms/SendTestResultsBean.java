@@ -21,15 +21,16 @@ import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 
 /**
- *  The bean that sends the results of a test.
+ * The bean that sends the results of a test.
+ *
  * @author Edwin.
  */
 @Stateless
 public class SendTestResultsBean {
-    
+
     private static final Logger LOGGER = Logger
             .getLogger(SendTestResultsBean.class.getName());
-    
+
     // The timeout time for messages send from this class.
     private static final long TIMEOUT = 60000;
 
@@ -37,16 +38,15 @@ public class SendTestResultsBean {
     @JMSConnectionFactory("jms/LMSConnectionFactory")
     private JMSContext context;
 
-    @Resource(lookup = "jms/LMS/queue")
-    private Destination queue;
 
     /**
-     * send result to LMS
-     * param Result result
+     * send result to LMS param Result result
+     *
      * @param date The date of the test.
+     * @param queue The queue to reply to.
      */
-    public void sendTestResults(String date) {
-        try {         
+    public void sendTestResults(String date,Destination queue) {
+        try {
             MapMessage mapMessage = this.context.createMapMessage();
             // send result to method receiveTestresults
             mapMessage.setStringProperty("method", "receiveStatus");
@@ -54,18 +54,17 @@ public class SendTestResultsBean {
             // set message string systemName
             mapMessage.setString("system", "RAD");
             // set message boolean result
-            
+
             // Formats the date so that it can be send in a clear format.
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-            String dateString = dateFormat.format(new Date());            
+            String dateString = dateFormat.format(new Date());
 
             mapMessage.setString("date", date);
             mapMessage.setString("newDate", dateString);
             JMSProducer producer = this.context.createProducer();
             producer.setTimeToLive(TIMEOUT);
-            producer.send(this.queue, mapMessage);
-            this.context.createProducer().send(this.queue, mapMessage);
+            producer.send(queue, mapMessage);
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

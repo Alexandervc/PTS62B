@@ -7,6 +7,7 @@ package service.jms;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import domain.Coordinate;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,16 +61,17 @@ public class ReceiveCarpositionsBean implements MessageListener {
             Date moment = df.parse(momentString);
             Double xCoordinate = (Double) position.get("xCoordinate");
             Double yCoordinate = (Double) position.get("yCoordinate");
+            Coordinate coordinate = new Coordinate(xCoordinate, yCoordinate);
             Double meter = (Double) position.get("meter");
-            Long rideId = Long.valueOf((String) position.get("rideId"));
+            String rideId = (String) position.get("rideId");
             Boolean lastOfRide = (Boolean) position.get("last");
 
             // TODO road op andere manier??
             String roadName = "test";
 
             this.carPositionService.processCarPosition(cartrackerId, moment,
-                    xCoordinate, yCoordinate, roadName, meter, rideId, 
-                    lastOfRide);
+                    coordinate, roadName, meter, 
+                    Integer.parseInt(rideId), null, lastOfRide);
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

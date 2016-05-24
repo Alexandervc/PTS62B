@@ -23,9 +23,18 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class ForeignCountryRideDao extends AbstractFacade<ForeignCountryRide> 
         implements Serializable {
+    private static final Logger LOGGER = Logger
+            .getLogger(ForeignCountryRideDao.class.getName()); 
 
-    @PersistenceContext(unitName = "RADpu")
+    @PersistenceContext
     private EntityManager em;
+    
+    /**
+     * Instantiates the ForeignCountryRideDao class.
+     */
+    public ForeignCountryRideDao() {
+        super(ForeignCountryRide.class);
+    }
     
     /**
      * Gets the EntityManager.
@@ -36,16 +45,6 @@ public class ForeignCountryRideDao extends AbstractFacade<ForeignCountryRide>
         return this.em;
     }
     
-    private static final Logger LOGGER = Logger
-            .getLogger(ForeignCountryRideDao.class.getName()); 
-
-    /**
-     * Instantiates the ForeignCountryRideDao class.
-     */
-    public ForeignCountryRideDao() {
-        super(ForeignCountryRide.class);
-    }
-    
     /**
      * Finds the ForeignCountryRide by ForeignCountryRideId.
      * @param foreignCountryRideId The id of the foreignCountryRide.
@@ -53,7 +52,7 @@ public class ForeignCountryRideDao extends AbstractFacade<ForeignCountryRide>
      *     one result, otherwise null.
      */
     public ForeignCountryRide findByForeignCountryRideId(
-            Long foreignCountryRideId) {
+            String foreignCountryRideId) {
         
         ForeignCountryRide returnValue = null;
         

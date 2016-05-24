@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 /**
- *
+ * Dates for listbox.
  * @author Linda
  */
 public class ListBoxDate {
@@ -19,11 +14,11 @@ public class ListBoxDate {
     }
 
     public String getDate() {
-        return date;
+        return this.date;
     }
 
     public String getMonths() {
-        return months;
+        return this.months;
     }
     
 }

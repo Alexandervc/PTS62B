@@ -38,7 +38,7 @@ public class ForeignCountryRide implements Serializable {
     /**
      * Total price of the foreign country ride.
      */
-    private double totalPrice;
+    private Double totalPrice;
     
     /**
      * Empty constructor for JPA.
@@ -52,53 +52,32 @@ public class ForeignCountryRide implements Serializable {
      * @param foreignCountryRideId The id of the foreign country ride.
      * @param totalPrice The total price of the foreign country ride.
      */
-    public ForeignCountryRide(Long foreignCountryRideId, double totalPrice) {
+    public ForeignCountryRide(Long foreignCountryRideId, Double totalPrice) {
         this.foreignCountryRideId = foreignCountryRideId;
         this.totalPrice = totalPrice;
     }
 
-    /**
-     * Gets the Id.
-     * @return The Id.
-     */
     public Long getId() {
         return this.id;
     }
 
-    /**
-     * Sets the Id.
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * Gets the ForeignCountryRideId.
-     * @return The ForeignCountryRideId.
-     */
     public Long getForeignCountryRideId() {
         return this.foreignCountryRideId;
     }
 
-    /**
-     * Gets the ForeignCountryRideId.
-     */
     public void setForeignCountryRideId(Long foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
     }
 
-    /**
-     * Gets the total price.
-     * @return The total price.
-     */
-    public double getTotalPrice() {
+    public Double getTotalPrice() {
         return this.totalPrice;
     }
 
-    /**
-     * Sets the total price.
-     */
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }   
 }

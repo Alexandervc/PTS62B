@@ -20,8 +20,8 @@ import dto.RoadUsage;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "bill.findAllForUser",
-            query = "SELECT b FROM Bill b WHERE b.person2 = :person")
+    @NamedQuery(name = "Bill.findAllForUser",
+            query = "SELECT b FROM Bill b WHERE b.person = :person")
 })
 public class Bill implements Serializable {
 
@@ -30,7 +30,7 @@ public class Bill implements Serializable {
     private Long id;
 
     @ManyToOne
-    private Person person2;
+    private Person person;
 
     @Transient
     private List<RoadUsage> roadUsages;
@@ -38,8 +38,8 @@ public class Bill implements Serializable {
     private double totalPrice;
     private boolean paid;
     private String cartrackerId;
-    private String billMonth;
-    private String billYear;
+    private int billMonth;
+    private int billYear;
 
     /**
      * Empty constructor.
@@ -59,13 +59,13 @@ public class Bill implements Serializable {
      * @param roadUsages List Roadusage.
      * @param totalPrice double.
      * @param cartrackerId Long.
-     * @param month String.
-     * @param year String.
+     * @param month int.
+     * @param year int.
      */
     public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
-           String cartrackerId, String month, String year) {
-        this.person2 = person;
-        this.person2.addBill(this);
+           String cartrackerId, int month, int year) {
+        this.person = person;
+        this.person.addBill(this);
         this.roadUsages = new ArrayList<>(roadUsages);
         this.totalPrice = totalPrice;
         this.paid = false;
@@ -74,139 +74,67 @@ public class Bill implements Serializable {
         this.billYear = year;
     }
 
-    /**
-     * Getter Id.
-     *
-     * @return Id type Long.
-     */
     public Long getId() {
         return this.id;
     }
 
-    /**
-     * Setter Id.
-     *
-     * @param id type Long.
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * Getter person.
-     *
-     * @return person2 type Person.
-     */
-    public Person getPerson2() {
-        return this.person2;
+    public Person getPerson() {
+        return this.person;
     }
 
-    /**
-     * Setter person.
-     *
-     * @param person type Person.
-     */
-    public void setPerson2(Person person) {
-        this.person2 = person;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    /**
-     * Getter RoadUsages.
-     *
-     * @return List RoadUsages.
-     */
     public List<RoadUsage> getRoadUsages() {
         return new ArrayList<>(this.roadUsages);
     }
 
-    /**
-     * Setter RoadUsages.
-     *
-     * @param roadUsages List RoadUsage.
-     */
     public void setRoadUsages(List<RoadUsage> roadUsages) {
         this.roadUsages = new ArrayList<>(roadUsages);
     }
 
-    /**
-     * Getter Total Price.
-     *
-     * @return Total price double.
-     */
     public double getTotalPrice() {
         return this.totalPrice;
     }
 
-    /**
-     * Setter Total Price.
-     *
-     * @param totalPrice double.
-     */
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    /**
-     * Getter Paid.
-     * @return boolean paid.
-     */
     public boolean isPaid() {
         return this.paid;
     }
 
-    /**
-     * Setter paid.
-     * @param paid boolean.
-     */
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
 
-    /**
-     * Getter Cartrackerid.
-     * @return Cartrackerid Long.
-     */
     public String getCartrackerId() {
         return this.cartrackerId;
     }
     
-    /**
-     * Setter CartrackerId.
-     * @param cartrackerId Long.
-     */
     public void setCartrackerId(String cartrackerId) {
         this.cartrackerId = cartrackerId;
     }
 
-    /**
-     * Getter bill month.
-     * @return bill String.
-     */
-    public String getBillMonth() {
+    public int getBillMonth() {
         return this.billMonth;
     }
-    /**
-     * Setter bill month.
-     * @param billMonth String. 
-     */
-    public void setBillMonth(String billMonth) {
+    
+    public void setBillMonth(int billMonth) {
         this.billMonth = billMonth;
     }
 
-    /**
-     * Getter Bill year.
-     * @return bill String.
-     */
-    public String getBillYear() {
+    public int getBillYear() {
         return this.billYear;
     }
     
-    /**
-     * Setter bill year.
-     * @param billYear String.
-     */
-    public void setBillYear(String billYear) {
+    public void setBillYear(int billYear) {
         this.billYear = billYear;
     }
-
 }

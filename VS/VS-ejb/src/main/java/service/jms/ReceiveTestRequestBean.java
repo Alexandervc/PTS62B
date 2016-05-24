@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
@@ -23,10 +24,10 @@ import javax.jms.MessageListener;
  */
 @MessageDriven(mappedName = "jms/LMS/monitoringTopic", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "method='getStatus'"),
+            propertyValue = "method='getStatus'")//,
 // TODO DEPLOY: UNCOMMENT
-    @ActivationConfigProperty(propertyName = "addressList",
-            propertyValue = "192.168.24.70:7676")
+    //@ActivationConfigProperty(propertyName = "addressList",
+    //        propertyValue = "192.168.24.70:7676")
 })
 public class ReceiveTestRequestBean implements MessageListener {
 
@@ -44,8 +45,10 @@ public class ReceiveTestRequestBean implements MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
+        Destination queue = null;
         String date = null;
         try {
+            queue = mapMessage.getJMSReplyTo();
             date = mapMessage.getString("date");
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -53,6 +56,6 @@ public class ReceiveTestRequestBean implements MessageListener {
 
         // Gives the date from the original message so that it can be 
         // send back.
-        this.sender.sendTestResults(date);
+        this.sender.sendTestResults(date,queue);
     }
 }

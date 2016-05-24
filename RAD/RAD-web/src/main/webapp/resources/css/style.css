@@ -34,7 +34,6 @@ body {
 /* -------------------------------- Header -------------------------------- */
 header {
   width: 100%;
-  height: 120px;
   text-align: center;
   background-color: #fff;
   margin-bottom: 20px; }
@@ -43,7 +42,8 @@ header {
   top: 0;
   z-index: 1;
   position: fixed;
-  opacity: 0.8; }
+  opacity: 0.8;
+  height: 50px; }
 
 .top {
   margin-top: 140px; }
@@ -116,10 +116,18 @@ textarea {
 #form-span {
   width: 150px; }
 
-/* -------------------------------- Charts -------------------------------- */
+/* -------------------------------- Google api ----------------------------- */
 .chart {
   width: 100%;
   height: 175px; }
+
+.map {
+  height: 400px;
+  width: 100%; }
+
+/* -------------------------------- Lists -------------------------------- */
+a .list-group-item {
+  color: black; }
 
 /* -------------------------------- Footer -------------------------------- */
 footer {

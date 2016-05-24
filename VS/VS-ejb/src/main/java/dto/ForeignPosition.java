@@ -5,41 +5,32 @@
  */
 package dto;
 
+import domain.Coordinate;
+
 /**
  * Helper class for sending positions to foreign countries.
  * @author Alexander
  */
-public class ForeignPosition {
-    private Double x;
-    private Double y;
+public class ForeignPosition implements Comparable<ForeignPosition> {
+    private Coordinate coordinate;
     private String datetime;
     
     /**
      * Helper class for sending positions to foreign countries.
-     * @param x The xCoordinate of the position.
-     * @param y The yCoordinate of the position.
+     * @param coordinate The coordinate of this carposition.
      * @param datetime The moment on which the car was at this position.
      */
-    public ForeignPosition(Double x, Double y, String datetime) {
-        this.x = x;
-        this.y = y;
+    public ForeignPosition(Coordinate coordinate, String datetime) {
+        this.coordinate = coordinate;
         this.datetime = datetime;
     }
 
-    public Double getX() {
-        return this.x;
+    public Coordinate getCoordinate() {
+        return this.coordinate;
     }
 
-    public void setX(Double x) {
-        this.x = x;
-    }
-
-    public Double getY() {
-        return this.y;
-    }
-
-    public void setY(Double y) {
-        this.y = y;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getDatetime() {
@@ -50,5 +41,8 @@ public class ForeignPosition {
         this.datetime = datetime;
     }
     
-    
+    @Override
+    public int compareTo(ForeignPosition o) {
+        return this.getDatetime().compareTo(o.getDatetime());
+    }
 }
