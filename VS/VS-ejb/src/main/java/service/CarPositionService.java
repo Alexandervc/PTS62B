@@ -34,14 +34,15 @@ public class CarPositionService {
      * @param foreignCountryRideId THe foreign country ride of this carposition.
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
+     * @param serialNumber serial number from simulator.
      */
     public void processCarPosition(String cartrackerId, Date moment, 
             Coordinate coordinate, String roadName, 
             Double meter, Integer rideId, Long foreignCountryRideId, 
-            Boolean lastOfRide) {
+            Boolean lastOfRide, Long serialNumber) {
         this.carPositionManager.processCarPosition(cartrackerId, moment, 
                 coordinate, roadName, meter, rideId, foreignCountryRideId, 
-                lastOfRide);
+                lastOfRide, serialNumber);
     }
     
     /**

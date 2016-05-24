@@ -43,7 +43,7 @@ import javax.persistence.NamedQuery;
             + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
             + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
             + "AND cp.cartracker.id = :cartrackerId "
-            + "ORDER BY cp.id")
+            + "ORDER BY cp.serialNumber")
 })
 public class CarPosition implements Serializable {
     @Id
@@ -66,6 +66,8 @@ public class CarPosition implements Serializable {
     
     @ManyToOne
     private Cartracker cartracker;
+    
+    private Long serialNumber;
     
     /**
      * Empty constructor.
@@ -90,10 +92,12 @@ public class CarPosition implements Serializable {
      *      is part of.
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
+     * @param serialNumber serial number from simulator.
      */
     public CarPosition(Cartracker cartracker, Date moment, 
             Coordinate coordinate, Road road, Double meter, Integer rideId, 
-            Long foreignCountryRideId, Boolean lastOfRide) {
+            Long foreignCountryRideId, Boolean lastOfRide, 
+            Long serialNumber) {
         if(cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
         }
@@ -114,6 +118,7 @@ public class CarPosition implements Serializable {
         this.rideId = rideId;
         this.foreignCountryRideId = foreignCountryRideId;
         this.lastOfRide = lastOfRide;
+        this.serialNumber = serialNumber;
     }
 
     public Long getId() {
@@ -186,5 +191,13 @@ public class CarPosition implements Serializable {
 
     public void setLastOfRide(Boolean lastOfRide) {
         this.lastOfRide = lastOfRide;
+    }
+
+    public Long getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(Long serialNumber) {
+        this.serialNumber = serialNumber;
     }
 }

@@ -10,7 +10,6 @@ import business.RoadManager;
 import com.google.gson.Gson;
 import domain.CarPosition;
 import domain.Cartracker;
-import domain.Coordinate;
 import domain.Road;
 import domain.RoadType;
 import dto.ForeignMessage;
@@ -117,7 +116,8 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         null,
                         foreignCountryRideId,
                         // True if last element of carPositions.
-                        i >= foreignPositions.size() - 1); 
+                        i >= foreignPositions.size() - 1,
+                        0L); 
 
                 carPositions.add(carPosition);
             }
