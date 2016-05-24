@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- *
+ * The object which generates a new ForeignCountryId.
  * @author Jesse
  */
 @Entity
@@ -22,7 +22,7 @@ public class ForeignCountryRideIdGen implements Serializable {
     private Long id;
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {

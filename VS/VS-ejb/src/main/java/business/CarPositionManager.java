@@ -167,6 +167,12 @@ public class CarPositionManager {
         this.carPositionDao.create(cp);
     }
     
+    /**
+     * Find a cartracker by it's id. If it does not exist, create a new 
+     * Cartracker.
+     * @param cartrackerId the cartracker's id.
+     * @return The found or created cartracker object.
+     */
     public Cartracker findCartracker(String cartrackerId) {
         // Find cartracker
         Cartracker cartracker = this.cartrackerDao.find(cartrackerId);
@@ -184,8 +190,8 @@ public class CarPositionManager {
      * @return The next ride id.
      */
     public Long getNextRideIdOfCountryCode() {
-        // TODO: fix concurrency
-        ForeignCountryRideIdGen foreignCountryRideId = new ForeignCountryRideIdGen();
+        ForeignCountryRideIdGen foreignCountryRideId = 
+                new ForeignCountryRideIdGen();
         this.em.persist(foreignCountryRideId);
         
         return foreignCountryRideId.getId();
