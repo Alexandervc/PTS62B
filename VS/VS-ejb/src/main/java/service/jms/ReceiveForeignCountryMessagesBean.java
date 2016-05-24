@@ -65,16 +65,16 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
-            LOGGER.log(Level.INFO, "Received foreign country message.");
             TextMessage textMessage = (TextMessage) message;
 
             Gson gson = new Gson();
             ForeignMessage foreignMessage = gson.fromJson(textMessage.getText(),
                     ForeignMessage.class);
-
+            
             LOGGER.log(
                     Level.INFO, 
-                    "Foreign country message parsed to ForeignMessage.");
+                    "[Received] " + foreignMessage.getCartrackerId() 
+                            + " - " + foreignMessage.getTotalPrice());
 
             List<ForeignPosition> foreignPositions = 
                     foreignMessage.getPositions();
@@ -84,15 +84,9 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             // The order is used to calculate the distance between two 
             // positions.
             Collections.sort(foreignPositions);
-
-            LOGGER.log(Level.INFO, "ForeignPositions sorted.");
             
             Long foreignCountryRideId = this.carPositionManager
                     .getNextRideIdOfCountryCode();
-
-            LOGGER.log(
-                    Level.INFO,
-                    "Created foreignCountryRideId: " + foreignCountryRideId);
 
             for (int i = 0; i < foreignPositions.size(); i++) {
                 ForeignPosition currentPosition = foreignPositions.get(i);
@@ -110,7 +104,6 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 Road road = this.roadManager.findRoadByName(roadName);
                 
                 // Create the foreign country road.
-                // TODO: name = country name
                 if (road == null) {
                     road = new Road(
                         roadName, 
@@ -118,16 +111,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                     
                     this.roadManager.save(road);
                 }
-
-                // Calculate the distance in meters between the current and 
-                // previous positions.
-                // TODO: distance = 0;
-                Double distanceToPrevious = (previousPosition != null) ?
-                        Math.hypot(
-                            previousPosition.getX() - currentPosition.getX(),
-                            previousPosition.getY() - currentPosition.getY())
-                        : 0;
-
+                
                 Date date = new Date();
 
                 try {
@@ -150,7 +134,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         currentPosition.getX(),
                         currentPosition.getY(),
                         road,
-                        distanceToPrevious,
+                        0d,
                         null,
                         foreignCountryRideId,
                         // True if last element of carPositions.
@@ -159,18 +143,12 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 carPositions.add(carPosition);
             }
 
-            LOGGER.log(
-                    Level.INFO, 
-                    "Created " + carPositions.size() + " CarPositions");
-
             // Store the CarPositions in VS and the ForeignCountryRide in RAD.
             this.carPositionManager
                     .processForeignCarRide(
                             carPositions, 
                             foreignCountryRideId, 
                             foreignMessage.getTotalPrice());
-
-            LOGGER.log(Level.INFO, foreignCountryRideId + " processed.");
 
         } catch (JMSException ex) {
             // Parsing the message was not successfull.

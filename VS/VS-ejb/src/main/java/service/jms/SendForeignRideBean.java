@@ -58,12 +58,17 @@ public class SendForeignRideBean {
             // Create Textmessage
             TextMessage textMessage = this.context
                     .createTextMessage(jsonForeignMessage);
-//            textMessage.setStringProperty("countryCode", countryCode);
-            textMessage.setStringProperty("countryCodeTo", "PT");
+            textMessage.setStringProperty("countryCodeTo", countryCode);
             textMessage.setStringProperty("countryCodeFrom", "PT");
             
             // Send message
             this.context.createProducer().send(this.queue, textMessage);
+            
+            LOGGER.log(
+                    Level.INFO, 
+                    "[Sent] " + cartrackerId
+                            + " - " + foreignMessage.getTotalPrice());
+            
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
