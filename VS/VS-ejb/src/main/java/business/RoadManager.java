@@ -45,12 +45,18 @@ public class RoadManager {
             road = (Road) q.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
             // Do nothing. Null will be returned.
-            LOGGER.log(Level.FINE, "Road: ''{0}'' does not yet exist.", name);
+            LOGGER.log(
+                    Level.FINE,
+                    "Road: '" + name + "' does not yet exist. " + ex);
         }
         
         return road;
     }
     
+    /**
+     * Save the road object.
+     * @param road The Road object.
+     */
     public void save(Road road) {
         this.em.persist(road);
     }
