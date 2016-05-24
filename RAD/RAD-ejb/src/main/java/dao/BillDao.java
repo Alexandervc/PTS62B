@@ -50,4 +50,23 @@ public class BillDao extends AbstractFacade<Bill>
         return messages;
     }
     
+    /**
+     * Find Bill by cartrackerid, month and year.
+     * @param cartrackerId Long.
+     * @param month integer.
+     * @param year integer.
+     * @return object Bill.
+     */
+    public Bill findBillWithCartracker(String cartrackerId, int month, int year){
+        Bill b;
+        TypedQuery<Bill> query = this.em
+                .createNamedQuery("Bill.findBillWithCartracker", Bill.class);
+        query.setParameter("cartracker", cartrackerId);
+        query.setParameter("month", month);
+        query.setParameter("year", year);
+        
+        b = query.getSingleResult();
+        return b;
+    }
+    
 }

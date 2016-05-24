@@ -46,12 +46,10 @@ public class BillManagerTest {
     private RateDao rateDao;
 
     private Person person;
-    private Bill bill;
-    private Bill bill2;
+    private Bill bill1;
     
     private Integer monthToday;
     private Integer yearToday;
-    private Integer yearPast;
     
     public BillManagerTest() {
         // Empty for JPA.
@@ -80,32 +78,39 @@ public class BillManagerTest {
     }
     
     @Test
-    public void generateBillNotSaved(){
+    public void generateBillCreate(){
         
         Rate rate = new Rate(1.00, RoadType.A);
         // Define when
         when(this.rateDao.find(RoadType.A))
                 .thenReturn(rate);
+        when(this.billDao.findBillWithCartracker(this.bill1.getCartrackerId()
+                , this.monthToday, this.yearToday))
+                .thenReturn(null);
         
-        Bill bill3 = this.billManager.generateBill(this.person, this.bill.getRoadUsages(), 
-                CARID1, this.monthToday, this.yearToday);
+        Bill bill3 = this.billManager.generateBill(this.person, 
+                this.bill1.getRoadUsages(), CARID1, this.monthToday, 
+                this.yearToday);
         
-        verify(this.billDao, Mockito.times(0)).create(bill3);
+        verify(this.billDao, Mockito.times(1)).create(bill3);
     }
     
     @Test
-    public void generateBillWillBeSaved(){
+    public void generateBillEdit(){
         
         Rate rate = new Rate(1.00, RoadType.A);
         // Define when
         when(this.rateDao.find(RoadType.A))
                 .thenReturn(rate);
+        when(this.billDao.findBillWithCartracker(this.bill1.getCartrackerId()
+                , this.monthToday, this.yearToday))
+                .thenReturn(this.bill1);
         
         Bill bill3 = this.billManager.generateBill(this.person, 
-                this.bill2.getRoadUsages(), CARID1, this.monthToday, 
-                this.yearPast);
+                this.bill1.getRoadUsages(), CARID1, this.monthToday, 
+                this.yearToday);
         
-        verify(this.billDao, Mockito.times(1)).create(bill3);
+        verify(this.billDao, Mockito.times(1)).edit(bill3);
     }
 
     private void createBillPerson() {
@@ -126,10 +131,7 @@ public class BillManagerTest {
         Date billdate = new Date();
         this.monthToday = billdate.getMonth()+1;
         this.yearToday = billdate.getYear() + 1900;
-        this.yearPast = billdate.getYear() + 1899;
-        this.bill = new Bill(this.person, roadusages, 8.21,
+        this.bill1 = new Bill(this.person, roadusages, 5.21,
                 CARID1, this.monthToday, this.yearToday);
-        this.bill2 = new Bill(this.person, roadusages, 5.21,
-                CARID1, this.monthToday, this.yearPast);
     }
 }
