@@ -10,6 +10,7 @@ import business.RoadManager;
 import com.google.gson.Gson;
 import domain.CarPosition;
 import domain.Cartracker;
+import domain.Coordinate;
 import domain.Road;
 import domain.RoadType;
 import dto.ForeignMessage;
