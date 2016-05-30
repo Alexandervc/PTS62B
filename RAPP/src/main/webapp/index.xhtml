@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>         
+        <ui:composition template="templates/template.xhtml">
+            <ui:define name="content">
+                <div class="row">
+                    <div class="col-sm-12 meme layer1">
+                        <div class="col-sm-12" id="searchDiv">
+                            <h:form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" 
+                                           for="email">Name:</label>
+                                    <div class="col-sm-10">
+                                        <input type="name" 
+                                               class="form-control" 
+                                               id="name" 
+                                               placeholder="Enter name">
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" 
+                                           for="pwd">Password:</label>
+                                    <div class="col-sm-10"> 
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="pwd" 
+                                               placeholder="Enter password">
+                                        </input>
+                                    </div>
+                                </div>
+                                <div class="form-group"> 
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <h:commandButton type="submit" 
+                                                         id="searchButton"
+                                                         class="btn btn-default"
+                                                         value="Search">
+                                        </h:commandButton>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+
+                        <div class="col-sm-12" id="searchDiv" >
+                            <h:panelGroup id="searchResult">
+                                <ul class="list-group">
+
+                                </ul>
+                            </h:panelGroup>
+                        </div>
+                    </div>                    
+                </div>
+            </ui:define>
+        </ui:composition>    	
+    </h:body>
+</html>

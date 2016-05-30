@@ -37,7 +37,8 @@ public class ForeignMessage {
         
         for(CarPosition cp : carpositions) {
             // TODO
-            this.positions.add(new ForeignPosition(cp.getCoordinate(),
+            this.positions.add(new ForeignPosition(cp.getCoordinate().getLat(),
+                    cp.getCoordinate().getLng(),
                     dateFormat.format(cp.getMoment())));
         }
     }

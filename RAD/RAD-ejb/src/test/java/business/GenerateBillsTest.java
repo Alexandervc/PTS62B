@@ -135,7 +135,7 @@ public class GenerateBillsTest {
         verify(this.billManager, Mockito.times(1))
                 .generateBill(this.person2, this.roadUsage,
                         CARID2, this.month, this.year);
-        verify(this.billManager, Mockito.times(0))
+        verify(this.billManager, Mockito.times(1))
                 .generateBill(this.person2, this.roadUsage,
                         CARID1, this.month, this.year);
     }
