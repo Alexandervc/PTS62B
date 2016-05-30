@@ -20,12 +20,12 @@ import service.rest.contracts.ForeignCountryRide;
  */
 @Stateless
 public class ForeignCountryRideClient {
-    private static final String BASE_URL = 
-            "http://localhost:8080/RAD-web/radapi";
+    //private static final String BASE_URL = 
+    //        "http://localhost:8080/RAD-web/radapi";
     
     // TODO DEPLOY: UNCOMMENT
-    // private static final String BASE_URL = 
-    //        "http://192.168.24.74:8080/RAD/radapi";
+    private static final String BASE_URL = 
+            "http://192.168.24.74:8080/RAD/radapi";
     
     private Client client;
 
