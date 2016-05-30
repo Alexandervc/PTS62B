@@ -60,9 +60,7 @@ public class SendPositionBean {
      */
     public void sendPositions(String cartrackerId, Integer rideId, 
             String jsonPositions) {
-        try {
-            //jsonPositions Map<Long serialnumber, String jsonPosition>
-            
+        try {            
             // Make mapMessage
             MapMessage mapMessage = this.context.createMapMessage();
             mapMessage.setStringProperty("method", "receiveCarpositions");
