@@ -37,7 +37,7 @@ import javax.jms.TextMessage;
  * Provides functionality regarding receiving messages from the Central System.
  * @author Jesse
  */
-@MessageDriven(mappedName = "jms/CS/queue", activationConfig = {
+@MessageDriven(mappedName = "jms/CS/filteredQueue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "countryCodeTo='PT'")
 })
