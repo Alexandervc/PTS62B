@@ -163,7 +163,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             // skip the message.
             LOGGER.log(
                     Level.SEVERE, 
-                    dateToParse + " - " + ex);
+                    dateToParse + " -  " + ex);
         }
         
         return date;
