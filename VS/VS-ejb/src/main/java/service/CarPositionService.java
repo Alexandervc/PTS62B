@@ -6,7 +6,9 @@
 package service;
 
 import business.CarPositionManager;
+import domain.Coordinate;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -24,19 +26,36 @@ public class CarPositionService {
      * @param cartrackerId The unique identifier of a cartracker.
      * @param moment The moment in which the cartracker was at the given 
      *      coordinates.
-     * @param xCoordinate The x-coordinate of the carPosition.
-     * @param yCoordinate The y-coordinate of the carPosition.
+     * @param coordinate The coordinate of this carposition.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since
      *      the last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
+     * @param foreignCountryRideId THe foreign country ride of this carposition.
      * @param lastOfRide Whether this carposition is the last of 
      *      the ride or not.
+     * @param serialNumber serial number from simulator.
      */
     public void processCarPosition(String cartrackerId, Date moment, 
-            Double xCoordinate, Double yCoordinate, String roadName, 
-            Double meter, String rideId, Boolean lastOfRide) {
+            Coordinate coordinate, String roadName, 
+            Double meter, Integer rideId, Long foreignCountryRideId, 
+            Boolean lastOfRide, Long serialNumber) {
         this.carPositionManager.processCarPosition(cartrackerId, moment, 
-                xCoordinate, yCoordinate, roadName, meter, rideId, lastOfRide);
+                coordinate, roadName, meter, rideId, foreignCountryRideId, 
+                lastOfRide, serialNumber);
+    }
+    
+    /**
+     * Get the coordinates in the given month and year for the given 
+     *      cartrackerId.
+     * @param month The month to get the coordinates for.
+     * @param year The year to get the coordinates for.
+     * @param cartrackerId The cartracker to get the coordinates for.
+     * @return A list of coordinates.
+     */
+    public List<Coordinate> getCoordinates(int month, int year,
+            String cartrackerId) {
+        return this.carPositionManager.getCoordinates(month, year, 
+                cartrackerId);
     }
 }

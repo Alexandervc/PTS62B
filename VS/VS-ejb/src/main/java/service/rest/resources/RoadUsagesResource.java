@@ -36,8 +36,8 @@ public class RoadUsagesResource {
      * @param month The month to get the roadUsages for.
      * @param year The year to get the roadUsages for.
      * @return If successfull response with status OK and as entity the
-     * roadUsages as a List of RoadUsage. If one of the dates is in the wrong
-     * format a response with status BAD_REQUEST will be returned.
+     *      roadUsages as a List of RoadUsage. If one of the dates is in the wrong
+     *      format a response with status BAD_REQUEST will be returned.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)

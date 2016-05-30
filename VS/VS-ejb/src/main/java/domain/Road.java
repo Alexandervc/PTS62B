@@ -24,7 +24,9 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="Road.findAll", query = "SELECT r FROM Road r")
+    @NamedQuery(name="Road.findAllInternal", query = "SELECT r "
+            + "FROM Road r "
+            + "WHERE FUNC('TO_CHAR', r.roadType) != 'FOREIGN_COUNTRY_ROAD'")
 })
 public class Road implements Serializable, Comparable<Road> {
     @Id

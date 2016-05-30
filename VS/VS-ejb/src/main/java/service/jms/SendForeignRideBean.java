@@ -65,6 +65,12 @@ public class SendForeignRideBean {
             
             // Send message
             this.context.createProducer().send(this.queue, textMessage);
+            
+            LOGGER.log(
+                    Level.INFO, 
+                    "[Sent] " + cartrackerId
+                            + " - " + foreignMessage.getTotalPrice());
+            
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

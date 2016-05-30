@@ -66,20 +66,24 @@
                                                             <table class="table table-striped table-bordered">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>RoadName</th>
                                                                         <th>RoadType</th>
+                                                                        <th>RoadName</th>                                                                        
                                                                         <th>Km</th>
                                                                         <th>Price/km</th>
-                                                                        <th>RoadType</th>
+                                                                        <th>Price</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>                                            
                                                                     <ui:repeat var="ru" value="#{bill.roadUsages}">
                                                                         <tr>
-                                                                            <td>#{ru.roadName}</td>
-                                                                            <td>#{ru.roadType}</td>
+                                                                            <td>
+                                                                                #{invoiceBean.getRoadType(ru)}
+                                                                            </td>
+                                                                            <td>
+                                                                                #{ru.roadName}
+                                                                            </td>                                                                            
                                                                             <td class="txt-right">
-                                                                                #{ru.km}
+                                                                                #{invoiceBean.getKm(ru)}
                                                                             </td>
                                                                             <td class="txt-right">
                                                                                 #{invoiceBean.getRate(ru)}
@@ -104,6 +108,14 @@
                                                                     </tr>
                                                                 </tfoot>
                                                             </table>
+                                                            
+                                                            <input type="hidden" 
+                                                                   id="map_#{bill.cartrackerId}hidden" 
+                                                                   value="#{invoiceBean.getCoordinates(bill.cartrackerId)}">
+                                                            </input>                                                            
+                                                            <div id="map_#{bill.cartrackerId}" class="map">
+                                                                No data found
+                                                            </div>
                                                             
                                                         </div>
                                                     </div>

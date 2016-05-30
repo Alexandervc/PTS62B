@@ -5,6 +5,8 @@
  */
 package dto;
 
+import domain.Coordinate;
+
 /**
  * Helper class for sending positions to foreign countries.
  * @author Alexander
@@ -54,5 +56,4 @@ public class ForeignPosition implements Comparable<ForeignPosition> {
     public int compareTo(ForeignPosition o) {
         return this.getDatetime().compareTo(o.getDatetime());
     }
-    
 }

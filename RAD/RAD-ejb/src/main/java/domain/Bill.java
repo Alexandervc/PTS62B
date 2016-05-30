@@ -21,7 +21,11 @@ import dto.RoadUsage;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Bill.findAllForUser",
-            query = "SELECT b FROM Bill b WHERE b.person = :person")
+            query = "SELECT b FROM Bill b WHERE b.person = :person"),
+    @NamedQuery(name = "Bill.findBillWithCartracker",
+            query = "SELECT b FROM Bill b WHERE b.cartrackerId = "
+                    + ":cartracker AND b.billMonth =  :month "
+                    + "AND b.billYear = :year")
 })
 public class Bill implements Serializable {
 

@@ -34,11 +34,11 @@ public class RoadDao extends AbstractDaoFacade<Road> {
     }
     
     /**
-     * Find all roads in the database.
+     * Find all roads in Portugal in the database.
      * @return All found roads.
      */
-    public List<Road> findAll() {
-        Query q =  this.em.createNamedQuery("Road.findAll");
+    public List<Road> findAllInternal() {
+        Query q =  this.em.createNamedQuery("Road.findAllInternal");
         return (List<Road>) q.getResultList();
     }
 }

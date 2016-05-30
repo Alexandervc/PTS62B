@@ -38,15 +38,14 @@ public class SendTestResultsBean {
     @JMSConnectionFactory("jms/LMSConnectionFactory")
     private JMSContext context;
 
-    @Resource(lookup = "jms/LMS/queue")
-    private Destination queue;
 
     /**
      * send result to LMS param Result result
      *
      * @param date The date of the test.
+     * @param queue The queue to reply to.
      */
-    public void sendTestResults(String date) {
+    public void sendTestResults(String date,Destination queue) {
         try {
             MapMessage mapMessage = this.context.createMapMessage();
             // send result to method receiveTestresults
@@ -65,8 +64,7 @@ public class SendTestResultsBean {
             mapMessage.setString("newDate", dateString);
             JMSProducer producer = this.context.createProducer();
             producer.setTimeToLive(TIMEOUT);
-            producer.send(this.queue, mapMessage);
-            this.context.createProducer().send(this.queue, mapMessage);
+            producer.send(queue, mapMessage);
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
