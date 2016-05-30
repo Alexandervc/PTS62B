@@ -32,7 +32,7 @@ public class BillService {
     private RoadUsageService roadUsageService;
 
     /**
-     * Generate the bill for the given user and the given month.
+     * Generate bills for each car of the given user and the given month.
      *
      * @param userId The user to generate a bill for.
      * @param month The month to generate the bill for.

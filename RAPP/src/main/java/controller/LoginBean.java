@@ -14,15 +14,15 @@ import javax.inject.Named;
  */
 @Named
 @RequestScoped
-public class InlogBean {
-    private String inlogName;
+public class LoginBean {
+    private String loginName;
 
-    public String getInlogName() {
-        return inlogName;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setInlogName(String inlogName) {
-        this.inlogName = inlogName;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
     
 }
