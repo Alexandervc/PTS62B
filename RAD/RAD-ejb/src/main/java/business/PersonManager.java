@@ -25,8 +25,10 @@ public class PersonManager {
      * @return new person Type Person.
      */
     public Person createPerson(String firstname, String lastname, 
-            String initials, Address address) {
-        Person person = new Person(firstname, lastname, initials, address);
+            String initials, String username, String password,
+            Address address) {
+        Person person = new Person(firstname, lastname, initials, username,
+                password, address);
         this.personDAO.create(person);
         
         return person;
@@ -48,6 +50,15 @@ public class PersonManager {
      */
     public Person findPersonById(Long personId) {
         return this.personDAO.find(personId);
+    }
+    
+    /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findPersonByCartrackerId(Long cartrackerId) {
+        return this.personDAO.findByCartrackerId(cartrackerId);
     }
     
     /**

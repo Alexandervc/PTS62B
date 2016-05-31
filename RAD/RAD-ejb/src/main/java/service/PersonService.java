@@ -36,9 +36,9 @@ public class PersonService {
      * @return created person type Person.
      */
     public Person addPerson(String firstname, String lastname, String initials,
-            Address address) {
+            String username, String password,Address address) {
         return this.personManager.createPerson(firstname, lastname,
-                initials, address);
+                initials, username, password, address);
     }
     
     /**
@@ -61,4 +61,12 @@ public class PersonService {
         return this.personManager.findPersonById(personId);
     }    
     
+    /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findPersonByCartrackerId(Long cartrackerId) {
+        return this.personManager.findPersonByCartrackerId(cartrackerId);
+    }
 }

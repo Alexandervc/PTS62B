@@ -100,7 +100,7 @@ public class InvoiceBean {
      */
     public void generateBills() {
         //Get all bills.
-        this.bills = this.billService.generateBill(
+        this.bills = this.billService.generateBills(
                 this.session.getPersonId(), this.month, this.year);
     }
     
