@@ -25,7 +25,7 @@ import service.BillService;
  * The REST resource for Bills.
  * @author Jesse
  */
-@Path("/bills/{userId}")
+@Path("/persons/{personId}/bills")
 @Stateless
 public class BillResource {
     private static final Logger LOGGER
@@ -36,7 +36,7 @@ public class BillResource {
     
     /**
      * Get the bill which is generated for each car of the given person.
-     * @param userId The id of the user to generate the bill for.
+     * @param personId The id of the user to generate the bill for.
      * @param month The number of the month to generate the bill for.
      * @param year The number of the year to generate the bill for.
      * @return A list of Bills, one Bill for each car of the person.
@@ -44,12 +44,12 @@ public class BillResource {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getBill(
-            @PathParam("userId") long userId,
+            @PathParam("personId") long personId,
             @QueryParam("month") int  month, 
             @QueryParam("year")  int  year) {
         try {
             List<Bill> billsPerCar = this.billService.generateBill(
-                    userId, 
+                    personId, 
                     month, 
                     year);
             
@@ -63,7 +63,7 @@ public class BillResource {
                     .entity(billsPerCar)
                     .build();
         } catch (IllegalArgumentException ex) {
-            LOGGER.log(Level.WARNING, "User " + userId + " not found.", ex);
+            LOGGER.log(Level.WARNING, "Person " + personId + " not found.", ex);
             
             return Response.status(Response.Status.BAD_REQUEST)
                     .build();
