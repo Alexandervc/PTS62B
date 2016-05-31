@@ -12,7 +12,7 @@ import domain.Bill;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -126,8 +126,8 @@ public class BillManagerTest {
         Address adres = new Address(streetname, number, zipcode, city);
         this.person = new Person(firstname, lastname, initials, adres);
 
-        List<RoadUsage> roadusages = new ArrayList<>();
-        roadusages.add(new RoadUsage("A", RoadType.A, 5.21));
+        List<BillRoadUsage> roadusages = new ArrayList<>();
+        roadusages.add(new BillRoadUsage("A", RoadType.A, 5.21));
         Date billdate = new Date();
         this.monthToday = billdate.getMonth()+1;
         this.yearToday = billdate.getYear() + 1900;

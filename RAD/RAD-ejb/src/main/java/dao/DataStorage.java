@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import service.BillService;
 import service.CarService;
 import service.PersonService;

@@ -51,7 +51,7 @@ public class BillService {
         // foreach car in person
         for (Car c : person.getCars()) {
             // ask roadUsages from VS
-            List<dto.RoadUsage> roadUsages = this.roadUsageService.
+            List<dto.BillRoadUsage> roadUsages = this.roadUsageService.
                     getRoadUsages(c.getCartrackerId(), month, year);
 
             // generate bill exists
