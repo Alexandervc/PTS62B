@@ -26,8 +26,8 @@ import javax.jms.MessageListener;
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "method='getStatus'")//,
 // TODO DEPLOY: UNCOMMENT
-    //@ActivationConfigProperty(propertyName = "addressList",
-    //        propertyValue = "192.168.24.70:7676")
+//    @ActivationConfigProperty(propertyName = "addressList",
+//            propertyValue = "192.168.24.70:7676")
 })
 public class ReceiveTestRequestBean implements MessageListener {
 

@@ -25,41 +25,42 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * Instantiates the RoadUsage class without a ForeignCountryRideId.
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      */
-    public RoadUsage(String roadName, String type, Double km) {
+    public RoadUsage(String roadName, String type, Double meters) {
         this.roadName = roadName;
         this.roadType = Enum.valueOf(RoadType.class, type);
-        this.km = km;
+        this.km = meters / KM_TO_METER;
     }
     
     /**
      * Instantiates the RoadUsage class without a ForeignCountryRideId.
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      */
-    public RoadUsage(String roadName, RoadType type, Double km) {
+    public RoadUsage(String roadName, RoadType type, Double meters) {
         this.roadName = roadName;
         this.roadType = type;
-        this.km = km;
+        this.km = meters / KM_TO_METER;
     }
     
     /**
      * Instantiates the RoadUsage class with a ForeignCountryRideId.
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      * @param foreignCountryRideId The id of the foreign country ride.
      */
+    @Deprecated
     public RoadUsage(
             String roadName,
             String type,
-            Double km,
+            Double meters,
             Long foreignCountryRideId) {
         this.roadName = roadName;
         this.roadType = Enum.valueOf(RoadType.class, type);
-        this.km = km;
+        this.km = meters / KM_TO_METER;
         this.foreignCountryRideId = foreignCountryRideId;
     }
     
