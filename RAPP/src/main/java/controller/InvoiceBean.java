@@ -146,8 +146,7 @@ public class InvoiceBean {
         
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        //TODO: get roadtype price
-        return formatter.format(0.00);
+        return formatter.format(roadUsage.getRate().doubleValue());
     }
 
     /**
@@ -159,8 +158,7 @@ public class InvoiceBean {
     public String getPrice(BillRoadUsage roadUsage) {        
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        //TODO: calculate roadusage price
-        return formatter.format(roadUsage.getKm() * 0.1);
+        return formatter.format(roadUsage.getPrice().doubleValue());
     }
     
     /**
@@ -172,6 +170,7 @@ public class InvoiceBean {
     public String getFuel(String cartrackerId) {
         //TODO: get car
         //Car car = this.carService.getCar(cartrackerId);
+        //return car.getFuel().name();
         return "";
     }
 
@@ -205,6 +204,7 @@ public class InvoiceBean {
     
     public String getCoordinates(String cartrackerId) {
         //TODO: get positions
-        return "";//this.positionService.getCoordinates(cartrackerId, this.month, this.year);
+        //this.positionService.getCoordinates(cartrackerId, this.month, this.year);
+        return "";
     }
 }
