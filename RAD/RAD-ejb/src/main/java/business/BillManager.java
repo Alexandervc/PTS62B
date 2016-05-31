@@ -95,17 +95,21 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
+                ru.setRate(rate.getPrice());
                 ruPrice = ru.getKm() * rate.getPrice();
             }
             
             ru.setPrice(ruPrice);
             totalPrice += ruPrice;
         }
-        
+
         // Check if bill exicts in the database.
         Bill bill = this.findBillWithCartracker(cartrackerId, month, year);
         
         if(bill == null){
+            // Round totalPrice
+            totalPrice = Math.round(totalPrice * 100) / 100;
+            
             // If the bill was not found, create a new bill entry.
             bill = new Bill(person,
                             roadUsages,

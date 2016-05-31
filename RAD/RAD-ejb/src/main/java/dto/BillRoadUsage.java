@@ -117,6 +117,8 @@ public class BillRoadUsage implements Serializable, Comparable<BillRoadUsage> {
     @Deprecated
     public BillRoadUsage() {
         // For converting to and from JSON
+        this.price = 0.0;
+        this.rate = 0.0;
     }
 
     /**

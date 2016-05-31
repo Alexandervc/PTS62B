@@ -5,8 +5,8 @@
  */
 package service.rest.clients;
 
-import dto.Bill;
-import dto.Person;
+import dto.BillDto;
+import dto.PersonDto;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +38,7 @@ public class BillClient {
         this.client = ClientBuilder.newClient();
     }
     
-    public Person getPerson(String username, String password){
+    public PersonDto getPerson(String username, String password){
         return null;
     }
     /**
@@ -48,7 +48,7 @@ public class BillClient {
      * @param year The number of the year to generate the bill for.
      * @return A list of Bills, one Bill for each car of the person.
      */
-    public List<Bill> getBill(long personId, int month, int year) {
+    public List<BillDto> getBill(long personId, int month, int year) {
         // Get Response
         Response response = this.client.target(BASE_URL)
                 .path("/persons/{personId}/bills")
@@ -65,7 +65,7 @@ public class BillClient {
         }
         
         // Read entity
-        GenericType<List<Bill>> billType = new GenericType<List<Bill>>() {};
+        GenericType<List<BillDto>> billType = new GenericType<List<BillDto>>() {};
         return response.readEntity(billType);
     }
 }

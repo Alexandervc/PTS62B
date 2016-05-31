@@ -24,13 +24,4 @@ public class RateManager {
         Rate r = new Rate(rate, type);
         this.rateDAO.create(r);
     }
-   
-    /**
-     * Get Rate from Database.
-     * @param type RoadType.
-     * @return found Rate type Rate.
-     */
-    public Rate findRate(RoadType type) {
-        return this.rateDAO.find(type);
-    }
 }

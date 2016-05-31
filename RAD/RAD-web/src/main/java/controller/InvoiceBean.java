@@ -38,9 +38,6 @@ public class InvoiceBean {
     private BillService billService;
     
     @EJB
-    private RateService rateService;
-    
-    @EJB
     private CarService carService;
     
     @EJB
@@ -164,8 +161,7 @@ public class InvoiceBean {
         
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        return formatter.format(
-                this.rateService.getRate(roadUsage.getRoadType()).getPrice());
+        return formatter.format(roadUsage.getRate().doubleValue());
     }
 
     /**
