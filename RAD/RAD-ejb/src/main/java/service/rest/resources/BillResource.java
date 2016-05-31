@@ -25,7 +25,7 @@ import service.BillService;
  * The REST resource for Bills.
  * @author Jesse
  */
-@Path("/persons/{personId}/bills")
+@Path("/cartracker/{cartrackerId}/bills")
 @Stateless
 public class BillResource {
     private static final Logger LOGGER
@@ -44,7 +44,7 @@ public class BillResource {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getBill(
-            @PathParam("personId") long personId,
+            @PathParam("cartrackerId") long personId,
             @QueryParam("month") int  month, 
             @QueryParam("year")  int  year) {
         try {
