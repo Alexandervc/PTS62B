@@ -169,7 +169,7 @@ public class BillRoadUsage implements Serializable, Comparable<BillRoadUsage> {
     }
 
     public Double getPrice() {
-        return price;
+        return this.price;
     }
 
     public void setPrice(Double price) {
@@ -177,7 +177,7 @@ public class BillRoadUsage implements Serializable, Comparable<BillRoadUsage> {
     }
 
     public Double getRate() {
-        return rate;
+        return this.rate;
     }
 
     public void setRate(Double rate) {
