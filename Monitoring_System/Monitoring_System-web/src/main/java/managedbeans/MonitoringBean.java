@@ -58,7 +58,7 @@ public class MonitoringBean implements Serializable  {
                 date = new int[6];
                 date[0] = calendar.get(Calendar.YEAR);
                 date[1] = calendar.get(Calendar.MONTH);
-                date[2] = calendar.get(Calendar.DAY_OF_WEEK);
+                date[2] = calendar.get(Calendar.DAY_OF_MONTH);
                 date[3] = calendar.get(Calendar.HOUR_OF_DAY);
                 date[4] = calendar.get(Calendar.MINUTE);
                 date[5] = calendar.get(Calendar.SECOND);
@@ -117,7 +117,7 @@ public class MonitoringBean implements Serializable  {
             date = new int[6];
             date[0] = calendar.get(Calendar.YEAR);
             date[1] = calendar.get(Calendar.MONTH);
-            date[2] = calendar.get(Calendar.DAY_OF_WEEK);
+            date[2] = calendar.get(Calendar.DAY_OF_MONTH);
             date[3] = calendar.get(Calendar.HOUR_OF_DAY);
             date[4] = calendar.get(Calendar.MINUTE);
             date[5] = calendar.get(Calendar.SECOND);
