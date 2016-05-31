@@ -7,19 +7,19 @@ import domain.FuelType;
  * @author Melanie
  */
 public class CarDto {
-    private Long cartrackerId;
+    private String cartrackerId;
     private FuelType fuel;
     
-    public CarDto(Long cartrackerId, FuelType fuel) {
+    public CarDto(String cartrackerId, FuelType fuel) {
         this.cartrackerId = cartrackerId;
         this.fuel = fuel;
     }
 
-    public Long getCartrackerId() {
+    public String getCartrackerId() {
         return cartrackerId;
     }
 
-    public void setCartrackerId(Long cartrackerId) {
+    public void setCartrackerId(String cartrackerId) {
         this.cartrackerId = cartrackerId;
     }
 
