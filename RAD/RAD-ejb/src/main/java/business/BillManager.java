@@ -94,6 +94,7 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
+                ru.setRate(rate.getPrice());
                 ruPrice = ru.getKm() * rate.getPrice();
             }
             
@@ -104,6 +105,9 @@ public class BillManager {
         Bill temp = this.findBillWithCartracker(cartrackerId, month, year);
         
         if(temp == null){
+            // Round totalPrice
+            totalPrice = Math.round(totalPrice * 100) / 100;
+            
             // if null, create new bill.
             temp = new Bill(person, roadUsages, totalPrice, cartrackerId,
                 month, year);

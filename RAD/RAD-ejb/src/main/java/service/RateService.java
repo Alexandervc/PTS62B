@@ -21,16 +21,6 @@ public class RateService {
     private RateManager rateManager;
     
     /**
-     * Find Rate in database with roadType can be null.
-     *
-     * @param type of Road.
-     * @return found Rate.
-     */
-    public Rate getRate(RoadType type) {
-        return this.rateManager.findRate(type);
-    }
-    
-    /**
      * Add Rate to database.
      *
      * @param rate double.
