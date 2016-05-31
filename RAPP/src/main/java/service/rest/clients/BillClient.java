@@ -43,16 +43,16 @@ public class BillClient {
     }
     /**
      * Get the bill which is generated for each car of the given person.
-     * @param userId The id of the user to generate the bill for.
+     * @param personId The id of the person to generate the bill for.
      * @param month The number of the month to generate the bill for.
      * @param year The number of the year to generate the bill for.
      * @return A list of Bills, one Bill for each car of the person.
      */
-    public List<Bill> getBill(long userId, int month, int year) {
+    public List<Bill> getBill(long personId, int month, int year) {
         // Get Response
         Response response = this.client.target(BASE_URL)
-                .path("/bills/{userId}")
-                .resolveTemplate("userId", userId)
+                .path("/persons/{personId}/bills")
+                .resolveTemplate("personId", personId)
                 .queryParam("month", month)
                 .queryParam("year", year)
                 .request(MediaType.APPLICATION_JSON)

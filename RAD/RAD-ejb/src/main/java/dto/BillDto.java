@@ -5,13 +5,14 @@
  */
 package dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * A data transfer object for the Bill class.
  * @author Jesse
  */
-public class BillDto {
+public class BillDto implements Serializable{
     private String cartrackerId;
     private List<BillRoadUsage> roadUsages;
     private double totalPrice;
@@ -21,6 +22,15 @@ public class BillDto {
     
     public BillDto() { }
 
+    public BillDto(String cartrackerId, List<BillRoadUsage> roadUsages, double totalPrice, boolean paid, int month, int year) {
+        this.cartrackerId = cartrackerId;
+        this.roadUsages = roadUsages;
+        this.totalPrice = totalPrice;
+        this.paid = paid;
+        this.month = month;
+        this.year = year;
+    }
+    
     public String getCartrackerId() {
         return cartrackerId;
     }
