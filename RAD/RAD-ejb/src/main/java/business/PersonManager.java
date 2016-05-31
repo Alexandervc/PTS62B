@@ -57,7 +57,7 @@ public class PersonManager {
      * @param cartrackerId The id of the cartracker.
      * @return The person object if found, otherwise null.
      */
-    public Person findPersonByCartrackerId(Long cartrackerId) {
+    public Person findPersonByCartrackerId(String cartrackerId) {
         return this.personDAO.findByCartrackerId(cartrackerId);
     }
     

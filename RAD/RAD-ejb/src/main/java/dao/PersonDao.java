@@ -67,7 +67,7 @@ public class PersonDao extends AbstractFacade<Person>
      * @param cartrackerId The id of the cartracker.
      * @return The person object if found, otherwise null.
      */
-    public Person findByCartrackerId(long cartrackerId) {
+    public Person findByCartrackerId(String cartrackerId) {
         Person person = null;
         
         try {

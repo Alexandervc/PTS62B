@@ -65,7 +65,7 @@ public class BillService {
         return carBills;
     }
     
-    public Bill generateBill(Long cartrackerId, int month, int year) {
+    public Bill generateBill(String cartrackerId, int month, int year) {
         // Find the owner of the car by the cartrackerId. The person is used to
         // create the bill object.
         Person person = this.personService.findPersonByCartrackerId(

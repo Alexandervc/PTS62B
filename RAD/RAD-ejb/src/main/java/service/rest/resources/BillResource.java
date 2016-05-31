@@ -39,9 +39,12 @@ public class BillResource {
      */
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getBill(@PathParam("cartrackerId") long cartrackerId,
+    public Response getBill(@PathParam("cartrackerId") String cartrackerId,
                             @QueryParam("month") int month, 
                             @QueryParam("year") int year) {
+        System.out.println(cartrackerId);
+        System.out.println(month);
+        System.out.println(year);
         Bill bill = this.billService.generateBill(cartrackerId, 
                                                   month, 
                                                   year);
