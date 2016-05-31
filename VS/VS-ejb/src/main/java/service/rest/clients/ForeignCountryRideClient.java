@@ -25,7 +25,7 @@ public class ForeignCountryRideClient {
     
     // TODO DEPLOY: UNCOMMENT
     //private static final String BASE_URL = 
-    //        "http://192.168.24.74:8080/RAD/radapi";
+    //        "http://localhost:8080/RAD-web/radapi";
     
     private Client client;
 
