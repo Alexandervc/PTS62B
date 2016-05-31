@@ -6,8 +6,6 @@
 package dao;
 
 import domain.Address;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -15,8 +13,6 @@ import javax.inject.Inject;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
-import dto.BillRoadUsage;
-import service.BillService;
 import service.CarService;
 import service.PersonService;
 import service.RateService;
@@ -50,16 +46,13 @@ public class DataStorage {
      */
     @PostConstruct
     public void onStartup() {
-        //if (this.personService.searchPersons("Linda").isEmpty()) {
+        if (this.personService.searchPersons("Linda").isEmpty()) {
             // Add rates to db.
             this.rateService.addRate(RATE1, RoadType.A);
             this.rateService.addRate(RATE2, RoadType.B);
             this.rateService.addRate(RATE3, RoadType.C);
             this.rateService.addRate(RATE4, RoadType.D);
             this.rateService.addRate(RATE5, RoadType.E);
-            // TODO
-            // have to be solved.
-            this.rateService.addRate(0.00, RoadType.FOREIGN_COUNTRY_ROAD);
 
             // Create person in db
             Address address1 = new Address("Calçada do Lavra", "12", 
@@ -79,6 +72,6 @@ public class DataStorage {
             this.carService.addCar(p1, cartrackerId1, FuelType.Petrol);
             this.carService.addCar(p2, cartrackerId2, FuelType.Petrol);
             this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
-        //}
+        }
     }
 }

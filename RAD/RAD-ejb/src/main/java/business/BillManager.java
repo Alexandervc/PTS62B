@@ -67,7 +67,7 @@ public class BillManager {
             String cartrackerId, int month, int year)
             throws EntityNotFoundException {
         double totalPrice = 0.0;
-        double ruPrice = 0.0;
+        double ruPrice;
 
         for (BillRoadUsage ru : roadUsages) {
             // If the BillRoadUsage contains a ForeignCountryRideId, the BillRoadUsage's
@@ -106,10 +106,10 @@ public class BillManager {
         // Check if bill exicts in the database.
         Bill bill = this.findBillWithCartracker(cartrackerId, month, year);
         
-        if(bill == null){
-            // Round totalPrice
-            totalPrice = Math.round(totalPrice * 100) / 100;
-            
+        // Round totalPrice
+        totalPrice = Math.round(totalPrice * 100.0) / 100.0;
+        
+        if(bill == null){            
             // If the bill was not found, create a new bill entry.
             bill = new Bill(person,
                             roadUsages,
