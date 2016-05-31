@@ -16,29 +16,31 @@ import java.util.logging.Logger;
  * @author Alexander
  */
 public class RoadUsage implements Serializable, Comparable<RoadUsage> {
-
+    
     private static final Logger LOGGER = Logger
             .getLogger(RoadUsage.class.getName());
+    private static final Double KM_TO_METER = 1000.0;    
+    
     private String roadName;
     private RoadType roadType;
     private Double km;
-    private String foreignCountryRideId;
+    private Long foreignCountryRideId;
 
     /**
      * Instantiates the RoadUsage class without a ForeignCountryRideId.
      *
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      * 
      * @deprecated contructor.
      */
     @Deprecated
-    public RoadUsage(String roadName, String type, Double km) {
+    public RoadUsage(String roadName, String type, Double meters) {
         LOGGER.log(Level.WARNING, "use of deprecated RoadUsage constructor");
         this.roadName = roadName;
         this.roadType = Enum.valueOf(RoadType.class, type);
-        this.km = km;
+        this.km = meters / KM_TO_METER;
     }
 
     /**
@@ -46,12 +48,12 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      *
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      */
-    public RoadUsage(String roadName, RoadType type, Double km) {
+    public RoadUsage(String roadName, RoadType type, Double meters) {
         this.roadName = roadName;
         this.roadType = type;
-        this.km = km;
+        this.km = meters / KM_TO_METER;
     }
 
     /**
@@ -59,7 +61,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      *
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      * @param foreignCountryRideId The id of the foreign country ride.
      * 
      * @deprecated contructor.
@@ -68,13 +70,13 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     public RoadUsage(
             String roadName,
             String type,
-            Double km,
-            String foreignCountryRideId) {
+            Double meters,
+            Long foreignCountryRideId) {
         LOGGER.log(Level.WARNING, "use of deprecated RoadUsage with"+
                 " foreignCountryRide constructor");
         this.roadName = roadName;
         this.roadType = Enum.valueOf(RoadType.class, type);
-        this.km = km;
+        this.km = meters / KM_TO_METER;
         this.foreignCountryRideId = foreignCountryRideId;
     }
 
@@ -83,17 +85,17 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      *
      * @param roadName String.
      * @param type Type RoadType.
-     * @param km in Double.
+     * @param meters in Double.
      * @param foreignCountryRideId The id of the foreign country ride.
      */
     public RoadUsage(
             String roadName,
             RoadType type,
-            Double km,
-            String foreignCountryRideId) {
+            Double meters,
+            Long foreignCountryRideId) {
         this.roadName = roadName;
         this.roadType = type;
-        this.km = km;
+        this.km = meters / KM_TO_METER;
         this.foreignCountryRideId = foreignCountryRideId;
     }
 
@@ -134,11 +136,11 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         return this.roadType;
     }
 
-    public String getForeignCountryRideId() {
+    public Long getForeignCountryRideId() {
         return this.foreignCountryRideId;
     }
 
-    public void setForeignCountryRideId(String foreignCountryRideId) {
+    public void setForeignCountryRideId(Long foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
     }
 
