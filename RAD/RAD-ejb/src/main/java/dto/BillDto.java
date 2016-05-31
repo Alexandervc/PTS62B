@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class BillDto implements Serializable{
     private String cartrackerId;
-    //private List<BillRoadUsage> roadUsages;
+    private List<BillRoadUsage> roadUsages;
     private double totalPrice;
     private boolean paid;
     private int month;
@@ -39,13 +39,13 @@ public class BillDto implements Serializable{
         this.cartrackerId = cartrackerId;
     }
 
-//    public List<BillRoadUsage> getRoadUsages() {
-//        return roadUsages;
-//    }
-//
-//    public void setRoadUsages(List<BillRoadUsage> roadUsages) {
-//        this.roadUsages = roadUsages;
-//    }
+    public List<BillRoadUsage> getRoadUsages() {
+        return roadUsages;
+    }
+
+    public void setRoadUsages(List<BillRoadUsage> roadUsages) {
+        this.roadUsages = roadUsages;
+    }
 
     public double getTotalPrice() {
         return totalPrice;
