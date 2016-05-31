@@ -25,8 +25,10 @@ public class PersonManager {
      * @return new person Type Person.
      */
     public Person createPerson(String firstname, String lastname, 
-            String initials, Address address) {
-        Person person = new Person(firstname, lastname, initials, address);
+            String initials, String username, String password,
+            Address address) {
+        Person person = new Person(firstname, lastname, initials, username,
+                password, address);
         this.personDAO.create(person);
         
         return person;

@@ -6,9 +6,14 @@
 package domain;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,6 +51,12 @@ public class Person implements Serializable {
     private String lastName;
     private String initials;
     
+    //login
+    @Column(name = "USERNAME", unique = true)
+    private String username;
+    @Column(name = "PASSWORD", nullable=false)
+    private String password;
+    
     @Embedded
     private Address address;
     
@@ -80,13 +91,17 @@ public class Person implements Serializable {
      * @param firstname of person.
      * @param lastname of person.
      * @param initials of person.
+     * @param username of person.
+     * @param password of person.
      * @param address of person.
      */
     public Person(String firstname, String lastname, String initials,
-            Address address) {
+             String username, String password, Address address) {
         this.firstName = firstname;
         this.lastName = lastname;
         this.initials = initials;
+        this.username = username;
+        this.password = this.convertPassword(password);
         this.address = address;
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
@@ -124,6 +139,22 @@ public class Person implements Serializable {
         this.initials = initials;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     public Address getAddress() {
         return this.address;
     }
@@ -164,5 +195,23 @@ public class Person implements Serializable {
     public void addCar(Car c){
         this.cars.add(c);
         c.setOwner(this);
+    }
+    
+    private String convertPassword(String password) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+ 
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+ 
+            return hexString.toString();
+        } catch(NoSuchAlgorithmException | UnsupportedEncodingException ex){
+            throw new RuntimeException(ex);
+        }
     }
 }

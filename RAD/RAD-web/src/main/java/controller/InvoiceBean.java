@@ -5,7 +5,7 @@ import domain.Car;
 import domain.ListBoxDate;
 import domain.Person;
 import domain.RoadType;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ public class InvoiceBean {
      * @param roadUsage.
      * @return roadtype string format.
      */
-    public String getRoadType(RoadUsage roadUsage) {
+    public String getRoadType(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "Foreign country road";
         }
@@ -142,7 +142,7 @@ public class InvoiceBean {
      * @param roadUsage.
      * @return kilometers with two decimals.
      */
-    public String getKm(RoadUsage roadUsage) {
+    public String getKm(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
@@ -154,10 +154,10 @@ public class InvoiceBean {
     /**
      * Get rate for roadusage.
      * 
-     * @param roadUsage type RoadUsage.
+     * @param roadUsage type BillRoadUsage.
      * @return String rate.
      */
-    public String getRate(RoadUsage roadUsage) {
+    public String getRate(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
@@ -171,18 +171,13 @@ public class InvoiceBean {
     /**
      * Get price for roadusage.
      * 
-     * @param roadUsage type RoadUsage.
+     * @param roadUsage type BillRoadUsage.
      * @return String price.
      */
-    public String getPrice(RoadUsage roadUsage) { 
-        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
-            return "no result found";
-        }
-        
+    public String getPrice(BillRoadUsage roadUsage) {        
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        return formatter.format(roadUsage.getKm() * this.rateService
-                .getRate(roadUsage.getRoadType()).getPrice());
+        return formatter.format(roadUsage.getPrice().doubleValue());
     }
     
     /**

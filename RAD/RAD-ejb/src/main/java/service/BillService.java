@@ -9,6 +9,7 @@ import business.BillManager;
 import domain.Bill;
 import domain.Car;
 import domain.Person;
+import dto.BillRoadUsage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -51,7 +52,7 @@ public class BillService {
         // foreach car in person
         for (Car c : person.getCars()) {
             // ask roadUsages from VS
-            List<dto.RoadUsage> roadUsages = this.roadUsageService.
+            List<dto.BillRoadUsage> roadUsages = this.roadUsageService.
                     getRoadUsages(c.getCartrackerId(), month, year);
 
             // generate bill exists
@@ -80,9 +81,10 @@ public class BillService {
                 = this.roadUsageService.getRoadUsages(cartrackerId.toString(),
                                                       month,
                                                       year);
-        
-        return this.billManager.generateBill(cartrackerId,
+                
+        return this.billManager.generateBill(person,
                                              billRoadUsages,
+                                             cartrackerId.toString(),
                                              month,
                                              year);
     }

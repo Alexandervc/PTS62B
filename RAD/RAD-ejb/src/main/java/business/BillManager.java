@@ -10,7 +10,7 @@ import domain.Bill;
 import domain.ForeignCountryRide;
 import domain.Person;
 import domain.Rate;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.util.logging.Logger;
 
 /**
@@ -63,18 +63,19 @@ public class BillManager {
      * @param year.
      * @return new Bill Type Bill.
      */
-    public Bill generateBill(Person person, List<RoadUsage> roadUsages,
+    public Bill generateBill(Person person, List<BillRoadUsage> roadUsages,
             String cartrackerId, int month, int year)
             throws EntityNotFoundException {
         double totalPrice = 0.0;
+        double ruPrice = 0.0;
 
-        for (RoadUsage ru : roadUsages) {
-            // If the RoadUsage contains a ForeignCountryRideId, the RoadUsage's
+        for (BillRoadUsage ru : roadUsages) {
+            // If the BillRoadUsage contains a ForeignCountryRideId, the BillRoadUsage's
             // origin is not from this country. The price should be retrieved 
             // from the RAD database. If the price could not be found, an 
             // exception is thrown.
-            // If the RoadUsage does not contain a ForeignCountryRideId, the 
-            // RoadUsage's origin is from this country. Calculate the cost by 
+            // If the BillRoadUsage does not contain a ForeignCountryRideId, the 
+            // BillRoadUsage's origin is from this country. Calculate the cost by 
             // the distance multiplied by the cost of the RoadType's rate.
             if (ru.getForeignCountryRideId() != null) {
                 ForeignCountryRide foreignCountryRide;
@@ -86,7 +87,7 @@ public class BillManager {
                 // exactly one result. This means that the price was not stored 
                 // or multiple entries with the same foreignCountryRideId exist.
                 if (foreignCountryRide != null) {
-                    totalPrice += foreignCountryRide.getTotalPrice();
+                    ruPrice = foreignCountryRide.getTotalPrice();
                 } else {
                     throw new EntityNotFoundException("Cost of the "
                             + "ForeignCountryRide was not found in the RAD "
@@ -94,9 +95,11 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
-                double price = ru.getKm() * rate.getPrice();
-                totalPrice += price;
+                ruPrice = ru.getKm() * rate.getPrice();
             }
+            
+            ru.setPrice(ruPrice);
+            totalPrice += ruPrice;
         }
         
         // Check if bill exicts in the database.
@@ -130,10 +133,10 @@ public class BillManager {
      * @param roadUsages The roadUsages to calculate the price for.
      * @return The price.
      */
-    public Double calculatePrice(List<RoadUsage> roadUsages) {
+    public Double calculatePrice(List<BillRoadUsage> roadUsages) {
         double totalPrice = 0;
 
-        for (RoadUsage ru : roadUsages) {
+        for (BillRoadUsage ru : roadUsages) {
             totalPrice += this.calculatePrice(ru);
         }
 
@@ -146,7 +149,7 @@ public class BillManager {
      * @param roadUsage The roadUsage to calculate the price for.
      * @return The price.
      */
-    private Double calculatePrice(RoadUsage roadUsage) {
+    private Double calculatePrice(BillRoadUsage roadUsage) {
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
         return roadUsage.getKm() * rate.getPrice();
     }
