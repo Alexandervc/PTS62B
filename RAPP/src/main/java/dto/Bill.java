@@ -1,21 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dto;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * Bill class.
  *
- * @author Jesse
+ * @author Linda.
  */
-public class Bill {
+public class Bill implements Serializable {
 
     private Long id;
-    // TODO: Need person?
-//    private Person person;
-    // TODO: Check if trancient
-//    private List<RoadUsage> roadUsages;
+
+    private Person person;
+
+    private List<RoadUsage> roadUsages;
 
     private double totalPrice;
     private boolean paid;
@@ -23,7 +23,37 @@ public class Bill {
     private int billMonth;
     private int billYear;
 
+    /**
+     * Empty constructor.
+     *
+     * @deprecated contructor for JPA.
+     */
+    @Deprecated
     public Bill() {
+        // Empty for JPA.
+        this.roadUsages = new ArrayList<>();
+    }
+
+    /**
+     * Contructor.
+     *
+     * @param person type Peson.
+     * @param roadUsages List Roadusage.
+     * @param totalPrice double.
+     * @param cartrackerId Long.
+     * @param month int.
+     * @param year int.
+     */
+    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
+           String cartrackerId, int month, int year) {
+        this.person = person;
+        this.person.addBill(this);
+        this.roadUsages = new ArrayList<>(roadUsages);
+        this.totalPrice = totalPrice;
+        this.paid = false;
+        this.cartrackerId = cartrackerId;
+        this.billMonth = month;
+        this.billYear = year;
     }
 
     public Long getId() {
@@ -34,21 +64,21 @@ public class Bill {
         this.id = id;
     }
 
-//    public Person getPerson() {
-//        return this.person;
-//    }
-//
-//    public void setPerson(Person person) {
-//        this.person = person;
-//    }
+    public Person getPerson() {
+        return this.person;
+    }
 
-//    public List<RoadUsage> getRoadUsages() {
-//        return new ArrayList<>(this.roadUsages);
-//    }
-//
-//    public void setRoadUsages(List<RoadUsage> roadUsages) {
-//        this.roadUsages = new ArrayList<>(roadUsages);
-//    }
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public List<RoadUsage> getRoadUsages() {
+        return new ArrayList<>(this.roadUsages);
+    }
+
+    public void setRoadUsages(List<RoadUsage> roadUsages) {
+        this.roadUsages = new ArrayList<>(roadUsages);
+    }
 
     public double getTotalPrice() {
         return this.totalPrice;

@@ -15,7 +15,9 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class LoginBean {
+    private Long personId;
     private String loginName;
+    private String loginPassword;
 
     public String getLoginName() {
         return loginName;
@@ -23,6 +25,22 @@ public class LoginBean {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getLoginPassword() {
+        return loginPassword;
+    }
+
+    public void setLoginPassword(String loginPassword) {
+        this.loginPassword = loginPassword;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
     
 }

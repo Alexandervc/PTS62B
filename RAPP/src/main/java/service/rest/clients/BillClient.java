@@ -6,6 +6,7 @@
 package service.rest.clients;
 
 import dto.Bill;
+import dto.Person;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,9 @@ public class BillClient {
         this.client = ClientBuilder.newClient();
     }
     
+    public Person getPerson(String username, String password){
+        return null;
+    }
     /**
      * Get the bill which is generated for each car of the given person.
      * @param userId The id of the user to generate the bill for.
