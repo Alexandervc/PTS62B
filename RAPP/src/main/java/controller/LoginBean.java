@@ -43,4 +43,9 @@ public class LoginBean {
         this.personId = personId;
     }
     
+    public String login(){
+        //String redirect = "faces/invoice.xhtml?personId=1";
+        String redirect = "invoice?personId=" + this.personId + "&faces-redirect=true";
+        return redirect;
+    }
 }
