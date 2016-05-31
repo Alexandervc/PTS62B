@@ -25,6 +25,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     private RoadType roadType;
     private Double km;
     private Long foreignCountryRideId;
+    private Double price;
 
     /**
      * Instantiates the RoadUsage class without a ForeignCountryRideId.
@@ -154,6 +155,14 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
 
     public void setKm(Double km) {
         this.km = km;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     /**

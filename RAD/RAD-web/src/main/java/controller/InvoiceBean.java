@@ -174,15 +174,10 @@ public class InvoiceBean {
      * @param roadUsage type RoadUsage.
      * @return String price.
      */
-    public String getPrice(RoadUsage roadUsage) { 
-        if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
-            return "no result found";
-        }
-        
+    public String getPrice(RoadUsage roadUsage) {        
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        return formatter.format(roadUsage.getKm() * this.rateService
-                .getRate(roadUsage.getRoadType()).getPrice());
+        return formatter.format(roadUsage.getPrice().doubleValue());
     }
     
     /**

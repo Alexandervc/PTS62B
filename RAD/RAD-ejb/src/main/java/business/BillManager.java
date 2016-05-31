@@ -65,7 +65,8 @@ public class BillManager {
     public Bill generateBill(Person person, List<RoadUsage> roadUsages,
             String cartrackerId, int month, int year)
             throws EntityNotFoundException {
-        double totalPrice = 0.0; //this.calculatePrice(roadUsages);
+        double totalPrice = 0.0;
+        double ruPrice = 0.0;
 
         for (RoadUsage ru : roadUsages) {
             // If the RoadUsage contains a ForeignCountryRideId, the RoadUsage's
@@ -85,7 +86,7 @@ public class BillManager {
                 // exactly one result. This means that the price was not stored 
                 // or multiple entries with the same foreignCountryRideId exist.
                 if (foreignCountryRide != null) {
-                    totalPrice += foreignCountryRide.getTotalPrice();
+                    ruPrice = foreignCountryRide.getTotalPrice();
                 } else {
                     throw new EntityNotFoundException("Cost of the "
                             + "ForeignCountryRide was not found in the RAD "
@@ -93,9 +94,11 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
-                double price = ru.getKm() * rate.getPrice();
-                totalPrice += price;
+                ruPrice = ru.getKm() * rate.getPrice();
             }
+            
+            ru.setPrice(ruPrice);
+            totalPrice += ruPrice;
         }
         // Check if bill exicts in Database.
         Bill temp = this.findBillWithCartracker(cartrackerId, month, year);
