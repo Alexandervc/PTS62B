@@ -35,12 +35,6 @@ public class BillClient {
     @PostConstruct
     private void start() {
         this.client = ClientBuilder.newClient();
-        try {
-            Thread.sleep(1000);
-            this.getBill(1L, 5, 2016);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(BillClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     /**
