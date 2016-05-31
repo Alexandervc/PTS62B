@@ -148,14 +148,17 @@ public class PathService implements Serializable {
     /**
      * Generate files for roadusages.
      *
-     * @param cartracker id for config file.
+     * @param cartrackerId id for config file.
      */
-    public void generateFiles(String cartracker) {
-        if (cartracker != null && !cartracker.isEmpty() &&
-                this.cartrackers.contains(cartracker)) {        
+    public void generateFiles(String cartrackerId) {
+        if (cartrackerId != null && !cartrackerId.isEmpty() &&
+                this.cartrackers.contains(cartrackerId)) {
+            Map<Long, Map<String, Object>> positions = new HashMap<>();
+            Integer rideId;
+            
             try {
                 //Setup stream for configId.                
-                this.setupStream(cartracker);
+                this.setupStream(cartrackerId);
 
                 //Read config file.
                 String file = this.reader.readLine();
@@ -165,7 +168,7 @@ public class PathService implements Serializable {
                 int fileIndex = Integer.parseInt(index);
                 
                 String ride = fileParam[2].substring(fileParam[2].indexOf("=") + 1);
-                Long rideID = Long.parseLong(ride);
+                rideId = Integer.parseInt(ride);
                 
                 String pos = fileParam[3].substring(fileParam[3].indexOf("=") + 1);
                 int startPositionIndex = Integer.parseInt(pos);
@@ -218,11 +221,10 @@ public class PathService implements Serializable {
                     position.put("xCoordinate", xCoordinate);
                     position.put("yCoordinate", yCoordinate);
                     position.put("meter", meter);
-                    position.put("rideId", rideID.toString());
                     position.put("last", last);
 
                     //Create file for point.
-                    String fileName = cartracker + "-" + fileIndex + ".json";
+                    String fileName = cartrackerId + "-" + fileIndex + ".json";
                     FileWriter fileWriter = new FileWriter(PathService.PROJECT_ROOT
                             + "\\output\\" + fileName);
                     String output;
@@ -234,23 +236,29 @@ public class PathService implements Serializable {
                         output = gson.toJson(position);
                         writer.write(output);
                     }
-
-                    //Send position through JMS.
-                    this.sendPositionBean.sendPosition(output, cartracker,
-                            Integer.toUnsignedLong(fileIndex));
+                    
+                    positions.put(Integer.toUnsignedLong(fileIndex), position);
 
                     previous = p;
                     fileIndex++;
                 }
+                
+                //Convert map to Json.
+                String jsonPositions;
+                Gson gson = new Gson();
+                jsonPositions = gson.toJson(positions);
+                
+                //Send positions through JMS.
+                this.sendPositionBean.sendPositions(cartrackerId, rideId, jsonPositions);
 
                 //Update config file.
-                rideID++;
-                String output = "cartrackerID=" + cartracker 
+                rideId++;
+                String output = "cartrackerID=" + cartrackerId 
                         + ",fileIndex=" + fileIndex 
-                        + ",ride=" + rideID 
+                        + ",ride=" + rideId 
                         + ",position=" + endPositionIndex;
                 FileWriter fileWritter = new FileWriter(PathService.PROJECT_ROOT
-                        + "\\config_" + cartracker + ".txt", false);
+                        + "\\config_" + cartrackerId + ".txt", false);
 
                 try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {
                     writer2.write(output);

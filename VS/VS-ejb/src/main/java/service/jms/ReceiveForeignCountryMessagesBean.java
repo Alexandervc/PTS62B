@@ -37,7 +37,7 @@ import javax.jms.TextMessage;
  * Provides functionality regarding receiving messages from the Central System.
  * @author Jesse
  */
-@MessageDriven(mappedName = "jms/CS/queue", activationConfig = {
+@MessageDriven(mappedName = "jms/CS/filteredQueue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "countryCodeTo='PT'")
 })
@@ -163,7 +163,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             // skip the message.
             LOGGER.log(
                     Level.SEVERE, 
-                    dateToParse + " - " + ex);
+                    dateToParse + " -  " + ex);
         }
         
         return date;
