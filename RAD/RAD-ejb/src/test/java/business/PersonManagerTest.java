@@ -44,6 +44,8 @@ public class PersonManagerTest {
         String firstname= "Linda";
         String lastname ="van Engelen";
         String initials = "LMJC";
+        String username = "LindaVanEngelen";
+        String password = "admin";
         
         String streetname = "Sibeliuslaan";
         String number = "83";
@@ -51,7 +53,8 @@ public class PersonManagerTest {
         String city = "Eindhoven";
         
         Address adres = new Address(streetname, number, zipcode, city);
-        Person person = this.manager.createPerson(firstname, lastname, initials, adres);
+        Person person = this.manager.createPerson(firstname, lastname, initials,
+                username, password, adres);
         
         verify(this.dao, Mockito.times(1)).create(person);
     }

@@ -145,18 +145,21 @@ public class GenerateBillsTest {
         String lastname = "van Engelen";
         String initials = "LMJC";
 
+        String username = "LindaVanEngelen";
+        String password = "admin";
+        
         String streetname = "Sibeliuslaan";
         String number = "83";
         String zipcode = "5654CV";
         String city = "Eindhoven";
         Address adres = new Address(streetname, number, zipcode, city);
 
-        this.person1 = new Person(firstname, lastname, initials,
-                adres);
+        this.person1 = new Person(firstname, lastname, initials, username,
+                password, adres);
         this.person1.setId(PERSONID1);
 
-        this.person2 = new Person(firstname, lastname, initials,
-                adres);
+        this.person2 = new Person(firstname, lastname, initials, username,
+                password, adres);
         this.person2.setId(PERSONID2);
 
         Car c1 = new Car(this.person1, CARID1, FuelType.Diesel);

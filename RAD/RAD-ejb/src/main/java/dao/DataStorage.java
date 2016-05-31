@@ -50,7 +50,7 @@ public class DataStorage {
      */
     @PostConstruct
     public void onStartup() {
-        if (this.personService.searchPersons("Linda").isEmpty()) {
+        //if (this.personService.searchPersons("Linda").isEmpty()) {
             // Add rates to db.
             this.rateService.addRate(RATE1, RoadType.A);
             this.rateService.addRate(RATE2, RoadType.B);
@@ -67,9 +67,9 @@ public class DataStorage {
             Address address2 = new Address("Calçada do Lavra", "14", 
                     "1150-208", "Lisboa");
             Person p1 = this.personService.addPerson("Linda", "van Engelen", 
-                    "LMJC", address1);
+                    "LMJC", "Linda1", "admin", address1);
             Person p2 = this.personService.addPerson("Fernando", "Lameirinhas", 
-                    "FL", address2);
+                    "FL", "Fernando1", "admin", address2);
             
             String cartrackerId1 = "PT123456789";
             String cartrackerId2 = "PT112233444";
@@ -79,6 +79,6 @@ public class DataStorage {
             this.carService.addCar(p1, cartrackerId1, FuelType.Petrol);
             this.carService.addCar(p2, cartrackerId2, FuelType.Petrol);
             this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
-        }
+        //}
     }
 }

@@ -118,13 +118,17 @@ public class BillManagerTest {
         String lastname = "van Engelen";
         String initials = "LMJC";
 
+        String username = "LindaVanEngelen";
+        String password = "admin";
+        
         String streetname = "Sibeliuslaan";
         String number = "83";
         String zipcode = "5654CV";
         String city = "Eindhoven";
 
         Address adres = new Address(streetname, number, zipcode, city);
-        this.person = new Person(firstname, lastname, initials, adres);
+        this.person = new Person(firstname, lastname, initials,
+                username, password, adres);
 
         List<BillRoadUsage> roadusages = new ArrayList<>();
         roadusages.add(new BillRoadUsage("A", RoadType.A, 5.21));

@@ -36,9 +36,9 @@ public class PersonService {
      * @return created person type Person.
      */
     public Person addPerson(String firstname, String lastname, String initials,
-            Address address) {
+            String username, String password,Address address) {
         return this.personManager.createPerson(firstname, lastname,
-                initials, address);
+                initials, username, password, address);
     }
     
     /**
