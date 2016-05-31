@@ -61,4 +61,12 @@ public class PersonService {
         return this.personManager.findPersonById(personId);
     }    
     
+    /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findPersonByCartrackerId(Long cartrackerId) {
+        return this.personManager.findPersonByCartrackerId(cartrackerId);
+    }
 }

@@ -30,7 +30,11 @@ import javax.persistence.OneToMany;
             + "FROM Person p "
             + "WHERE UPPER(p.firstName) LIKE UPPER(:searchText) "
             + "OR UPPER(p.lastName) LIKE UPPER(:searchText) "
-            + "ORDER BY p.firstName, p.lastName")
+            + "ORDER BY p.firstName, p.lastName"),
+    @NamedQuery(name="Person.findByCartrackerId", query = "SELECT p "
+            + "FROM Person p, Car c " 
+            + "WHERE p.id = c.owner.id " 
+            + "AND c.cartrackerId = :cartrackerId")
 })
 public class Person implements Serializable {
     @Id 

@@ -98,7 +98,7 @@ public class GenerateBillsTest {
                 this.month, this.year))
                 .thenReturn(this.roadUsage);
 
-        this.billService.generateBill(PERSONID1, this.month, this.year);
+        this.billService.generateBills(PERSONID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
                 .getRoadUsages(CARID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
@@ -126,7 +126,7 @@ public class GenerateBillsTest {
                 this.month, this.year))
                 .thenReturn(this.roadUsage);
 
-        this.billService.generateBill(PERSONID2, this.month, this.year);
+        this.billService.generateBills(PERSONID2, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
                 .getRoadUsages(CARID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))

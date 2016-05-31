@@ -39,7 +39,7 @@ public class BillService {
      * @param year The year to generate the bill for.
      * @return The List of bills specific month and year.
      */
-    public List<Bill> generateBill(Long userId, int month, int year) {
+    public List<Bill> generateBills(Long userId, int month, int year) {
 
         // find person for bill
         Person person = this.personService.findPersonById(userId);
@@ -62,6 +62,29 @@ public class BillService {
         }
         // return list carBills
         return carBills;
+    }
+    
+    public Bill generateBill(Long cartrackerId, int month, int year) {
+        // Find the owner of the car by the cartrackerId. The person is used to
+        // create the bill object.
+        Person person = this.personService.findPersonByCartrackerId(
+                cartrackerId);
+        
+        if (person == null) {
+            throw new IllegalArgumentException(
+                    "User not found by cartrackerId: " + cartrackerId);
+        }
+        
+        // TODO: BillRoadUsage instead of RoadUsage.
+        List<BillRoadUsage> billRoadUsages 
+                = this.roadUsageService.getRoadUsages(cartrackerId.toString(),
+                                                      month,
+                                                      year);
+        
+        return this.billManager.generateBill(cartrackerId,
+                                             billRoadUsages,
+                                             month,
+                                             year);
     }
 
     /**

@@ -23,6 +23,7 @@ public class BillManager {
 
     private static final Logger LOG = Logger.
             getLogger(BillManager.class.getName());
+    
     @Inject
     private BillDao billDao;
 
@@ -65,7 +66,7 @@ public class BillManager {
     public Bill generateBill(Person person, List<RoadUsage> roadUsages,
             String cartrackerId, int month, int year)
             throws EntityNotFoundException {
-        double totalPrice = 0.0; //this.calculatePrice(roadUsages);
+        double totalPrice = 0.0;
 
         for (RoadUsage ru : roadUsages) {
             // If the RoadUsage contains a ForeignCountryRideId, the RoadUsage's
@@ -97,23 +98,32 @@ public class BillManager {
                 totalPrice += price;
             }
         }
-        // Check if bill exicts in Database.
-        Bill temp = this.findBillWithCartracker(cartrackerId, month, year);
         
-        if(temp == null){
-            // if null, create new bill.
-            temp = new Bill(person, roadUsages, totalPrice, cartrackerId,
-                month, year);
-            this.billDao.create(temp);
+        // Check if bill exicts in the database.
+        Bill bill = this.findBillWithCartracker(cartrackerId, month, year);
+        
+        if(bill == null){
+            // If the bill was not found, create a new bill entry.
+            bill = new Bill(person,
+                            roadUsages,
+                            totalPrice,
+                            cartrackerId,
+                            month,
+                            year);
+            
+            this.billDao.create(bill);
         } else {
-            // else edit bill in database.
-            temp.setRoadUsages(roadUsages);
-            temp.setTotalPrice(totalPrice);
-            this.billDao.edit(temp);
-        }      
-        return temp;
+            // If the bill already exists in the database, update the RoadUsages
+            // and the Total price.
+            bill.setRoadUsages(roadUsages);
+            bill.setTotalPrice(totalPrice);
+            
+            this.billDao.edit(bill);
+        }
+        
+        return bill;
     }
-
+    
     /**
      * Calculate the price for the given roadUsages.
      *

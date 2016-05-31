@@ -1,14 +1,32 @@
 package dto;
 
+import domain.Bill;
 import domain.Car;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Provides the functionality needed to convert objects into DTO object.
  * @author Melanie
  */
 public class DtoConverter {
+    
+    /**
+     * Convert Bill to BillDto
+     * @param bill The Bill object to convert.
+     * @return A converted BillDto object.
+     */
+    public static BillDto convertBillToBillDto(Bill bill) {
+        // TODO: bill.getBillRoadUsages instead of getRoadUsages()
+        return new BillDto(
+                bill.getCartrackerId(),
+                bill.getRoadUsages(),
+                bill.getTotalPrice(),
+                bill.isPaid(),
+                bill.getBillMonth(),
+                bill.getBillYear());
+    }
+    
     /**
      * Convert Car to CarDto.
      * @param car Car.

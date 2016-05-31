@@ -63,6 +63,28 @@ public class PersonDao extends AbstractFacade<Person>
     }
     
     /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findByCartrackerId(long cartrackerId) {
+        Person person = null;
+        
+        try {
+            TypedQuery<Person> query = this.em.createNamedQuery(
+                    "Person.findByCartrackerId",
+                    Person.class);
+            query.setParameter("cartrackerId", cartrackerId);
+            person = query.getSingleResult();
+            return person;
+        } catch (NoResultException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        
+        return person;
+    }
+    
+    /**
      * Find the persons with the given searchText in the 
      *      first name or last name.
      * @param searchText The text to search for.

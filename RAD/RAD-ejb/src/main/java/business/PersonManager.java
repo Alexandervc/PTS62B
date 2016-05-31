@@ -51,6 +51,15 @@ public class PersonManager {
     }
     
     /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findPersonByCartrackerId(Long cartrackerId) {
+        return this.personDAO.findByCartrackerId(cartrackerId);
+    }
+    
+    /**
      * Search the persons with the given searchText in the 
      *      first name or last name.
      * @param searchText The text to search for. Cannot be null or empty.
