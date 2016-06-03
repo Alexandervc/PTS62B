@@ -39,7 +39,23 @@ public class BillClient {
     }
     
     public PersonDto getPerson(String username, String password){
-        return null;
+        // Get Response
+        Response response = this.client.target(BASE_URL)
+                .path("/inlog/{username}/{password}/person")
+                .resolveTemplate("username", username)
+                .resolveTemplate("password", password)
+                .request(MediaType.APPLICATION_JSON)
+                .get(Response.class);
+        
+        // Check status
+        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+            throw new RuntimeException("Request not accepted: "
+                    + response.getStatus());
+        }
+        
+        // Read entity
+        GenericType<PersonDto> personType = new GenericType<PersonDto>() {};
+        return response.readEntity(personType);
     }
     /**
      * Get the bill which is generated for each car of the given person.

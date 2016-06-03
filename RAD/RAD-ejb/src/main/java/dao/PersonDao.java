@@ -96,4 +96,22 @@ public class PersonDao extends AbstractFacade<Person>
         q.setMaxResults(MAX_RESULTS);
         return (List<Person>) q.getResultList();
     }
+
+    public Person findPersonByLogin(String username, String password) {
+        Person person = null;
+        
+        try {
+            TypedQuery<Person> query = this.em.createNamedQuery(
+                    "Person.findByInlog",
+                    Person.class);
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+            person = query.getSingleResult();
+            return person;
+        } catch (NoResultException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        
+        return person;
+    }
 }

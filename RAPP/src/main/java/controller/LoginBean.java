@@ -5,16 +5,27 @@
  */
 package controller;
 
+import dto.PersonDto;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import service.rest.clients.BillClient;
 
 /**
  * Managed bean for index page.
+ *
  * @author Linda
  */
 @Named
 @RequestScoped
 public class LoginBean {
+
+    @Inject
+    private BillClient client;
+
     private Long personId;
     private String loginName;
     private String loginPassword;
@@ -42,10 +53,39 @@ public class LoginBean {
     public void setPersonId(Long personId) {
         this.personId = personId;
     }
-    
-    public String login(){
-        //String redirect = "faces/invoice.xhtml?personId=1";
-        String redirect = "invoice?personId=" + this.personId + "&faces-redirect=true";
-        return redirect;
+
+    public String login() {
+        // Convert password
+        String password = this.convertPassword(this.loginPassword);
+
+        // Get person from RAD
+        PersonDto dto = this.client.getPerson(this.loginName, password);
+
+        if (dto != null) {
+            String redirect = "invoice?personId=" + dto.getId() + 
+                    "&faces-redirect=true";
+            return redirect;
+        } 
+        return "index?faces-redirect=true";
+    }
+
+    private String convertPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes("UTF-8"));
+            StringBuffer hexString = new StringBuffer();
+
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

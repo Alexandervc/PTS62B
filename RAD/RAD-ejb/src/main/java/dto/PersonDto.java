@@ -6,12 +6,13 @@
 package dto;
 
 import domain.Address;
+import java.io.Serializable;
 
 /**
- *
- * @author Linda
+ * Dto class person.
+ * @author Linda.
  */
-public class PersonDto {
+public class PersonDto implements Serializable{
     private Long id;
     private String firstName;
     private String lastName;
@@ -19,7 +20,8 @@ public class PersonDto {
     private Address address;
     //private List<CarDto> cars;
 
-    public PersonDto(Long id, String firstName, String lastName, String initials, Address address) {
+    public PersonDto(Long id, String firstName, String lastName, 
+            String initials, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

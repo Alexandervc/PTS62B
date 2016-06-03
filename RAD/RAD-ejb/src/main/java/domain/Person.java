@@ -39,7 +39,10 @@ import javax.persistence.OneToMany;
     @NamedQuery(name="Person.findByCartrackerId", query = "SELECT p "
             + "FROM Person p, Car c " 
             + "WHERE p.id = c.owner.id " 
-            + "AND c.cartrackerId = :cartrackerId")
+            + "AND c.cartrackerId = :cartrackerId"),
+    @NamedQuery(name="Person.findByInlog", 
+            query="SELECT p FROM Person p WHERE p.username = :username "
+                    + "and p.password = :password"),
 })
 public class Person implements Serializable {
     @Id 

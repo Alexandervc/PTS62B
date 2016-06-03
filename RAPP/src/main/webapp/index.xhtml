@@ -16,14 +16,14 @@
                             <h:form class="form-horizontal" role="form">
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" 
-                                           for="email">Name:</label>
+                                           for="name">Name:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
                                             required="true"
                                             class="form-control" 
                                             id="name" 
-                                            value="#{loginBean.personId}"
-                                            a:placeholder="Enter id">
+                                            value="#{loginBean.loginName}"
+                                            a:placeholder="Enter name">
                                         </h:inputText>
                                     </div>
                                 </div>
@@ -51,14 +51,6 @@
                                     </div>
                                 </div>
                             </h:form>
-                        </div>
-
-                        <div class="col-sm-12" id="searchDiv" >
-                            <h:panelGroup id="searchResult">
-                                <ul class="list-group">
-
-                                </ul>
-                            </h:panelGroup>
                         </div>
                     </div>                    
                 </div>

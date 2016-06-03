@@ -69,4 +69,14 @@ public class PersonService {
     public Person findPersonByCartrackerId(String cartrackerId) {
         return this.personManager.findPersonByCartrackerId(cartrackerId);
     }
+    
+    /**
+     * Find person by username and password.
+     * @param username of person.
+     * @param password of person.
+     * @return Found person, otherwise null.
+     */
+    public Person findPersonLogin(String username, String password){
+        return this.personManager.findPersonLogin(username, password);
+    }
 }
