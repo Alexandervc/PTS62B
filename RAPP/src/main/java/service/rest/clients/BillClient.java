@@ -57,18 +57,19 @@ public class BillClient {
         GenericType<PersonDto> personType = new GenericType<PersonDto>() {};
         return response.readEntity(personType);
     }
+    
     /**
-     * Get the bill which is generated for each car of the given person.
-     * @param personId The id of the person to generate the bill for.
+     * Get the bill for a cartracker.
+     * @param cartrackerId The id of the cartracker to generate the bill for.
      * @param month The number of the month to generate the bill for.
      * @param year The number of the year to generate the bill for.
-     * @return A list of Bills, one Bill for each car of the person.
+     * @return A bill for the cartrackerId.
      */
-    public List<BillDto> getBill(long personId, int month, int year) {
+    public BillDto getBill(String cartrackerId, int month, int year) {
         // Get Response
         Response response = this.client.target(BASE_URL)
-                .path("/persons/{personId}/bills")
-                .resolveTemplate("personId", personId)
+                .path("/cartracker/{cartrackerId}/bill")
+                .resolveTemplate("cartrackerId", cartrackerId)
                 .queryParam("month", month)
                 .queryParam("year", year)
                 .request(MediaType.APPLICATION_JSON)
@@ -81,7 +82,6 @@ public class BillClient {
         }
         
         // Read entity
-        GenericType<List<BillDto>> billType = new GenericType<List<BillDto>>() {};
-        return response.readEntity(billType);
+        return response.readEntity(BillDto.class);
     }
 }

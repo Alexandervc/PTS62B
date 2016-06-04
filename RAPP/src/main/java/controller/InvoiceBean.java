@@ -86,7 +86,8 @@ public class InvoiceBean {
      */
     public void generateBills() {
         //Get all bills.
-        this.bills = this.client.getBill(this.personId, month, year);
+        // TODO: rewrite. Get the bill when the user clicks on a car.
+        //this.bills = this.client.getBill(this.personId, month, year);
     }
     
     /**
