@@ -47,7 +47,7 @@ public class BillDto implements Serializable {
     }
     
     public String getCartrackerId() {
-        return cartrackerId;
+        return this.cartrackerId;
     }
 
     public void setCartrackerId(String cartrackerId) {
@@ -59,7 +59,7 @@ public class BillDto implements Serializable {
     }
 
     public void setRoadUsages(List<BillRoadUsage> roadUsages) {
-        this.roadUsages = roadUsages;
+        this.roadUsages = new ArrayList<>(roadUsages);
     }
 
     public double getTotalPrice() {
