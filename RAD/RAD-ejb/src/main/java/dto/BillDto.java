@@ -6,13 +6,14 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A data transfer object for the Bill class.
  * @author Jesse
  */
-public class BillDto implements Serializable{
+public class BillDto implements Serializable {
     private String cartrackerId;
     private List<BillRoadUsage> roadUsages;
     private double totalPrice;
@@ -20,11 +21,25 @@ public class BillDto implements Serializable{
     private int month;
     private int year;
     
-    public BillDto() { }
-
-    public BillDto(String cartrackerId, List<BillRoadUsage> roadUsages, double totalPrice, boolean paid, int month, int year) {
+    /**
+     * Instantiates the BillDto class.
+     * @param cartrackerId The cartrackerId of the cartracker for which this
+     *      bill was generated.
+     * @param roadUsages A list of RoadUsages which contain the movements.
+     * @param totalPrice The total price of this bill.
+     * @param paid A boolean describing if the bill was paid by the owner of the
+     *      car.
+     * @param month The month of the bill.
+     * @param year The year of the bill.
+     */
+    public BillDto(String cartrackerId,
+                   List<BillRoadUsage> roadUsages,
+                   double totalPrice,
+                   boolean paid,
+                   int month,
+                   int year) {
         this.cartrackerId = cartrackerId;
-        this.roadUsages = roadUsages;
+        this.roadUsages = new ArrayList<>(roadUsages);
         this.totalPrice = totalPrice;
         this.paid = paid;
         this.month = month;
@@ -40,7 +55,7 @@ public class BillDto implements Serializable{
     }
 
     public List<BillRoadUsage> getRoadUsages() {
-        return roadUsages;
+        return new ArrayList<>(this.roadUsages);
     }
 
     public void setRoadUsages(List<BillRoadUsage> roadUsages) {
@@ -48,7 +63,7 @@ public class BillDto implements Serializable{
     }
 
     public double getTotalPrice() {
-        return totalPrice;
+        return this.totalPrice;
     }
 
     public void setTotalPrice(double totalPrice) {
@@ -56,7 +71,7 @@ public class BillDto implements Serializable{
     }
 
     public boolean isPaid() {
-        return paid;
+        return this.paid;
     }
 
     public void setPaid(boolean paid) {
@@ -64,7 +79,7 @@ public class BillDto implements Serializable{
     }
 
     public int getMonth() {
-        return month;
+        return this.month;
     }
 
     public void setMonth(int month) {
@@ -72,7 +87,7 @@ public class BillDto implements Serializable{
     }
 
     public int getYear() {
-        return year;
+        return this.year;
     }
 
     public void setYear(int year) {

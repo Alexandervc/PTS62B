@@ -43,13 +43,15 @@ public class BillManager {
     }
     
     /**
-     * find bill in database with cartrackerid, month and year.
+     * find bill in database with cartrackerId, month and year.
      * @param cartrackerId Long.
      * @param month integer.
      * @param year integer.
      * @return Bill, if no bill found return null;
      */
-    public Bill findBillWithCartracker(String cartrackerId, int month, int year){
+    public Bill findBillWithCartracker(String cartrackerId,
+                                       int month,
+                                       int year) {
         return this.billDao.findBillWithCartracker(cartrackerId, month, year);
     }
 
@@ -70,13 +72,13 @@ public class BillManager {
         double ruPrice;
 
         for (BillRoadUsage ru : roadUsages) {
-            // If the BillRoadUsage contains a ForeignCountryRideId, the BillRoadUsage's
-            // origin is not from this country. The price should be retrieved 
-            // from the RAD database. If the price could not be found, an 
-            // exception is thrown.
+            // If the BillRoadUsage contains a ForeignCountryRideId, the
+            // BillRoadUsage's origin is not from this country. The price should
+            // be retrieved from the RAD database. If the price could not be 
+            // found, an exception is thrown.
             // If the BillRoadUsage does not contain a ForeignCountryRideId, the 
-            // BillRoadUsage's origin is from this country. Calculate the cost by 
-            // the distance multiplied by the cost of the RoadType's rate.
+            // BillRoadUsage's origin is from this country. Calculate the cost
+            // by the distance multiplied by the cost of the RoadType's rate.
             if (ru.getForeignCountryRideId() != null) {
                 ForeignCountryRide foreignCountryRide;
                 foreignCountryRide = this.foreignCountryManager.
