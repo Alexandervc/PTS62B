@@ -80,14 +80,16 @@ public class CarPositionManager {
      *      carposition is a part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
      *      not.
+     * @param serialNumber serial number from simulator.
      */
     public void processCarPosition(String cartrackerId, Date moment,
             Coordinate coordinate, String roadName,
             Double meter, Integer rideId, Long foreignCountryRideId, 
-            Boolean lastOfRide) {
+            Boolean lastOfRide, Long serialNumber) {
         try {
             this.saveCarPosition(cartrackerId, moment, coordinate,
-                    roadName, meter, rideId, foreignCountryRideId, lastOfRide);
+                    roadName, meter, rideId, foreignCountryRideId, lastOfRide,
+                    serialNumber);
 
             // Get countryCode
             String countryCodeTo = cartrackerId
@@ -150,7 +152,8 @@ public class CarPositionManager {
      */
     private void saveCarPosition(String cartrackerId, Date moment,
             Coordinate coordinate, String roadName, Double meter, 
-            Integer rideId, Long foreignCountryRideId, Boolean lastOfRide) {
+            Integer rideId, Long foreignCountryRideId, Boolean lastOfRide,
+            Long serialNumber) {
         // Find cartracker
         Cartracker cartracker = this.findCartracker(cartrackerId);
 
@@ -162,7 +165,7 @@ public class CarPositionManager {
         // Make carPosition
         CarPosition cp = new CarPosition(cartracker, moment, coordinate, 
                 road, meter, rideId, foreignCountryRideId,
-                lastOfRide);
+                lastOfRide, serialNumber);
 
         this.carPositionDao.create(cp);
     }

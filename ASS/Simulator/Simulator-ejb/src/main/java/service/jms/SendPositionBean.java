@@ -1,5 +1,7 @@
 package service.jms;
 
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -42,6 +44,29 @@ public class SendPositionBean {
             mapMessage.setString("cartrackerId", cartrackerId);
             mapMessage.setLong("serialNumber", serialNumber);
             mapMessage.setString("carposition", jsonPosition);
+            
+            // Send mapMessage
+            this.context.createProducer().send(this.destination, mapMessage);
+        } catch (JMSException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Send the position to VS.
+     * @param cartrackerId The cartrackerId to send the position for.
+     * @param jsonPositions List of JSON strings of the position to send.
+     * @param rideId Id for ride.
+     */
+    public void sendPositions(String cartrackerId, Integer rideId, 
+            String jsonPositions) {
+        try {            
+            // Make mapMessage
+            MapMessage mapMessage = this.context.createMapMessage();
+            mapMessage.setStringProperty("method", "receiveCarpositions");
+            mapMessage.setString("cartrackerId", cartrackerId);
+            mapMessage.setInt("rideId", rideId);
+            mapMessage.setString("carpositions", jsonPositions);
             
             // Send mapMessage
             this.context.createProducer().send(this.destination, mapMessage);

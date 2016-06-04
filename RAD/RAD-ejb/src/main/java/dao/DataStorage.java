@@ -30,14 +30,11 @@ import service.RateService;
 @Startup
 public class DataStorage {
     // Static field for Rate
-    private static final double RATE1 = 1.29;
-    private static final double RATE2 = 0.89;
-    private static final double RATE3 = 0.49;
-    private static final double RATE4 = 0.25;
-    private static final double RATE5 = 0.12;
-    
-    // static field for roadusage km
-    private static final double KM = 12.9;
+    private static final double RATE1 = 0.25;
+    private static final double RATE2 = 0.20;
+    private static final double RATE3 = 0.12;
+    private static final double RATE4 = 0.05;
+    private static final double RATE5 = 0.02;
     
     @Inject
     private PersonService personService;
@@ -47,9 +44,6 @@ public class DataStorage {
     
     @Inject
     private CarService carService;
-    
-    @Inject
-    private BillService billService;
 
     /**
      * Method runs at start-up ejb.
@@ -66,11 +60,6 @@ public class DataStorage {
             // TODO
             // have to be solved.
             this.rateService.addRate(0.00, RoadType.FOREIGN_COUNTRY_ROAD);
-
-            // Make list of roadusages
-            List<RoadUsage> roadUsages = new ArrayList<>();
-            RoadUsage usage = new RoadUsage("TestLaan", RoadType.E, KM);
-            roadUsages.add(usage);
 
             // Create person in db
             Address address1 = new Address("Calçada do Lavra", "12", 
@@ -90,12 +79,6 @@ public class DataStorage {
             this.carService.addCar(p1, cartrackerId1, FuelType.Petrol);
             this.carService.addCar(p2, cartrackerId2, FuelType.Petrol);
             this.carService.addCar(p2, cartrackerId3, FuelType.Diesel);
-            
-            // Create bill for person.
-            //Bill b = new Bill(p1, roadUsages, PRICE, cartrackerId1, 4, 2016);
-            
-            // Add bill to db.
-            //this.billService.addBill(b);
         }
     }
 }
