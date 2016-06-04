@@ -177,8 +177,7 @@ public class InvoiceBean {
     public String getPrice(RoadUsage roadUsage) {        
         Locale locale = new Locale("nl", "NL");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        return formatter.format(roadUsage.getKm() * this.rateService
-                .getRate(roadUsage.getRoadType()).getPrice());
+        return formatter.format(roadUsage.getPrice().doubleValue());
     }
     
     /**
@@ -222,6 +221,5 @@ public class InvoiceBean {
     
     public String getCoordinates(String cartrackerId) {
         return this.positionService.getCoordinates(cartrackerId, this.month, this.year);
-        //return "test";
     }
 }

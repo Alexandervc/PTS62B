@@ -121,7 +121,8 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         null,
                         foreignCountryRideId,
                         // True if last element of carPositions.
-                        i >= foreignPositions.size() - 1); 
+                        i >= foreignPositions.size() - 1,
+                        0L); 
 
                 carPositions.add(carPosition);
             }
@@ -165,7 +166,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             // skip the message.
             LOGGER.log(
                     Level.SEVERE, 
-                    dateToParse + " - " + ex);
+                    dateToParse + " -  " + ex);
         }
         
         return date;

@@ -11,11 +11,6 @@ import domain.ForeignCountryRide;
 import domain.Person;
 import domain.Rate;
 import dto.RoadUsage;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +40,17 @@ public class BillManager {
     public void findBills(Person person) {
         this.billDao.findAllForUser(person);
     }
+    
+    /**
+     * find bill in database with cartrackerid, month and year.
+     * @param cartrackerId Long.
+     * @param month integer.
+     * @param year integer.
+     * @return Bill, if no bill found return null;
+     */
+    public Bill findBillWithCartracker(String cartrackerId, int month, int year){
+        return this.billDao.findBillWithCartracker(cartrackerId, month, year);
+    }
 
     /**
      * Generate bill.
@@ -59,7 +65,8 @@ public class BillManager {
     public Bill generateBill(Person person, List<RoadUsage> roadUsages,
             String cartrackerId, int month, int year)
             throws EntityNotFoundException {
-        double totalPrice = 0.0; //this.calculatePrice(roadUsages);
+        double totalPrice = 0.0;
+        double ruPrice = 0.0;
 
         for (RoadUsage ru : roadUsages) {
             // If the RoadUsage contains a ForeignCountryRideId, the RoadUsage's
@@ -79,7 +86,7 @@ public class BillManager {
                 // exactly one result. This means that the price was not stored 
                 // or multiple entries with the same foreignCountryRideId exist.
                 if (foreignCountryRide != null) {
-                    totalPrice += foreignCountryRide.getTotalPrice();
+                    ruPrice = foreignCountryRide.getTotalPrice();
                 } else {
                     throw new EntityNotFoundException("Cost of the "
                             + "ForeignCountryRide was not found in the RAD "
@@ -87,37 +94,26 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
-                double price = ru.getKm() * rate.getPrice();
-                totalPrice += price;
+                ruPrice = ru.getKm() * rate.getPrice();
             }
+            
+            ru.setPrice(ruPrice);
+            totalPrice += ruPrice;
         }
-        Bill temp = new Bill(person, roadUsages, totalPrice, cartrackerId,
+        // Check if bill exicts in Database.
+        Bill temp = this.findBillWithCartracker(cartrackerId, month, year);
+        
+        if(temp == null){
+            // if null, create new bill.
+            temp = new Bill(person, roadUsages, totalPrice, cartrackerId,
                 month, year);
-
-        try {
-            // Calculate Date today
-            Calendar calToday = Calendar.getInstance();
-            Date today = calToday.getTime();
-            Date lastDayOfMonth = new Date();
-
-            // Calculate last Day of the Month of Bill
-            Calendar cal = Calendar.getInstance();
-            cal.set(year, month - 1, 5);
-            int day = cal.getActualMaximum(Calendar.DATE);
-            // Set a new Date of last Day of the Month.
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-            String dateInString = day + "-" + month + "-" + year + " 23:59:59";
-            lastDayOfMonth = sdf.parse(dateInString);
-
-            // If Date today after the last Day of the Month
-            // Save in Database
-            if(today.after(lastDayOfMonth)){
-                this.billDao.create(temp);
-            }
-        } catch (ParseException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }
-
+            this.billDao.create(temp);
+        } else {
+            // else edit bill in database.
+            temp.setRoadUsages(roadUsages);
+            temp.setTotalPrice(totalPrice);
+            this.billDao.edit(temp);
+        }      
         return temp;
     }
 

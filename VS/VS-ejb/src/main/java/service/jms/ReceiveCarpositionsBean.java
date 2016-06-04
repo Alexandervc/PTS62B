@@ -39,39 +39,46 @@ public class ReceiveCarpositionsBean implements MessageListener {
     
     @Inject
     private CarPositionService carPositionService;
-
+    
     @Override
     public void onMessage(Message message) {
         try {
             MapMessage mapMessage = (MapMessage) message;
-
+            
             // Get values
             String cartrackerId = mapMessage.getString("cartrackerId");
-            // TODO check
-            Long serialNumber = mapMessage.getLong("serialNumber");
-
-            // Get position
-            String jsonPostion = mapMessage.getString("carposition");
+            Integer rideId = (Integer) mapMessage.getInt("rideId");
+            String jsonPositions = mapMessage.getString("carpositions");
+            
             Gson gson = new Gson();
-            Type type = new TypeToken<Map<String, Object>>() {}.getType();
-            Map<String, Object> position = gson.fromJson(jsonPostion, type);
+            Type type = new TypeToken<Map<Long, Map<String, Object>>>() {}.getType();
+            Map<Long, Map<String, Object>> positions = gson.fromJson(jsonPositions, type);
+            
+            for (Map.Entry<Long, Map<String, Object>> entry : positions.entrySet()) {
+                //Get serial number
+                Long serialNumber = entry.getKey();
+                
+                //Get position
+                Map<String, Object> position = entry.getValue();
+                String momentString = (String) position.get("moment");
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date moment = df.parse(momentString);
+                Double xCoordinate = (Double) position.get("xCoordinate");
+                Double yCoordinate = (Double) position.get("yCoordinate");
+                Coordinate coordinate = new Coordinate(xCoordinate, yCoordinate);
+                Double meter = (Double) position.get("meter");
+                Boolean lastOfRide = (Boolean) position.get("last");
+                
+                // TODO road op andere manier??
+                String roadName = "test";
 
-            String momentString = (String) position.get("moment");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            Date moment = df.parse(momentString);
-            Double xCoordinate = (Double) position.get("xCoordinate");
-            Double yCoordinate = (Double) position.get("yCoordinate");
-            Coordinate coordinate = new Coordinate(xCoordinate, yCoordinate);
-            Double meter = (Double) position.get("meter");
-            String rideId = (String) position.get("rideId");
-            Boolean lastOfRide = (Boolean) position.get("last");
-
-            // TODO road op andere manier??
-            String roadName = "test";
-
-            this.carPositionService.processCarPosition(cartrackerId, moment,
-                    coordinate, roadName, meter, 
-                    Integer.parseInt(rideId), null, lastOfRide);
+                this.carPositionService.processCarPosition(cartrackerId, moment,
+                        coordinate, roadName, meter, 
+                        rideId, null, lastOfRide, serialNumber);
+            }
+            
+            // TODO check if all serialnumbers are received
+            
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

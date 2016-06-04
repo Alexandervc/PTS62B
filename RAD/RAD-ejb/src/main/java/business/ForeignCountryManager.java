@@ -26,7 +26,7 @@ public class ForeignCountryManager {
      * @return The ForeignCountryRide with foreignCountryRideId.
      */
     public ForeignCountryRide findRideByForeignCountryRideId(
-            String foreignCountryRideId) {
+            Long foreignCountryRideId) {
         
         return this.foreignCountryRideDao.findByForeignCountryRideId(
                 foreignCountryRideId);

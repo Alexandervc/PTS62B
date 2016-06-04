@@ -9,7 +9,6 @@ import business.BillManager;
 import domain.Bill;
 import domain.Car;
 import domain.Person;
-import dto.RoadUsage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -51,38 +50,15 @@ public class BillService {
         List<Bill> carBills = new ArrayList<>();
         // foreach car in person
         for (Car c : person.getCars()) {
-            Boolean exists = false;
             // ask roadUsages from VS
             List<dto.RoadUsage> roadUsages = this.roadUsageService.
                     getRoadUsages(c.getCartrackerId(), month, year);
 
-            // search if bill exists
-            for (Bill b : person.getBills()) {
-                // if equals cartrackerid, billMonth and billYear
-                if (b.getCartrackerId().equals(c.getCartrackerId())
-                        && b.getBillMonth() == month
-                        && b.getBillYear() == year) {
-                    // set RoadUsages
-                    b.setRoadUsages(roadUsages);
-                    // add to list carBills
-                    carBills.add(b);
-                    // set exists to true
-                    exists = true;
-                }
-            }
+            // generate bill exists
+            Bill b = this.billManager.generateBill(person,
+                    roadUsages, c.getCartrackerId(), month, year);
+            carBills.add(b);
 
-            // if bill doesn't exists, create new Bill in Database
-            if (!exists) {
-                if (!roadUsages.isEmpty()) {
-                    Bill newBill = this.billManager.generateBill(person,
-                            roadUsages, c.getCartrackerId(), month, year);
-                    // add to list carBills
-                    carBills.add(newBill);
-                } else {
-                    carBills.add(new Bill(person, roadUsages, 0.00,
-                            c.getCartrackerId(), month, year));
-                }
-            }
         }
         // return list carBills
         return carBills;
