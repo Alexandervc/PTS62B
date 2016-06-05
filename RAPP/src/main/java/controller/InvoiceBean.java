@@ -9,6 +9,7 @@ import dto.BillDto;
 import dto.ListBoxDate;
 import domain.RoadType;
 import dto.BillRoadUsage;
+import dto.PersonDto;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class InvoiceBean {
     @Inject
     private BillClient client;
 
+    private PersonDto person;
     private List<BillDto> bills;
     private Long personId;
     //Current month and year.
@@ -53,6 +55,7 @@ public class InvoiceBean {
         //Get person by personId.
         this.personId = this.session.getPersonId();
 
+        this.person = this.client.getPerson(personId);
         //Setup dates.
         //Current date.
         GregorianCalendar cal = new GregorianCalendar();

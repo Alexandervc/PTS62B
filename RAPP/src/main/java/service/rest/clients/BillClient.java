@@ -5,8 +5,13 @@
  */
 package service.rest.clients;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import dto.BillDto;
+import dto.LoginUserDto;
 import dto.PersonDto;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,42 +30,85 @@ import javax.ws.rs.core.Response;
  */
 @Stateless
 public class BillClient {
-    private static final String BASE_URL = 
-            "http://localhost:8080/RAD-web/radapi";
-    
+
+    private static final Logger LOG = Logger.
+            getLogger(BillClient.class.getName());
+    private static final String BASE_URL
+            = "http://localhost:8080/RAD-web/radapi";
+
     // TODO DEPLOY: UNCOMMENT
     //private static final String BASE_URL = 
     //        "http://192.168.24.74:8080/RAD/radapi";
-    
     private Client client;
-    
+
     @PostConstruct
     private void start() {
         this.client = ClientBuilder.newClient();
     }
-    
-    public PersonDto getPerson(String username, String password){
+
+    public Long getLoginPerson(String username, String password) {
+        LoginUserDto loginUser = new LoginUserDto(username, password);
+        List<LoginUserDto> userlist = new ArrayList<>();
+        userlist.add(loginUser);
+        Gson gson = new Gson();
+        String loginJson = gson.toJson(userlist);
+
         // Get Response
         Response response = this.client.target(BASE_URL)
-                .path("/inlog/{username}/{password}/person")
-                .resolveTemplate("username", username)
-                .resolveTemplate("password", password)
+                .path("/login")
                 .request(MediaType.APPLICATION_JSON)
-                .get(Response.class);
-        
+                .post(Entity.json(loginJson), Response.class);
         // Check status
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
             throw new RuntimeException("Request not accepted: "
                     + response.getStatus());
         }
-        
+
         // Read entity
-        GenericType<PersonDto> personType = new GenericType<PersonDto>() {};
-        return response.readEntity(personType);
+        String personJson = response.readEntity(String.class);
+        Long l = null;
+        try {
+            l = Long.parseLong(personJson);
+            System.out.println("long l = " + l);
+        } catch (NumberFormatException nfe) {
+            l = null;
+            LOG.log(Level.INFO, null, nfe);
+        }
+
+        if (l != null) {
+            return l;
+        }
+        return null;
     }
-    
+
+    public PersonDto getPerson(Long id) {
+        Gson gson = new Gson();
+        // Get Response
+        Response response = this.client.target(BASE_URL)
+                .path("/login/{userid}")
+                .resolveTemplate("userid", id.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .get(Response.class);
+
+        // Check status
+        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+            throw new RuntimeException("Request not accepted: "
+                    + response.getStatus());
+        }
+
+        // Read entity
+        String personJson = response.readEntity(String.class);
+        Type type = new TypeToken<ArrayList<PersonDto>>() {}.getType();
+        List<PersonDto> personDto = gson.fromJson(personJson, type);
+        if (!personDto.isEmpty()) {
+            return personDto.get(0);
+        }
+        return null;
+    }
+
     /**
      * Get the bill for a cartracker.
+     *
      * @param cartrackerId The id of the cartracker to generate the bill for.
      * @param month The number of the month to generate the bill for.
      * @param year The number of the year to generate the bill for.
@@ -74,13 +123,13 @@ public class BillClient {
                 .queryParam("year", year)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
-        
+
         // Check status
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
             throw new RuntimeException("Request not accepted: "
                     + response.getStatus());
         }
-        
+
         // Read entity
         return response.readEntity(BillDto.class);
     }

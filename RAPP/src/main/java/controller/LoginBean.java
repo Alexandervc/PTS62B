@@ -59,10 +59,10 @@ public class LoginBean {
         String password = this.convertPassword(this.loginPassword);
 
         // Get person from RAD
-        PersonDto dto = this.client.getPerson(this.loginName, password);
+        Long id = this.client.getLoginPerson(loginName, password);
 
-        if (dto != null) {
-            String redirect = "invoice?personId=" + dto.getId() + 
+        if (id != null) {
+            String redirect = "invoice?personId=" + id + 
                     "&faces-redirect=true";
             return redirect;
         } 
