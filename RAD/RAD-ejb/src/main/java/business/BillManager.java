@@ -11,7 +11,6 @@ import domain.ForeignCountryRide;
 import domain.Person;
 import domain.Rate;
 import dto.BillRoadUsage;
-import java.util.logging.Logger;
 
 /**
  * Manager for BillDao.
@@ -20,9 +19,6 @@ import java.util.logging.Logger;
  */
 @Stateless
 public class BillManager {
-
-    private static final Logger LOG = Logger.
-            getLogger(BillManager.class.getName());
     
     @Inject
     private BillDao billDao;
@@ -76,7 +72,7 @@ public class BillManager {
             // BillRoadUsage's origin is not from this country. The price should
             // be retrieved from the RAD database. If the price could not be 
             // found, an exception is thrown.
-            // If the BillRoadUsage does not contain a ForeignCountryRideId, the 
+            // If the BillRoadUsage does not contain a ForeignCountryRideId,the 
             // BillRoadUsage's origin is from this country. Calculate the cost
             // by the distance multiplied by the cost of the RoadType's rate.
             if (ru.getForeignCountryRideId() != null) {

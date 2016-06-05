@@ -46,6 +46,12 @@ public class BillClient {
         this.client = ClientBuilder.newClient();
     }
 
+    /**
+     * Get the personid with correct username and password, otherwise null.
+     * @param username of login.
+     * @param password of login.
+     * @return id of person.
+     */
     public Long getLoginPerson(String username, String password) {
         LoginUserDto loginUser = new LoginUserDto(username, password);
         List<LoginUserDto> userlist = new ArrayList<>();
@@ -81,6 +87,11 @@ public class BillClient {
         return null;
     }
 
+    /**
+     * Get person with correct id, otherwise null.
+     * @param id of person.
+     * @return persondto object.
+     */
     public PersonDto getPerson(Long id) {
         Gson gson = new Gson();
         // Get Response

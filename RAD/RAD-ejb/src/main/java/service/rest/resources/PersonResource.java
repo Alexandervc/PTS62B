@@ -74,6 +74,11 @@ public class PersonResource {
                 .build();
     }
 
+    /**
+     * Get the person with correct id, otherwise null.
+     * @param userid id of person.
+     * @return response with persondto object.
+     */
     @Path("/{userid}")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)

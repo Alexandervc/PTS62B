@@ -67,11 +67,13 @@ public class BillDao extends AbstractFacade<Bill>
      * @param year integer.
      * @return object Bill.
      */
-    public Bill findBillWithCartracker(String cartrackerId, int month, int year) {
+    public Bill findBillWithCartracker(String cartrackerId, int month, 
+            int year) {
         Bill b;
         try {
             TypedQuery<Bill> query = this.em
-                    .createNamedQuery("Bill.findBillWithCartracker", Bill.class);
+                    .createNamedQuery("Bill.findBillWithCartracker", 
+                            Bill.class);
             query.setParameter("cartracker", cartrackerId);
             query.setParameter("month", month);
             query.setParameter("year", year);

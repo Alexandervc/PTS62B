@@ -29,7 +29,7 @@ public class PersonDto implements Serializable{
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -37,7 +37,7 @@ public class PersonDto implements Serializable{
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -45,7 +45,7 @@ public class PersonDto implements Serializable{
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -53,7 +53,7 @@ public class PersonDto implements Serializable{
     }
 
     public String getInitials() {
-        return initials;
+        return this.initials;
     }
 
     public void setInitials(String initials) {
@@ -61,7 +61,7 @@ public class PersonDto implements Serializable{
     }
 
     public Address getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(Address address) {

@@ -7,7 +7,6 @@ package domain;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ import javax.persistence.OneToMany;
             + "AND c.cartrackerId = :cartrackerId"),
     @NamedQuery(name="Person.findByInlog", 
             query="SELECT p FROM Person p WHERE p.username = :username "
-                    + "and p.password = :password"),
+                    + "and p.password = :password")
 })
 public class Person implements Serializable {
     @Id 
@@ -143,7 +142,7 @@ public class Person implements Serializable {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -151,7 +150,7 @@ public class Person implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -200,7 +199,7 @@ public class Person implements Serializable {
         c.setOwner(this);
     }
     
-    private String convertPassword(String password) {
+    private static String convertPassword(String password) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes("UTF-8"));

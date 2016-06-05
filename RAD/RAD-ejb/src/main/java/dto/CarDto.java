@@ -16,7 +16,7 @@ public class CarDto {
     }
 
     public String getCartrackerId() {
-        return cartrackerId;
+        return this.cartrackerId;
     }
 
     public void setCartrackerId(String cartrackerId) {
@@ -24,7 +24,7 @@ public class CarDto {
     }
 
     public FuelType getFuel() {
-        return fuel;
+        return this.fuel;
     }
 
     public void setFuel(FuelType fuel) {
