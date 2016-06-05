@@ -21,7 +21,7 @@ public class LoginUserDto implements Serializable{
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -29,7 +29,7 @@ public class LoginUserDto implements Serializable{
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {

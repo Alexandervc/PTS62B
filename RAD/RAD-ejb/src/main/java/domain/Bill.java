@@ -66,8 +66,8 @@ public class Bill implements Serializable {
      * @param month int.
      * @param year int.
      */
-    public Bill(Person person, List<BillRoadUsage> roadUsages, double totalPrice,
-           String cartrackerId, int month, int year) {
+    public Bill(Person person, List<BillRoadUsage> roadUsages, 
+            double totalPrice, String cartrackerId, int month, int year) {
         this.person = person;
         this.person.addBill(this);
         this.roadUsages = new ArrayList<>(roadUsages);
