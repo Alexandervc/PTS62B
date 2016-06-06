@@ -123,6 +123,9 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                            "[Received] " + foreignMessage.getCartrackerId() 
                            + " - received cartracker");
                 
+                // True if last element of carPositions.
+                Boolean isLastCarPosition = i >= foreignPositions.size() - 1;
+                
                 // Map the foreign position to the carPosition.
                 CarPosition carPosition = new CarPosition(
                         carTracker,
@@ -133,8 +136,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         0D,
                         null,
                         foreignCountryRideId,
-                        // True if last element of carPositions.
-                        i >= foreignPositions.size() - 1,
+                        isLastCarPosition,
                         0L); 
 
                 carPositions.add(carPosition);

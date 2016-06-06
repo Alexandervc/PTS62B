@@ -1,11 +1,15 @@
 package service.rest.contracts;
 
+/**
+ * Data contract for the ForeignCountryRide class from RAD.
+ * @author Jesse
+ */
 public class ForeignCountryRide {
     private Long foreignCountryRideId;
     private double totalPrice;
 
     public Long getForeignCountryRideId() {
-        return foreignCountryRideId;
+        return this.foreignCountryRideId;
     }
 
     public void setForeignCountryRideId(Long foreignCountryRideId) {
@@ -13,7 +17,7 @@ public class ForeignCountryRide {
     }
 
     public double getTotalPrice() {
-        return totalPrice;
+        return this.totalPrice;
     }
 
     public void setTotalPrice(double totalPrice) {
