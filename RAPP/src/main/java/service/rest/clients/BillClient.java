@@ -8,6 +8,7 @@ package service.rest.clients;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dto.BillDto;
+import dto.CarDto;
 import dto.LoginUserDto;
 import dto.PersonDto;
 import java.lang.reflect.Type;
@@ -20,7 +21,6 @@ import javax.ejb.Stateless;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -48,16 +48,15 @@ public class BillClient {
 
     /**
      * Get the personid with correct username and password, otherwise null.
+     *
      * @param username of login.
      * @param password of login.
-     * @return id of person.
+     * @return object of personDto.
      */
-    public Long getLoginPerson(String username, String password) {
+    public PersonDto getLoginPerson(String username, String password) {
         LoginUserDto loginUser = new LoginUserDto(username, password);
-        List<LoginUserDto> userlist = new ArrayList<>();
-        userlist.add(loginUser);
         Gson gson = new Gson();
-        String loginJson = gson.toJson(userlist);
+        String loginJson = gson.toJson(loginUser);
 
         // Get Response
         Response response = this.client.target(BASE_URL)
@@ -66,38 +65,35 @@ public class BillClient {
                 .post(Entity.json(loginJson), Response.class);
         // Check status
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
-            throw new RuntimeException("Request not accepted: "
-                    + response.getStatus());
+            if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+                LOG.log(Level.SEVERE, "Request not accepted: "
+                        + response.getStatus());
+                return null;
+
+            } else {
+                throw new RuntimeException("Request not accepted: "
+                        + response.getStatus());
+            }
         }
 
         // Read entity
         String personJson = response.readEntity(String.class);
-        Long l = null;
-        try {
-            l = Long.parseLong(personJson);
-            System.out.println("long l = " + l);
-        } catch (NumberFormatException nfe) {
-            l = null;
-            LOG.log(Level.INFO, null, nfe);
-        }
-
-        if (l != null) {
-            return l;
+        PersonDto personDto = gson.fromJson(personJson, PersonDto.class);
+        if (personDto != null) {
+            return personDto;
         }
         return null;
     }
 
     /**
-     * Get person with correct id, otherwise null.
-     * @param id of person.
-     * @return persondto object.
+     * Get list of cars for person.
+     * @param restLink link for restapi.
+     * @return List of CarDto objects.
      */
-    public PersonDto getPerson(Long id) {
-        Gson gson = new Gson();
+    public List<CarDto> getCars(String restLink) {
         // Get Response
         Response response = this.client.target(BASE_URL)
-                .path("/login/{userid}")
-                .resolveTemplate("userid", id.toString())
+                .path(restLink)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
 
@@ -108,13 +104,11 @@ public class BillClient {
         }
 
         // Read entity
-        String personJson = response.readEntity(String.class);
-        Type type = new TypeToken<ArrayList<PersonDto>>() {}.getType();
-        List<PersonDto> personDto = gson.fromJson(personJson, type);
-        if (!personDto.isEmpty()) {
-            return personDto.get(0);
-        }
-        return null;
+        Gson gson = new Gson();
+        String carsJson = response.readEntity(String.class);
+        Type type = new TypeToken<ArrayList<CarDto>>() { }.getType();
+        List<CarDto> carsDto = gson.fromJson(carsJson, type);
+        return carsDto;
     }
 
     /**
@@ -141,7 +135,9 @@ public class BillClient {
                     + response.getStatus());
         }
 
-        // Read entity
-        return response.readEntity(BillDto.class);
+        Gson gson = new Gson();
+        String billJson = response.readEntity(String.class);
+        BillDto billDto = gson.fromJson(billJson, BillDto.class);
+        return billDto;
     }
 }

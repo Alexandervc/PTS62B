@@ -15,6 +15,11 @@ public class LoginUserDto implements Serializable{
     private String username;
     private String password;
 
+    /**
+     * Constructor for LoginUserDto.
+     * @param username of loginUser.
+     * @param password  of LoginUser.
+     */
     public LoginUserDto(String username, String password) {
         this.username = username;
         this.password = password;

@@ -18,8 +18,16 @@ public class PersonDto implements Serializable{
     private String lastName;
     private String initials;
     private Address address;
-    //private List<CarDto> cars;
+    private String linkCarDto;
 
+    /**
+     * Constructor for personDto.
+     * @param id of person.
+     * @param firstName of person.
+     * @param lastName of person.
+     * @param initials of person.
+     * @param address of person.
+     */
     public PersonDto(Long id, String firstName, String lastName, 
             String initials, Address address) {
         this.id = id;
@@ -27,6 +35,7 @@ public class PersonDto implements Serializable{
         this.lastName = lastName;
         this.initials = initials;
         this.address = address;
+        this.linkCarDto = "/persons/" + this.id + "/cars";
     }
 
     public Long getId() {
@@ -68,6 +77,13 @@ public class PersonDto implements Serializable{
     public void setAddress(Address address) {
         this.address = address;
     }
-    
+
+    public String getLinkCarDto() {
+        return this.linkCarDto;
+    }
+
+    public void setLinkCarDto(String linkCarDto) {
+        this.linkCarDto = linkCarDto;
+    }
     
 }

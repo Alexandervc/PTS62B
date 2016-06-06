@@ -42,9 +42,6 @@ public class BillResource {
     public Response getBill(@PathParam("cartrackerId") String cartrackerId,
                             @QueryParam("month") int month, 
                             @QueryParam("year") int year) {
-        System.out.println(cartrackerId);
-        System.out.println(month);
-        System.out.println(year);
         Bill bill = this.billService.generateBill(cartrackerId, 
                                                   month, 
                                                   year);

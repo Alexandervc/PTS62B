@@ -24,6 +24,9 @@ import service.rest.clients.BillClient;
 public class LoginBean {
 
     @Inject
+    private InvoiceSession session;
+    
+    @Inject
     private BillClient client;
 
     private Long personId;
@@ -59,13 +62,13 @@ public class LoginBean {
         String password = this.convertPassword(this.loginPassword);
 
         // Get person from RAD
-        Long id = this.client.getLoginPerson(loginName, password);
+        PersonDto dto = this.client.getLoginPerson(loginName, password);
 
-        if (id != null) {
-            String redirect = "invoice?personId=" + id + 
-                    "&faces-redirect=true";
+        if (dto != null) {
+            String redirect = "invoice?faces-redirect=true";
+            this.session.setPerson(dto);
             return redirect;
-        } 
+        }
         return "index?faces-redirect=true";
     }
 

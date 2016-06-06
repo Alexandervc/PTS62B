@@ -1,5 +1,6 @@
 package service.rest.resources;
 
+import com.google.gson.Gson;
 import domain.Car;
 import domain.Person;
 import dto.CarDto;
@@ -36,12 +37,12 @@ public class CarResource {
     public Response getCars(@PathParam("personId") long personId) {
         Person person = personService.findPersonById(personId);
         List<Car> cars = person.getCars();        
-        List<CarDto> dtos = convertCarsToDto(cars);        
-        GenericEntity<List<CarDto>> entity = 
-                new GenericEntity<List<CarDto>>(dtos) {};
+        List<CarDto> dtos = convertCarsToDto(cars);
+        Gson gson = new Gson();
+        String carsJson = gson.toJson(dtos);
         
         return Response.status(Response.Status.OK)
-                    .entity(entity)
+                    .entity(carsJson)
                     .build();
     }
 }
