@@ -122,7 +122,7 @@ public class BillClient {
     public BillDto getBill(String cartrackerId, int month, int year) {
         // Get Response
         Response response = this.client.target(BASE_URL)
-                .path("/cartracker/{cartrackerId}/bill")
+                .path("/cartrackers/{cartrackerId}/bill")
                 .resolveTemplate("cartrackerId", cartrackerId)
                 .queryParam("month", month)
                 .queryParam("year", year)
