@@ -79,7 +79,7 @@ public class GenerateBillsTest {
         // set month for bill
         this.month = this.begin.getMonth();
         // set year for bill
-        this.year = begin.getYear() + 1900;
+        this.year = this.begin.getYear() + 1900;
 
         this.createPerson();
 
@@ -112,6 +112,9 @@ public class GenerateBillsTest {
                         this.month, this.year);
     }
 
+    /**
+     * Test get Multiple old bills.
+     */
     @Test
     public void getmultipleOldBillsTest() {
         // Define when
@@ -162,12 +165,6 @@ public class GenerateBillsTest {
                 password, adres);
         this.person2.setId(PERSONID2);
 
-        Car c1 = new Car(this.person1, CARID1, FuelType.Diesel);
-        Car c2 = new Car(this.person1, CARID2, FuelType.Petrol);
-
-        Car c3 = new Car(this.person2, CARID1, FuelType.Diesel);
-        Car c4 = new Car(this.person2, CARID2, FuelType.Petrol);
-
         Bill b = new Bill();
         b.setBillMonth(this.month);
         b.setBillYear(this.year);
@@ -175,7 +172,9 @@ public class GenerateBillsTest {
         this.person2.addBill(b);
 
         this.roadUsage = new ArrayList<>();
-        this.roadUsage.add(new BillRoadUsage("Rachelsmolen", RoadType.C, 5.00));
-        this.roadUsage.add(new BillRoadUsage("Frederickplein", RoadType.A, 45.00));
+        this.roadUsage.add(new BillRoadUsage("Rachelsmolen", RoadType.C,
+                5.00));
+        this.roadUsage.add(new BillRoadUsage("Frederickplein", RoadType.A,
+                45.00));
     }
 }

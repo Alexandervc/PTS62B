@@ -20,8 +20,8 @@ import javax.ws.rs.core.Response;
 import service.PersonService;
 
 /**
- *
- * @author Linda
+ * The Rest resource for person.
+ * @author Linda.
  */
 @Path("/login")
 @Stateless

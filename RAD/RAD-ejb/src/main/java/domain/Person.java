@@ -107,7 +107,7 @@ public class Person implements Serializable {
         this.lastName = lastname;
         this.initials = initials;
         this.username = username;
-        this.password = this.convertPassword(password);
+        this.password = convertPassword(password);
         this.address = address;
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
@@ -209,17 +209,17 @@ public class Person implements Serializable {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            StringBuffer hexString = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < hash.length; i++) {
                 String hex = Integer.toHexString(0xff & hash[i]);
                 if (hex.length() == 1) {
-                    hexString.append('0');
+                    sb.append('0');
                 }
-                hexString.append(hex);
+                sb.append(hex);
             }
 
-            return hexString.toString();
+            return sb.toString();
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }

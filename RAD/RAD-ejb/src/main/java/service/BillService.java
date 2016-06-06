@@ -65,6 +65,13 @@ public class BillService {
         return carBills;
     }
     
+    /**
+     * Generate bill for cartracker, month an year.
+     * @param cartrackerId of car.
+     * @param month integer.
+     * @param year integer.
+     * @return Bill object.
+     */
     public Bill generateBill(String cartrackerId, int month, int year) {
         // Find the owner of the car by the cartrackerId. The person is used to
         // create the bill object.
@@ -76,15 +83,14 @@ public class BillService {
                     "User not found by cartrackerId: " + cartrackerId);
         }
         
-        // TODO: BillRoadUsage instead of RoadUsage.
         List<BillRoadUsage> billRoadUsages 
-                = this.roadUsageService.getRoadUsages(cartrackerId.toString(),
+                = this.roadUsageService.getRoadUsages(cartrackerId,
                                                       month,
                                                       year);
                 
         return this.billManager.generateBill(person,
                                              billRoadUsages,
-                                             cartrackerId.toString(),
+                                             cartrackerId,
                                              month,
                                              year);
     }

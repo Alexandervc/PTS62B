@@ -26,9 +26,6 @@ public class RoadUsagesClient {
     private static final String BASE_URL
             = "http://localhost:8080/VS-web/vsapi";
 
-    // TODO DEPLOY: UNCOMMENT
-    //private static final String BASE_URL =
-    //        "http://localhost:8080/VS-web/vsapi";
     private Client client;
 
     @PostConstruct

@@ -55,6 +55,9 @@ public class BillManagerTest {
         // Empty for JPA.
     }
 
+    /**
+     * Setup method for test.
+     */
     @Before
     public void setUp() {
         this.billManager = new BillManager();
@@ -65,18 +68,18 @@ public class BillManagerTest {
         this.createBillPerson();
     }
 
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    /**
+     * Test find bill.
+     */
     @Test
     public void findBills() {
         this.billManager.findBills(this.person);
         verify(this.billDao, Mockito.times(1)).findAllForUser(this.person);
     }
     
+    /**
+     * Test generate Bill with save in database.
+     */
     @Test
     public void generateBillCreate(){
         
@@ -95,6 +98,9 @@ public class BillManagerTest {
         verify(this.billDao, Mockito.times(1)).create(bill3);
     }
     
+    /**
+     * Test generate Bill with edit Bill.
+     */
     @Test
     public void generateBillEdit(){
         

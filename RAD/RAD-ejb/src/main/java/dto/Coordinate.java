@@ -25,7 +25,7 @@ public class Coordinate {
     
     /**
      * Empty constructor for converting to and from json.
-     * @deprecated
+     * @deprecated not sure if used.
      */
     @Deprecated
     public Coordinate(){

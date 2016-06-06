@@ -9,7 +9,6 @@ import business.PersonManager;
 import domain.Address;
 import domain.Person;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,18 +19,17 @@ import javax.inject.Inject;
  */
 @Stateless
 public class PersonService {
-    private static final Logger LOGGER =
-            Logger.getLogger(PersonService.class.getName());
     
     @Inject
     private PersonManager personManager;
     
     /**
      * Add person to database.
-     *
      * @param firstname String.
      * @param lastname String.
      * @param initials String.
+     * @param username String.
+     * @param password String.
      * @param address Address.
      * @return created person type Person.
      */
