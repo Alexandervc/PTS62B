@@ -6,9 +6,7 @@
 package business;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import dao.CarPositionDao;
@@ -31,34 +29,86 @@ public class RoadUsageManager {
      * @return List of roadUsage.
      */
     public List<RoadUsage> convertToRoadUsages(List<CarPosition> carpositions) {
-        // Make roadUsages from carPositions
-        Map<Road, RoadUsage> roadUsages = new HashMap<>();
-        for(CarPosition cp : carpositions) {
-            if(!roadUsages.containsKey(cp.getRoad())) {
-                RoadUsage ru;
-                
-                if (cp.getRideId() == null) {
-                    // Add foreign country roadUsage
-                    ru = new RoadUsage(cp.getRoad().getName(), 
-                                    cp.getRoad().getRoadType(),
-                                    cp.getMeter(),
-                                    cp.getForeignCountryRideId());
-                } else {
-                    // Add roadUsage
-                    ru = new RoadUsage(cp.getRoad().getName(), 
-                                    cp.getRoad().getRoadType(),
-                                    cp.getMeter());
+        List<RoadUsage> roadUsages = new ArrayList<>();
+        
+        for (CarPosition cp : carpositions) {
+            if (cp.getRideId() == null) { // Foreign CarPosition.
+                // If the CarPosition is foreign and its ForeignCountryRideId
+                // has not yet been added to roadUsages list, create a RoadUsage
+                // and add it to the roadUsages list.
+                if (!this.roadUsagesContainsForeign(
+                        roadUsages,
+                        cp.getForeignCountryRideId())) {
+                    
+                    roadUsages.add(
+                            new RoadUsage(cp.getRoad().getName(), 
+                                          cp.getRoad().getRoadType(),
+                                          cp.getMeter(),
+                                          cp.getForeignCountryRideId()));
                 }
-                
-                roadUsages.put(cp.getRoad(), ru);
-            } else {
-                // Update km
-                RoadUsage ru = (RoadUsage) roadUsages.get(cp.getRoad());
-                ru.addMeter(cp.getMeter());
+            } else { // Internal CarPosition.
+                if (!this.roadUsagesContainsRoad(roadUsages, cp.getRoad())) {
+                    // If the CarPosition is internal and its Road has not yet
+                    // been added to the roadUsages list, create a RoadUsage
+                    // and add it to the roadUsages list.
+                    roadUsages.add(
+                            new RoadUsage(cp.getRoad().getName(), 
+                                          cp.getRoad().getRoadType(),
+                                          cp.getMeter()));
+                } else {
+                    // If the internal CarPosition's Road has already been added
+                    // to the roadUsages list, update the distance of this
+                    // RoadUsage.
+                    for (RoadUsage roadUsage : roadUsages) {
+                        if (cp.getRoad().getName()
+                                .equals(roadUsage.getRoadName())) {
+                            roadUsage.addMeter(cp.getMeter());
+                            break;
+                        }
+                    }
+                }
+                       
             }
         }
         
-        return new ArrayList<>(roadUsages.values());
+        return roadUsages;
+    }
+    
+    /**
+     * Checks if the RoadUsages list contains the Road by RoadName.
+     * @param roadUsages The list in which to check if it contains the Road.
+     * @param road The road to check for.
+     * @return true if the list contains the road, otherwise false.
+     */
+    private boolean roadUsagesContainsRoad(List<RoadUsage> roadUsages,
+                                           Road road) {
+        for (RoadUsage roadUsage : roadUsages) {
+            if (road.getName().equals(roadUsage.getRoadName())) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Checks if the RoadUsages list contains the ForeignCountryRideId.
+     * @param roadUsages The list in which to check if it contains the
+     *      ForeignCountryRideId.
+     * @param foreignCountryRideId The foreignCountryRideId to check for.
+     * @return true if the list contains the ForeignCountryRideId, otherwise
+     *      false.
+     */
+    private boolean roadUsagesContainsForeign(List<RoadUsage> roadUsages,
+                                              Long foreignCountryRideId) {        
+        for (RoadUsage roadUsage : roadUsages) {
+            if (foreignCountryRideId.equals(
+                    roadUsage.getForeignCountryRideId())) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
