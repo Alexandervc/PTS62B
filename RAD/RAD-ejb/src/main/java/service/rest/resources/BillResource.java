@@ -23,7 +23,7 @@ import service.BillService;
  * The REST resource for Bills.
  * @author Jesse
  */
-@Path("/cartracker/{cartrackerId}/bill")
+@Path("/cartrackers/{cartrackerId}/bill")
 @Stateless
 public class BillResource {
 
