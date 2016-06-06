@@ -9,6 +9,7 @@ import business.BillManager;
 import domain.Bill;
 import domain.Car;
 import domain.Person;
+import dto.BillRoadUsage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,14 +33,14 @@ public class BillService {
     private RoadUsageService roadUsageService;
 
     /**
-     * Generate the bill for the given user and the given month.
+     * Generate bills for each car of the given user and the given month.
      *
      * @param userId The user to generate a bill for.
      * @param month The month to generate the bill for.
      * @param year The year to generate the bill for.
      * @return The List of bills specific month and year.
      */
-    public List<Bill> generateBill(Long userId, int month, int year) {
+    public List<Bill> generateBills(Long userId, int month, int year) {
 
         // find person for bill
         Person person = this.personService.findPersonById(userId);
@@ -51,7 +52,7 @@ public class BillService {
         // foreach car in person
         for (Car c : person.getCars()) {
             // ask roadUsages from VS
-            List<dto.RoadUsage> roadUsages = this.roadUsageService.
+            List<dto.BillRoadUsage> roadUsages = this.roadUsageService.
                     getRoadUsages(c.getCartrackerId(), month, year);
 
             // generate bill exists
@@ -62,6 +63,36 @@ public class BillService {
         }
         // return list carBills
         return carBills;
+    }
+    
+    /**
+     * Generate bill for cartracker, month an year.
+     * @param cartrackerId of car.
+     * @param month integer.
+     * @param year integer.
+     * @return Bill object.
+     */
+    public Bill generateBill(String cartrackerId, int month, int year) {
+        // Find the owner of the car by the cartrackerId. The person is used to
+        // create the bill object.
+        Person person = this.personService.findPersonByCartrackerId(
+                cartrackerId);
+        
+        if (person == null) {
+            throw new IllegalArgumentException(
+                    "User not found by cartrackerId: " + cartrackerId);
+        }
+        
+        List<BillRoadUsage> billRoadUsages 
+                = this.roadUsageService.getRoadUsages(cartrackerId,
+                                                      month,
+                                                      year);
+                
+        return this.billManager.generateBill(person,
+                                             billRoadUsages,
+                                             cartrackerId,
+                                             month,
+                                             year);
     }
 
     /**

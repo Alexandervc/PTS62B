@@ -11,14 +11,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Class RoadUsage.
+ * Class BillRoadUsage.
  *
  * @author Alexander
  */
-public class RoadUsage implements Serializable, Comparable<RoadUsage> {
+public class BillRoadUsage implements Serializable, Comparable<BillRoadUsage> {
     
     private static final Logger LOGGER = Logger
-            .getLogger(RoadUsage.class.getName());
+            .getLogger(BillRoadUsage.class.getName());
     private static final Double KM_TO_METER = 1000.0;    
     
     private String roadName;
@@ -26,6 +26,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     private Double km;
     private Long foreignCountryRideId;
     private Double price;
+    private Double rate;
 
     /**
      * Instantiates the RoadUsage class without a ForeignCountryRideId.
@@ -37,11 +38,13 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @deprecated contructor.
      */
     @Deprecated
-    public RoadUsage(String roadName, String type, Double meters) {
+    public BillRoadUsage(String roadName, String type, Double meters) {
         LOGGER.log(Level.WARNING, "use of deprecated RoadUsage constructor");
         this.roadName = roadName;
         this.roadType = Enum.valueOf(RoadType.class, type);
         this.km = meters / KM_TO_METER;
+        this.price = 0.0;
+        this.rate = 0.0;
     }
 
     /**
@@ -51,10 +54,12 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @param type Type RoadType.
      * @param meters in Double.
      */
-    public RoadUsage(String roadName, RoadType type, Double meters) {
+    public BillRoadUsage(String roadName, RoadType type, Double meters) {
         this.roadName = roadName;
         this.roadType = type;
         this.km = meters / KM_TO_METER;
+        this.price = 0.0;
+        this.rate = 0.0;
     }
 
     /**
@@ -68,7 +73,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @deprecated contructor.
      */
     @Deprecated
-    public RoadUsage(
+    public BillRoadUsage(
             String roadName,
             String type,
             Double meters,
@@ -79,6 +84,8 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.roadType = Enum.valueOf(RoadType.class, type);
         this.km = meters / KM_TO_METER;
         this.foreignCountryRideId = foreignCountryRideId;
+        this.price = 0.0;
+        this.rate = 0.0;
     }
 
     /**
@@ -89,7 +96,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @param meters in Double.
      * @param foreignCountryRideId The id of the foreign country ride.
      */
-    public RoadUsage(
+    public BillRoadUsage(
             String roadName,
             RoadType type,
             Double meters,
@@ -98,6 +105,8 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.roadType = type;
         this.km = meters / KM_TO_METER;
         this.foreignCountryRideId = foreignCountryRideId;
+        this.price = 0.0;
+        this.rate = 0.0;
     }
 
     /**
@@ -106,7 +115,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @deprecated JSON
      */
     @Deprecated
-    public RoadUsage() {
+    public BillRoadUsage() {
         // For converting to and from JSON
     }
 
@@ -165,14 +174,22 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
         this.price = price;
     }
 
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
     /**
      * Compares RoadName from two RoadUsages.
      *
-     * @param t Type RoadUsage.
+     * @param t Type BillRoadUsage.
      * @return integer.
      */
     @Override
-    public int compareTo(RoadUsage t) {
+    public int compareTo(BillRoadUsage t) {
         return this.getRoadName().compareTo(t.getRoadName());
     }
 }

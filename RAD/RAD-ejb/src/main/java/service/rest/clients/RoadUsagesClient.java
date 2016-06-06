@@ -5,7 +5,7 @@
  */
 package service.rest.clients;
 
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -26,9 +26,6 @@ public class RoadUsagesClient {
     private static final String BASE_URL
             = "http://localhost:8080/VS-web/vsapi";
 
-    // TODO DEPLOY: UNCOMMENT
-    //private static final String BASE_URL =
-    //        "http://localhost:8080/VS-web/vsapi";
     private Client client;
 
     @PostConstruct
@@ -43,9 +40,9 @@ public class RoadUsagesClient {
      * @param cartrackerId The cartracker id to get the roadUsages for.
      * @param month The month to get the roadUsages for.
      * @param year The year to get the roadUsages for.
-     * @return List of RoadUsage.
+     * @return List of BillRoadUsage.
      */
-    public List<RoadUsage> getRoadUsages(String cartrackerId, int month,
+    public List<BillRoadUsage> getRoadUsages(String cartrackerId, int month,
             int year) {
         // Get response
         Response response = this.client.target(BASE_URL)
@@ -63,8 +60,8 @@ public class RoadUsagesClient {
         }
 
         // Read entity
-        GenericType<List<RoadUsage>> roadUsageType
-                = new GenericType<List<RoadUsage>>() {};
+        GenericType<List<BillRoadUsage>> roadUsageType
+                = new GenericType<List<BillRoadUsage>>() {};
         return response.readEntity(roadUsageType);
     }
 }

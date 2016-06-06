@@ -11,7 +11,7 @@ import domain.Car;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,7 +60,7 @@ public class GenerateBillsTest {
     private Integer month;
     private Integer year;
 
-    private List<RoadUsage> roadUsage;
+    private List<BillRoadUsage> roadUsage;
 
     public GenerateBillsTest() {
         // Empty for JPA.
@@ -79,7 +79,7 @@ public class GenerateBillsTest {
         // set month for bill
         this.month = this.begin.getMonth();
         // set year for bill
-        this.year = begin.getYear() + 1900;
+        this.year = this.begin.getYear() + 1900;
 
         this.createPerson();
 
@@ -98,7 +98,7 @@ public class GenerateBillsTest {
                 this.month, this.year))
                 .thenReturn(this.roadUsage);
 
-        this.billService.generateBill(PERSONID1, this.month, this.year);
+        this.billService.generateBills(PERSONID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
                 .getRoadUsages(CARID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
@@ -112,6 +112,9 @@ public class GenerateBillsTest {
                         this.month, this.year);
     }
 
+    /**
+     * Test get Multiple old bills.
+     */
     @Test
     public void getmultipleOldBillsTest() {
         // Define when
@@ -126,7 +129,7 @@ public class GenerateBillsTest {
                 this.month, this.year))
                 .thenReturn(this.roadUsage);
 
-        this.billService.generateBill(PERSONID2, this.month, this.year);
+        this.billService.generateBills(PERSONID2, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
                 .getRoadUsages(CARID1, this.month, this.year);
         verify(this.roadUsagesService, Mockito.times(1))
@@ -145,25 +148,22 @@ public class GenerateBillsTest {
         String lastname = "van Engelen";
         String initials = "LMJC";
 
+        String username = "LindaVanEngelen";
+        String password = "admin";
+        
         String streetname = "Sibeliuslaan";
         String number = "83";
         String zipcode = "5654CV";
         String city = "Eindhoven";
         Address adres = new Address(streetname, number, zipcode, city);
 
-        this.person1 = new Person(firstname, lastname, initials,
-                adres);
+        this.person1 = new Person(firstname, lastname, initials, username,
+                password, adres);
         this.person1.setId(PERSONID1);
 
-        this.person2 = new Person(firstname, lastname, initials,
-                adres);
+        this.person2 = new Person(firstname, lastname, initials, username,
+                password, adres);
         this.person2.setId(PERSONID2);
-
-        Car c1 = new Car(this.person1, CARID1, FuelType.Diesel);
-        Car c2 = new Car(this.person1, CARID2, FuelType.Petrol);
-
-        Car c3 = new Car(this.person2, CARID1, FuelType.Diesel);
-        Car c4 = new Car(this.person2, CARID2, FuelType.Petrol);
 
         Bill b = new Bill();
         b.setBillMonth(this.month);
@@ -172,7 +172,9 @@ public class GenerateBillsTest {
         this.person2.addBill(b);
 
         this.roadUsage = new ArrayList<>();
-        this.roadUsage.add(new RoadUsage("Rachelsmolen", RoadType.C, 5.00));
-        this.roadUsage.add(new RoadUsage("Frederickplein", RoadType.A, 45.00));
+        this.roadUsage.add(new BillRoadUsage("Rachelsmolen", RoadType.C,
+                5.00));
+        this.roadUsage.add(new BillRoadUsage("Frederickplein", RoadType.A,
+                45.00));
     }
 }

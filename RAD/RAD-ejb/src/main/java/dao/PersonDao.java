@@ -63,6 +63,28 @@ public class PersonDao extends AbstractFacade<Person>
     }
     
     /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findByCartrackerId(String cartrackerId) {
+        Person person = null;
+        
+        try {
+            TypedQuery<Person> query = this.em.createNamedQuery(
+                    "Person.findByCartrackerId",
+                    Person.class);
+            query.setParameter("cartrackerId", cartrackerId);
+            person = query.getSingleResult();
+            return person;
+        } catch (NoResultException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        
+        return person;
+    }
+    
+    /**
      * Find the persons with the given searchText in the 
      *      first name or last name.
      * @param searchText The text to search for.
@@ -73,5 +95,23 @@ public class PersonDao extends AbstractFacade<Person>
         q.setParameter("searchText", "%" + searchText + "%");
         q.setMaxResults(MAX_RESULTS);
         return (List<Person>) q.getResultList();
+    }
+
+    public Person findPersonByLogin(String username, String password) {
+        Person person = null;
+        
+        try {
+            TypedQuery<Person> query = this.em.createNamedQuery(
+                    "Person.findByInlog",
+                    Person.class);
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+            person = query.getSingleResult();
+            return person;
+        } catch (NoResultException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        
+        return person;
     }
 }
