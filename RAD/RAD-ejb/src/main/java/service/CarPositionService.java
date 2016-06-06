@@ -5,8 +5,6 @@
  */
 package service;
 
-import dto.Coordinate;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import service.rest.clients.CoordinatesClient;
