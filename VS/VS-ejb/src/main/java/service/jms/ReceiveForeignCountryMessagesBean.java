@@ -155,7 +155,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             // Parsing the message was not successfull.
             LOGGER.log(Level.SEVERE, null, ex);
         }
-    }    
+    }
     
     private Road findOrReplaceRoadByName(String name) {
         Road road = this.roadManager.findRoadByName(name);

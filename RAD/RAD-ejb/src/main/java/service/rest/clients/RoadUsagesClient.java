@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 public class RoadUsagesClient {
 
     private static final String BASE_URL
-            = "http://localhost:8080/VS-web/vsapi";
+            = "http://192.168.24.72:8080/VS-web/vsapi";
 
     private Client client;
 
