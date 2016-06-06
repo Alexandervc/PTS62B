@@ -5,7 +5,7 @@
  */
 package service;
 
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,9 +28,9 @@ public class RoadUsageService {
      * @param cartrackerId The cartracker id to get the roadUsages for.
      * @param month The month to get the roadUsages for.
      * @param year The year to get the roadUsages for.
-     * @return List of RoadUsage.
+     * @return List of BillRoadUsage.
      */
-    public List<RoadUsage> getRoadUsages(String cartrackerId, int month,
+    public List<BillRoadUsage> getRoadUsages(String cartrackerId, int month,
             int year) {
         return this.roadUsagesClient.getRoadUsages(cartrackerId, month,
                 year);

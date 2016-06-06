@@ -25,8 +25,7 @@ import javax.jms.MessageListener;
 @MessageDriven(mappedName = "jms/LMS/monitoringTopic", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "method='getStatus'")
-    // TODO DEPLOY: UNCOMMENT
-    ,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.70:7676")
+    ////,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.70:7676")
 })
 public class ReceiveTestRequestBean implements MessageListener {
 

@@ -16,44 +16,41 @@
                             <h:form class="form-horizontal" role="form">
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" 
-                                           for="email">Name:</label>
+                                           for="name">Name:</label>
                                     <div class="col-sm-10">
-                                        <input type="name" 
-                                               class="form-control" 
-                                               id="name" 
-                                               placeholder="Enter name">
-                                        </input>
+                                        <h:inputText
+                                            required="true"
+                                            class="form-control" 
+                                            id="name" 
+                                            value="#{loginBean.loginName}"
+                                            a:placeholder="Enter name">
+                                        </h:inputText>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" 
                                            for="pwd">Password:</label>
                                     <div class="col-sm-10"> 
-                                        <input type="password" 
-                                               class="form-control" 
-                                               id="pwd" 
-                                               placeholder="Enter password">
-                                        </input>
+                                        <h:inputSecret
+                                            class="form-control" 
+                                            id="password" 
+                                            value="#{loginBean.loginPassword}"
+                                            a:placeholder="Enter password">
+                                        </h:inputSecret>
                                     </div>
                                 </div>
                                 <div class="form-group"> 
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <h:commandButton type="submit" 
-                                                         id="searchButton"
+                                                         id="loginButton"
                                                          class="btn btn-default"
-                                                         value="Search">
+                                                         value="Login"
+                                                         action="#{loginBean.login()}"
+                                                         >
                                         </h:commandButton>
                                     </div>
                                 </div>
                             </h:form>
-                        </div>
-
-                        <div class="col-sm-12" id="searchDiv" >
-                            <h:panelGroup id="searchResult">
-                                <ul class="list-group">
-
-                                </ul>
-                            </h:panelGroup>
                         </div>
                     </div>                    
                 </div>

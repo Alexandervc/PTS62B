@@ -5,7 +5,7 @@ import domain.Car;
 import domain.ListBoxDate;
 import domain.Person;
 import domain.RoadType;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -17,11 +17,11 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import service.BillService;
 import service.CarPositionService;
 import service.CarService;
 import service.PersonService;
-import service.RateService;
 
 /**
  * Request scoped bean for invoice page.
@@ -36,9 +36,6 @@ public class InvoiceBean {
     
     @EJB
     private BillService billService;
-    
-    @EJB
-    private RateService rateService;
     
     @EJB
     private CarService carService;
@@ -59,6 +56,9 @@ public class InvoiceBean {
     private String dateIndex;
     private List<ListBoxDate> dates;
     
+    //Locale Nederland
+    private Locale locale;
+    
     /**
      * Setup application data.
      * Load a person with personid from url.
@@ -69,6 +69,9 @@ public class InvoiceBean {
         Long personId = this.session.getPersonId();
         Person person = this.personService.findPersonById(personId);
         this.session.setPerson(person);
+        
+        //Set locale
+        this.locale = new Locale("nl", "NL");
 
         //Setup dates.
         //Current date.
@@ -85,7 +88,7 @@ public class InvoiceBean {
             m_cal.add(Calendar.MONTH, -m);
             int m_year = m_cal.get(Calendar.YEAR);
             String m_month_string = m_cal.getDisplayName(
-                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+                    Calendar.MONTH, Calendar.LONG, this.locale);
 
             //Add date to list.
             String index = Integer.toString(m);
@@ -96,6 +99,10 @@ public class InvoiceBean {
         //Generate bills for person.
         this.bills = new ArrayList<>();
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
     }
     
     /**
@@ -103,7 +110,7 @@ public class InvoiceBean {
      */
     public void generateBills() {
         //Get all bills.
-        this.bills = this.billService.generateBill(
+        this.bills = this.billService.generateBills(
                 this.session.getPersonId(), this.month, this.year);
     }
     
@@ -120,6 +127,11 @@ public class InvoiceBean {
         
         //Get all bills.
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
+        requestContext.execute("setupEvents()");
     }
     
     /**
@@ -128,7 +140,7 @@ public class InvoiceBean {
      * @param roadUsage.
      * @return roadtype string format.
      */
-    public String getRoadType(RoadUsage roadUsage) {
+    public String getRoadType(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "Foreign country road";
         }
@@ -142,7 +154,7 @@ public class InvoiceBean {
      * @param roadUsage.
      * @return kilometers with two decimals.
      */
-    public String getKm(RoadUsage roadUsage) {
+    public String getKm(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
@@ -154,29 +166,26 @@ public class InvoiceBean {
     /**
      * Get rate for roadusage.
      * 
-     * @param roadUsage type RoadUsage.
+     * @param roadUsage type BillRoadUsage.
      * @return String rate.
      */
-    public String getRate(RoadUsage roadUsage) {
+    public String getRate(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
-        
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
-        return formatter.format(
-                this.rateService.getRate(roadUsage.getRoadType()).getPrice());
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
+        return formatter.format(roadUsage.getRate().doubleValue());
     }
 
     /**
      * Get price for roadusage.
      * 
-     * @param roadUsage type RoadUsage.
+     * @param roadUsage type BillRoadUsage.
      * @return String price.
      */
-    public String getPrice(RoadUsage roadUsage) {        
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+    public String getPrice(BillRoadUsage roadUsage) {     
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getPrice().doubleValue());
     }
     
@@ -198,8 +207,7 @@ public class InvoiceBean {
      * @return String total price bill.
      */
     public String getTotalPrice(Bill bill) {
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(bill.getTotalPrice());
     }
 
@@ -220,6 +228,7 @@ public class InvoiceBean {
     }
     
     public String getCoordinates(String cartrackerId) {
-        return this.positionService.getCoordinates(cartrackerId, this.month, this.year);
+        return this.positionService.getCoordinates(cartrackerId, 
+                this.month, this.year);
     }
 }

@@ -51,10 +51,13 @@ public class ReceiveCarpositionsBean implements MessageListener {
             String jsonPositions = mapMessage.getString("carpositions");
             
             Gson gson = new Gson();
-            Type type = new TypeToken<Map<Long, Map<String, Object>>>() {}.getType();
-            Map<Long, Map<String, Object>> positions = gson.fromJson(jsonPositions, type);
+            Type type = new TypeToken<Map<Long, Map<String, Object>>>() {}
+                    .getType();
+            Map<Long, Map<String, Object>> positions = 
+                    gson.fromJson(jsonPositions, type);
             
-            for (Map.Entry<Long, Map<String, Object>> entry : positions.entrySet()) {
+            for (Map.Entry<Long, Map<String, Object>> entry : 
+                    positions.entrySet()) {
                 //Get serial number
                 Long serialNumber = entry.getKey();
                 
@@ -65,7 +68,8 @@ public class ReceiveCarpositionsBean implements MessageListener {
                 Date moment = df.parse(momentString);
                 Double xCoordinate = (Double) position.get("xCoordinate");
                 Double yCoordinate = (Double) position.get("yCoordinate");
-                Coordinate coordinate = new Coordinate(xCoordinate, yCoordinate);
+                Coordinate coordinate = new Coordinate(xCoordinate, 
+                        yCoordinate);
                 Double meter = (Double) position.get("meter");
                 Boolean lastOfRide = (Boolean) position.get("last");
                 

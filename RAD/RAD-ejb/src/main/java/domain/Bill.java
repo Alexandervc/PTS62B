@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 
 /**
  * Bill class.
@@ -37,7 +37,7 @@ public class Bill implements Serializable {
     private Person person;
 
     @Transient
-    private List<RoadUsage> roadUsages;
+    private List<BillRoadUsage> roadUsages;
 
     private double totalPrice;
     private boolean paid;
@@ -66,8 +66,8 @@ public class Bill implements Serializable {
      * @param month int.
      * @param year int.
      */
-    public Bill(Person person, List<RoadUsage> roadUsages, double totalPrice,
-           String cartrackerId, int month, int year) {
+    public Bill(Person person, List<BillRoadUsage> roadUsages, 
+            double totalPrice, String cartrackerId, int month, int year) {
         this.person = person;
         this.person.addBill(this);
         this.roadUsages = new ArrayList<>(roadUsages);
@@ -94,11 +94,11 @@ public class Bill implements Serializable {
         this.person = person;
     }
 
-    public List<RoadUsage> getRoadUsages() {
+    public List<BillRoadUsage> getRoadUsages() {
         return new ArrayList<>(this.roadUsages);
     }
 
-    public void setRoadUsages(List<RoadUsage> roadUsages) {
+    public void setRoadUsages(List<BillRoadUsage> roadUsages) {
         this.roadUsages = new ArrayList<>(roadUsages);
     }
 

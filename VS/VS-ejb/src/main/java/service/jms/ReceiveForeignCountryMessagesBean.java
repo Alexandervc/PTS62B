@@ -39,10 +39,9 @@ import javax.jms.TextMessage;
  */
 @MessageDriven(mappedName = "jms/CS/filteredQueue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "countryCodeTo='PT'"),
+            propertyValue = "countryCodeTo='PT'")
 // TODO DEPLOY: UNCOMMENT
-    @ActivationConfigProperty(propertyName = "addressList",
-            propertyValue = "192.168.24.68:7676")
+//    ,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.68:7676")
 })
 public class ReceiveForeignCountryMessagesBean implements MessageListener {
     
@@ -104,7 +103,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                            + " - " + roadName);
                 
                 Road road = this.findOrReplaceRoadByName(roadName);
-                Date date = parseDate(currentPosition.getDatetime());
+                Date date = this.parseDate(currentPosition.getDatetime());
                 
                 // Skip the message if date could not be parsed.
                 if (date == null) {

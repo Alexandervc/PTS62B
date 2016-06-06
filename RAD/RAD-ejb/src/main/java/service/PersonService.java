@@ -9,7 +9,6 @@ import business.PersonManager;
 import domain.Address;
 import domain.Person;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,25 +19,24 @@ import javax.inject.Inject;
  */
 @Stateless
 public class PersonService {
-    private static final Logger LOGGER =
-            Logger.getLogger(PersonService.class.getName());
     
     @Inject
     private PersonManager personManager;
     
     /**
      * Add person to database.
-     *
      * @param firstname String.
      * @param lastname String.
      * @param initials String.
+     * @param username String.
+     * @param password String.
      * @param address Address.
      * @return created person type Person.
      */
     public Person addPerson(String firstname, String lastname, String initials,
-            Address address) {
+            String username, String password,Address address) {
         return this.personManager.createPerson(firstname, lastname,
-                initials, address);
+                initials, username, password, address);
     }
     
     /**
@@ -61,4 +59,22 @@ public class PersonService {
         return this.personManager.findPersonById(personId);
     }    
     
+    /**
+     * Find person by cartrackerId.
+     * @param cartrackerId The id of the cartracker.
+     * @return The person object if found, otherwise null.
+     */
+    public Person findPersonByCartrackerId(String cartrackerId) {
+        return this.personManager.findPersonByCartrackerId(cartrackerId);
+    }
+    
+    /**
+     * Find person by username and password.
+     * @param username of person.
+     * @param password of person.
+     * @return Found person, otherwise null.
+     */
+    public Person findPersonLogin(String username, String password){
+        return this.personManager.findPersonLogin(username, password);
+    }
 }
