@@ -17,8 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 
 /**
- *
- * @author Linda
+ * Test class for personManager.
+ * @author Linda.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class PersonManagerTest {
@@ -32,6 +32,9 @@ public class PersonManagerTest {
         // Empty for JPA.
     }
     
+    /**
+     * Setup method for this test.
+     */
     @Before
     public void setUp() {
         this.manager = new PersonManager();
@@ -39,11 +42,16 @@ public class PersonManagerTest {
         
     }
     
+    /**
+     * Test adding person.
+     */
     @Test
     public void addPerson(){
         String firstname= "Linda";
         String lastname ="van Engelen";
         String initials = "LMJC";
+        String username = "LindaVanEngelen";
+        String password = "admin";
         
         String streetname = "Sibeliuslaan";
         String number = "83";
@@ -51,11 +59,15 @@ public class PersonManagerTest {
         String city = "Eindhoven";
         
         Address adres = new Address(streetname, number, zipcode, city);
-        Person person = this.manager.createPerson(firstname, lastname, initials, adres);
+        Person person = this.manager.createPerson(firstname, lastname, initials,
+                username, password, adres);
         
         verify(this.dao, Mockito.times(1)).create(person);
     }
 
+    /**
+     * Test search person.
+     */
     @Test
     public void searchPerson(){
         String searchText = "L e";
@@ -65,6 +77,9 @@ public class PersonManagerTest {
         verify(this.dao, Mockito.times(1)).findPersonsWithText(searchText);
     }
     
+    /**
+     * Test find by name.
+     */
     @Test
     public void findByName(){
         String name = "Fernando";
@@ -74,6 +89,9 @@ public class PersonManagerTest {
         verify(this.dao, Mockito.times(1)).findByName(name);
     }
     
+    /**
+     * Test find by Id.
+     */
     @Test
     public void findById(){
         Long id = 1L;
