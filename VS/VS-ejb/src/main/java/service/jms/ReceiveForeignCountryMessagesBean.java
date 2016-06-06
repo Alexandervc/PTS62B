@@ -40,7 +40,8 @@ import javax.jms.TextMessage;
 @MessageDriven(mappedName = "jms/CS/filteredQueue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "countryCodeTo='PT'")
-    //,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.68:7676")
+// TODO DEPLOY: UNCOMMENT
+//    ,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.68:7676")
 })
 public class ReceiveForeignCountryMessagesBean implements MessageListener {
     
@@ -71,24 +72,25 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
 
             Gson gson = new Gson();
             ForeignMessage foreignMessage = gson.fromJson(textMessage.getText(),
-                    ForeignMessage.class);
+                                                          ForeignMessage.class);
             
-            LOGGER.log(
-                    Level.INFO, 
-                    "[Received] " + foreignMessage.getCartrackerId() 
-                            + " - " + foreignMessage.getTotalPrice());
+            LOGGER.log(Level.INFO, 
+                       "[Message] " + foreignMessage.getCartrackerId() 
+                       + " - " + foreignMessage.getTotalPrice());
 
             List<ForeignPosition> foreignPositions = 
                     foreignMessage.getPositions();
             List<CarPosition> carPositions = new ArrayList<>();
 
             // Sort by date, this ensures that the list is in the right order.
-            // The order is used to calculate the distance between two 
-            // positions.
             Collections.sort(foreignPositions);
             
             Long foreignCountryRideId = this.carPositionManager
                     .getNextRideIdOfCountryCode();
+            
+            LOGGER.log(Level.INFO, 
+                       "[Generated] " + foreignMessage.getCartrackerId() 
+                       + " - " + foreignCountryRideId);
 
             for (int i = 0; i < foreignPositions.size(); i++) {
                 ForeignPosition currentPosition = foreignPositions.get(i);
@@ -96,11 +98,20 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 String roadName = COUNTRY_NAMES.get(
                         textMessage.getStringProperty("countryCodeFrom"));
                 
+                LOGGER.log(Level.INFO, 
+                           "[RoadName] " + foreignMessage.getCartrackerId() 
+                           + " - " + roadName);
+                
                 Road road = this.findOrReplaceRoadByName(roadName);
-                Date date = parseDate(currentPosition.getDatetime());
+                Date date = this.parseDate(currentPosition.getDatetime());
                 
                 // Skip the message if date could not be parsed.
                 if (date == null) {
+                    LOGGER.log(Level.INFO, 
+                               "[ERROR] " + foreignMessage.getCartrackerId() 
+                               + " - could not parse: " 
+                               + currentPosition.getDatetime());
+                    
                     return;
                 }
 
@@ -108,12 +119,16 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                 Cartracker carTracker = this.carPositionManager
                         .findCartracker(foreignMessage.getCartrackerId());
                 
+                LOGGER.log(Level.INFO, 
+                           "[Received] " + foreignMessage.getCartrackerId() 
+                           + " - received cartracker");
+                
                 // Map the foreign position to the carPosition.
                 CarPosition carPosition = new CarPosition(
                         carTracker,
                         date,
                         new Coordinate(currentPosition.getX(), 
-                                currentPosition.getY()),
+                                       currentPosition.getY()),
                         road,
                         0D,
                         null,
@@ -131,6 +146,10 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                             carPositions, 
                             foreignCountryRideId, 
                             foreignMessage.getTotalPrice());
+            
+            LOGGER.log(Level.INFO, 
+                       "[CarPosition] " + foreignMessage.getCartrackerId() 
+                       + " - CarPositions stored for: " + foreignCountryRideId);
 
         } catch (JMSException ex) {
             // Parsing the message was not successfull.

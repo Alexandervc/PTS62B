@@ -158,7 +158,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
     }
 
     public Double getPrice() {
-        return price;
+        return this.price;
     }
 
     public void setPrice(Double price) {
