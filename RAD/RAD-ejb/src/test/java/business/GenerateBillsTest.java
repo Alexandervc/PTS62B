@@ -165,6 +165,12 @@ public class GenerateBillsTest {
                 password, adres);
         this.person2.setId(PERSONID2);
 
+        Car c1 = new Car(this.person1, CARID1, FuelType.Diesel);
+        Car c2 = new Car(this.person1, CARID2, FuelType.Petrol);
+
+        Car c3 = new Car(this.person2, CARID1, FuelType.Diesel);
+        Car c4 = new Car(this.person2, CARID2, FuelType.Petrol);
+        
         Bill b = new Bill();
         b.setBillMonth(this.month);
         b.setBillYear(this.year);
