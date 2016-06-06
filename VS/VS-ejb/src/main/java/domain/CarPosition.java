@@ -31,19 +31,19 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
-            + "ORDER BY cp.id"),
+            + "ORDER BY cp.moment, cp.serialNumber"),
     @NamedQuery(name="CarPosition.getPositionsOfForeignCountryRide", query = 
             "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.foreignCountryRideId = :foreignCountryRideId "
-            + "ORDER BY cp.id"),
+            + "ORDER BY cp.moment, cp.serialNumber"),
     @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
             + "cp.coordinate "
             + "FROM CarPosition cp "
             + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
             + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
             + "AND cp.cartracker.id = :cartrackerId "
-            + "ORDER BY cp.serialNumber")
+            + "ORDER BY cp.moment, cp.serialNumber")
 })
 public class CarPosition implements Serializable {
     @Id
@@ -194,7 +194,7 @@ public class CarPosition implements Serializable {
     }
 
     public Long getSerialNumber() {
-        return serialNumber;
+        return this.serialNumber;
     }
 
     public void setSerialNumber(Long serialNumber) {

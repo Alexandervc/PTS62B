@@ -17,11 +17,11 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import service.BillService;
 import service.CarPositionService;
 import service.CarService;
 import service.PersonService;
-import service.RateService;
 
 /**
  * Request scoped bean for invoice page.
@@ -56,6 +56,9 @@ public class InvoiceBean {
     private String dateIndex;
     private List<ListBoxDate> dates;
     
+    //Locale Nederland
+    private Locale locale;
+    
     /**
      * Setup application data.
      * Load a person with personid from url.
@@ -66,6 +69,9 @@ public class InvoiceBean {
         Long personId = this.session.getPersonId();
         Person person = this.personService.findPersonById(personId);
         this.session.setPerson(person);
+        
+        //Set locale
+        this.locale = new Locale("nl", "NL");
 
         //Setup dates.
         //Current date.
@@ -82,7 +88,7 @@ public class InvoiceBean {
             m_cal.add(Calendar.MONTH, -m);
             int m_year = m_cal.get(Calendar.YEAR);
             String m_month_string = m_cal.getDisplayName(
-                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+                    Calendar.MONTH, Calendar.LONG, this.locale);
 
             //Add date to list.
             String index = Integer.toString(m);
@@ -93,6 +99,10 @@ public class InvoiceBean {
         //Generate bills for person.
         this.bills = new ArrayList<>();
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
     }
     
     /**
@@ -117,6 +127,11 @@ public class InvoiceBean {
         
         //Get all bills.
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
+        requestContext.execute("setupEvents()");
     }
     
     /**
@@ -158,9 +173,8 @@ public class InvoiceBean {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
-        
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getRate().doubleValue());
     }
 
@@ -172,7 +186,7 @@ public class InvoiceBean {
      */
     public String getPrice(BillRoadUsage roadUsage) {        
         Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getPrice().doubleValue());
     }
     
@@ -194,8 +208,7 @@ public class InvoiceBean {
      * @return String total price bill.
      */
     public String getTotalPrice(Bill bill) {
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(bill.getTotalPrice());
     }
 
@@ -216,6 +229,7 @@ public class InvoiceBean {
     }
     
     public String getCoordinates(String cartrackerId) {
-        return this.positionService.getCoordinates(cartrackerId, this.month, this.year);
+        return this.positionService.getCoordinates(cartrackerId, 
+                this.month, this.year);
     }
 }

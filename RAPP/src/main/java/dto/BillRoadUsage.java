@@ -167,7 +167,7 @@ public class BillRoadUsage implements Serializable, Comparable<BillRoadUsage> {
     }
 
     public Double getPrice() {
-        return price;
+        return this.price;
     }
 
     public void setPrice(Double price) {

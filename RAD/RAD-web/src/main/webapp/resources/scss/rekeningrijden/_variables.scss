@@ -6,6 +6,7 @@
 $white:                     #fff;
 $black:                     #000;
 $accent-color:              #8BD4A7;
+$grey:                      #E5E3DF;
 
 $background-image:          url("../javax.faces.resource/images/bg.jpg");
 
@@ -15,3 +16,7 @@ $standard-font:             Calibri,sans-serif;
 
 $btn-bg:                    $accent-color;
 $btn-color:                 $white;
+
+/* -------------------------------- Maps -------------------------------- */
+
+$maps-bg:                   $grey;

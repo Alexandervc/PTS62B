@@ -20,6 +20,7 @@ import java.util.Locale;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import service.CarPositionService;
 import service.rest.clients.BillClient;
 
 /**
@@ -35,6 +36,9 @@ public class InvoiceBean {
 
     @Inject
     private BillClient client;
+    
+    @Inject
+    private CarPositionService positionService;
 
     private List<BillDto> bills;
     private List<CarDto> cars;
@@ -182,19 +186,6 @@ public class InvoiceBean {
     }
 
     /**
-     * Get fuel of the car with the given cartrackerId.
-     *
-     * @param cartrackerId The cartracker id.
-     * @return The name of the fuel type.
-     */
-    public String getFuel(String cartrackerId) {
-        //TODO: get car
-        //Car car = this.carService.getCar(cartrackerId);
-        //return car.getFuel().name();
-        return "";
-    }
-
-    /**
      * Get total price for bill.
      *
      * @param bill bill reference to get price.
@@ -227,8 +218,7 @@ public class InvoiceBean {
     }
 
     public String getCoordinates(String cartrackerId) {
-        //TODO: get positions
-        //this.positionService.getCoordinates(cartrackerId, this.month, this.year);
-        return "";
+        return this.positionService
+                .getCoordinates(cartrackerId, this.month, this.year);
     }
 }
