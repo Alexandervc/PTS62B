@@ -11,6 +11,7 @@ import domain.ForeignCountryRide;
 import domain.Person;
 import domain.Rate;
 import dto.BillRoadUsage;
+import java.util.ArrayList;
 
 /**
  * Manager for BillDao.
@@ -28,7 +29,7 @@ public class BillManager {
 
     @Inject
     private ForeignCountryManager foreignCountryManager;
-
+    
     /**
      * Find all bills in Database from person.
      *
@@ -100,6 +101,32 @@ public class BillManager {
             ru.setPrice(ruPrice);
             totalPrice += ruPrice;
         }
+        
+        // Remove duplicate ForeignCountryRides
+        List<BillRoadUsage> billRoadUsages = new ArrayList<>();
+        for (BillRoadUsage ru : roadUsages) {
+            // Check if the billRoadUsages list contains the road.
+            if (!this.roadUsagesContainsRoad(billRoadUsages, ru.getRoadName())) {
+                // If the billRoadUsages list contains the road, get all the
+                // roads with the same name as ru.getRoadName().
+                List<BillRoadUsage> containedRoadUsages 
+                    = this.containedRoadUsages(roadUsages, ru.getRoadName());
+            
+                BillRoadUsage roadUsage = null;
+                for (BillRoadUsage billRoadUsage : containedRoadUsages) {
+                    if (roadUsage == null) {
+                        roadUsage = billRoadUsage;
+                    } else {
+                        // Add the price of the duplicate RoadUsage to the
+                        // roadUsage.
+                        roadUsage.setPrice(roadUsage.getPrice() 
+                                           + billRoadUsage.getPrice());
+                    }
+                }
+                
+                billRoadUsages.add(roadUsage);
+            }
+        }
 
         // Check if bill exicts in the database.
         Bill bill = this.findBillWithCartracker(cartrackerId, month, year);
@@ -110,7 +137,7 @@ public class BillManager {
         if(bill == null){            
             // If the bill was not found, create a new bill entry.
             bill = new Bill(person,
-                            roadUsages,
+                            billRoadUsages,
                             totalPrice,
                             cartrackerId,
                             month,
@@ -120,13 +147,51 @@ public class BillManager {
         } else {
             // If the bill already exists in the database, update the RoadUsages
             // and the Total price.
-            bill.setRoadUsages(roadUsages);
+            bill.setRoadUsages(billRoadUsages);
             bill.setTotalPrice(totalPrice);
             
             this.billDao.edit(bill);
         }
         
         return bill;
+    }
+    
+    /**
+     * Checks if the RoadUsages list contains the Road by RoadName.
+     * @param roadUsages The list in which to check if it contains the Road.
+     * @param roadName The road to check for.
+     * @return true if the list contains the road, otherwise false.
+     */
+    private boolean roadUsagesContainsRoad(List<BillRoadUsage> roadUsages,
+                                           String roadName) {
+        for (BillRoadUsage roadUsage : roadUsages) {
+            if (roadName.equals(roadUsage.getRoadName())) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Checks if the BillRoadUsages list contains the Road by RoadName.
+     * @param roadUsages The list in which to check if it contains the Road.
+     * @param roadName The road to check for.
+     * @return A list of BillRoadUsages which contains every BillRoadUsage which
+     *      contain the given RoadName.
+     */
+    private List<BillRoadUsage> containedRoadUsages(
+            List<BillRoadUsage> roadUsages,
+            String roadName) {
+        List<BillRoadUsage> billRoadUsages = new ArrayList<>();
+        
+        for (BillRoadUsage roadUsage : roadUsages) {
+            if (roadName.equals(roadUsage.getRoadName())) {
+                billRoadUsages.add(roadUsage);
+            }
+        }
+        
+        return billRoadUsages;
     }
     
     /**
