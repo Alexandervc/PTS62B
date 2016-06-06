@@ -184,8 +184,7 @@ public class InvoiceBean {
      * @param roadUsage type BillRoadUsage.
      * @return String price.
      */
-    public String getPrice(BillRoadUsage roadUsage) {        
-        Locale locale = new Locale("nl", "NL");
+    public String getPrice(BillRoadUsage roadUsage) {     
         NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getPrice().doubleValue());
     }

@@ -20,6 +20,7 @@ import java.util.Locale;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import service.CarPositionService;
 import service.rest.clients.BillClient;
 
@@ -49,12 +50,17 @@ public class InvoiceBean {
     //Dates for combobox.
     private String dateIndex;
     private List<ListBoxDate> dates;
+    
+    //Locale Nederland
+    private Locale locale;
 
     /**
      * Setup application data. Load a person with personid from url. Get all
      * related data.
      */
     public void setup() {
+        //Set locale
+        this.locale = new Locale("nl", "NL");
 
         //Setup dates.
         //Current date.
@@ -83,6 +89,10 @@ public class InvoiceBean {
         this.generateCars();
         this.bills = new ArrayList<>();
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
     }
 
     /**
@@ -125,7 +135,14 @@ public class InvoiceBean {
         cal.add(Calendar.MONTH, -index);
         this.year = cal.get(Calendar.YEAR);
         this.month = cal.get(Calendar.MONTH) + 1;
+        
+        //Get all bills.
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
+        requestContext.execute("setupEvents()");
     }
 
     /**
@@ -167,9 +184,8 @@ public class InvoiceBean {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
-
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getRate().doubleValue());
     }
 
@@ -180,8 +196,7 @@ public class InvoiceBean {
      * @return String price.
      */
     public String getPrice(BillRoadUsage roadUsage) {
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getPrice().doubleValue());
     }
 
@@ -192,8 +207,7 @@ public class InvoiceBean {
      * @return String total price bill.
      */
     public String getTotalPrice(BillDto bill) {
-        Locale locale = new Locale("nl", "NL");
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(bill.getTotalPrice());
     }
 
