@@ -39,10 +39,8 @@ import javax.jms.TextMessage;
  */
 @MessageDriven(mappedName = "jms/CS/filteredQueue", activationConfig = {
     @ActivationConfigProperty(propertyName = "messageSelector",
-            propertyValue = "countryCodeTo='PT'"),
-// TODO DEPLOY: UNCOMMENT
-    @ActivationConfigProperty(propertyName = "addressList",
-            propertyValue = "192.168.24.68:7676")
+            propertyValue = "countryCodeTo='PT'")
+    //,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.68:7676")
 })
 public class ReceiveForeignCountryMessagesBean implements MessageListener {
     
