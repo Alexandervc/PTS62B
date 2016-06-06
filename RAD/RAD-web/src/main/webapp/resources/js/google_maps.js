@@ -14,9 +14,9 @@ function setupEvents() {
         //Create event for collapsible panel
         var div_acc = div.id.replace('map_', '#');
 
-        $(div_acc).on('hidden.bs.collapse', function() {
-            initMap();
-        });
+//        $(div_acc).on('hidden.bs.collapse', function() {
+//            initMap();
+//        });
 
         $(div_acc).on('shown.bs.collapse', function() {
             initMap();
