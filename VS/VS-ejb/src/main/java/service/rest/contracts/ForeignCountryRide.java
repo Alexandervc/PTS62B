@@ -1,6 +1,22 @@
 package service.rest.contracts;
 
 public class ForeignCountryRide {
-    public Long foreignCountryRideId;
-    public double totalPrice;
+    private Long foreignCountryRideId;
+    private double totalPrice;
+
+    public Long getForeignCountryRideId() {
+        return foreignCountryRideId;
+    }
+
+    public void setForeignCountryRideId(Long foreignCountryRideId) {
+        this.foreignCountryRideId = foreignCountryRideId;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }
