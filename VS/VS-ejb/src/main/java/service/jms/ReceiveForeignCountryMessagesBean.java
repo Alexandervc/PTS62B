@@ -103,7 +103,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                            + " - " + roadName);
                 
                 Road road = this.findOrReplaceRoadByName(roadName);
-                Date date = parseDate(currentPosition.getDatetime());
+                Date date = this.parseDate(currentPosition.getDatetime());
                 
                 // Skip the message if date could not be parsed.
                 if (date == null) {

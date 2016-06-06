@@ -164,13 +164,16 @@ public class PathService implements Serializable {
                 String file = this.reader.readLine();
                 String[] fileParam = file.split(",");
                 
-                String index = fileParam[1].substring(fileParam[1].indexOf("=") + 1);
+                String index = fileParam[1].substring(
+                        fileParam[1].indexOf("=") + 1);
                 int fileIndex = Integer.parseInt(index);
                 
-                String ride = fileParam[2].substring(fileParam[2].indexOf("=") + 1);
+                String ride = fileParam[2].substring(
+                        fileParam[2].indexOf("=") + 1);
                 rideId = Integer.parseInt(ride);
                 
-                String pos = fileParam[3].substring(fileParam[3].indexOf("=") + 1);
+                String pos = fileParam[3].substring(
+                        fileParam[3].indexOf("=") + 1);
                 int startPositionIndex = Integer.parseInt(pos);
 
                 //Get random direction input.
@@ -225,8 +228,8 @@ public class PathService implements Serializable {
 
                     //Create file for point.
                     String fileName = cartrackerId + "-" + fileIndex + ".json";
-                    FileWriter fileWriter = new FileWriter(PathService.PROJECT_ROOT
-                            + "\\output\\" + fileName);
+                    FileWriter fileWriter = new FileWriter(
+                            PathService.PROJECT_ROOT + "\\output\\" + fileName);
                     String output;
 
                     //Write file.
@@ -249,7 +252,8 @@ public class PathService implements Serializable {
                 jsonPositions = gson.toJson(positions);
                 
                 //Send positions through JMS.
-                this.sendPositionBean.sendPositions(cartrackerId, rideId, jsonPositions);
+                this.sendPositionBean.sendPositions(cartrackerId, rideId, 
+                        jsonPositions);
 
                 //Update config file.
                 rideId++;

@@ -51,6 +51,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * @param type Type RoadType.
      * @param meters in Double.
      * @param foreignCountryRideId The id of the foreign country ride.
+     * @deprecated String type should be RoadType class.
      */
     @Deprecated
     public RoadUsage(

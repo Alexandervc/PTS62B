@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
+ * The manager of roads.
  * @author Jesse
  */
 @Stateless

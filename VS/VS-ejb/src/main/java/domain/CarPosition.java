@@ -194,7 +194,7 @@ public class CarPosition implements Serializable {
     }
 
     public Long getSerialNumber() {
-        return serialNumber;
+        return this.serialNumber;
     }
 
     public void setSerialNumber(Long serialNumber) {

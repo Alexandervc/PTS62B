@@ -29,7 +29,7 @@ public class Coordinate implements Serializable {
     
     /**
      * Empty constructor for converting to and from json.
-     * @deprecated
+     * @deprecated for jpa only.
      */
     @Deprecated
     public Coordinate(){
