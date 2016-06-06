@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import service.BillService;
 import service.CarPositionService;
 import service.CarService;
@@ -96,6 +97,10 @@ public class InvoiceBean {
         //Generate bills for person.
         this.bills = new ArrayList<>();
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
     }
     
     /**
@@ -120,6 +125,11 @@ public class InvoiceBean {
         
         //Get all bills.
         this.generateBills();
+        
+        //Setup maps
+        RequestContext requestContext = RequestContext.getCurrentInstance();  
+        requestContext.execute("setDate(" + month + ", " + year + ")");
+        requestContext.execute("setupEvents()");
     }
     
     /**
