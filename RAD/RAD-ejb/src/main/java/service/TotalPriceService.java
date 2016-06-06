@@ -25,7 +25,7 @@ public class TotalPriceService {
      * @param roadUsages The roadUsages to get the price for.
      * @return The price.
      */
-    public Double getTotalPrice(List<dto.RoadUsage> roadUsages) {
+    public Double getTotalPrice(List<dto.BillRoadUsage> roadUsages) {
         return this.billManager.calculatePrice(roadUsages);
     }
 }

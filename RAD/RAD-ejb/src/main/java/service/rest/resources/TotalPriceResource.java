@@ -17,7 +17,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import service.TotalPriceService;
 
 /**
@@ -45,8 +45,8 @@ public class TotalPriceResource {
     public Response getTotalPrice(String roadUsagesJson) {
         // Convert to roadUsages
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<RoadUsage>>() {}.getType();
-        List<RoadUsage> roadUsages = gson.fromJson(roadUsagesJson, type);
+        Type type = new TypeToken<ArrayList<BillRoadUsage>>() {}.getType();
+        List<BillRoadUsage> roadUsages = gson.fromJson(roadUsagesJson, type);
 
         Double totalPrice = this.totalPriceService.getTotalPrice(roadUsages);
 

@@ -1,11 +1,15 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
-import domain.Bill;
-import domain.Car;
-import domain.ListBoxDate;
-import domain.Person;
+import dto.BillDto;
+import dto.ListBoxDate;
 import domain.RoadType;
 import dto.BillRoadUsage;
+import dto.CarDto;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -13,63 +17,48 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-import service.BillService;
 import service.CarPositionService;
-import service.CarService;
-import service.PersonService;
+import service.rest.clients.BillClient;
 
 /**
- * Request scoped bean for invoice page.
- * 
- * @author Melanie
+ *
+ * @author Linda
  */
 @Named
 @RequestScoped
 public class InvoiceBean {
-    @EJB
-    private PersonService personService;
-    
-    @EJB
-    private BillService billService;
-    
-    @EJB
-    private CarService carService;
-    
-    @EJB
-    private CarPositionService positionService;
-    
+
     @Inject
     private InvoiceSession session;
 
-    private List<Bill> bills;
-       
+    @Inject
+    private BillClient client;
+    
+    @Inject
+    private CarPositionService positionService;
+
+    private List<BillDto> bills;
+    private List<CarDto> cars;
     //Current month and year.
     private int year;
     private int month;
-    
+
     //Dates for combobox.
     private String dateIndex;
     private List<ListBoxDate> dates;
     
     //Locale Nederland
     private Locale locale;
-    
+
     /**
-     * Setup application data.
-     * Load a person with personid from url.
-     * Get all related data.
+     * Setup application data. Load a person with personid from url. Get all
+     * related data.
      */
     public void setup() {
-        //Get person by personId.
-        Long personId = this.session.getPersonId();
-        Person person = this.personService.findPersonById(personId);
-        this.session.setPerson(person);
-        
         //Set locale
         this.locale = new Locale("nl", "NL");
 
@@ -88,15 +77,16 @@ public class InvoiceBean {
             m_cal.add(Calendar.MONTH, -m);
             int m_year = m_cal.get(Calendar.YEAR);
             String m_month_string = m_cal.getDisplayName(
-                    Calendar.MONTH, Calendar.LONG, this.locale);
+                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
 
             //Add date to list.
             String index = Integer.toString(m);
-            String value = m_month_string + " " + m_year;            
-            this.dates.add(new ListBoxDate(value, index));            
-        }        
+            String value = m_month_string + " " + m_year;
+            this.dates.add(new ListBoxDate(value, index));
+        }
 
-        //Generate bills for person.
+        //Generate carsfor person.
+        this.generateCars();
         this.bills = new ArrayList<>();
         this.generateBills();
         
@@ -104,22 +94,43 @@ public class InvoiceBean {
         RequestContext requestContext = RequestContext.getCurrentInstance();  
         requestContext.execute("setDate(" + month + ", " + year + ")");
     }
-    
+
     /**
-     * Generate bill.
+     * Generate bills.
      */
     public void generateBills() {
         //Get all bills.
-        this.bills = this.billService.generateBills(
-                this.session.getPersonId(), this.month, this.year);
+        for (CarDto car : this.cars) {
+            this.bills.add(this.client.getBill(car.getCartrackerId(), 
+                    this.month, this.year));
+        }
+    }
+
+    /**
+     * Generate cars.
+     */
+    public void generateCars() {
+        //Get all bills.
+        this.cars = this.client.getCars(this.session.restLinkCars());
     }
     
+    public List<BillDto> getBillFromCar(String cartracker){
+        List<BillDto> temp = new ArrayList<>();
+        for(BillDto bill : this.bills){
+            if(bill.getCartrackerId().equals(cartracker)){
+                temp.add(bill);
+                return temp;
+            }
+        }
+        return null;
+    }
+
     /**
      * Listener for date dropdown menu.
      */
     public void changeDate() {
         int index = Integer.parseInt(this.dateIndex);
-        
+
         GregorianCalendar cal = new GregorianCalendar();
         cal.add(Calendar.MONTH, -index);
         this.year = cal.get(Calendar.YEAR);
@@ -133,10 +144,10 @@ public class InvoiceBean {
         requestContext.execute("setDate(" + month + ", " + year + ")");
         requestContext.execute("setupEvents()");
     }
-    
+
     /**
      * Get roadtype for roadusage
-     * 
+     *
      * @param roadUsage.
      * @return roadtype string format.
      */
@@ -144,13 +155,13 @@ public class InvoiceBean {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "Foreign country road";
         }
-        
+
         return roadUsage.getRoadType().toString();
     }
-    
+
     /**
      * Get km with two decimals.
-     * 
+     *
      * @param roadUsage.
      * @return kilometers with two decimals.
      */
@@ -158,61 +169,54 @@ public class InvoiceBean {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
-                
-        DecimalFormat formatter = new DecimalFormat("#.00"); 
+
+        DecimalFormat formatter = new DecimalFormat("#.00");
         return formatter.format(roadUsage.getKm());
     }
-    
+
     /**
      * Get rate for roadusage.
-     * 
-     * @param roadUsage type BillRoadUsage.
+     *
+     * @param roadUsage type RoadUsage.
      * @return String rate.
      */
     public String getRate(BillRoadUsage roadUsage) {
         if (roadUsage.getRoadType() == RoadType.FOREIGN_COUNTRY_ROAD) {
             return "-";
         }
-
+        
         NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getRate().doubleValue());
     }
 
     /**
      * Get price for roadusage.
-     * 
-     * @param roadUsage type BillRoadUsage.
+     *
+     * @param roadUsage type RoadUsage.
      * @return String price.
      */
-    public String getPrice(BillRoadUsage roadUsage) {     
+    public String getPrice(BillRoadUsage roadUsage) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(roadUsage.getPrice().doubleValue());
-    }
-    
-    /**
-     * Get fuel of the car with the given cartrackerId.
-     * 
-     * @param cartrackerId The cartracker id.
-     * @return The name of the fuel type.
-     */
-    public String getFuel(String cartrackerId) {
-        Car car = this.carService.getCar(cartrackerId);
-        return car.getFuel().name();
     }
 
     /**
      * Get total price for bill.
-     * 
+     *
      * @param bill bill reference to get price.
      * @return String total price bill.
      */
-    public String getTotalPrice(Bill bill) {
+    public String getTotalPrice(BillDto bill) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(this.locale);
         return formatter.format(bill.getTotalPrice());
     }
 
-    public List<Bill> getBills() {
+    public List<BillDto> getBills() {
         return new ArrayList<>(this.bills);
+    }
+
+    public List<CarDto> getCars() {
+        return new ArrayList<>(this.cars);
     }
 
     public String getDateIndex() {
@@ -226,9 +230,9 @@ public class InvoiceBean {
     public List<ListBoxDate> getDates() {
         return new ArrayList<>(this.dates);
     }
-    
+
     public String getCoordinates(String cartrackerId) {
-        return this.positionService.getCoordinates(cartrackerId, 
-                this.month, this.year);
+        return this.positionService
+                .getCoordinates(cartrackerId, this.month, this.year);
     }
 }

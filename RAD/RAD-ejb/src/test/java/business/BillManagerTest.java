@@ -12,7 +12,7 @@ import domain.Bill;
 import domain.Person;
 import domain.Rate;
 import domain.RoadType;
-import dto.RoadUsage;
+import dto.BillRoadUsage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +55,9 @@ public class BillManagerTest {
         // Empty for JPA.
     }
 
+    /**
+     * Setup method for test.
+     */
     @Before
     public void setUp() {
         this.billManager = new BillManager();
@@ -65,18 +68,18 @@ public class BillManagerTest {
         this.createBillPerson();
     }
 
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    /**
+     * Test find bill.
+     */
     @Test
     public void findBills() {
         this.billManager.findBills(this.person);
         verify(this.billDao, Mockito.times(1)).findAllForUser(this.person);
     }
     
+    /**
+     * Test generate Bill with save in database.
+     */
     @Test
     public void generateBillCreate(){
         
@@ -95,6 +98,9 @@ public class BillManagerTest {
         verify(this.billDao, Mockito.times(1)).create(bill3);
     }
     
+    /**
+     * Test generate Bill with edit Bill.
+     */
     @Test
     public void generateBillEdit(){
         
@@ -118,16 +124,20 @@ public class BillManagerTest {
         String lastname = "van Engelen";
         String initials = "LMJC";
 
+        String username = "LindaVanEngelen";
+        String password = "admin";
+        
         String streetname = "Sibeliuslaan";
         String number = "83";
         String zipcode = "5654CV";
         String city = "Eindhoven";
 
         Address adres = new Address(streetname, number, zipcode, city);
-        this.person = new Person(firstname, lastname, initials, adres);
+        this.person = new Person(firstname, lastname, initials,
+                username, password, adres);
 
-        List<RoadUsage> roadusages = new ArrayList<>();
-        roadusages.add(new RoadUsage("A", RoadType.A, 5.21));
+        List<BillRoadUsage> roadusages = new ArrayList<>();
+        roadusages.add(new BillRoadUsage("A", RoadType.A, 5.21));
         Date billdate = new Date();
         this.monthToday = billdate.getMonth()+1;
         this.yearToday = billdate.getYear() + 1900;

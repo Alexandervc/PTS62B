@@ -10,8 +10,7 @@ import domain.Bill;
 import domain.ForeignCountryRide;
 import domain.Person;
 import domain.Rate;
-import dto.RoadUsage;
-import java.util.logging.Logger;
+import dto.BillRoadUsage;
 
 /**
  * Manager for BillDao.
@@ -20,9 +19,7 @@ import java.util.logging.Logger;
  */
 @Stateless
 public class BillManager {
-
-    private static final Logger LOG = Logger.
-            getLogger(BillManager.class.getName());
+    
     @Inject
     private BillDao billDao;
 
@@ -42,13 +39,15 @@ public class BillManager {
     }
     
     /**
-     * find bill in database with cartrackerid, month and year.
+     * find bill in database with cartrackerId, month and year.
      * @param cartrackerId Long.
      * @param month integer.
      * @param year integer.
      * @return Bill, if no bill found return null;
      */
-    public Bill findBillWithCartracker(String cartrackerId, int month, int year){
+    public Bill findBillWithCartracker(String cartrackerId,
+                                       int month,
+                                       int year) {
         return this.billDao.findBillWithCartracker(cartrackerId, month, year);
     }
 
@@ -62,20 +61,20 @@ public class BillManager {
      * @param year.
      * @return new Bill Type Bill.
      */
-    public Bill generateBill(Person person, List<RoadUsage> roadUsages,
+    public Bill generateBill(Person person, List<BillRoadUsage> roadUsages,
             String cartrackerId, int month, int year)
             throws EntityNotFoundException {
         double totalPrice = 0.0;
-        double ruPrice = 0.0;
+        double ruPrice;
 
-        for (RoadUsage ru : roadUsages) {
-            // If the RoadUsage contains a ForeignCountryRideId, the RoadUsage's
-            // origin is not from this country. The price should be retrieved 
-            // from the RAD database. If the price could not be found, an 
-            // exception is thrown.
-            // If the RoadUsage does not contain a ForeignCountryRideId, the 
-            // RoadUsage's origin is from this country. Calculate the cost by 
-            // the distance multiplied by the cost of the RoadType's rate.
+        for (BillRoadUsage ru : roadUsages) {
+            // If the BillRoadUsage contains a ForeignCountryRideId, the
+            // BillRoadUsage's origin is not from this country. The price should
+            // be retrieved from the RAD database. If the price could not be 
+            // found, an exception is thrown.
+            // If the BillRoadUsage does not contain a ForeignCountryRideId,the 
+            // BillRoadUsage's origin is from this country. Calculate the cost
+            // by the distance multiplied by the cost of the RoadType's rate.
             if (ru.getForeignCountryRideId() != null) {
                 ForeignCountryRide foreignCountryRide;
                 foreignCountryRide = this.foreignCountryManager.
@@ -94,39 +93,52 @@ public class BillManager {
                 }
             } else {
                 Rate rate = this.rateDAO.find(ru.getRoadType());
+                ru.setRate(rate.getPrice());
                 ruPrice = ru.getKm() * rate.getPrice();
             }
             
             ru.setPrice(ruPrice);
             totalPrice += ruPrice;
         }
-        // Check if bill exicts in Database.
-        Bill temp = this.findBillWithCartracker(cartrackerId, month, year);
-        
-        if(temp == null){
-            // if null, create new bill.
-            temp = new Bill(person, roadUsages, totalPrice, cartrackerId,
-                month, year);
-            this.billDao.create(temp);
-        } else {
-            // else edit bill in database.
-            temp.setRoadUsages(roadUsages);
-            temp.setTotalPrice(totalPrice);
-            this.billDao.edit(temp);
-        }      
-        return temp;
-    }
 
+        // Check if bill exicts in the database.
+        Bill bill = this.findBillWithCartracker(cartrackerId, month, year);
+        
+        // Round totalPrice
+        totalPrice = Math.round(totalPrice * 100.0) / 100.0;
+        
+        if(bill == null){            
+            // If the bill was not found, create a new bill entry.
+            bill = new Bill(person,
+                            roadUsages,
+                            totalPrice,
+                            cartrackerId,
+                            month,
+                            year);
+            
+            this.billDao.create(bill);
+        } else {
+            // If the bill already exists in the database, update the RoadUsages
+            // and the Total price.
+            bill.setRoadUsages(roadUsages);
+            bill.setTotalPrice(totalPrice);
+            
+            this.billDao.edit(bill);
+        }
+        
+        return bill;
+    }
+    
     /**
      * Calculate the price for the given roadUsages.
      *
      * @param roadUsages The roadUsages to calculate the price for.
      * @return The price.
      */
-    public Double calculatePrice(List<RoadUsage> roadUsages) {
+    public Double calculatePrice(List<BillRoadUsage> roadUsages) {
         double totalPrice = 0;
 
-        for (RoadUsage ru : roadUsages) {
+        for (BillRoadUsage ru : roadUsages) {
             totalPrice += this.calculatePrice(ru);
         }
 
@@ -139,7 +151,7 @@ public class BillManager {
      * @param roadUsage The roadUsage to calculate the price for.
      * @return The price.
      */
-    private Double calculatePrice(RoadUsage roadUsage) {
+    private Double calculatePrice(BillRoadUsage roadUsage) {
         Rate rate = this.rateDAO.find(roadUsage.getRoadType());
         return roadUsage.getKm() * rate.getPrice();
     }

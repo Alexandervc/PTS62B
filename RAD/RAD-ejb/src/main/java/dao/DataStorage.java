@@ -6,8 +6,6 @@
 package dao;
 
 import domain.Address;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -15,8 +13,6 @@ import javax.inject.Inject;
 import domain.FuelType;
 import domain.Person;
 import domain.RoadType;
-import dto.RoadUsage;
-import service.BillService;
 import service.CarService;
 import service.PersonService;
 import service.RateService;
@@ -57,9 +53,6 @@ public class DataStorage {
             this.rateService.addRate(RATE3, RoadType.C);
             this.rateService.addRate(RATE4, RoadType.D);
             this.rateService.addRate(RATE5, RoadType.E);
-            // TODO
-            // have to be solved.
-            this.rateService.addRate(0.00, RoadType.FOREIGN_COUNTRY_ROAD);
 
             // Create person in db
             Address address1 = new Address("Calçada do Lavra", "12", 
@@ -67,9 +60,9 @@ public class DataStorage {
             Address address2 = new Address("Calçada do Lavra", "14", 
                     "1150-208", "Lisboa");
             Person p1 = this.personService.addPerson("Linda", "van Engelen", 
-                    "LMJC", address1);
+                    "LMJC", "Linda1", "admin", address1);
             Person p2 = this.personService.addPerson("Fernando", "Lameirinhas", 
-                    "FL", address2);
+                    "FL", "Fernando1", "admin", address2);
             
             String cartrackerId1 = "PT123456789";
             String cartrackerId2 = "PT112233444";
