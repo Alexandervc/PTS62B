@@ -6,6 +6,15 @@ import domain.ListBoxDate;
 import domain.Person;
 import domain.RoadType;
 import dto.BillRoadUsage;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -13,10 +22,21 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.primefaces.context.RequestContext;
 import service.BillService;
 import service.CarPositionService;
@@ -114,6 +134,110 @@ public class InvoiceBean {
                 this.session.getPersonId(), this.month, this.year);
     }
     
+    public void generatePdf(Bill bill) {
+        String name = this.session.getPersonName();
+        String address = this.session.getPerson().getAddress().toString();
+        String fileName = "invoice_" + this.year + "-" + this.month + "_" + bill.getCartrackerId() + ".pdf";         
+        File outputPath = new File("C:\\Proftaak\\invoices\\" + fileName);
+        
+        System.out.println("Generating pdf: " + fileName);
+        System.out.println("Date generate: " + this.year + " - " + this.month);
+        
+        try {
+            //Create pdf
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage();
+
+            //Adding page to document
+            document.addPage(page);
+
+            //Adding font to document
+            PDFont font = PDType1Font.HELVETICA;
+            PDFont fontBold = PDType1Font.HELVETICA_BOLD;
+        
+            //Retrieve image to be added to the PDF             
+            File brand = new File("C:\\Proftaak\\rekeningrijden.png");
+            PDImageXObject imageObject = PDImageXObject.createFromFileByContent(brand, document);
+
+            //Define the content stream
+            //A4 size pixels 75 dpi: 620 x 877
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            
+            //Draw brand image
+            contentStream.drawImage(imageObject, 238, 740, 144, 38);
+            
+            //Keep track of yposition
+            Float ypos = 700F;
+            
+            //Info
+            this.writeText(contentStream, font, 11, 75F, ypos, "Name:");
+            this.writeText(contentStream, font, 11, 175F, ypos, name);
+            ypos -= 15;
+            this.writeText(contentStream, font, 11, 75F, ypos, "Address:");
+            this.writeText(contentStream, font, 11, 175F, ypos, address);
+            ypos -= 15;
+            this.writeText(contentStream, font, 11, 75F, ypos, "Cartracker:");
+            this.writeText(contentStream, font, 11, 175F, ypos, 
+                    bill.getCartrackerId());            
+            ypos -= 15;
+            this.writeText(contentStream, font, 11, 75F, ypos, "Fuel:");
+            this.writeText(contentStream, font, 11, 175F, ypos, 
+                    this.getFuel(bill.getCartrackerId()));
+            ypos -= 30;
+            
+            //Invoice title
+            this.writeText(contentStream, font, 16, 75F, ypos, "Invoice");
+            ypos -= 25;
+            
+            //Invoice
+            this.writeText(contentStream, fontBold, 11, 75F, ypos, "RoadType");
+            this.writeText(contentStream, fontBold, 11, 200F, ypos, "RoadName");
+            this.writeText(contentStream, fontBold, 11, 325F, ypos, "Km");
+            this.writeText(contentStream, fontBold, 11, 400F, ypos, "Price/km");
+            this.writeText(contentStream, fontBold, 11, 475F, ypos, "Price");
+            ypos -= 15;
+            
+            if (bill.getRoadUsages().size() > 0) {                
+                for (BillRoadUsage ru : bill.getRoadUsages()) {
+
+                    contentStream.drawLine(75, ypos+11, 545, ypos+11);
+                    this.writeText(contentStream, font, 11, 75F, ypos, this.getRoadType(ru));
+                    this.writeText(contentStream, font, 11, 200F, ypos, ru.getRoadName());
+                    this.writeText(contentStream, font, 11, 325F, ypos, this.getKm(ru));
+                    this.writeText(contentStream, font, 11, 400F, ypos, this.getRate(ru));
+                    this.writeText(contentStream, font, 11, 475F, ypos, this.getPrice(ru));
+                    ypos -= 15;
+                }
+            }
+            
+            contentStream.drawLine(75, ypos+11, 545, ypos+11);
+            this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
+            this.writeText(contentStream, font, 11, 475F, ypos, this.getTotalPrice(bill));
+            
+            //Close content stream
+            contentStream.close();
+            
+            //Save the PDF
+            OutputStream output = new FileOutputStream(outputPath); 
+            document.save(output);
+            document.close();
+            
+            System.out.println("Pdf done");
+        } catch (IOException ex) {
+            Logger.getLogger(InvoiceBean.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    
+    public void writeText(PDPageContentStream contentStream, PDFont font, 
+            Integer fontsize, Float x, Float y, String text) 
+            throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(font, fontsize);
+        contentStream.newLineAtOffset(x, y);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
+    
     /**
      * Listener for date dropdown menu.
      */
@@ -124,6 +248,8 @@ public class InvoiceBean {
         cal.add(Calendar.MONTH, -index);
         this.year = cal.get(Calendar.YEAR);
         this.month = cal.get(Calendar.MONTH) + 1;
+        
+        System.out.println(this.year + " - " + this.month);
         
         //Get all bills.
         this.generateBills();
