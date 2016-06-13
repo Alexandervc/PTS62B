@@ -77,7 +77,7 @@ public class InvoiceBean {
             m_cal.add(Calendar.MONTH, -m);
             int m_year = m_cal.get(Calendar.YEAR);
             String m_month_string = m_cal.getDisplayName(
-                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+                    Calendar.MONTH, Calendar.LONG, this.locale);
 
             //Add date to list.
             String index = Integer.toString(m);
@@ -99,6 +99,7 @@ public class InvoiceBean {
      * Generate bills.
      */
     public void generateBills() {
+        this.bills = new ArrayList<>();
         //Get all bills.
         for (CarDto car : this.cars) {
             this.bills.add(this.client.getBill(car.getCartrackerId(), 
