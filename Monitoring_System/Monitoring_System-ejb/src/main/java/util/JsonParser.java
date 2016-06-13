@@ -1,50 +1,37 @@
-package managedbeans;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package util;
 
 import com.google.gson.Gson;
-import common.domain.System;
 import common.domain.Test;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map.Entry;
-import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedBean;
-import service.MonitoringService;
+import java.util.Map;
 
 /**
  *
- * @author Melanie.
+ * @author Edwin
  */
-@ManagedBean
-@RequestScoped
-public class MonitoringBean implements Serializable  {
-    @EJB(beanName="monitoring")
-    private MonitoringService service;
-    
-    private List<common.domain.System> retrieveSystems;
+public class JsonParser {
     
     /**
-     * Empty constructor for sonarqube.
+     * Due to nature of the method should practically only be used after 
+     * MonitoringService.retrieveTests
+     * @param tests The list of tests that has to be parsed.
+     * @param sys The system that the tests are from
+     * @return A JSON string of a map, of entries, with 2 strings.
      */
-    public MonitoringBean() {
-        // Comment for sonarqube.
-    }
-    
-    /**
-     * Get entries for system.
-     * 
-     * @param sys.
-     * @return List of entries.
-     */
-    public List<Entry<String, String>> getEntriesForSystem(
+    public static List<Map.Entry<String, String>> parseSystemTests(
+            List<List<Test>> tests,
             common.domain.System sys) {
         List map = new ArrayList();
-        List<List<Test>> tests = this.service.retrieveTests(sys);
-        Gson gson = new Gson();                    
 
+        Gson gson = new Gson();                    
 
         for (List<Test> list_t : tests) { 
             List<Object> params = new ArrayList<>();
@@ -135,13 +122,4 @@ public class MonitoringBean implements Serializable  {
         
         return map;
     }
-    
-    /**
-     * Gets the systems that can be monitored.
-     * @return The list of systems.
-     */
-    public List<System> getRetrieveSystems() {        
-        this.retrieveSystems = this.service.retrieveSystems();
-        return new ArrayList<>(this.retrieveSystems);
-    }       
 }

@@ -5,8 +5,11 @@
  */
 package data.jms;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -18,6 +21,7 @@ import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
+import service.websockets.MonitoringServerSockets;
 
 /**
  *
@@ -43,6 +47,9 @@ public class CheckRequestSender {
     
     @Resource(lookup = "jms/LMS/queue")
     private Destination queue;
+    
+    @Inject
+    private MonitoringServerSockets sockets;
 
     
       
@@ -68,5 +75,24 @@ public class CheckRequestSender {
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
+        
+        try {
+            this.sockets.updateMonitoring();
+        } catch (IOException ex) {
+           LOGGER.log(Level.SEVERE, null, ex);
+        } 
+        
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    sockets.updateMonitoring();
+                } catch (IOException ex) {
+                   LOGGER.log(Level.SEVERE, null, ex);
+                } 
+            }
+        }, 4*60*1000);
+        
     }
 }
