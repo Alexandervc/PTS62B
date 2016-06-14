@@ -111,8 +111,8 @@ public class InvoiceBean {
         String month_string = new DateFormatSymbols(Locale.ENGLISH)
                 .getMonths()[this.session.getMonth()-1];
         
-        String fileName = "invoice_" + this.session.getYear() + "-" + 
-                this.session.getMonth()+ "_" + bill.getCartrackerId() + ".pdf";         
+        String fileName = "invoice_" + bill.getCartrackerId() + "_" + 
+                this.session.getYear() + "-" + this.session.getMonth() + ".pdf";         
         File outputPath = new File("C:\\Proftaak\\invoices\\" + fileName);
         
         System.out.println("Generating pdf: " + fileName);
