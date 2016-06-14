@@ -13,7 +13,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
- *
+ * Session bean to manage invoicebean data.
+ * 
  * @author Linda
  */
 @Named
@@ -57,7 +58,7 @@ public class InvoiceSession implements Serializable {
     }
 
     public Long getPersonId() {
-        return personId;
+        return this.personId;
     }
 
     public void setPersonId(Long personId) {
@@ -92,7 +93,7 @@ public class InvoiceSession implements Serializable {
     }
     
     public int getYear() {
-        return year;
+        return this.year;
     }
 
     public void setYear(int year) {
@@ -100,7 +101,7 @@ public class InvoiceSession implements Serializable {
     }
 
     public int getMonth() {
-        return month;
+        return this.month;
     }
 
     public void setMonth(int month) {

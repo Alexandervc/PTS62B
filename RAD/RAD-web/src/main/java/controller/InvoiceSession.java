@@ -85,7 +85,7 @@ public class InvoiceSession implements Serializable {
     }
 
     public int getYear() {
-        return year;
+        return this.year;
     }
 
     public void setYear(int year) {
@@ -93,7 +93,7 @@ public class InvoiceSession implements Serializable {
     }
 
     public int getMonth() {
-        return month;
+        return this.month;
     }
 
     public void setMonth(int month) {

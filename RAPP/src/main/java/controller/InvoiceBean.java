@@ -156,7 +156,7 @@ public class InvoiceBean {
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     this.getCar(bill.getCartrackerId()).getFuel().toString());
             ypos -= 15F;
-            this.writeText(contentStream, font, 11, 75F, ypos, "Date:");            
+            this.writeText(contentStream, font, 11, 75F, ypos, "Date:");
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     monthString + " " + this.session.getYear());
             ypos -= 30F;
@@ -175,8 +175,8 @@ public class InvoiceBean {
             
             if (bill.getRoadUsages().size() > 0) {                
                 for (BillRoadUsage ru : bill.getRoadUsages()) {
-                    Float ypos_line = ypos + 11F;
-                    contentStream.drawLine(75F, ypos_line, 545F, ypos_line);
+                    Float yposLine = ypos + 11F;
+                    contentStream.drawLine(75F, yposLine, 545F, yposLine);
                     this.writeText(contentStream, font, 11, 75F, ypos, 
                             this.getRoadType(ru));
                     this.writeText(contentStream, font, 11, 200F, ypos, 
@@ -191,8 +191,8 @@ public class InvoiceBean {
                 }
             }
             
-            Float ypos_line = ypos + 11F;
-            contentStream.drawLine(75F, ypos_line, 545F, ypos_line);
+            Float yposLine = ypos + 11F;
+            contentStream.drawLine(75F, yposLine, 545F, yposLine);
             this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
             this.writeText(contentStream, font, 11, 475F, ypos, 
                     this.getTotalPrice(bill));
@@ -269,7 +269,7 @@ public class InvoiceBean {
                 return temp;
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**

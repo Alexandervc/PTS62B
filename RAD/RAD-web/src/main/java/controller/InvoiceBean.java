@@ -160,7 +160,7 @@ public class InvoiceBean {
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     this.getFuel(bill.getCartrackerId()));
             ypos -= 15F;
-            this.writeText(contentStream, font, 11, 75F, ypos, "Date:");            
+            this.writeText(contentStream, font, 11, 75F, ypos, "Date:");
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     month_string + " " + this.session.getYear());
             ypos -= 30F;
@@ -179,8 +179,8 @@ public class InvoiceBean {
             
             if (bill.getRoadUsages().size() > 0) {                
                 for (BillRoadUsage ru : bill.getRoadUsages()) {
-                    Float ypos_line = ypos + 11F;
-                    contentStream.drawLine(75F, ypos_line, 545, ypos_line);
+                    Float yposLine = ypos + 11F;
+                    contentStream.drawLine(75F, yposLine, 545F, yposLine);
                     this.writeText(contentStream, font, 11, 75F, ypos, 
                             this.getRoadType(ru));
                     this.writeText(contentStream, font, 11, 200F, ypos, 
@@ -195,8 +195,8 @@ public class InvoiceBean {
                 }
             }
             
-            Float ypos_line = ypos + 11F;
-            contentStream.drawLine(75F, ypos_line, 545F, ypos_line);
+            Float yposLine = ypos + 11F;
+            contentStream.drawLine(75F, yposLine, 545F, yposLine);
             this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
             this.writeText(contentStream, font, 11, 475F, ypos, 
                     this.getTotalPrice(bill));
