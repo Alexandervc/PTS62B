@@ -2,21 +2,17 @@ package controller;
 
 import domain.Bill;
 import domain.Car;
-import domain.ListBoxDate;
 import domain.Person;
 import domain.RoadType;
 import dto.BillRoadUsage;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -26,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -35,8 +30,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
 import org.primefaces.context.RequestContext;
 import service.BillService;
 import service.CarPositionService;
@@ -67,14 +60,6 @@ public class InvoiceBean {
     private InvoiceSession session;
 
     private List<Bill> bills;
-       
-    //Current month and year.
-    private int year;
-    private int month;
-    
-    //Dates for combobox.
-    private String dateIndex;
-    private List<ListBoxDate> dates;
     
     //Locale Nederland
     private Locale locale;
@@ -93,36 +78,14 @@ public class InvoiceBean {
         //Set locale
         this.locale = new Locale("nl", "NL");
 
-        //Setup dates.
-        //Current date.
-        GregorianCalendar cal = new GregorianCalendar();
-        this.year = cal.get(GregorianCalendar.YEAR);
-        this.month = cal.get(GregorianCalendar.MONTH) + 1;
-        this.dateIndex = "0";
-
-        //Create list with ListBoxDate's.
-        this.dates = new ArrayList<>();
-
-        for (int m = 0; m < 25; m++) {
-            GregorianCalendar m_cal = new GregorianCalendar();
-            m_cal.add(Calendar.MONTH, -m);
-            int m_year = m_cal.get(Calendar.YEAR);
-            String m_month_string = m_cal.getDisplayName(
-                    Calendar.MONTH, Calendar.LONG, this.locale);
-
-            //Add date to list.
-            String index = Integer.toString(m);
-            String value = m_month_string + " " + m_year;            
-            this.dates.add(new ListBoxDate(value, index));            
-        }        
-
         //Generate bills for person.
         this.bills = new ArrayList<>();
         this.generateBills();
         
         //Setup maps
         RequestContext requestContext = RequestContext.getCurrentInstance();  
-        requestContext.execute("setDate(" + month + ", " + year + ")");
+        requestContext.execute("setDate(" + this.session.getMonth() + ", " + 
+                this.session.getYear() + ")");
     }
     
     /**
@@ -130,18 +93,21 @@ public class InvoiceBean {
      */
     public void generateBills() {
         //Get all bills.
-        this.bills = this.billService.generateBills(
-                this.session.getPersonId(), this.month, this.year);
+        this.bills = this.billService.generateBills(this.session.getPersonId(), 
+                this.session.getMonth(), this.session.getYear());
     }
     
     public void generatePdf(Bill bill) {
         String name = this.session.getPersonName();
         String address = this.session.getPerson().getAddress().toString();
-        String fileName = "invoice_" + this.year + "-" + this.month + "_" + bill.getCartrackerId() + ".pdf";         
+        String month_string = new DateFormatSymbols(Locale.ENGLISH)
+                .getMonths()[this.session.getMonth()-1];
+        
+        String fileName = "invoice_" + this.session.getYear() + "-" + 
+                this.session.getMonth()+ "_" + bill.getCartrackerId() + ".pdf";         
         File outputPath = new File("C:\\Proftaak\\invoices\\" + fileName);
         
         System.out.println("Generating pdf: " + fileName);
-        System.out.println("Date generate: " + this.year + " - " + this.month);
         
         try {
             //Create pdf
@@ -157,11 +123,13 @@ public class InvoiceBean {
         
             //Retrieve image to be added to the PDF             
             File brand = new File("C:\\Proftaak\\rekeningrijden.png");
-            PDImageXObject imageObject = PDImageXObject.createFromFileByContent(brand, document);
+            PDImageXObject imageObject = PDImageXObject
+                    .createFromFileByContent(brand, document);
 
             //Define the content stream
             //A4 size pixels 75 dpi: 620 x 877
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            PDPageContentStream contentStream = 
+                    new PDPageContentStream(document, page);
             
             //Draw brand image
             contentStream.drawImage(imageObject, 238, 740, 144, 38);
@@ -183,6 +151,10 @@ public class InvoiceBean {
             this.writeText(contentStream, font, 11, 75F, ypos, "Fuel:");
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     this.getFuel(bill.getCartrackerId()));
+            ypos -= 15;
+            this.writeText(contentStream, font, 11, 75F, ypos, "Date:");            
+            this.writeText(contentStream, font, 11, 175F, ypos, 
+                    month_string + " " + this.session.getYear());
             ypos -= 30;
             
             //Invoice title
@@ -242,21 +214,20 @@ public class InvoiceBean {
      * Listener for date dropdown menu.
      */
     public void changeDate() {
-        int index = Integer.parseInt(this.dateIndex);
+        int index = Integer.parseInt(this.session.getDateIndex());
         
         GregorianCalendar cal = new GregorianCalendar();
         cal.add(Calendar.MONTH, -index);
-        this.year = cal.get(Calendar.YEAR);
-        this.month = cal.get(Calendar.MONTH) + 1;
-        
-        System.out.println(this.year + " - " + this.month);
+        this.session.setYear(cal.get(Calendar.YEAR));
+        this.session.setMonth(cal.get(Calendar.MONTH) + 1);
         
         //Get all bills.
         this.generateBills();
         
         //Setup maps
         RequestContext requestContext = RequestContext.getCurrentInstance();  
-        requestContext.execute("setDate(" + month + ", " + year + ")");
+        requestContext.execute("setDate(" + this.session.getMonth() + ", " + 
+                this.session.getYear() + ")");
         requestContext.execute("setupEvents()");
     }
     
@@ -340,21 +311,9 @@ public class InvoiceBean {
     public List<Bill> getBills() {
         return new ArrayList<>(this.bills);
     }
-
-    public String getDateIndex() {
-        return this.dateIndex;
-    }
-
-    public void setDateIndex(String dateIndex) {
-        this.dateIndex = dateIndex;
-    }
-
-    public List<ListBoxDate> getDates() {
-        return new ArrayList<>(this.dates);
-    }
     
     public String getCoordinates(String cartrackerId) {
         return this.positionService.getCoordinates(cartrackerId, 
-                this.month, this.year);
+                this.session.getMonth(), this.session.getYear());
     }
 }
