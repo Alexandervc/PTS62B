@@ -27,14 +27,14 @@
                             <o:form includeViewParams="true">
                                 <h:selectOneMenu class="form-control" 
                                                  id="dateBox1"
-                                                 value="#{invoiceBean.dateIndex}">                                    
-                                    <f:selectItems value="#{invoiceBean.dates}"
+                                                 value="#{invoiceSession.dateIndex}">                                    
+                                    <f:selectItems value="#{invoiceSession.dates}"
                                                    var="date" 
                                                    itemValue="#{date.months}" 
                                                    itemLabel="#{date.date}">
                                     </f:selectItems>
                                     <f:ajax listener="#{invoiceBean.changeDate()}"
-                                            render="bills"/>
+                                            render=":bills :pdfForm"/>
                                 </h:selectOneMenu> 
                             </o:form>
                         </div>
@@ -110,8 +110,19 @@
                                                                         </tr>
                                                                     </tfoot>
                                                                 </table>
+                                                                
+                                                                <o:form id="pdfForm">
+                                                                    <h:commandButton value="Get PDF"
+                                                                            type="submit"
+                                                                            action="#{invoiceBean.generatePdf(bill)}" 
+                                                                            class="btn btn-default">
+                                                                    </h:commandButton>
+                                                                </o:form>
 
-                                                                <div id="map_#{bill.cartrackerId}" class="map">
+                                                                <br/>
+
+                                                                <div id="map_#{bill.cartrackerId}" 
+                                                                     class="map">
                                                                 </div>
 
                                                             </div>
