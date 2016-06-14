@@ -5,10 +5,15 @@ import domain.Car;
 import domain.Person;
 import domain.RoadType;
 import dto.BillRoadUsage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -22,14 +27,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.omnifaces.util.Faces;
 import org.primefaces.context.RequestContext;
 import service.BillService;
 import service.CarPositionService;
@@ -97,6 +106,10 @@ public class InvoiceBean {
                 this.session.getMonth(), this.session.getYear());
     }
     
+    /**
+     * Generate pdf for given bill.
+     * @param bill choosen bill.
+     */
     public void generatePdf(Bill bill) {
         String name = this.session.getPersonName();
         String address = this.session.getPerson().getAddress().toString();
@@ -171,8 +184,8 @@ public class InvoiceBean {
             
             if (bill.getRoadUsages().size() > 0) {                
                 for (BillRoadUsage ru : bill.getRoadUsages()) {
-
-                    contentStream.drawLine(75, ypos+11, 545, ypos+11);
+                    Float ypos_line = ypos + 11;
+                    contentStream.drawLine(75, ypos_line, 545, ypos_line);
                     this.writeText(contentStream, font, 11, 75F, ypos, this.getRoadType(ru));
                     this.writeText(contentStream, font, 11, 200F, ypos, ru.getRoadName());
                     this.writeText(contentStream, font, 11, 325F, ypos, this.getKm(ru));
@@ -182,7 +195,8 @@ public class InvoiceBean {
                 }
             }
             
-            contentStream.drawLine(75, ypos+11, 545, ypos+11);
+            Float ypos_line = ypos + 11;
+            contentStream.drawLine(75, ypos_line, 545, ypos_line);
             this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
             this.writeText(contentStream, font, 11, 475F, ypos, this.getTotalPrice(bill));
             
@@ -193,14 +207,28 @@ public class InvoiceBean {
             OutputStream output = new FileOutputStream(outputPath); 
             document.save(output);
             document.close();
+            output.close(); 
+            
+            InputStream input = new FileInputStream(outputPath);
+            this.download(IOUtils.toByteArray(input), "application/pdf", fileName);
             
             System.out.println("Pdf done");
         } catch (IOException ex) {
             Logger.getLogger(InvoiceBean.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
-    
-    public void writeText(PDPageContentStream contentStream, PDFont font, 
+
+    /**
+     * Write a line in the given pdf file.
+     * @param contentStream pdf file.
+     * @param font font style.
+     * @param fontsize font size.
+     * @param x pixels of page.
+     * @param y pixels of page.
+     * @param text text to write.
+     * @throws IOException if process fails.
+     */
+    private void writeText(PDPageContentStream contentStream, PDFont font, 
             Integer fontsize, Float x, Float y, String text) 
             throws IOException {
         contentStream.beginText();
@@ -208,6 +236,28 @@ public class InvoiceBean {
         contentStream.newLineAtOffset(x, y);
         contentStream.showText(text);
         contentStream.endText();
+    }
+
+    /**
+     * Put file in downloads folder by sending response.
+     * @param exportContent file to byte array.
+     * @param contentType type of content.
+     * @param fileName name of file.
+     * @throws IOException if process fails.
+     */
+    public void download(byte[] exportContent, String contentType, String fileName) throws IOException {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+
+        ec.responseReset(); 
+        ec.setResponseContentType(contentType);
+        ec.setResponseContentLength(exportContent.length);
+        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+        OutputStream output = ec.getResponseOutputStream();        
+        output.write(exportContent);
+
+        fc.responseComplete();
     }
     
     /**
