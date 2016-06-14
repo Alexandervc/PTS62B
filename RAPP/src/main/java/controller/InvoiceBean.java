@@ -37,7 +37,8 @@ import service.CarPositionService;
 import service.rest.clients.BillClient;
 
 /**
- *
+ * Request scoped bean for invoice page.
+ * 
  * @author Linda
  */
 @Named
@@ -261,7 +262,12 @@ public class InvoiceBean {
         fc.responseComplete();
     }
     
-    public List<BillDto> getBillFromCar(String cartracker){
+    /**
+     * Get bills for car.
+     * @param cartracker id.
+     * @return list of bills.
+     */
+    public List<BillDto> getBillsFromCar(String cartracker){
         List<BillDto> temp = new ArrayList<>();
         for(BillDto bill : this.bills){
             if(bill.getCartrackerId().equals(cartracker)){
@@ -359,14 +365,25 @@ public class InvoiceBean {
         return formatter.format(bill.getTotalPrice());
     }
 
+    /**
+     * Get all bills.
+     * @return list of bills.
+     */
     public List<BillDto> getBills() {
         return new ArrayList<>(this.bills);
     }
 
+    /**
+     * Get all cars.
+     * @return list of cars.
+     */
     public List<CarDto> getCars() {
         return new ArrayList<>(this.cars);
     }
     
+    /**
+     * Get car for cartracker id.
+     */
     public CarDto getCar(String cartrackerId) {
         for (CarDto car : this.getCars()) {
             if (car.getCartrackerId().equals(cartrackerId)) {
@@ -377,6 +394,11 @@ public class InvoiceBean {
         return null;
     }
 
+    /**
+     * Get coordinates for cartracker id.
+     * @param cartrackerId id.
+     * @return coordinates in json format.
+     */
     public String getCoordinates(String cartrackerId) {
         return this.positionService.getCoordinates(cartrackerId, 
                 this.session.getMonth(), this.session.getYear());

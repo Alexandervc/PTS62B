@@ -30,7 +30,7 @@ public class InvoiceSession implements Serializable {
     //Dates for combobox.
     private String dateIndex;
     private List<ListBoxDate> dates;
-    
+
     @PostConstruct
     public void setup() {
                 //Setup dates.
@@ -44,15 +44,15 @@ public class InvoiceSession implements Serializable {
         this.dates = new ArrayList<>();
 
         for (int m = 0; m < 25; m++) {
-            GregorianCalendar m_cal = new GregorianCalendar();
-            m_cal.add(Calendar.MONTH, -m);
-            int m_year = m_cal.get(Calendar.YEAR);
-            String m_month_string = m_cal.getDisplayName(
+            GregorianCalendar mCal = new GregorianCalendar();
+            mCal.add(Calendar.MONTH, -m);
+            int mYear = mCal.get(Calendar.YEAR);
+            String mMonthString = mCal.getDisplayName(
                     Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
 
             //Add date to list.
             String index = Integer.toString(m);
-            String value = m_month_string + " " + m_year;            
+            String value = mMonthString + " " + mYear;            
             this.dates.add(new ListBoxDate(value, index));            
         } 
     }

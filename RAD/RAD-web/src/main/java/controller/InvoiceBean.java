@@ -363,10 +363,19 @@ public class InvoiceBean {
         return formatter.format(bill.getTotalPrice());
     }
 
+    /**
+     * Get all bills.
+     * @return list of bills.
+     */
     public List<Bill> getBills() {
         return new ArrayList<>(this.bills);
     }
     
+    /**
+     * Get coordinates for cartracker id.
+     * @param cartrackerId id.
+     * @return coordinates in json format.
+     */
     public String getCoordinates(String cartrackerId) {
         return this.positionService.getCoordinates(cartrackerId, 
                 this.session.getMonth(), this.session.getYear());
