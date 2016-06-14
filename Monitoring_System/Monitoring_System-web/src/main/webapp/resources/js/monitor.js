@@ -64,10 +64,7 @@ var wsUri = getRootUri() +
     "/Monitoring_System-web/endpoint";
     function getRootUri() {
         //192.168.24.70
-        return "ws://" + (document.location.hostname == "" ?
-        "localhost" : document.location.hostname) + ":" +
-        (document.location.port == "" ? "8080" :
-        document.location.port);
+        return "ws://localhost:8080";
     }
 
 var websocket;
