@@ -81,6 +81,7 @@ public class InvoiceBean {
      * Generate bills.
      */
     public void generateBills() {
+        this.bills = new ArrayList<>();
         //Get all bills.
         for (CarDto car : this.cars) {
             this.bills.add(this.client.getBill(car.getCartrackerId(), 
