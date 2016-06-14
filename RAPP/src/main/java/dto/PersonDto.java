@@ -37,6 +37,15 @@ public class PersonDto implements Serializable{
         this.address = address;
         this.linkCarDto = "/persons/" + this.id + "/cars";
     }
+    
+    /**
+     * Empty constructor for converting to and from json.
+     * @deprecated Only for converting.
+     */
+    @Deprecated
+    public PersonDto() {
+        // Empty constructor for converting to and from json
+    }
 
     public Long getId() {
         return this.id;

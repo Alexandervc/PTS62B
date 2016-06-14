@@ -69,12 +69,11 @@ public class PersonService {
     }
     
     /**
-     * Find person by username and password.
+     * Find person by username.
      * @param username of person.
-     * @param password of person.
      * @return Found person, otherwise null.
      */
-    public Person findPersonLogin(String username, String password){
-        return this.personManager.findPersonLogin(username, password);
+    public Person findPersonByUsername(String username){
+        return this.personManager.findPersonByUsername(username);
     }
 }

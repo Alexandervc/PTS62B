@@ -1,8 +1,10 @@
 package business;
 
 import dao.PersonDao;
+import dao.UserGroupDao;
 import domain.Address;
 import domain.Person;
+import domain.UserGroup;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,9 +16,13 @@ import javax.inject.Inject;
  */
 @Stateless
 public class PersonManager {
+    private static final String userGroupName = "user";
 
     @Inject
     private PersonDao personDAO;
+    
+    @Inject
+    private UserGroupDao userGroupDao;
 
     /**
      * Create person in Database.
@@ -32,6 +38,15 @@ public class PersonManager {
             Address address) {
         Person person = new Person(firstname, lastname, initials, username,
                 password, address);
+        
+        // Add security group
+        UserGroup userGroup = (UserGroup) this.userGroupDao.find(userGroupName);
+        if(userGroup == null) {
+            userGroup = new UserGroup(userGroupName);
+        }
+        person.addGroup(userGroup);
+        
+        // Create person
         this.personDAO.create(person);
 
         return person;
@@ -86,13 +101,12 @@ public class PersonManager {
     }
 
     /**
-     * Find person by username and password.
+     * Find person by username.
      * @param username of person.
-     * @param password of person.
      * @return Found person, otherwise null.
      */
-    public Person findPersonLogin(String username, String password) {
-        return this.personDAO.findPersonByLogin(username, password);
+    public Person findPersonByUsername(String username) {
+        return this.personDAO.findPersonByUsername(username);
     }
 
     /**

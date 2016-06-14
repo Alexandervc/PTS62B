@@ -21,7 +21,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-import service.CarPositionService;
 import service.rest.clients.BillClient;
 
 /**
@@ -37,9 +36,6 @@ public class InvoiceBean {
 
     @Inject
     private BillClient client;
-    
-    @Inject
-    private CarPositionService positionService;
 
     private List<BillDto> bills;
     private List<CarDto> cars;
@@ -230,10 +226,5 @@ public class InvoiceBean {
 
     public List<ListBoxDate> getDates() {
         return new ArrayList<>(this.dates);
-    }
-
-    public String getCoordinates(String cartrackerId) {
-        return this.positionService
-                .getCoordinates(cartrackerId, this.month, this.year);
     }
 }
