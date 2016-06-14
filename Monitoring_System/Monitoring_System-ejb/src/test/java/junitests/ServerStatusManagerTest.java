@@ -14,7 +14,7 @@ import org.jglue.cdiunit.CdiRunner;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
-import util.JsonParser;
+import util.TestsParser;
 
 /**
  * Provides the unit tests for the ServerStatusManager.

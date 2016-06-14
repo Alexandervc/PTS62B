@@ -14,10 +14,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Parser that turns tests into a structure that can be turned into
+ * JSON.
  * @author Edwin
  */
-public class JsonParser {
+public class TestsParser {
+
+    private TestsParser() {
+        // Private constructor to hide public one.
+    }
+    
+    
     
     /**
      * Due to nature of the method should practically only be used after 
