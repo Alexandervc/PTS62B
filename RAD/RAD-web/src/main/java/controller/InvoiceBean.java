@@ -112,7 +112,7 @@ public class InvoiceBean {
                 .getMonths()[this.session.getMonth()-1];
         
         String fileName = "invoice_" + bill.getCartrackerId() + "_" + 
-                this.session.getYear() + "-" + this.session.getMonth() + ".pdf";         
+                this.session.getYear() + "-" + this.session.getMonth() + ".pdf";
         File outputPath = new File("C:\\Proftaak\\invoices\\" + fileName);
         
         System.out.println("Generating pdf: " + fileName);
@@ -140,7 +140,7 @@ public class InvoiceBean {
                     new PDPageContentStream(document, page);
             
             //Draw brand image
-            contentStream.drawImage(imageObject, 238, 740, 144, 38);
+            contentStream.drawImage(imageObject, 238F, 740F, 144F, 38F);
             
             //Keep track of yposition
             Float ypos = 700F;
@@ -148,26 +148,26 @@ public class InvoiceBean {
             //Info
             this.writeText(contentStream, font, 11, 75F, ypos, "Name:");
             this.writeText(contentStream, font, 11, 175F, ypos, name);
-            ypos -= 15;
+            ypos -= 15F;
             this.writeText(contentStream, font, 11, 75F, ypos, "Address:");
             this.writeText(contentStream, font, 11, 175F, ypos, address);
-            ypos -= 15;
+            ypos -= 15F;
             this.writeText(contentStream, font, 11, 75F, ypos, "Cartracker:");
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     bill.getCartrackerId());            
-            ypos -= 15;
+            ypos -= 15F;
             this.writeText(contentStream, font, 11, 75F, ypos, "Fuel:");
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     this.getFuel(bill.getCartrackerId()));
-            ypos -= 15;
+            ypos -= 15F;
             this.writeText(contentStream, font, 11, 75F, ypos, "Date:");            
             this.writeText(contentStream, font, 11, 175F, ypos, 
                     month_string + " " + this.session.getYear());
-            ypos -= 30;
+            ypos -= 30F;
             
             //Invoice title
             this.writeText(contentStream, font, 16, 75F, ypos, "Invoice");
-            ypos -= 25;
+            ypos -= 25F;
             
             //Invoice
             this.writeText(contentStream, fontBold, 11, 75F, ypos, "RoadType");
@@ -175,25 +175,31 @@ public class InvoiceBean {
             this.writeText(contentStream, fontBold, 11, 325F, ypos, "Km");
             this.writeText(contentStream, fontBold, 11, 400F, ypos, "Price/km");
             this.writeText(contentStream, fontBold, 11, 475F, ypos, "Price");
-            ypos -= 15;
+            ypos -= 15F;
             
             if (bill.getRoadUsages().size() > 0) {                
                 for (BillRoadUsage ru : bill.getRoadUsages()) {
                     Float ypos_line = ypos + 11F;
-                    contentStream.drawLine(75, ypos_line, 545, ypos_line);
-                    this.writeText(contentStream, font, 11, 75F, ypos, this.getRoadType(ru));
-                    this.writeText(contentStream, font, 11, 200F, ypos, ru.getRoadName());
-                    this.writeText(contentStream, font, 11, 325F, ypos, this.getKm(ru));
-                    this.writeText(contentStream, font, 11, 400F, ypos, this.getRate(ru));
-                    this.writeText(contentStream, font, 11, 475F, ypos, this.getPrice(ru));
-                    ypos -= 15;
+                    contentStream.drawLine(75F, ypos_line, 545, ypos_line);
+                    this.writeText(contentStream, font, 11, 75F, ypos, 
+                            this.getRoadType(ru));
+                    this.writeText(contentStream, font, 11, 200F, ypos, 
+                            ru.getRoadName());
+                    this.writeText(contentStream, font, 11, 325F, ypos, 
+                            this.getKm(ru));
+                    this.writeText(contentStream, font, 11, 400F, ypos, 
+                            this.getRate(ru));
+                    this.writeText(contentStream, font, 11, 475F, ypos, 
+                            this.getPrice(ru));
+                    ypos -= 15F;
                 }
             }
             
             Float ypos_line = ypos + 11F;
-            contentStream.drawLine(75, ypos_line, 545, ypos_line);
+            contentStream.drawLine(75F, ypos_line, 545F, ypos_line);
             this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
-            this.writeText(contentStream, font, 11, 475F, ypos, this.getTotalPrice(bill));
+            this.writeText(contentStream, font, 11, 475F, ypos, 
+                    this.getTotalPrice(bill));
             
             //Close content stream
             contentStream.close();
@@ -205,11 +211,13 @@ public class InvoiceBean {
             output.close(); 
             
             InputStream input = new FileInputStream(outputPath);
-            this.download(IOUtils.toByteArray(input), "application/pdf", fileName);
+            this.download(IOUtils.toByteArray(input), "application/pdf", 
+                    fileName);
             
             System.out.println("Pdf done");
         } catch (IOException ex) {
-            Logger.getLogger(InvoiceBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InvoiceBean.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }        
     }
 
@@ -240,14 +248,16 @@ public class InvoiceBean {
      * @param fileName name of file.
      * @throws IOException if process fails.
      */
-    public void download(byte[] exportContent, String contentType, String fileName) throws IOException {
+    public void download(byte[] exportContent, String contentType, 
+            String fileName) throws IOException {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
 
         ec.responseReset(); 
         ec.setResponseContentType(contentType);
         ec.setResponseContentLength(exportContent.length);
-        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        ec.setResponseHeader("Content-Disposition",
+                "attachment; filename=\"" + fileName + "\"");
 
         OutputStream output = ec.getResponseOutputStream();        
         output.write(exportContent);
