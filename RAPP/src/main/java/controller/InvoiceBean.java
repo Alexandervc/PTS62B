@@ -175,7 +175,7 @@ public class InvoiceBean {
             
             if (bill.getRoadUsages().size() > 0) {                
                 for (BillRoadUsage ru : bill.getRoadUsages()) {
-                    Float ypos_line = ypos + 11;
+                    Float ypos_line = ypos + 11F;
                     contentStream.drawLine(75, ypos_line, 545, ypos_line);
                     this.writeText(contentStream, font, 11, 75F, ypos, this.getRoadType(ru));
                     this.writeText(contentStream, font, 11, 200F, ypos, ru.getRoadName());
@@ -186,7 +186,7 @@ public class InvoiceBean {
                 }
             }
             
-            Float ypos_line = ypos + 11;
+            Float ypos_line = ypos + 11F;
             contentStream.drawLine(75, ypos_line, 545, ypos_line);
             this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
             this.writeText(contentStream, font, 11, 475F, ypos, this.getTotalPrice(bill));
