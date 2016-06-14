@@ -34,7 +34,7 @@ function initMap() {
         var cartrackerId = id.substring(4, id.length);
         
         //Setup API URL
-        var apiurl = "http://192.168.24.72:8080/VS-web/vsapi/cartrackers/" 
+        var apiurl = "http://localhost:8080/VS-web/vsapi/cartrackers/" 
                 + cartrackerId + "/coordinates?month=" + month + "&year="
                 + year;
         
