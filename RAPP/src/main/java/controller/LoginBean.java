@@ -22,7 +22,6 @@ import service.rest.clients.BillClient;
 @Named
 @RequestScoped
 public class LoginBean {
-
     @Inject
     private InvoiceSession session;
     
@@ -34,7 +33,7 @@ public class LoginBean {
     private String loginPassword;
 
     public String getLoginName() {
-        return loginName;
+        return this.loginName;
     }
 
     public void setLoginName(String loginName) {
@@ -42,7 +41,7 @@ public class LoginBean {
     }
 
     public String getLoginPassword() {
-        return loginPassword;
+        return this.loginPassword;
     }
 
     public void setLoginPassword(String loginPassword) {
@@ -50,7 +49,7 @@ public class LoginBean {
     }
 
     public Long getPersonId() {
-        return personId;
+        return this.personId;
     }
 
     public void setPersonId(Long personId) {
@@ -62,13 +61,14 @@ public class LoginBean {
         String password = this.convertPassword(this.loginPassword);
 
         // Get person from RAD
-        PersonDto dto = this.client.getLoginPerson(loginName, password);
+        PersonDto dto = this.client.getLoginPerson(this.loginName, password);
 
         if (dto != null) {
             String redirect = "invoice?faces-redirect=true";
             this.session.setPerson(dto);
             return redirect;
         }
+        
         return "index?faces-redirect=true";
     }
 
