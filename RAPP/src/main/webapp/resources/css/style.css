@@ -97,8 +97,9 @@ textarea {
 .btn-group {
   text-align: right; }
 
-.btn-login {
-  margin-bottom: 20px; }
+.login {
+  text-align: right;
+  margin-bottom: 15px; }
 
 /* -------------------------------- Google API ----------------------------- */
 .chart {
