@@ -18,6 +18,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,9 +43,8 @@ import javax.persistence.OneToMany;
             + "FROM Person p, Car c "
             + "WHERE p.id = c.owner.id "
             + "AND c.cartrackerId = :cartrackerId"),
-    @NamedQuery(name = "Person.findByInlog",
-            query = "SELECT p FROM Person p WHERE p.username = :username "
-            + "and p.password = :password")
+    @NamedQuery(name = "Person.findByUsername",
+            query = "SELECT p FROM Person p WHERE p.username = :username ")
 })
 public class Person implements Serializable {
 
@@ -69,6 +71,14 @@ public class Person implements Serializable {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private List<Car> cars;
+    
+    @ManyToMany (cascade = CascadeType.ALL)
+    @JoinTable(name="person_usergroup",
+        joinColumns = @JoinColumn(name = "person_username", 
+                            referencedColumnName = "username"), 
+        inverseJoinColumns = @JoinColumn(name = "usergroup_groupname", 
+                            referencedColumnName = "groupname"))
+    private List<UserGroup> groups;
 
     /**
      * Empty Contructor.
@@ -78,6 +88,7 @@ public class Person implements Serializable {
     @Deprecated
     public Person() {
         // Empty for JPA.
+        this.groups = new ArrayList<>();
     }
 
     /**
@@ -89,6 +100,7 @@ public class Person implements Serializable {
         this.firstName = firstname;
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
+        this.groups = new ArrayList<>();
     }
 
     /**
@@ -98,7 +110,7 @@ public class Person implements Serializable {
      * @param lastname of person.
      * @param initials of person.
      * @param username of person.
-     * @param password of person.
+     * @param password Hashed password of person.
      * @param address of person.
      */
     public Person(String firstname, String lastname, String initials,
@@ -107,10 +119,11 @@ public class Person implements Serializable {
         this.lastName = lastname;
         this.initials = initials;
         this.username = username;
-        this.password = convertPassword(password);
+        this.password = password;
         this.address = address;
         this.bills = new ArrayList<>();
         this.cars = new ArrayList<>();
+        this.groups = new ArrayList<>();
     }
 
     public Long getId() {
@@ -204,24 +217,18 @@ public class Person implements Serializable {
         this.cars.add(c);
         c.setOwner(this);
     }
-
-    private static String convertPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if (hex.length() == 1) {
-                    sb.append('0');
-                }
-                sb.append(hex);
-            }
-
-            return sb.toString();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
+    
+    /**
+     * Add group for security roles.
+     * @param group The group to add. Cannot be null. Cannot be already added.
+     */
+    public void addGroup(UserGroup group) {
+        if(group == null) {
+            throw new IllegalArgumentException("Group null");
         }
+        if(this.groups.contains(group)) {
+            throw new IllegalArgumentException("Group already added");
+        }
+        this.groups.add(group);
     }
 }

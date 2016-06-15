@@ -6,8 +6,13 @@
 package business;
 
 import dao.PersonDao;
+import dao.UserGroupDao;
 import domain.Address;
 import domain.Person;
+import domain.UserGroup;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import org.jglue.cdiunit.CdiRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,18 +20,24 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for personManager.
  * @author Linda.
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(CdiRunner.class)
 public class PersonManagerTest {
-    
+    @Inject
     private PersonManager manager;
     
     @Mock
+    @Produces
     private PersonDao dao;
+    
+    @Mock
+    @Produces
+    private UserGroupDao userGroupDao;
     
     public PersonManagerTest() {
         // Empty for JPA.
@@ -37,8 +48,8 @@ public class PersonManagerTest {
      */
     @Before
     public void setUp() {
-        this.manager = new PersonManager();
-        this.manager.setPersonDAO(this.dao);
+        //this.manager = new PersonManager();
+        //this.manager.setPersonDAO(this.dao);
         
     }
     
@@ -59,6 +70,9 @@ public class PersonManagerTest {
         String city = "Eindhoven";
         
         Address adres = new Address(streetname, number, zipcode, city);
+        
+        when(this.userGroupDao.find("user")).thenReturn(new UserGroup("user"));
+        
         Person person = this.manager.createPerson(firstname, lastname, initials,
                 username, password, adres);
         

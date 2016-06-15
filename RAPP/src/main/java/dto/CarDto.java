@@ -19,6 +19,15 @@ public class CarDto {
         this.cartrackerId = cartrackerId;
         this.fuel = fuel;
     }
+    
+    /**
+     * Empty constructor for converting to and from json.
+     * @deprecated Only for converting.
+     */
+    @Deprecated
+    public CarDto() {
+        // Empty constructor for converting to and from json
+    }
 
     public String getCartrackerId() {
         return this.cartrackerId;

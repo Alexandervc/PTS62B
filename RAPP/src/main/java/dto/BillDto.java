@@ -46,6 +46,16 @@ public class BillDto implements Serializable {
         this.year = year;
     }
     
+    /**
+     * Empty constructor for converting to and from json.
+     * @deprecated Only for converting.
+     */
+    @Deprecated
+    public BillDto() {
+        // Empty constructor for converting to and from json
+        this.roadUsages = new ArrayList<>();
+    }
+    
     public String getCartrackerId() {
         return this.cartrackerId;
     }

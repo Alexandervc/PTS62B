@@ -16,6 +16,7 @@ import domain.RoadType;
 import service.CarService;
 import service.PersonService;
 import service.RateService;
+import util.Hasher;
 
 /**
  * Class for test datastorage. Add object of every domain type in db.
@@ -59,10 +60,11 @@ public class DataStorage {
                     "1150-208", "Lisboa");
             Address address2 = new Address("Calçada do Lavra", "14", 
                     "1150-208", "Lisboa");
+            String hashedPassword = Hasher.hash("admin");
             Person p1 = this.personService.addPerson("Linda", "van Engelen", 
-                    "LMJC", "Linda1", "admin", address1);
+                    "LMJC", "Linda1", hashedPassword, address1);
             Person p2 = this.personService.addPerson("Fernando", "Lameirinhas", 
-                    "FL", "Fernando1", "admin", address2);
+                    "FL", "Fernando1", hashedPassword, address2);
             
             String cartrackerId1 = "PT123456789";
             String cartrackerId2 = "PT112233444";
