@@ -6,89 +6,90 @@
 package controller;
 
 import dto.PersonDto;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import service.rest.clients.BillClient;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import service.PersonService;
 
 /**
- * Managed bean for index page.
+ * Controller class for login.
  *
- * @author Linda
+ * @author Alexander
  */
 @Named
 @RequestScoped
 public class LoginBean {
+
+    private static final Logger LOGGER = Logger
+            .getLogger(LoginBean.class.getName());
+
     @Inject
-    private InvoiceSession session;
-    
+    private ExternalContext context;
+
     @Inject
-    private BillClient client;
+    private PersonService personService;
 
-    private Long personId;
-    private String loginName;
-    private String loginPassword;
+    @Inject
+    private InvoiceSession invoiceSession;
 
-    public String getLoginName() {
-        return this.loginName;
+    private String username;
+    private String password;
+
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getLoginPassword() {
-        return this.loginPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setLoginPassword(String loginPassword) {
-        this.loginPassword = loginPassword;
+    public String getPassword() {
+        return this.password;
     }
 
-    public Long getPersonId() {
-        return this.personId;
+    public boolean isUser() {
+        return context.isUserInRole("user");
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
-    }
-
-    public String login() {
-        // Convert password
-        String password = this.convertPassword(this.loginPassword);
-
-        // Get person from RAD
-        PersonDto dto = this.client.getLoginPerson(this.loginName, password);
-
-        if (dto != null) {
-            String redirect = "invoice?faces-redirect=true";
-            this.session.setPerson(dto);
-            return redirect;
-        }
-        
-        return "index?faces-redirect=true";
-    }
-
-    private String convertPassword(String password) {
+    public String login() throws IOException {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            StringBuffer hexString = new StringBuffer();
-
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
+            ((HttpServletRequest) this.context.getRequest())
+                    .login(this.username, this.password);
+        } catch (ServletException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+            return "/auth/loginError?faces-redirect=true";
         }
+
+        // Get person
+        PersonDto person = this.personService.getPerson(username);
+        this.invoiceSession.setPerson(person);
+
+        return "/index?faces-redirect=true";
+    }
+
+    public String getPrincipalName() {
+        return context.getUserPrincipal().getName();
+    }
+
+    public String logout() {
+        try {
+            ((HttpServletRequest) context.getRequest()).logout();
+
+        } catch (ServletException ex) {
+            Logger.getLogger(LoginBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return "/index?faces-redirect=true";
     }
 }

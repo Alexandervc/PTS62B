@@ -33,7 +33,6 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.primefaces.context.RequestContext;
-import service.CarPositionService;
 import service.rest.clients.BillClient;
 
 /**
@@ -49,9 +48,6 @@ public class InvoiceBean {
 
     @Inject
     private BillClient client;
-    
-    @Inject
-    private CarPositionService positionService;
 
     private List<BillDto> bills;
     private List<CarDto> cars;
@@ -392,15 +388,5 @@ public class InvoiceBean {
         }
         
         return null;
-    }
-
-    /**
-     * Get coordinates for cartracker id.
-     * @param cartrackerId id.
-     * @return coordinates in json format.
-     */
-    public String getCoordinates(String cartrackerId) {
-        return this.positionService.getCoordinates(cartrackerId, 
-                this.session.getMonth(), this.session.getYear());
     }
 }
