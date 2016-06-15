@@ -7,13 +7,18 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+/**
+ * Language session with local parameter.
+ * @author Melanie
+ */
 @ManagedBean
 @SessionScoped
 public class LanguageBean implements Serializable {
     @Inject 
     private InvoiceSession session;
     
-    private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    private Locale locale = 
+            FacesContext.getCurrentInstance().getViewRoot().getLocale();
     
     public Locale getLocale() {
         return this.locale;
