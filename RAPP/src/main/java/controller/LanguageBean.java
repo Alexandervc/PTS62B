@@ -16,15 +16,15 @@ public class LanguageBean implements Serializable {
     private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
     
     public Locale getLocale() {
-        return locale;
+        return this.locale;
     }
 
     public String getLanguage() {
-        return locale.getLanguage();
+        return this.locale.getLanguage();
     }
 
     public void setLanguage(String language) {
         this.locale = new Locale(language);
-        session.setupDates(this.locale);
+        this.session.setupDates(this.locale);
     }
 }
