@@ -1,0 +1,5 @@
+business\ForeignCountryManagerTest.class
+business\BillManagerTest.class
+business\PersonManagerTest.class
+business\ForeignCountryManagerTest$IsSameForeignCountryRide.class
+business\GenerateBillsTest.class

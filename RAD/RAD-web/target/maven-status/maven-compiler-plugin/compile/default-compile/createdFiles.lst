@@ -1,0 +1,4 @@
+controller\SearchBean.class
+domain\ListBoxDate.class
+controller\InvoiceBean.class
+controller\InvoiceSession.class

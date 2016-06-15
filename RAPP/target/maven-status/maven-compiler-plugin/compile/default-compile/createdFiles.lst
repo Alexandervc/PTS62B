@@ -1,0 +1,17 @@
+dto\ListBoxDate.class
+controller\LoginBean.class
+dto\CarDto.class
+dto\LoginUserDto.class
+domain\Address.class
+controller\ResourceProducer.class
+domain\FuelType.class
+dto\PersonDto.class
+dto\BillDto.class
+service\rest\clients\PersonClient.class
+controller\InvoiceBean.class
+service\rest\clients\BillClient.class
+dto\BillRoadUsage.class
+controller\InvoiceSession.class
+domain\RoadType.class
+service\rest\clients\BillClient$1.class
+service\PersonService.class

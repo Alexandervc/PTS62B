@@ -27,3 +27,7 @@ hs_err_pid*
 /AsadminServerStatus/build/
 /AsadminServerStatus/dist/
 /AsadminServerStatus/nbproject/private/
+/GoogleRoadAPI/nbproject/private/
+/VS/VS-ejb/target/
+/VS/VS-web/target/
+/VS/VS-ear/target/
