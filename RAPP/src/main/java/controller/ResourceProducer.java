@@ -12,12 +12,13 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 /**
- *
+ * Producer for external context.
  * @author Alexander
  */
 @Stateless
 public class ResourceProducer {
-    @Produces @Default
+    @Produces 
+    @Default
     public ExternalContext getContext() {
         return FacesContext.getCurrentInstance().getExternalContext();
     }

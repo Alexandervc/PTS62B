@@ -37,12 +37,12 @@ public class InvoiceSession implements Serializable {
     
     @PostConstruct
     public void setup() {
-        setupDates(language.getLocale());
+        this.setupDates(this.language.getLocale());
     }
     
     /**
      * Setup dates.
-     * @param locale
+     * @param locale choosen lanuage.
      */
     public void setupDates(Locale locale) {
         //Current date.
