@@ -20,11 +20,13 @@ import service.PersonService;
 
 /**
  * Controller class for login.
+ *
  * @author Alexander
  */
 @Named
 @RequestScoped
 public class LoginBean {
+
     private static final Logger LOGGER = Logger
             .getLogger(LoginBean.class.getName());
 
@@ -41,23 +43,19 @@ public class LoginBean {
     private String password;
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getPrincipalName() {
-        return context.getUserPrincipal().getName();
+    public String getPassword() {
+        return this.password;
     }
 
     public boolean isUser() {
@@ -80,11 +78,17 @@ public class LoginBean {
         return "/index?faces-redirect=true";
     }
 
+    public String getPrincipalName() {
+        return context.getUserPrincipal().getName();
+    }
+
     public String logout() {
         try {
             ((HttpServletRequest) context.getRequest()).logout();
+
         } catch (ServletException ex) {
-            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return "/index?faces-redirect=true";
     }

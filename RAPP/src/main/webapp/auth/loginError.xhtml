@@ -10,7 +10,17 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:o="http://omnifaces.org/ui">
-    <h:body>
-        
+    <h:body>         
+        <ui:composition template="/templates/template.xhtml">
+            <ui:define name="content">
+                <div class="row">
+                    <div class="col-sm-12 meme layer1">
+                        <h3>Login error</h3>
+                        <p>The given user credentials are incorrect. Please try again.</p>
+                        <h:link outcome="/auth/login" class="btn btn-default"/>
+                    </div>                    
+                </div>
+            </ui:define>
+        </ui:composition>    	
     </h:body>
 </html>

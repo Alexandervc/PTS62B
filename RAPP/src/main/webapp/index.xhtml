@@ -13,7 +13,7 @@
     </f:metadata>
 
     <h:body>         
-        <ui:composition template="/templates/template.xhtml">
+        <ui:composition template="templates/template.xhtml">
             <ui:define name="content">
                 <div class="row">
                     <div class="col-sm-12" style="text-align: right">
@@ -32,14 +32,14 @@
                             <o:form includeViewParams="true">
                                 <h:selectOneMenu class="form-control" 
                                                  id="dateBox1"
-                                                 value="#{invoiceBean.dateIndex}">                                    
-                                    <f:selectItems value="#{invoiceBean.dates}"
+                                                 value="#{invoiceSession.dateIndex}">                                    
+                                    <f:selectItems value="#{invoiceSession.dates}"
                                                    var="date" 
                                                    itemValue="#{date.months}" 
                                                    itemLabel="#{date.date}">
                                     </f:selectItems>
                                     <f:ajax listener="#{invoiceBean.changeDate()}"
-                                            render="bills"/>
+                                            render=":bills :pdfForm"/>
                                 </h:selectOneMenu> 
                             </o:form>
                         </div>
@@ -66,7 +66,7 @@
                                                         </h4>
                                                     </div>
                                                     <ui:repeat var="bill" value="#{invoiceBean
-                                                                                   .getBillFromCar(car.cartrackerId)}">
+                                                                                   .getBillsFromCar(car.cartrackerId)}">
                                                         <div id="#{car.cartrackerId}" class="panel-collapse collapse">
                                                             <div class="panel-body">                                                            
 
@@ -115,8 +115,19 @@
                                                                         </tr>
                                                                     </tfoot>
                                                                 </table>
+                                                                
+                                                                <o:form id="pdfForm">
+                                                                    <h:commandButton value="Get PDF"
+                                                                            type="submit"
+                                                                            action="#{invoiceBean.generatePdf(bill)}" 
+                                                                            class="btn btn-default">
+                                                                    </h:commandButton>
+                                                                </o:form>
 
-                                                                <div id="map_#{bill.cartrackerId}" class="map">
+                                                                <br/>
+
+                                                                <div id="map_#{bill.cartrackerId}" 
+                                                                     class="map">
                                                                 </div>
 
                                                             </div>
@@ -135,4 +146,3 @@
         </ui:composition>    	
     </h:body>
 </html>
-

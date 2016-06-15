@@ -5,10 +5,15 @@
  */
 package controller;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
 /**
- *
+ * Controller class for register page.
  * @author Alexander
  */
+@Named
+@RequestScoped
 public class RegisterBean {
     
 }
