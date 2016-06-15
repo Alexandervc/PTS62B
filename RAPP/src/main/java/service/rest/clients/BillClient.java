@@ -28,7 +28,7 @@ public class BillClient {
     private static final Logger LOG = Logger.
             getLogger(BillClient.class.getName());
     private static final String BASE_URL
-            = "http://192.168.24.74:8080/RAD/radapi";
+            = "http://localhost:8080/RAD-web/radapi";
     
     private Client client;
 

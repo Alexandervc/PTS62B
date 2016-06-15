@@ -37,7 +37,7 @@ public class PersonResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("username") String username) {
+    public Response getPerson(@PathParam("username") String username) {        
         // Search person
         Person person = this.service.findPersonByUsername(username);
         

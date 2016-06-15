@@ -19,12 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import service.PersonService;
 
 /**
- *
+ * Controller class for login.
  * @author Alexander
  */
 @Named
 @RequestScoped
 public class LoginBean {
+    private static final Logger LOGGER = Logger
+            .getLogger(LoginBean.class.getName());
 
     @Inject
     private ExternalContext context;
@@ -66,16 +68,16 @@ public class LoginBean {
         try {
             ((HttpServletRequest) this.context.getRequest())
                     .login(this.username, this.password);
-
-            // Get person
-            PersonDto person = this.personService.getPerson(username);
-            this.invoiceSession.setPerson(person);
-
-            return "/users/invoice?faces-redirect=true";
-        } catch (Exception ex) {
-            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServletException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
             return "/auth/loginError?faces-redirect=true";
         }
+
+        // Get person
+        PersonDto person = this.personService.getPerson(username);
+        this.invoiceSession.setPerson(person);
+
+        return "/index?faces-redirect=true";
     }
 
     public String logout() {

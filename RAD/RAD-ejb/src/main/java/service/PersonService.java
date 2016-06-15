@@ -9,7 +9,6 @@ import business.PersonManager;
 import domain.Address;
 import domain.Person;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -34,7 +33,7 @@ public class PersonService {
      * @return created person type Person.
      */
     public Person addPerson(String firstname, String lastname, String initials,
-            String username, String password,Address address) {
+            String username, String password, Address address) {
         return this.personManager.createPerson(firstname, lastname,
                 initials, username, password, address);
     }

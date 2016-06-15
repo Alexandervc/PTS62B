@@ -16,12 +16,21 @@ import javax.persistence.Id;
 @Entity
 public class UserGroup implements Serializable {
     @Id
-    String groupName;
+    private String groupName;
     
+    /**
+     * Empty constructor for JPA.
+     * @deprecated JPA.
+     */
+    @Deprecated
     public UserGroup() {
-        
+        // Empty constructor for JPA.
     }
 
+    /**
+     * Represents a security group.
+     * @param groupName The name of the group.
+     */
     public UserGroup(String groupName) {
         this.groupName = groupName;
     }
