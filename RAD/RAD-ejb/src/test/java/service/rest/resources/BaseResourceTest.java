@@ -37,8 +37,13 @@ public class BaseResourceTest {
                    BadPaddingException {
         Bill bill = new Bill();
         
-        byte[] encrypted = this.testResource.exposeEncrypt(bill);
-        Bill decryptedBill = this.testResource.decrypt(encrypted, Bill.class);
+        String json = this.testResource.exposeToJson(bill);
+        System.out.println(json);
+        String encrypted = this.testResource.exposeEncrypt(json);
+        System.out.println(encrypted);
+        String decrypted = this.testResource.exposeDecrypt(encrypted);
+        System.out.println(decrypted);
+        Bill decryptedBill = this.testResource.gson.fromJson(decrypted, Bill.class);
         
         assertNotNull(decryptedBill);
     }

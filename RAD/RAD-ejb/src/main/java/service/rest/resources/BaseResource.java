@@ -5,32 +5,20 @@
  */
 package service.rest.resources;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.scene.input.KeyCode.T;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import org.apache.commons.lang.SerializationUtils;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -40,89 +28,118 @@ public class BaseResource {
     private static final Logger LOGGER 
             = Logger.getLogger(BaseResource.class.getName());
     
-    private static final String SYSTEM_NAME = "rad.cer";
-    private static final String PRIVATE_KEY_FILENAME = "rad.pkcs8";
+    private static final String RAD_KEY_FILE  = "rad.key";
+    private static final String RAPP_KEY_FILE = "rapp.key";
     
-    protected  X509Certificate certificate;
-    private PublicKey publicKey ;
-    private PrivateKey privateKey;
-
+    protected final Gson gson;
+    
+    private Key radKey;
+    private Key rappKey;
+    
     public BaseResource() {
-        this.readPublicKey();
-        this.readPrivateKey();
+        this.gson = new Gson();
+        this.readRadKey();
+        this.readRappKey();
     }
     
-    private void readPublicKey() {
-        String filePath = String.format("C:/Proftaak/certificates/%s", SYSTEM_NAME);
-        try (InputStream stream = new FileInputStream(filePath)) {
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            this.certificate = (X509Certificate) cf.generateCertificate(stream);
-            this.publicKey = this.certificate.getPublicKey();
-        } catch (FileNotFoundException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (CertificateException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+    private void readRadKey() {
+        String filePath = String.format("C:/Proftaak/certificates/%s",
+                                        RAD_KEY_FILE);
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
+            }
+            
+            String key = sb.toString();
+            this.radKey = new SecretKeySpec(key.getBytes(), "AES");
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
     }
     
-    private void readPrivateKey() {
+    private void readRappKey() {
         String filePath = String.format("C:/Proftaak/certificates/%s",
-                                        this.PRIVATE_KEY_FILENAME);
-        File keyFile = new File(filePath);
-        
-        // Read the file.
-        try (FileInputStream fis = new FileInputStream(keyFile)) {
-            byte[] keyBytes = new byte[(int) keyFile.length()];
-            // Read the file bytes.
-            try (DataInputStream dis = new DataInputStream(fis)) {
-                dis.readFully(keyBytes);
+                                        RAPP_KEY_FILE);
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
             }
             
-            // Generate the private key from the keyBytes.
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            this.privateKey = keyFactory.generatePrivate(keySpec);
+            String key = sb.toString();
+            this.rappKey = new SecretKeySpec(key.getBytes(), "AES");
         } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    protected String encrypt(String plain) {
+        try {
+            // Encrypt the json string.
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, this.radKey);
+            byte[] encrypted = cipher.doFinal(plain.getBytes());
+            
+            // Create a string of the encrypted bytes.
+            StringBuilder sb = new StringBuilder();
+            for (byte b: encrypted) {
+                sb.append((char)b);
+            }
+            
+            return sb.toString();
+            
+        } catch (InvalidKeyException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
-        } catch (InvalidKeySpecException ex) {
+        } catch (NoSuchPaddingException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
-    }
-    
-    //Class<? extends Serializable>
-    protected byte[] encrypt(Serializable object) 
-            throws NoSuchAlgorithmException,
-                   NoSuchPaddingException,
-                   InvalidKeyException,
-                   IllegalBlockSizeException,
-                   BadPaddingException {
-        // Serialize object to be encrypted
-        byte[] plain = SerializationUtils.serialize(object);
         
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");   
-        cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);  
-        return cipher.doFinal(plain);
+        return null;
     }
 
-    protected <T> T decrypt(byte[] encrypted, Object object) 
-            throws NoSuchAlgorithmException,
-                   NoSuchPaddingException, 
-                   InvalidKeyException, 
-                   IllegalBlockSizeException, 
-                   BadPaddingException {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");   
-        cipher.init(Cipher.DECRYPT_MODE, this.privateKey);  
-        byte[] decrypted = cipher.doFinal(encrypted);
+    protected String decrypt(String encrypted) {
         
-        // Deserialize decrypted byte array.
-        Object deserialized = SerializationUtils.deserialize(decrypted);
-        Class<T> decryptedObject = (Class<T>) deserialized;
+        try {
+            // Convert encrypted string to bytes in order to decrypt the message.
+            byte[] bb = new byte[encrypted.length()];
+            for (int i = 0; i < encrypted.length(); i++) {
+                bb[i] = (byte) encrypted.charAt(i);
+            }
+            
+            Cipher cipher = Cipher.getInstance("AES");
+            // TODO: rappKey instead of radKey
+            cipher.init(Cipher.DECRYPT_MODE, this.radKey);
+            return new String(cipher.doFinal(bb));
+            
+        } catch (NoSuchAlgorithmException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
         
-        return decryptedObject.cast(object);
+        return null;
     }
     
+    protected String toJson(Object object) {
+        return this.gson.toJson(object);
+    }
 }

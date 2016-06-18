@@ -21,21 +21,15 @@ public class TestResource extends BaseResource {
         super();
     }
     
-    public byte[] exposeEncrypt(Serializable object)
-            throws NoSuchAlgorithmException,
-                   NoSuchPaddingException,
-                   InvalidKeyException,
-                   IllegalBlockSizeException,
-                   BadPaddingException {
-        return super.encrypt(object);
+    public String exposeEncrypt(String plain) {
+        return super.encrypt(plain);
     }
     
-    protected <T> T exposeDecrypt(byte[] encrypted, Object object) 
-            throws NoSuchAlgorithmException,
-                   NoSuchPaddingException, 
-                   InvalidKeyException, 
-                   IllegalBlockSizeException, 
-                   BadPaddingException {
-        return super.decrypt(encrypted, object);
+    protected String exposeDecrypt(String encrypted) {
+        return super.decrypt(encrypted);
+    }
+    
+    protected String exposeToJson(Object object) {
+        return super.toJson(object);
     }
 }
