@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import dao.CarPositionDao;
+import dao.RoadUsageDao;
 import domain.CarPosition;
 import domain.Road;
 import dto.RoadUsage;
@@ -22,6 +23,9 @@ import dto.RoadUsage;
 public class RoadUsageManager {
     @Inject
     private CarPositionDao carPositionDao;
+    
+    @Inject
+    private RoadUsageDao roadUsageDao;
     
     /**
      * Convert the given carpositions to a list of roadUsages.
@@ -120,12 +124,20 @@ public class RoadUsageManager {
      *      cartrackerId.
      */
     public List<RoadUsage> generateRoadUsagesOfMonth(int month, int year, 
-            String cartrackerId) {        
-        // Get carPositions
-        List<CarPosition> cps = this.carPositionDao.getPositionsOfMonth(month, 
-                year, cartrackerId);
+            String cartrackerId) {   
+        String sMonth = String.valueOf(month);
+        String sYear = String.valueOf(year);
+        if(sMonth.length() == 1) {
+            sMonth = '0' + sMonth;
+        }
+        if(sYear.length() == 1) {
+            sYear = '0' + sYear;
+        }
         
-        List<RoadUsage> roadUsages = this.convertToRoadUsages(cps);
+        List<RoadUsage> roadUsages = this.roadUsageDao
+                .getRoadUsages(cartrackerId
+                        , sMonth
+                        , sYear);
         roadUsages.sort(null);
         return roadUsages;
     }
