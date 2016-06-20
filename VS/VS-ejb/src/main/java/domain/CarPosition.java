@@ -18,96 +18,114 @@ import javax.persistence.NamedQuery;
 
 /**
  * A position of the cartracker.
+ *
  * @author Alexander
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="CarPosition.getPositionsOfMonth", query = "SELECT cp "
+    @NamedQuery(name = "CarPosition.getPositionsOfMonth", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
             + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
             + "AND cp.cartracker.id = :cartrackerId "
             + "ORDER BY cp.road.roadType"),
-    @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
+    @NamedQuery(name = "CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
-            + "ORDER BY cp.moment, cp.serialNumber"),
-    @NamedQuery(name="CarPosition.getPositionsOfForeignCountryRide", query = 
-            "SELECT cp "
+            + " AND cp.cartracker.id = :cartrackerId "
+            + " ORDER BY cp.moment, cp.serialNumber"),
+    @NamedQuery(name = "CarPosition.getLastSerialNumberOfRide",
+            query = "SELECT MAX(cp.serialNumber) "
+            + "FROM CarPosition cp "
+            + "WHERE cp.rideId = :rideId "
+            + "AND cp.cartracker.id = :cartrackerId"),
+    @NamedQuery(name = "CarPosition.getFirstSerialNumberOfRide",
+            query = "SELECT MIN(cp.serialNumber) "
+            + "FROM CarPosition cp "
+            + "WHERE cp.rideId = :rideId "
+            + "AND cp.cartracker.id = :cartrackerId"),
+    @NamedQuery(name = "CarPosition.getPositionsOfForeignCountryRide", query
+            = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.foreignCountryRideId = :foreignCountryRideId "
             + "ORDER BY cp.moment, cp.serialNumber"),
-    @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
+    @NamedQuery(name = "CarPosition.getCoordinates", query = "SELECT "
             + "cp.coordinate "
             + "FROM CarPosition cp "
             + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
             + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
             + "AND cp.cartracker.id = :cartrackerId "
-            + "ORDER BY cp.moment, cp.serialNumber")
+            + "ORDER BY cp.moment, cp.serialNumber"),
+    @NamedQuery(name = "CarPosition.getPositionsWithSerialnumber",
+            query = "SELECT cp FROM CarPosition cp WHERE "
+            + "cp.serialNumber = :serialnumber")
 })
 public class CarPosition implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private Date moment;
-    
+
     @Embedded
     private Coordinate coordinate;
-    
+
     private Double meter;
     private Integer rideId;
     private Long foreignCountryRideId;
-    
+
     private Boolean lastOfRide;
-    
+
     @ManyToOne
     private Road road;
-    
+
     @ManyToOne
     private Cartracker cartracker;
-    
+
     private Long serialNumber;
-    
+
     /**
      * Empty constructor.
+     *
      * @deprecated only for jpa
      */
     @Deprecated
-    public CarPosition(){
+    public CarPosition() {
         // JPA
     }
-    
+
     /**
      * A position of the cartracker.
+     *
      * @param cartracker The cartracker which this is a position for.
-     * @param moment The moment on which the cartracker was on the given 
-     *      coordinates. Cannot be null.
+     * @param moment The moment on which the cartracker was on the given
+     * coordinates. Cannot be null.
      * @param coordinate The coordinate of this carposition.
      * @param road The road on which this position was. Cannot be null.
-     * @param meter The distance in meters the cartracker movement since the 
-     *      last carposition. Cannot be negative.
+     * @param meter The distance in meters the cartracker movement since the
+     * last carposition. Cannot be negative.
      * @param rideId The id of the ride this carposition is a part of.
-     * @param foreignCountryRideId The id of the foreign ride this carposition 
-     *      is part of.
-     * @param lastOfRide Whether this carposition is the last of 
-     *      the ride or not.
+     * @param foreignCountryRideId The id of the foreign ride this carposition
+     * is part of.
+     * @param lastOfRide Whether this carposition is the last of the ride or
+     * not.
      * @param serialNumber serial number from simulator.
      */
-    public CarPosition(Cartracker cartracker, Date moment, 
-            Coordinate coordinate, Road road, Double meter, Integer rideId, 
-            Long foreignCountryRideId, Boolean lastOfRide, 
+    public CarPosition(Cartracker cartracker, Date moment,
+            Coordinate coordinate, Road road, Double meter, Integer rideId,
+            Long foreignCountryRideId, Boolean lastOfRide,
             Long serialNumber) {
-        if(cartracker == null) {
+        if (cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
         }
-        if(moment == null){
+        if (moment == null) {
             throw new IllegalArgumentException("timestamp null");
         }
-        if(road == null) {
+        if (road == null) {
             throw new IllegalArgumentException("road null");
         }
-        if(meter < 0) {
+        if (meter < 0) {
             throw new IllegalArgumentException("km negative");
         }
         this.cartracker = cartracker;
@@ -184,7 +202,7 @@ public class CarPosition implements Serializable {
     public void setForeignCountryRideId(Long foreignCountryRideId) {
         this.foreignCountryRideId = foreignCountryRideId;
     }
-    
+
     public Boolean getLastOfRide() {
         return this.lastOfRide;
     }

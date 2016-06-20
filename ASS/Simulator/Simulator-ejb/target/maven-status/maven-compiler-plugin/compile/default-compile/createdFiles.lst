@@ -1,7 +1,10 @@
 model\DirectionInput.class
 service\jms\ReceiveTestRequestBean.class
+service\SearchMissingPosition.class
 service\jms\SendPositionBean.class
 service\PathService.class
 model\Point.class
 service\jms\SendTestResultsBean.class
 support\NavUtils.class
+service\jms\ReceiveMissingPositionsBean$1.class
+service\jms\ReceiveMissingPositionsBean.class

@@ -40,16 +40,17 @@ import support.NavUtils;
  * @author Melanie.
  */
 @Stateless
-public class PathService implements Serializable {    
-    private final static String PROJECT_ROOT = 
-            "C:\\Proftaak";
+public class PathService implements Serializable {
 
-    private static final String API_KEY = 
-            "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
-    
+    private final static String PROJECT_ROOT
+            = "C:\\Proftaak";
+
+    private static final String API_KEY
+            = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
+
     private transient BufferedReader reader;
 
-    private List<String> locations;    
+    private List<String> locations;
     private List<String> cartrackers;
 
     @Inject
@@ -68,7 +69,7 @@ public class PathService implements Serializable {
         this.cartrackers.add("BE-a5eff926-e3f7-43d5-b62b-5140aa2b962f");
         this.cartrackers.add("LU203647582746");
         this.cartrackers.add("NL123456789");
-        
+
         //Setup locations
         this.locations = new ArrayList<>();
         this.locations.add("R. do Ouro,1150-060 Lisboa,Portugal");
@@ -85,10 +86,10 @@ public class PathService implements Serializable {
         this.locations.add("Largo da Estação,4700-223 Maximinos - "
                 + "Braga,Portugal");
     }
-    
+
     /**
      * Get all cartrackers.
-     * 
+     *
      * @return List of cartrackers.
      */
     public List<String> getCartrackers() {
@@ -151,11 +152,10 @@ public class PathService implements Serializable {
      * @param cartrackerId id for config file.
      */
     public void generateFiles(String cartrackerId) {
-        if (cartrackerId != null && !cartrackerId.isEmpty() &&
-                this.cartrackers.contains(cartrackerId)) {
-            Map<Long, Map<String, Object>> positions = new HashMap<>();
+        if (cartrackerId != null && !cartrackerId.isEmpty()
+                && this.cartrackers.contains(cartrackerId)) {
             Integer rideId;
-            
+
             try {
                 //Setup stream for configId.                
                 this.setupStream(cartrackerId);
@@ -163,15 +163,15 @@ public class PathService implements Serializable {
                 //Read config file.
                 String file = this.reader.readLine();
                 String[] fileParam = file.split(",");
-                
+
                 String index = fileParam[1].substring(
                         fileParam[1].indexOf("=") + 1);
                 int fileIndex = Integer.parseInt(index);
-                
+
                 String ride = fileParam[2].substring(
                         fileParam[2].indexOf("=") + 1);
                 rideId = Integer.parseInt(ride);
-                
+
                 String pos = fileParam[3].substring(
                         fileParam[3].indexOf("=") + 1);
                 int startPositionIndex = Integer.parseInt(pos);
@@ -189,7 +189,7 @@ public class PathService implements Serializable {
 
                 DirectionInput input = new DirectionInput(
                         startPosition, endPosition);
-                
+
                 //Get points from google.
                 List<Point> points = this.getCoordinatesFromGoogle(input);
 
@@ -220,6 +220,7 @@ public class PathService implements Serializable {
                     Map<String, Object> position = new HashMap<>();
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     String momentString = df.format(moment);
+                    position.put("rideId",rideId.toString());
                     position.put("moment", momentString);
                     position.put("xCoordinate", xCoordinate);
                     position.put("yCoordinate", yCoordinate);
@@ -233,33 +234,25 @@ public class PathService implements Serializable {
                     String output;
 
                     //Write file.
+                    Gson gson = new Gson();
+                    output = gson.toJson(position);
                     try (BufferedWriter writer
                             = new BufferedWriter(fileWriter)) {
-                        Gson gson = new Gson();
-                        output = gson.toJson(position);
                         writer.write(output);
                     }
                     
-                    positions.put(Integer.toUnsignedLong(fileIndex), position);
+                    
+                    this.sendPositionBean.sendPosition(output, 
+                            cartrackerId, Integer.toUnsignedLong(fileIndex));
 
                     previous = p;
                     fileIndex++;
                 }
-                
-                //Convert map to Json.
-                String jsonPositions;
-                Gson gson = new Gson();
-                jsonPositions = gson.toJson(positions);
-                
-                //Send positions through JMS.
-                this.sendPositionBean.sendPositions(cartrackerId, rideId, 
-                        jsonPositions);
-
                 //Update config file.
                 rideId++;
-                String output = "cartrackerID=" + cartrackerId 
-                        + ",fileIndex=" + fileIndex 
-                        + ",ride=" + rideId 
+                String output = "cartrackerID=" + cartrackerId
+                        + ",fileIndex=" + fileIndex
+                        + ",ride=" + rideId
                         + ",position=" + endPositionIndex;
                 FileWriter fileWritter = new FileWriter(PathService.PROJECT_ROOT
                         + "\\config_" + cartrackerId + ".txt", false);

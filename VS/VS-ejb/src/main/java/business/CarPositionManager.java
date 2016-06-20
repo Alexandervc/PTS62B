@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import service.ForeignRideService;
 import service.TotalPriceService;
+import service.jms.SendMissingCarpositions;
 import service.rest.clients.ForeignCountryRideClient;
 
 /**
@@ -35,12 +36,13 @@ import service.rest.clients.ForeignCountryRideClient;
  */
 @Stateless
 public class CarPositionManager {
+
     private static final Logger LOGGER
             = Logger.getLogger(CarPositionManager.class.getName());
 
     private static final int COUNTRYCODE_LENGTH = 2;
     private static final String MY_COUNTRYCODE = "PT";
-    
+
     @PersistenceContext
     private EntityManager em;
 
@@ -64,29 +66,34 @@ public class CarPositionManager {
 
     @Inject
     private ForeignCountryRideClient foreignCountryRideClient;
-    
+
+    @Inject
+    private SendMissingCarpositions jmsSender;
+
     /**
      * Process the given information of a CarPosition.
-     * @param cartrackerId The unique identifier of a cartracker. Cannot be null
-     *      or empty.
+     *
+     * @param cartrackerId The unique identifier of a cartracker. Cannot be 
+     * null or empty.
      * @param moment The moment in which the cartracker was at the given
-     *      coordinates.
+     * coordinates.
      * @param coordinate The coordinate of this carposition.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
-     *      last carPosition.
+     * last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
-     * @param foreignCountryRideId The id of the foreign country ride this 
-     *      carposition is a part of.
+     * @param foreignCountryRideId The id of the foreign country ride this
+     * carposition is a part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
-     *      not.
+     * not.
      * @param serialNumber serial number from simulator.
      */
     public void processCarPosition(String cartrackerId, Date moment,
             Coordinate coordinate, String roadName,
-            Double meter, Integer rideId, Long foreignCountryRideId, 
+            Double meter, Integer rideId, Long foreignCountryRideId,
             Boolean lastOfRide, Long serialNumber) {
         try {
+
             this.saveCarPosition(cartrackerId, moment, coordinate,
                     roadName, meter, rideId, foreignCountryRideId, lastOfRide,
                     serialNumber);
@@ -96,83 +103,97 @@ public class CarPositionManager {
                     .substring(0, COUNTRYCODE_LENGTH);
 
             // If foreign and last of ride
+            // TODO: check if ride is complete in db
             if (!MY_COUNTRYCODE.equals(countryCodeTo) && lastOfRide) {
-                // Get carpostions and roadusages of ride
-                List<CarPosition> carPositions = this.carPositionDao
-                        .getPositionsOfRide(rideId);
-                List<RoadUsage> roadUsages = this.roadUsageManager
-                        .convertToRoadUsages(carPositions);
-
-                // Get total price
-                double totalPrice = this.totalPriceService
-                        .getTotalPrice(roadUsages);
-                
-                // Send
-                this.foreignRideService.sendForeignRide(cartrackerId, 
-                        totalPrice, carPositions, countryCodeTo, 
-                        MY_COUNTRYCODE);
+//                // Get carpostions and roadusages of ride
+//                List<CarPosition> carPositions = this.carPositionDao
+//                        .getPositionsOfRide(rideId);
+//                List<RoadUsage> roadUsages = this.roadUsageManager
+//                        .convertToRoadUsages(carPositions);
+//
+//                // Get total price
+//                double totalPrice = this.totalPriceService
+//                        .getTotalPrice(roadUsages);
+//
+//                // Send
+//                this.foreignRideService.sendForeignRide(cartrackerId,
+//                        totalPrice, carPositions, countryCodeTo,
+//                        MY_COUNTRYCODE);
             }
+            TimerManager tm = new TimerManager(this.jmsSender, cartrackerId,
+                    serialNumber, rideId, this.carPositionDao);
+            tm.startTimer();
         } catch (IllegalArgumentException iaEx) {
             LOGGER.log(Level.SEVERE, null, iaEx);
         }
     }
-    
+
     /**
-     * Stores the car positions into the database and creates a 
+     * Stores the car positions into the database and creates a
      * ForeignCountryRide in RAD.
+     *
      * @param carPositions The car positions of the ForeignCountryRide.
-     * @param foreignCountryRideId The id of the ForeignCountryRide, this is 
-     *      equal to the RideId of the CarPositions.
+     * @param foreignCountryRideId The id of the ForeignCountryRide, this is
+     * equal to the RideId of the CarPositions.
      * @param totalPrice The total price of the ForeignCountryRide.
      */
     public void processForeignCarRide(
-            List<CarPosition> carPositions, 
+            List<CarPosition> carPositions,
             Long foreignCountryRideId,
             double totalPrice) {
-        
+
         // Save the CarPositions.
-        for(CarPosition carPosition : carPositions) {
+        for (CarPosition carPosition : carPositions) {
             this.carPositionDao.create(carPosition);
         }
-        
+
         this.foreignCountryRideClient
                 .addForeignCountryRide(foreignCountryRideId, totalPrice);
-        
+
     }
 
     /**
      * Save the given information into a CarPosition.
+     *
      * @param cartrackerId The unique identifier of a cartracker.
      * @param moment The moment in which the cartracker was at the given
-     *      coordinates.
+     * coordinates.
      * @param coordinate The coordinate of this carpostion.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
-     *      last carPosition.
+     * last carPosition.
      */
     private void saveCarPosition(String cartrackerId, Date moment,
-            Coordinate coordinate, String roadName, Double meter, 
+            Coordinate coordinate, String roadName, Double meter,
             Integer rideId, Long foreignCountryRideId, Boolean lastOfRide,
             Long serialNumber) {
-        // Find cartracker
-        Cartracker cartracker = this.findCartracker(cartrackerId);
 
-        // TODO road anders
-        List<Road> roads = this.roadDao.findAllInternal();
-        Random random = new SecureRandom();
-        Road road = roads.get(random.nextInt(roads.size()));
+        // Check if position already exists
+        CarPosition cp = null;
+        cp = this.carPositionDao.findBySerialnumber(serialNumber);
+        if (cp == null) {
 
-        // Make carPosition
-        CarPosition cp = new CarPosition(cartracker, moment, coordinate, 
-                road, meter, rideId, foreignCountryRideId,
-                lastOfRide, serialNumber);
+            // Find cartracker
+            Cartracker cartracker = this.findCartracker(cartrackerId);
 
-        this.carPositionDao.create(cp);
+            // TODO road anders
+            List<Road> roads = this.roadDao.findAllInternal();
+            Random random = new SecureRandom();
+            Road road = roads.get(random.nextInt(roads.size()));
+
+            // Make carPosition
+            cp = new CarPosition(cartracker, moment, coordinate,
+                    road, meter, rideId, foreignCountryRideId,
+                    lastOfRide, serialNumber);
+
+            this.carPositionDao.create(cp);
+        }
     }
-    
+
     /**
-     * Find a cartracker by it's id. If it does not exist, create a new 
+     * Find a cartracker by it's id. If it does not exist, create a new
      * Cartracker.
+     *
      * @param cartrackerId the cartracker's id.
      * @return The found or created cartracker object.
      */
@@ -184,25 +205,27 @@ public class CarPositionManager {
             this.cartrackerDao.create(new Cartracker(cartrackerId));
             cartracker = this.cartrackerDao.find(cartrackerId);
         }
-        
+
         return cartracker;
     }
-    
+
     /**
      * Gets the next foreign country ride id of a carposition.
+     *
      * @return The next ride id.
      */
     public Long getNextRideIdOfCountryCode() {
-        ForeignCountryRideIdGen foreignCountryRideId = 
-                new ForeignCountryRideIdGen();
+        ForeignCountryRideIdGen foreignCountryRideId
+                = new ForeignCountryRideIdGen();
         this.em.persist(foreignCountryRideId);
-        
+
         return foreignCountryRideId.getId();
     }
-    
+
     /**
-     * Get the coordinates in the given month and year for the given 
-     *      cartrackerId.
+     * Get the coordinates in the given month and year for the given
+     * cartrackerId.
+     *
      * @param month The month to get the coordinates for.
      * @param year The year to get the coordinates for.
      * @param cartrackerId The cartracker to get the coordinates for.

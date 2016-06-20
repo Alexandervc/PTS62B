@@ -12,13 +12,22 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
 import domain.Coordinate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 /**
  * The dao for carPosition.
+ *
  * @author Alexander
  */
 @Stateless
 public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
+
+    private static final Logger LOGGER
+            = Logger.getLogger(CarPositionDao.class.getName());
+
     @PersistenceContext
     private EntityManager em;
 
@@ -33,15 +42,16 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
     protected EntityManager getEntityManager() {
         return this.em;
     }
-    
+
     /**
      * Get the carpositions for the given month for the given cartracker.
+     *
      * @param month The month to get the carpositions for.
      * @param year The year to get the carpositions for.
      * @param cartrackerId The cartracker to get the carpositions for.
      * @return A list of carpositions.
      */
-    public List<CarPosition> getPositionsOfMonth(int month, int year, 
+    public List<CarPosition> getPositionsOfMonth(int month, int year,
             String cartrackerId) {
         Query q = this.em.createNamedQuery("CarPosition.getPositionsOfMonth");
         q.setParameter("month", month);
@@ -49,18 +59,22 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         q.setParameter("cartrackerId", cartrackerId);
         return q.getResultList();
     }
-    
+
     /**
      * Get the carpostions for the given rideId.
+     *
      * @param rideId The id of the ride to get the carpositions for.
+     * @param cartracker id of cartracker.
      * @return List of carpostions.
      */
-    public List<CarPosition> getPositionsOfRide(Integer rideId) {
+    public List<CarPosition> getPositionsOfRide(Integer rideId, 
+            String cartracker) {
         Query q = this.em.createNamedQuery("CarPosition.getPositionsOfRide");
         q.setParameter("rideId", rideId);
+        q.setParameter("cartrackerId", cartracker);
         return q.getResultList();
     }
-    
+
     public List<CarPosition> getPositionsOfForeignCountryRide(
             Long foreignCountryRideId) {
         Query q = this.em.createNamedQuery(
@@ -68,33 +82,60 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         q.setParameter("rideId", foreignCountryRideId);
         return q.getResultList();
     }
-    
+
     /**
-     * Get the last ride id of a carposition from a countrycode.
-     * @param countryCode The country code to sort on. For example: "PT".
-     * @return The last ride id.
+     * Get highest serialNumber of rideId.
+     * @param rideId of ride.
+     * @param cartracker id of cartracker.
+     * @return a serialNumber, else null.
      */
-    public Integer getLastIdOfCountryCode(String countryCode) {
+    public Long getLastSerialNumberOfRide(Integer rideId, String cartracker) {
         Query q = this.em
-                .createNamedQuery("CarPosition.getLastIdOfCountryCode");
-        q.setParameter("countryCode", countryCode + "%");
-        
-        List<String> result = q.getResultList();
-        Integer maxRideId = 0;
-        
-        for(String rideId : result) {
-            Integer parsedRideId = Integer.parseInt(rideId.substring(2)); 
-            if (maxRideId < parsedRideId) {
-                maxRideId = parsedRideId;
-            }
+                .createNamedQuery("CarPosition.getLastSerialNumberOfRide");
+        q.setParameter("rideId", rideId);
+        q.setParameter("cartrackerId", cartracker);
+        Long serialNumber = null;
+        try {
+            serialNumber = (Long) q.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            // Do nothing. Null will be returned.
+            LOGGER.log(
+                    Level.FINE,
+                    "CarPosition: '" + rideId
+                    + "' does not yet exist. " + ex);
         }
-        
-        return maxRideId;
+        return serialNumber;
     }
     
     /**
-     * Get the coordinates in the given month and year for the given 
-     *      cartrackerId.
+     * Get lowest serialNumber of rideId.
+     * @param rideId of ride.
+     * @param cartracker id of cartracker.
+     * @return a serialNumber, else null.
+     */
+    public Long getFirstSerialNumberOfRide(Integer rideId, String cartracker) {
+        Query q = this.em
+                .createNamedQuery("CarPosition.getFirstSerialNumberOfRide");
+        q.setParameter("rideId", rideId);
+        q.setParameter("cartrackerId", cartracker);
+        Long serialNumber = null;
+        try {
+            serialNumber = (Long) q.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            // Do nothing. Null will be returned.
+            LOGGER.log(
+                    Level.FINE,
+                    "CarPosition: '" + rideId
+                    + "' does not yet exist. " + ex);
+        }
+        return serialNumber;
+    }
+    
+
+    /**
+     * Get the coordinates in the given month and year for the given
+     * cartrackerId.
+     *
      * @param month The month to get the coordinates for.
      * @param year The year to get the coordinates for.
      * @param cartrackerId The cartracker to get the coordinates for.
@@ -106,7 +147,25 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         q.setParameter("month", month);
         q.setParameter("year", year);
         q.setParameter("cartrackerId", cartrackerId);
-        
+
         return q.getResultList();
+    }
+
+    public CarPosition findBySerialnumber(Long serialNumber) {
+        Query q = this.em
+                .createNamedQuery("CarPosition.getPositionsWithSerialnumber");
+        q.setParameter("serialnumber", serialNumber);
+
+        CarPosition cp = null;
+        try {
+            cp = (CarPosition) q.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            // Do nothing. Null will be returned.
+            LOGGER.log(
+                    Level.FINE,
+                    "CarPosition: '" + serialNumber
+                    + "' does not yet exist. " + ex);
+        }
+        return cp;
     }
 }
