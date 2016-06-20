@@ -156,14 +156,11 @@ public class PathService implements Serializable {
      * Execute every hour.
      */
     @Schedule(hour="*")
-    public void generate() {
-        System.out.println("generate");
-        
+    public void generate() {        
         for (final String c : this.cartrackers) {
             Thread thread = this.threadFactory.newThread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("run");
                     generateFiles(c, true);                    
                 }
             });
@@ -276,7 +273,8 @@ public class PathService implements Serializable {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(PathService.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(PathService.class.getName())
+                                    .log(Level.SEVERE, null, ex);
                         }
                     }
                 }
