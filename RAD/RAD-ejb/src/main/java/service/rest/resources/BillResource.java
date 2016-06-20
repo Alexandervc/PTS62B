@@ -25,10 +25,17 @@ import service.BillService;
  */
 @Path("/cartrackers/{cartrackerId}/bill")
 @Stateless
-public class BillResource {
+public class BillResource extends BaseResource {
 
     @Inject
     private BillService billService;
+
+    /**
+     * Instantiates the BillResource.
+     */
+    public BillResource() {
+        super();
+    }
     
     /**
      * Get the bill for a car, identified by cartrackerId.
@@ -45,11 +52,17 @@ public class BillResource {
         Bill bill = this.billService.generateBill(cartrackerId, 
                                                   month, 
                                                   year);
-
+    
         BillDto billDto = DtoConverter.convertBillToBillDto(bill);
+        String encrypted = this.encrypt(this.gson.toJson(billDto));
 
-        return Response.status(Response.Status.OK)
-                       .entity(billDto)
-                       .build();
+        if (encrypted != null) {
+            return Response.status(Response.Status.OK)
+                           .entity(encrypted)
+                           .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .build();
+        }
     }
 }

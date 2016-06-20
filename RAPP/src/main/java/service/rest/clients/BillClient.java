@@ -25,11 +25,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- *
+ * Provides functionality regarding the Bill.
  * @author Jesse
  */
 @Stateless
-public class BillClient {
+public class BillClient extends BaseClient {
 
     private static final Logger LOG = Logger.
             getLogger(BillClient.class.getName());
@@ -41,6 +41,13 @@ public class BillClient {
     //        "http://localhost:8080/RAD-web/radapi";
     private Client client;
 
+    /**
+     * Instantiates the BillClient.
+     */
+    public BillClient() {
+        super();
+    }
+    
     @PostConstruct
     private void start() {
         this.client = ClientBuilder.newClient();
@@ -120,7 +127,7 @@ public class BillClient {
      * @return A bill for the cartrackerId.
      */
     public BillDto getBill(String cartrackerId, int month, int year) {
-        // Get Response
+        // Get Response.
         Response response = this.client.target(BASE_URL)
                 .path("/cartrackers/{cartrackerId}/bill")
                 .resolveTemplate("cartrackerId", cartrackerId)
@@ -129,15 +136,19 @@ public class BillClient {
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
 
-        // Check status
+        // Check status.
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
             throw new RuntimeException("Request not accepted: "
                     + response.getStatus());
         }
 
-        Gson gson = new Gson();
-        String billJson = response.readEntity(String.class);
-        BillDto billDto = gson.fromJson(billJson, BillDto.class);
+        // Decrypt message.
+        String encryptedJson = response.readEntity(String.class);
+        System.out.println(encryptedJson);
+        String billJson = this.decrypt(encryptedJson);
+        System.out.println(billJson);
+        // Convert decrypted JSON to BillDto.
+        BillDto billDto = this.gson.fromJson(billJson, BillDto.class);
         return billDto;
     }
 }

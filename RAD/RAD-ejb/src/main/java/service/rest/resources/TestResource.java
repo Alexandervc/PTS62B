@@ -41,12 +41,13 @@ public class TestResource extends BaseResource {
      */
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getBill(@PathParam("cartrackerId") String cartrackerId,
-                            @QueryParam("month") int month, 
-                            @QueryParam("year") int year) {
+    public Response getBill() {
+//        @PathParam("cartrackerId") String cartrackerId,
+//                            @QueryParam("month") int month, 
+//                            @QueryParam("year") int year
         Bill bill = new Bill();
         
-        String json = this.toJson(bill);
+        String json = this.gson.toJson(bill);
         String encrypted = this.encrypt(json);
         
         if (encrypted != null) {

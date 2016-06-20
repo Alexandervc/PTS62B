@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service.rest.resources;
+package service.rest.clients;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -21,12 +21,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Provides security functionality to the REST resources.
+ * Provides security functionality to the REST clients.
  * @author Jesse
  */
-public class BaseResource {
+public class BaseClient {
     private static final Logger LOGGER 
-            = Logger.getLogger(BaseResource.class.getName());
+            = Logger.getLogger(BaseClient.class.getName());
     
     private static final String RAD_KEY_FILE  = "rad.key";
     private static final String RAPP_KEY_FILE = "rapp.key";
@@ -39,7 +39,7 @@ public class BaseResource {
     /**
      * Instantiates the BaseResource.
      */
-    public BaseResource() {
+    public BaseClient() {
         this.gson = new Gson();
         this.readRadKey();
         this.readRappKey();
@@ -96,13 +96,13 @@ public class BaseResource {
     /**
      * Encrypts the JSON message.
      * @param plain The plain text JSON message.
-     * @return Encrypted string using the RAD key.
+     * @return Encrypted string using the RAPP key.
      */
     protected String encrypt(String plain) {
         try {
             // Encrypt the json string.
             Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, this.radKey);
+            cipher.init(Cipher.ENCRYPT_MODE, this.rappKey);
             byte[] encrypted = cipher.doFinal(plain.getBytes());
             
             // Create a string of the encrypted bytes.
@@ -130,7 +130,7 @@ public class BaseResource {
     /**
      * Decrypts the encrypted JSON message.
      * @param encrypted The encrypted JSON message.
-     * @return Plain text JSON string using the RAPP key.
+     * @return Plain text JSON string using the RAD key.
      */
     protected String decrypt(String encrypted) {
         try {
@@ -143,7 +143,7 @@ public class BaseResource {
             
             // Decrypt the message.
             Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, this.rappKey);
+            cipher.init(Cipher.DECRYPT_MODE, this.radKey);
             return new String(cipher.doFinal(encryptedBytes));
         } catch (NoSuchAlgorithmException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
