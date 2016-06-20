@@ -30,6 +30,7 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.LatLng;
+import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import model.DirectionInput;
 import model.Point;
@@ -57,6 +58,7 @@ public class PathService implements Serializable {
     @Inject
     private SendPositionBean sendPositionBean;
     
+    @Resource
     private ManagedThreadFactory threadFactory;
 
     /**
@@ -155,11 +157,14 @@ public class PathService implements Serializable {
      */
     @Schedule(hour="*")
     public void generate() {
+        System.out.println("generate");
+        
         for (final String c : this.cartrackers) {
             Thread thread = this.threadFactory.newThread(new Runnable() {
                 @Override
                 public void run() {
-                    generateFiles(c, true);
+                    System.out.println("run");
+                    generateFiles(c, true);                    
                 }
             });
             thread.start();
