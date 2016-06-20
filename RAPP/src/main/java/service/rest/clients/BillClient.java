@@ -5,22 +5,18 @@
  */
 package service.rest.clients;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dto.BillDto;
 import dto.CarDto;
-import dto.LoginUserDto;
-import dto.PersonDto;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,10 +31,7 @@ public class BillClient extends BaseClient {
             getLogger(BillClient.class.getName());
     private static final String BASE_URL
             = "http://localhost:8080/RAD-web/radapi";
-
-    // TODO DEPLOY: UNCOMMENT
-    //private static final String BASE_URL = 
-    //        "http://localhost:8080/RAD-web/radapi";
+    
     private Client client;
 
     /**
@@ -51,45 +44,6 @@ public class BillClient extends BaseClient {
     @PostConstruct
     private void start() {
         this.client = ClientBuilder.newClient();
-    }
-
-    /**
-     * Get the personid with correct username and password, otherwise null.
-     *
-     * @param username of login.
-     * @param password of login.
-     * @return object of personDto.
-     */
-    public PersonDto getLoginPerson(String username, String password) {
-        LoginUserDto loginUser = new LoginUserDto(username, password);
-        Gson gson = new Gson();
-        String loginJson = gson.toJson(loginUser);
-
-        // Get Response
-        Response response = this.client.target(BASE_URL)
-                .path("/login")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(loginJson), Response.class);
-        // Check status
-        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
-            if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
-                LOG.log(Level.SEVERE, "Request not accepted: "
-                        + response.getStatus());
-                return null;
-
-            } else {
-                throw new RuntimeException("Request not accepted: "
-                        + response.getStatus());
-            }
-        }
-
-        // Read entity
-        String personJson = response.readEntity(String.class);
-        PersonDto personDto = gson.fromJson(personJson, PersonDto.class);
-        if (personDto != null) {
-            return personDto;
-        }
-        return null;
     }
 
     /**

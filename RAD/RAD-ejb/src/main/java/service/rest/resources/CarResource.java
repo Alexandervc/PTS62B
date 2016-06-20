@@ -1,6 +1,5 @@
 package service.rest.resources;
 
-import com.google.gson.Gson;
 import domain.Car;
 import domain.Person;
 import dto.CarDto;
@@ -8,10 +7,10 @@ import static dto.DtoConverter.convertCarsToDto;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.PersonService;
@@ -36,7 +35,7 @@ public class CarResource extends BaseResource {
      * @return Response, with list of cars.
      */
     @GET
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getCars(@PathParam("personId") long personId) {
         Person person = this.personService.findPersonById(personId);
         List<Car> cars = person.getCars();
