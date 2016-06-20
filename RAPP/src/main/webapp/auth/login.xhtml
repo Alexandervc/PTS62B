@@ -19,7 +19,7 @@
                                            for="name">#{msg['Name']}:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="name" 
                                             value="#{loginBean.username}"
@@ -32,6 +32,7 @@
                                            for="password">#{msg['Password']}:</label>
                                     <div class="col-sm-10"> 
                                         <h:inputSecret
+                                            a:required="true"
                                             class="form-control" 
                                             id="password" 
                                             value="#{loginBean.password}"
@@ -47,9 +48,6 @@
                                                          value="#{msg['Login']}"
                                                          action="#{loginBean.login()}">
                                         </h:commandButton>
-                                        <h:link outcome="/auth/register" class="btn btn-default">
-                                            Register
-                                        </h:link>
                                     </div>
                                 </div>
                             </h:form>

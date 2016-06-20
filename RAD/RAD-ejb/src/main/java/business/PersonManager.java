@@ -8,6 +8,7 @@ import domain.UserGroup;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import util.Hasher;
 
 /**
  * Manager for PersonDao.
@@ -36,8 +37,14 @@ public class PersonManager {
     public Person createPerson(String firstname, String lastname,
             String initials, String username, String password,
             Address address) {
+        if(this.findPersonByUsername(username) != null) {
+            throw new IllegalArgumentException("Username already in use");
+        }
+        
+        String hashedPassword = Hasher.hash(password);
+        
         Person person = new Person(firstname, lastname, initials, username,
-                password, address);
+                hashedPassword, address);
         
         // Add security group
         UserGroup userGroup = (UserGroup) this.userGroupDao.find(userGroupName);

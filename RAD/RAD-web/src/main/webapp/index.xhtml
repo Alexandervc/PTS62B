@@ -11,6 +11,11 @@
         <ui:composition template="templates/template.xhtml">
             <ui:define name="content">
                 <div class="row">
+                    <div class="col-sm-12" style="text-align: right">
+                        <h:form>
+                            <h:link outcome="/register" class="btn btn-default btn-login">Register</h:link>
+                        </h:form>
+                    </div>
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
                             <h:form class="form-horizontal">
@@ -33,13 +38,13 @@
                                 </div>
                             </h:form>
                         </div>
-                        
+
                         <div class="col-sm-12" id="searchDiv" >
                             <h:panelGroup id="searchResult">
                                 <ul class="list-group">
                                     <ui:repeat var="Person" value="#{searchBean.persons}">
                                         <a href= "faces/invoice.xhtml?personId=#{Person.id}">
-                                        <li class="list-group-item">#{Person.firstName} #{Person.lastName} - #{Person.id}</li>
+                                            <li class="list-group-item">#{Person.firstName} #{Person.lastName} - #{Person.id}</li>
                                         </a>
                                     </ui:repeat>
                                 </ul>
