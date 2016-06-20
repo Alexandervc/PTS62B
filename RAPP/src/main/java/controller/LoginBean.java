@@ -9,7 +9,6 @@ import dto.PersonDto;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
@@ -59,7 +58,7 @@ public class LoginBean {
     }
 
     public boolean isUser() {
-        return context.isUserInRole("user");
+        return this.context.isUserInRole("user");
     }
 
     public String login() throws IOException {
@@ -72,19 +71,19 @@ public class LoginBean {
         }
 
         // Get person
-        PersonDto person = this.personService.getPerson(username);
+        PersonDto person = this.personService.getPerson(this.username);
         this.invoiceSession.setPerson(person);
 
         return "/index?faces-redirect=true";
     }
 
     public String getPrincipalName() {
-        return context.getUserPrincipal().getName();
+        return this.context.getUserPrincipal().getName();
     }
 
     public String logout() {
         try {
-            ((HttpServletRequest) context.getRequest()).logout();
+            ((HttpServletRequest) this.context.getRequest()).logout();
 
         } catch (ServletException ex) {
             Logger.getLogger(LoginBean.class

@@ -108,7 +108,8 @@ public class InvoiceBean {
                 this.session.getYear() + "-" + this.session.getMonth() + ".pdf";
         File outputPath = new File("C:\\Proftaak\\invoices\\" + fileName);
         
-        System.out.println("Generating pdf: " + fileName);
+        Logger.getLogger(InvoiceBean.class.getName())
+                    .log(Level.INFO, null, "Generating pdf: " + fileName);
         
         try {
             //Create pdf
@@ -207,7 +208,8 @@ public class InvoiceBean {
             this.download(IOUtils.toByteArray(input), "application/pdf", 
                     fileName);
             
-            System.out.println("Pdf done");
+            Logger.getLogger(InvoiceBean.class.getName())
+                    .log(Level.INFO, null, "Pdf done");
         } catch (IOException ex) {
             Logger.getLogger(InvoiceBean.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -379,6 +381,8 @@ public class InvoiceBean {
     
     /**
      * Get car for cartracker id.
+     * @param cartrackerId id.
+     * @return cardto class.
      */
     public CarDto getCar(String cartrackerId) {
         for (CarDto car : this.getCars()) {

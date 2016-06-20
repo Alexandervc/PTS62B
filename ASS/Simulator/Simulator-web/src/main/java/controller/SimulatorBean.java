@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import javax.ejb.Schedule;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,10 +22,10 @@ public class SimulatorBean {
     
     /**
      * Genereate file for chosen cartracker and date.
-     */
+     */    
     public void generate() {
         if (this.cartracker != null && !this.cartracker.isEmpty()) {
-            this.service.generateFiles(this.cartracker);
+            this.service.generateFiles(this.cartracker, false);
         }
     }
     

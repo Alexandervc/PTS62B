@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -30,10 +31,20 @@ public class InvoiceSession implements Serializable {
     //Dates for combobox.
     private String dateIndex;
     private List<ListBoxDate> dates;
-
+    
+    @Inject
+    private LanguageBean language;
+    
     @PostConstruct
     public void setup() {
-                //Setup dates.
+        this.setupDates(this.language.getLocale());
+    }
+    
+    /**
+     * Setup dates.
+     * @param locale choosen lanuage.
+     */
+    public void setupDates(Locale locale) {
         //Current date.
         GregorianCalendar cal = new GregorianCalendar();
         this.year = cal.get(GregorianCalendar.YEAR);
@@ -48,7 +59,7 @@ public class InvoiceSession implements Serializable {
             mCal.add(Calendar.MONTH, -m);
             int mYear = mCal.get(Calendar.YEAR);
             String mMonthString = mCal.getDisplayName(
-                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+                    Calendar.MONTH, Calendar.LONG, locale);
 
             //Add date to list.
             String index = Integer.toString(m);

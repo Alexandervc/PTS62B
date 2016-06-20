@@ -29,6 +29,10 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    <mime-mapping>
+        <extension>xhtml</extension>
+        <mime-type>application/xml</mime-type>
+    </mime-mapping>
     <security-constraint>
         <display-name>UserConstraint</display-name>
         <web-resource-collection>
