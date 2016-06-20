@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.enterprise.concurrent.ManagedThreadFactory;
 import com.google.gson.Gson;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
@@ -29,6 +30,8 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.LatLng;
+import javax.annotation.Resource;
+import javax.ejb.Schedule;
 import model.DirectionInput;
 import model.Point;
 import service.jms.SendPositionBean;
@@ -54,6 +57,9 @@ public class PathService implements Serializable {
 
     @Inject
     private SendPositionBean sendPositionBean;
+    
+    @Resource
+    private ManagedThreadFactory threadFactory;
 
     /**
      * Setup location info.
@@ -144,13 +150,31 @@ public class PathService implements Serializable {
 
         return points;
     }
+    
+    /**
+     * Generate roadusages for all cartrackers.
+     * Execute every hour.
+     */
+    @Schedule(hour="*")
+    public void generate() {        
+        for (final String c : this.cartrackers) {
+            Thread thread = this.threadFactory.newThread(new Runnable() {
+                @Override
+                public void run() {
+                    generateFiles(c, true);                    
+                }
+            });
+            thread.start();
+        }
+    }
 
     /**
      * Generate files for roadusages.
      *
      * @param cartrackerId id for config file.
+     * @param timertask if simulation is started by timertask.
      */
-    public void generateFiles(String cartrackerId) {
+    public void generateFiles(String cartrackerId, boolean timertask) {
         if (cartrackerId != null && !cartrackerId.isEmpty() &&
                 this.cartrackers.contains(cartrackerId)) {
             Map<Long, Map<String, Object>> positions = new HashMap<>();
@@ -244,6 +268,15 @@ public class PathService implements Serializable {
 
                     previous = p;
                     fileIndex++;
+                    
+                    if (timertask) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(PathService.class.getName())
+                                    .log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
                 
                 //Convert map to Json.

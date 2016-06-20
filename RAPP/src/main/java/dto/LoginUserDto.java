@@ -8,7 +8,7 @@ package dto;
 import java.io.Serializable;
 
 /**
- *
+ * DTO class for login user.
  * @author Linda
  */
 public class LoginUserDto implements Serializable{

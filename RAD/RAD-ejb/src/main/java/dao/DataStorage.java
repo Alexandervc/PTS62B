@@ -16,6 +16,7 @@ import domain.RoadType;
 import service.CarService;
 import service.PersonService;
 import service.RateService;
+import util.Hasher;
 
 /**
  * Class for test datastorage. Add object of every domain type in db.

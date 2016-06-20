@@ -42,14 +42,11 @@ header {
     margin-top: 140px;
 }
 
-/* -------------------------------- Buttons -------------------------------- */
-
-.btn-ride {
-    @include button-variant($btn-color, $btn-bg, $btn-bg);
-    border: 0px;
-}
-
 /* -------------------------------- Layers -------------------------------- */
+
+#content {
+    margin-bottom: 40px;
+}
 
 .layer1 {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -118,6 +115,7 @@ textarea {
 }
 
 /* -------------------------------- Lists -------------------------------- */
+
 a .list-group-item {
     color: black;
 }
@@ -128,7 +126,7 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 40px;    
+    height: 41px;    
     background-color: $white;
     text-align: center;
     padding-top: 10px;

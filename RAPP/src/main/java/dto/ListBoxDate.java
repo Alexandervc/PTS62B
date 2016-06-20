@@ -1,10 +1,12 @@
 package dto;
 
+import java.io.Serializable;
+
 /**
  * Dates for listbox.
  * @author Linda
  */
-public class ListBoxDate {
+public class ListBoxDate implements Serializable {
      private String date;
      private String months;
 

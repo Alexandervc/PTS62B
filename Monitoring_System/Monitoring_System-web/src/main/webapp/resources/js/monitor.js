@@ -1,10 +1,17 @@
 google.charts.load("current", {packages: ['corechart', 'controls', 'timeline']});
 google.charts.setOnLoadCallback(drawCharts);
+var Ass;
+var Vs;
+var Rad;
 
-function drawChart(fieldname) {
-    var json = document.getElementById(fieldname); 
-    var obj = JSON.parse(json.value);    
-    var systemName = obj[0][0];    
+function drawChart(json) {
+    if(json === undefined) return;
+    var obj = [];
+    for(var i = 0; i < json.length; i++) {
+        obj[i] = JSON.parse(json[i]);
+    }
+    //console.log(obj);
+    systemName = obj[0][0];
     var container = document.getElementById(systemName);
     var chart = new google.visualization.Timeline(container);    
     
@@ -48,7 +55,39 @@ $(window).resize(function(){
 });
 
 function drawCharts() {
-    drawChart("ASShidden");
-    drawChart("VShidden");
-    drawChart("RADhidden");
+    drawChart(Ass);
+    drawChart(Vs);
+    drawChart(Rad);
 }
+
+var wsUri = getRootUri() +
+    "/Monitoring_System-web/endpoint";
+    function getRootUri() {
+        //192.168.24.70
+        return "ws://localhost:8080";
+    }
+
+var websocket;
+
+function socketsInit() {
+    websocket = new WebSocket(wsUri);
+    websocket.onmessage = function(evt) {
+        onMessage(evt);
+    };
+}
+
+function onMessage(evt) {    
+    var message = JSON.parse(evt.data);
+    Ass = message.ASS;
+    Vs = message.VS;
+    Rad = message.RAD;
+    drawCharts();
+}
+
+
+$( document ).ready(function() {
+    socketsInit();
+});
+
+
+
