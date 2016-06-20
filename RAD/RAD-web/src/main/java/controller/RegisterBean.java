@@ -32,6 +32,9 @@ public class RegisterBean {
     private String housenumber;
     private String zipcode;
     private String city;
+    
+    private String successMessage;
+    private String errorMessage;
 
     public String getUsername() {
         return this.username;
@@ -104,16 +107,61 @@ public class RegisterBean {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
+    public boolean getHasSuccessMessage() {
+        return this.successMessage != null && !this.successMessage.isEmpty();
+    }
+    
+    public boolean getHasErrorMessage() {
+        return this.errorMessage != null && !this.errorMessage.isEmpty();
+    }
+    
+    private void reset() {
+        this.username = "";
+        this.password = "";
+        
+        this.firstName = "";
+        this.lastName = "";
+        this.initials = "";
+        
+        this.streetname = "";
+        this.housenumber = "";
+        this.zipcode = "";
+        this.city = "";
+    }
     
     /**
      * Register a new person.
      */
-    public String register() {
+    public void register() {
+        if(this.personService.findPersonByUsername(this.username) != null){
+            this.errorMessage = "username " + this.username + 
+                    " is already in use.";
+            return;
+        }
+        
         Address address = new Address(this.streetname, this.housenumber, 
                 this.zipcode, this.city);
         this.personService.addPerson(this.firstName, this.lastName, 
                 this.initials, this.username, this.password, address);
         
-        return "/register?faces-redirect=true";
+        this.successMessage = this.username + " is successfully registered.";
+        this.reset();
     }
 }

@@ -16,13 +16,29 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-sm-12 meme layer1">
                         <div class="col-sm-12" id="searchDiv">
-                            <h:form class="form-horizontal" role="form">
+                            <h:panelGroup rendered="#{registerBean.hasSuccessMessage}">
+                                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <strong>Successfull</strong> #{registerBean.successMessage}
+                                </div>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{registerBean.hasErrorMessage}">
+                                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <strong>Error</strong> #{registerBean.errorMessage}
+                                </div>
+                            </h:panelGroup>
+                            <h:form class="form-horizontal" role="form" id="form">
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" 
                                            for="username">Username:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true" 
                                             class="form-control" 
                                             id="username" 
                                             value="#{registerBean.username}"
@@ -35,6 +51,7 @@ and open the template in the editor.
                                            for="password">Password:</label>
                                     <div class="col-sm-10"> 
                                         <h:inputSecret
+                                            a:required="true"
                                             class="form-control" 
                                             id="password" 
                                             value="#{registerBean.password}"
@@ -42,13 +59,13 @@ and open the template in the editor.
                                         </h:inputSecret>
                                     </div>
                                 </div>
-    
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" 
                                            for="firstName">First name:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="firstName" 
                                             value="#{registerBean.firstName}"
@@ -61,7 +78,7 @@ and open the template in the editor.
                                            for="lastName">Last name:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="lastName" 
                                             value="#{registerBean.lastName}"
@@ -74,7 +91,7 @@ and open the template in the editor.
                                            for="initials">Initials:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="initials" 
                                             value="#{registerBean.initials}"
@@ -87,7 +104,7 @@ and open the template in the editor.
                                            for="streetname">Streetname:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="streetname" 
                                             value="#{registerBean.streetname}"
@@ -100,7 +117,7 @@ and open the template in the editor.
                                            for="housenumber">Housenumber:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="housenumber" 
                                             value="#{registerBean.housenumber}"
@@ -113,7 +130,7 @@ and open the template in the editor.
                                            for="zipcode">Zipcode:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="zipcode" 
                                             value="#{registerBean.zipcode}"
@@ -126,7 +143,7 @@ and open the template in the editor.
                                            for="city">City:</label>
                                     <div class="col-sm-10">
                                         <h:inputText
-                                            required="true"
+                                            a:required="true"
                                             class="form-control" 
                                             id="city" 
                                             value="#{registerBean.city}"
