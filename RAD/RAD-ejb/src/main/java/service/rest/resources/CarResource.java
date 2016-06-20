@@ -22,9 +22,13 @@ import service.PersonService;
  */
 @Path("/persons/{personId}/cars")
 @Stateless
-public class CarResource {
+public class CarResource extends BaseResource {
     @Inject
     private PersonService personService;
+
+    public CarResource() {
+        super();
+    }
     
     /**
      * Get cars for person.
@@ -35,13 +39,18 @@ public class CarResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getCars(@PathParam("personId") long personId) {
         Person person = this.personService.findPersonById(personId);
-        List<Car> cars = person.getCars();        
-        List<CarDto> dtos = convertCarsToDto(cars);
-        Gson gson = new Gson();
-        String carsJson = gson.toJson(dtos);
+        List<Car> cars = person.getCars();
         
-        return Response.status(Response.Status.OK)
-                    .entity(carsJson)
-                    .build();
+        List<CarDto> dtos = convertCarsToDto(cars);
+        String encrypted = this.encrypt(this.gson.toJson(dtos));
+
+        if (encrypted != null) {
+            return Response.status(Response.Status.OK)
+                           .entity(encrypted)
+                           .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .build();
+        }
     }
 }

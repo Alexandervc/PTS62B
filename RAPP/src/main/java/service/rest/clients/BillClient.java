@@ -109,11 +109,13 @@ public class BillClient extends BaseClient {
             throw new RuntimeException("Request not accepted: "
                     + response.getStatus());
         }
-
-        // Read entity
-        Gson gson = new Gson();
-        String carsJson = response.readEntity(String.class);
+        
+        // Decrypt message.
+        String encryptedJson = response.readEntity(String.class);
+        String carsJson = this.decrypt(encryptedJson);
         Type type = new TypeToken<ArrayList<CarDto>>() { }.getType();
+        
+        // Convert decrypted JSON to List<CarDto>.
         List<CarDto> carsDto = gson.fromJson(carsJson, type);
         return carsDto;
     }
@@ -144,9 +146,8 @@ public class BillClient extends BaseClient {
 
         // Decrypt message.
         String encryptedJson = response.readEntity(String.class);
-        System.out.println(encryptedJson);
         String billJson = this.decrypt(encryptedJson);
-        System.out.println(billJson);
+
         // Convert decrypted JSON to BillDto.
         BillDto billDto = this.gson.fromJson(billJson, BillDto.class);
         return billDto;
