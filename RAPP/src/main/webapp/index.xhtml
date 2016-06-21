@@ -4,53 +4,143 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui">
+
+    <f:metadata>
+        <f:viewParam name="personId" value="#{invoiceSession.personId}"/>
+        <f:event type="postAddToView" listener="#{invoiceBean.setup()}"/>
+    </f:metadata>
 
     <h:body>         
         <ui:composition template="templates/template.xhtml">
             <ui:define name="content">
                 <div class="row">
+                    <div class="col-sm-12 btn-group-menu">
+                        <h:form>
+                            <h:commandButton class="btn btn-default layer1" 
+                                    value="#{msg['Logout']}" 
+                                    action="#{loginBean.logout()}"/>
+                        </h:form>
+                    </div>
                     <div class="col-sm-12 meme layer1">
-                        <div class="col-sm-12" id="searchDiv">
-                            <h:form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" 
-                                           for="name">Name:</label>
-                                    <div class="col-sm-10">
-                                        <h:inputText
-                                            required="true"
-                                            class="form-control" 
-                                            id="name" 
-                                            value="#{loginBean.loginName}"
-                                            a:placeholder="Enter name">
-                                        </h:inputText>
+                        <h1>#{msg['Invoice']}</h1>
+
+                        <h3>#{invoiceSession.personName}</h3>
+                        <p>#{invoiceSession.personAddress}</p>
+                    </div>
+                    <div class="col-sm-12 meme layer1">
+                        <div class="col-sm-12" id="dateDiv">
+                            <o:form includeViewParams="true">
+                                <h:selectOneMenu class="form-control" 
+                                                 id="dateBox1"
+                                                 value="#{invoiceSession.dateIndex}">                                    
+                                    <f:selectItems value="#{invoiceSession.dates}"
+                                                   var="date" 
+                                                   itemValue="#{date.months}" 
+                                                   itemLabel="#{date.date}">
+                                    </f:selectItems>
+                                    <f:ajax listener="#{invoiceBean.changeDate()}"
+                                            render=":bills :pdfForm"/>
+                                </h:selectOneMenu> 
+                            </o:form>
+                        </div>
+
+                        <div class="col-sm-12"><br/></div>
+
+                        <div class="col-sm-12" id="billDiv">
+                            <h:panelGroup id="bills">
+                                <ui:fragment rendered="#{invoiceBean.cars.size() > 0}">
+                                    <div class="table-responsive">
+
+                                        <div class="panel-group" id="accordion">
+
+                                            <ui:repeat var="car" value="#{invoiceBean.cars}">
+
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" 
+                                                               data-parent="#accordion" 
+                                                               href="##{car.cartrackerId}">
+                                                                #{car.cartrackerId} - #{msg['fueltype.' += car.fuel]}
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    <ui:repeat var="bill" 
+                                                            value="#{invoiceBean.getBillsFromCar(car.cartrackerId)}">
+                                                        <div id="#{car.cartrackerId}" class="panel-collapse collapse">
+                                                            <div class="panel-body">                                                            
+
+                                                                <table class="table table-striped table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>#{msg['RoadType']}</th>
+                                                                            <th>#{msg['RoadName']}</th>                                                                        
+                                                                            <th>#{msg['Km']}</th>
+                                                                            <th>#{msg['PriceKm']}</th>
+                                                                            <th>#{msg['Price']}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>                                            
+                                                                        <ui:repeat var="ru" value="#{bill.roadUsages}">
+                                                                        <tr>
+                                                                            <td>
+                                                                                #{invoiceBean.getRoadType(ru)}
+                                                                            </td>
+                                                                            <td>
+                                                                                #{ru.roadName}
+                                                                            </td>                                                                            
+                                                                            <td class="txt-right">
+                                                                                #{invoiceBean.getKm(ru)}
+                                                                            </td>
+                                                                            <td class="txt-right">
+                                                                                #{invoiceBean.getRate(ru)}
+                                                                            </td>
+                                                                            <td class="txt-right">
+                                                                                #{invoiceBean.getPrice(ru)}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ui:repeat>
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td class="txt-right">
+                                                                                #{msg['Total']}:
+                                                                            </td>
+                                                                            <td class="txt-right">
+                                                                                #{invoiceBean.getTotalPrice(bill)}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                                
+                                                                <o:form id="pdfForm">
+                                                                    <h:commandButton value="#{msg['GetPDF']}"
+                                                                            type="submit"
+                                                                            action="#{invoiceBean.generatePdf(bill)}" 
+                                                                            class="btn btn-default">
+                                                                    </h:commandButton>
+                                                                </o:form>
+
+                                                                <br/>
+
+                                                                <div id="map_#{bill.cartrackerId}" 
+                                                                     class="map">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </ui:repeat>
+                                                </div>
+                                            </ui:repeat>
+                                        </div> 
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" 
-                                           for="pwd">Password:</label>
-                                    <div class="col-sm-10"> 
-                                        <h:inputSecret
-                                            class="form-control" 
-                                            id="password" 
-                                            value="#{loginBean.loginPassword}"
-                                            a:placeholder="Enter password">
-                                        </h:inputSecret>
-                                    </div>
-                                </div>
-                                <div class="form-group"> 
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <h:commandButton type="submit" 
-                                                         id="loginButton"
-                                                         class="btn btn-default"
-                                                         value="Login"
-                                                         action="#{loginBean.login()}"
-                                                         >
-                                        </h:commandButton>
-                                    </div>
-                                </div>
-                            </h:form>
+                                </ui:fragment>
+                            </h:panelGroup>
                         </div>
                     </div>                    
                 </div>
@@ -58,3 +148,4 @@
         </ui:composition>    	
     </h:body>
 </html>
+

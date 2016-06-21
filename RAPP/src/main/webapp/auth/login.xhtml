@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>         
+        <ui:composition template="/templates/template.xhtml">
+            <ui:define name="content">
+                <div class="row">
+                    <div class="col-sm-12 meme layer1">
+                        <div class="col-sm-12" id="searchDiv">
+                            <h:form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" 
+                                           for="name">#{msg['Name']}:</label>
+                                    <div class="col-sm-10">
+                                        <h:inputText
+                                            a:required="true"
+                                            class="form-control" 
+                                            id="name" 
+                                            value="#{loginBean.username}"
+                                            a:placeholder="#{msg['NamePH']}">
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" 
+                                           for="password">#{msg['Password']}:</label>
+                                    <div class="col-sm-10"> 
+                                        <h:inputSecret
+                                            a:required="true"
+                                            class="form-control" 
+                                            id="password" 
+                                            value="#{loginBean.password}"
+                                            a:placeholder="#{msg['PasswordPH']}">
+                                        </h:inputSecret>
+                                    </div>
+                                </div>
+                                <div class="form-group"> 
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <h:commandButton type="submit" 
+                                                         id="loginButton"
+                                                         class="btn btn-default"
+                                                         value="#{msg['Login']}"
+                                                         action="#{loginBean.login()}">
+                                        </h:commandButton>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>                    
+                </div>
+            </ui:define>
+        </ui:composition>    	
+    </h:body>
+</html>

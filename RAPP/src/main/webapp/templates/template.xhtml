@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <title>
@@ -23,28 +24,50 @@
         
         <h:outputScript library="js" name="header.js"/>
     </h:head>
-    
-    <h:body>
-	<div id="page">	
-	    <header class="container-fluid layer2">
-                <div class="container">
-                    <ui:insert name="header">
-                        <h:link outcome="index">
-                            <h:graphicImage class="img-fit" library="images" name="rekeningrijden.png"/>
-                        </h:link>
-                    </ui:insert>
+
+    <f:view locale="#{languageBean.locale}">
+        <h:body>
+            <h:outputScript library="javax.faces" name="jsf.js" target="head" />
+            <h:outputScript library="js" name="fixviewstate.js" 
+                            target="head" />
+
+            <div id="page">	
+                <header class="container-fluid layer2">
+                    <div class="container">
+                        <ui:insert name="header">
+                            <div class="col-xs-12">
+                                <h:link outcome="/index">
+                                    <h:graphicImage id="brand" class="img-fit" library="images" name="rekeningrijden.png"/>
+                                </h:link>
+                                
+                                <h:form class="form-language">
+                                    <div class="btn-group" role="group">
+                                        <h:commandLink action="#{languageBean.setLanguage('en')}">
+                                            <h:graphicImage library="images" name="United-Kingdom.png"/>
+                                        </h:commandLink>
+                                        <h:commandLink action="#{languageBean.setLanguage('pt')}">
+                                            <h:graphicImage library="images" name="Portugal.png"/>
+                                        </h:commandLink>
+                                        <h:commandLink action="#{languageBean.setLanguage('nl')}">   
+                                            <h:graphicImage library="images" name="Netherlands.png"/>
+                                        </h:commandLink>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </ui:insert>
+                    </div>
+                </header>
+
+                <div id="content" class="container">
+                    <ui:insert name="content"/>
                 </div>
-	    </header>
-            
-	    <div id="content" class="container">
-	  	<ui:insert name="content"/>
-	    </div>
-            
-	    <footer class="container-fluid layer2">
-	    	<ui:insert name="footer">
-                    <p>&copy; Rekeningrijden</p>
-	    	</ui:insert>
-    	    </footer>
-        </div>
-    </h:body>
+
+                <footer class="container-fluid layer2">
+                    <ui:insert name="footer">
+                        <p>&copy; Rekeningrijden</p>
+                    </ui:insert>
+                </footer>
+            </div>
+        </h:body>
+    </f:view>
 </html>

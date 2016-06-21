@@ -1,7 +1,14 @@
 package controller;
 
+import domain.ListBoxDate;
 import domain.Person;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -15,6 +22,40 @@ import javax.inject.Named;
 public class InvoiceSession implements Serializable {
     private Long personId;
     private Person person;
+    
+    //Current month and year.
+    private int year;
+    private int month;
+    
+    //Dates for combobox.
+    private String dateIndex;
+    private List<ListBoxDate> dates;
+    
+    @PostConstruct
+    public void setup() {
+                //Setup dates.
+        //Current date.
+        GregorianCalendar cal = new GregorianCalendar();
+        this.year = cal.get(GregorianCalendar.YEAR);
+        this.month = cal.get(GregorianCalendar.MONTH) + 1;
+        this.dateIndex = "0";
+
+        //Create list with ListBoxDate's.
+        this.dates = new ArrayList<>();
+
+        for (int m = 0; m < 25; m++) {
+            GregorianCalendar mCal = new GregorianCalendar();
+            mCal.add(Calendar.MONTH, -m);
+            int mYear = mCal.get(Calendar.YEAR);
+            String mMonthString = mCal.getDisplayName(
+                    Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+
+            //Add date to list.
+            String index = Integer.toString(m);
+            String value = mMonthString + " " + mYear;            
+            this.dates.add(new ListBoxDate(value, index));              
+        } 
+    }
     
     /**
      * Get full person name.
@@ -41,5 +82,33 @@ public class InvoiceSession implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public int getYear() {
+        return this.year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return this.month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+    
+    public String getDateIndex() {
+        return this.dateIndex;
+    }
+
+    public void setDateIndex(String dateIndex) {
+        this.dateIndex = dateIndex;
+    }
+
+    public List<ListBoxDate> getDates() {
+        return new ArrayList<>(this.dates);
     }
 }

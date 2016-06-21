@@ -3,5 +3,6 @@ service\jms\ReceiveTestRequestBean.class
 service\jms\SendPositionBean.class
 service\PathService.class
 model\Point.class
+service\PathService$1.class
 service\jms\SendTestResultsBean.class
 support\NavUtils.class
