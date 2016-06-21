@@ -73,6 +73,8 @@ public class ReceiveFunctionalStatus implements MessageListener {
             this.service.processTestResults(systemName, date, newDate);
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReceiveFunctionalStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
