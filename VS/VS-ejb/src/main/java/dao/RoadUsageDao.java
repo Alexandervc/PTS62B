@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
-import domain.Coordinate;
 import domain.RoadType;
 import dto.RoadUsage;
 import java.util.ArrayList;

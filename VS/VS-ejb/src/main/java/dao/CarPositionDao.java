@@ -12,6 +12,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
 import domain.Coordinate;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.util.logging.PlatformLogger;
 
 /**
  * The dao for carPosition.
@@ -106,7 +110,7 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         q.setParameter("month", month);
         q.setParameter("year", year);
         q.setParameter("cartrackerId", cartrackerId);
-        
+       
         return q.getResultList();
     }
 }
