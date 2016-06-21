@@ -64,7 +64,10 @@ public class SendTestResultsBean {
             mapMessage.setString("newDate", dateString);
             JMSProducer producer = this.context.createProducer();
             producer.setTimeToLive(TIMEOUT);
+            LOGGER.log(Level.INFO,"message : {0}",mapMessage);
             producer.send(queue, mapMessage);
+            LOGGER.log(Level.INFO,"message : {0}",mapMessage);
+
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
