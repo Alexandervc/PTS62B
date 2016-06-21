@@ -58,9 +58,7 @@ public class ReceiveFunctionalStatus implements MessageListener {
     
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         
-            LOGGER.log(Level.INFO,null, "systemName" + systemName);
-            LOGGER.log(Level.INFO,null, "dateString" + dateString);
-            LOGGER.log(Level.INFO,null, "newDateString" + newDateString);
+            LOGGER.log(Level.INFO, "systemName {0}",systemName);
 
             Date date = null;
             Date newDate = null;
@@ -72,9 +70,9 @@ public class ReceiveFunctionalStatus implements MessageListener {
             }
             this.service.processTestResults(systemName, date, newDate);
         } catch (JMSException ex) {
+            LOGGER.log(Level.INFO, "Highlevel catch?");
+
             LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ReceiveFunctionalStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
