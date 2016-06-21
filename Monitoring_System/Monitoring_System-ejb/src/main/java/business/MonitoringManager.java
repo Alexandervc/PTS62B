@@ -168,7 +168,7 @@ public class MonitoringManager {
 
         // Retrieves the specific test from the system object.
         List<Test> tests = system.getTests();
-        LOGGER.log(Level.INFO, null, "tests count: " + tests.size());
+        LOGGER.log(Level.INFO, "tests count: {0}", tests.size());
         List<Test> filteredTests = tests.stream()
                 .filter(x -> x.getDate().equals(time)
                         && x.getTestType() == type)
