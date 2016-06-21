@@ -89,6 +89,10 @@ textarea {
 #form-span {
   width: 150px; }
 
+.btn-group-menu {
+  text-align: right;
+  margin-bottom: 15px; }
+
 /* -------------------------------- Google API ----------------------------- */
 .chart {
   width: 100%;
