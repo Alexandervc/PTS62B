@@ -128,6 +128,7 @@ public class RoadUsage implements Serializable, Comparable<RoadUsage> {
      * Add the given meter to this km.
      * @param meter The distance in meter to add.
      */
+    
     public void addMeter(Double meter) {
         this.km += meter / KM_TO_METER;
     }
