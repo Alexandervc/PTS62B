@@ -1,4 +1,3 @@
-var key = "AIzaSyDLsAkb6W8XFkcN-Cw3C38JawrqkN04oCU";
 var map;
 var month;
 var year;
@@ -6,6 +5,11 @@ var year;
 $(document).ready(function() {    
     var date = new Date();
     setDate(date.getMonth(), date.getYear());
+});
+
+google.maps.event.addDomListener(window, "load", setupEvents);
+google.maps.event.addDomListener(window, "resize", function() {
+    setDefaultView() 
 });
 
 function setupEvents() {
@@ -95,8 +99,3 @@ function setDefaultView() {
     map.setCenter(centerEU);
     map.setZoom(zoomEU);    
 }
-
-google.maps.event.addDomListener(window, "load", setupEvents);
-google.maps.event.addDomListener(window, "resize", function() {
-    setDefaultView() 
-});
