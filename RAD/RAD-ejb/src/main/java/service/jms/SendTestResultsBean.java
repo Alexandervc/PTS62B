@@ -63,7 +63,7 @@ public class SendTestResultsBean {
             mapMessage.setString("date", date);
             mapMessage.setString("newDate", dateString);
             JMSProducer producer = this.context.createProducer();
-            producer.setTimeToLive(TIMEOUT);
+            //producer.setTimeToLive(TIMEOUT);
             LOGGER.log(Level.INFO,"message : {0}",mapMessage);
             producer.send(queue, mapMessage);
             LOGGER.log(Level.INFO,"message : {0}",mapMessage);
