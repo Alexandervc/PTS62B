@@ -7,6 +7,11 @@ $(document).ready(function() {
     setDate(date.getMonth(), date.getYear());
 });
 
+google.maps.event.addDomListener(window, 'load', setupEvents);
+google.maps.event.addDomListener(window, 'resize', function() {
+    setDefaultView() 
+});
+
 function setupEvents() {
     var divs = document.getElementsByClassName("map");
     
@@ -94,8 +99,3 @@ function setDefaultView() {
     map.setCenter(centerEU);
     map.setZoom(zoomEU);    
 }
-
-google.maps.event.addDomListener(window, 'load', setupEvents);
-google.maps.event.addDomListener(window, 'resize', function() {
-    setDefaultView() 
-});
