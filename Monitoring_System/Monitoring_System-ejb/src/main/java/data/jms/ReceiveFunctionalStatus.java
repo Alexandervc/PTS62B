@@ -58,6 +58,10 @@ public class ReceiveFunctionalStatus implements MessageListener {
     
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         
+            LOGGER.log(Level.INFO,null,systemName);
+            LOGGER.log(Level.INFO,null,dateString);
+            LOGGER.log(Level.INFO,null,newDateString);
+
             Date date = null;
             Date newDate = null;
             try {
