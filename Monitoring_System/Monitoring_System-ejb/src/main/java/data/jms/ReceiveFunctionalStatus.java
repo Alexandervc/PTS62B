@@ -52,7 +52,6 @@ public class ReceiveFunctionalStatus implements MessageListener {
 
         try {
             MapMessage mapMessage = (MapMessage) message;
-            LOGGER.log(Level.INFO, "message from : {0]",mapMessage.getString("system"));
 
             // Get message values
             String systemName = mapMessage.getString("system");
@@ -61,7 +60,6 @@ public class ReceiveFunctionalStatus implements MessageListener {
     
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         
-            LOGGER.log(Level.INFO, "systemName {0}",systemName);
 
             Date date = null;
             Date newDate = null;
@@ -73,8 +71,6 @@ public class ReceiveFunctionalStatus implements MessageListener {
             }
             this.service.processTestResults(systemName, date, newDate);
         } catch (JMSException ex) {
-            LOGGER.log(Level.INFO, "Highlevel catch?");
-
             LOGGER.log(Level.SEVERE, null, ex);
         }
         

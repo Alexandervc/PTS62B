@@ -49,7 +49,6 @@ public class ReceiveTestRequestBean implements MessageListener {
         try {
             queue = mapMessage.getJMSReplyTo();
             date = mapMessage.getString("date");
-            LOGGER.log(Level.INFO, "date : {0}",date);
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

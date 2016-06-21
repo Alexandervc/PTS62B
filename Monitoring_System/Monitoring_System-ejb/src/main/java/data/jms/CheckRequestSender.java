@@ -68,8 +68,6 @@ public class CheckRequestSender {
             String currentTime = df.format(date);
             message.setString("date", currentTime);
             message.setJMSReplyTo(queue);
-            System.out.println("injected : " +queue);
-            System.out.println("inside message: " + message.getJMSReplyTo());
             producer.setTimeToLive(TIMEOUTTIME);
             producer.send(this.topic, message);
         } catch (JMSException ex) {

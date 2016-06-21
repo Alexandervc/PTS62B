@@ -32,7 +32,7 @@ public class SendTestResultsBean {
             .getLogger(SendTestResultsBean.class.getName());
 
     // The timeout time for messages send from this class.
-    private static final long TIMEOUT = 60000;
+    private static final long TIMEOUT = 180000;
 
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")
@@ -63,7 +63,7 @@ public class SendTestResultsBean {
             mapMessage.setString("date", date);
             mapMessage.setString("newDate", dateString);
             JMSProducer producer = this.context.createProducer();
-            //producer.setTimeToLive(TIMEOUT);
+            producer.setTimeToLive(TIMEOUT);
             LOGGER.log(Level.INFO,"message : {0}",mapMessage);
             producer.send(queue, mapMessage);
             LOGGER.log(Level.INFO,"message : {0}",mapMessage);
