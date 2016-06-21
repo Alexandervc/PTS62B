@@ -28,12 +28,12 @@ public class BaseClient {
     private static final Logger LOGGER 
             = Logger.getLogger(BaseClient.class.getName());
     
-    protected final Gson gson;
-    protected String radApiKey;
-    
     private static final String RAD_KEY_FILE  = "rad.key";
     private static final String RAPP_KEY_FILE = "rapp.key";
     private static final String RAD_API_KEY_FILE = "radapi.key";
+    
+    protected final Gson gson;
+    protected String radApiKey;
     
     private Key radKey;
     private Key rappKey;
