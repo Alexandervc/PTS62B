@@ -161,13 +161,17 @@ public class MonitoringManager {
      * @param newTime The correct time that should be used to update.
      */
     public void updateTest(String systemName, boolean result
-            , TestType type, Timestamp time, Timestamp newTime) {
+            , TestType type, Timestamp time, Timestamp newTime) throws IOException {
         // Gets the system based on its name.
+        
         System system = this.systemDao.getSystemByName(systemName);
 
 
         // Retrieves the specific test from the system object.
         List<Test> tests = system.getTests();
+        if(tests.isEmpty()) {
+            throw new IOException();
+        }
         LOGGER.log(Level.INFO, "tests count: {0}", tests.size());
         List<Test> filteredTests = tests.stream()
                 .filter(x -> x.getDate().equals(time)
