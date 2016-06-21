@@ -161,7 +161,7 @@ public class MonitoringManager {
      * @param newTime The correct time that should be used to update.
      */
     public void updateTest(String systemName, boolean result
-            , TestType type, Timestamp time, Timestamp newTime) throws IOException {
+            , TestType type, Timestamp time, Timestamp newTime){
         // Gets the system based on its name.
         
         System system = this.systemDao.getSystemByName(systemName);

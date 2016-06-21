@@ -84,7 +84,7 @@ public class MonitoringService {
      * @param date date of the original test.
      * @param newDate date that was created in the remote system.
      */
-    public void processTestResults(String systemName, Date date, Date newDate) throws IOException {
+    public void processTestResults(String systemName, Date date, Date newDate) {
         this.manager.updateTest(systemName, true, TestType.ENDPOINTS,
                 new Timestamp(date.getTime()),
                 new Timestamp(newDate.getTime()));
