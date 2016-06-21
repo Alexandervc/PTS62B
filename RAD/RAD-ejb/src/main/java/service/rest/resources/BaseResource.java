@@ -28,18 +28,15 @@ public class BaseResource {
     private static final Logger LOGGER 
             = Logger.getLogger(BaseResource.class.getName());
     
-    private static final String RAD_KEY_FILE       = "rad.key";
-    private static final String RAPP_KEY_FILE      = "rapp.key";
-    private static final String RAD_API_KEY_FILE   = "radapi.key";
-    private static final String RAPP_API_KEY_FILE  = "rappapi.key";
+    private static final String RAD_KEY_FILE     = "rad.key";
+    private static final String RAPP_KEY_FILE    = "rapp.key";
+    private static final String RAD_API_KEY_FILE = "radapi.key";
     
     private Key radKey;
     private Key rappKey;
     
     protected final Gson gson;
-    
     protected String radApiKey;
-    protected String rappApiKey;
     
     /**
      * Instantiates the BaseResource.
@@ -47,7 +44,6 @@ public class BaseResource {
     public BaseResource() {
         this.gson = new Gson();
         this.readRadApiKey();
-        this.readRappApiKey();
         this.readRadKey();
         this.readRappKey();
     }
@@ -57,13 +53,6 @@ public class BaseResource {
      */
     private void readRadApiKey() {
         this.radApiKey = this.readStringFromFile(RAD_API_KEY_FILE);
-    }
-    
-    /**
-     * Reads the RAPP api key from file.
-     */
-    private void readRappApiKey() {
-        this.rappApiKey = this.readStringFromFile(RAPP_API_KEY_FILE);
     }
     
     /**
