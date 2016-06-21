@@ -19,11 +19,18 @@ import javax.ws.rs.core.Response;
  * @author Alexander
  */
 @Stateless
-public class PersonClient {
+public class PersonClient extends BaseClient {
     private static final String BASE_URL
             = "http://localhost:8080/RAD-web/radapi";
 
     private Client client;
+
+    /**
+     * Instantiates the PersonClient class.
+     */
+    public PersonClient() {
+        super();
+    }
 
     @PostConstruct
     private void start() {
@@ -49,8 +56,13 @@ public class PersonClient {
             throw new RuntimeException("Request not accepted: "
                     + response.getStatus());
         }
-
-        // Read entity
-        return response.readEntity(PersonDto.class);
+        
+        // Decrypt message.
+        String encryptedJson = response.readEntity(String.class);
+        String personsJson = this.decrypt(encryptedJson);
+        
+        // Convert decrypted JSON to List<CarDto>.
+        PersonDto personDto = gson.fromJson(personsJson, PersonDto.class);
+        return personDto;
     }
 }
