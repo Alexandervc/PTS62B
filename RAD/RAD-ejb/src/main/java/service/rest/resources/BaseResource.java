@@ -92,15 +92,11 @@ public class BaseResource {
             }
             
             return sb.toString();
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (InvalidKeyException 
+                 | NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
@@ -125,15 +121,11 @@ public class BaseResource {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, this.rappKey);
             return new String(cipher.doFinal(encryptedBytes));
-        } catch (NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | InvalidKeyException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
