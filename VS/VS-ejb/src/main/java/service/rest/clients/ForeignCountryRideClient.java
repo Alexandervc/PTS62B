@@ -21,11 +21,11 @@ import service.rest.contracts.ForeignCountryRide;
 @Stateless
 public class ForeignCountryRideClient {
     private static final String BASE_URL = 
-            "http://192.168.24.74:8080/RAD/radapi";
+            "http://localhost:8080/RAD-web/radapi";
     
     // TODO DEPLOY: UNCOMMENT
     //private static final String BASE_URL = 
-    //        "http://192.168.24.74:8080/RAD/radapi";
+    //        "http://localhost:8080/RAD-web/radapi";
     
     private Client client;
 
@@ -44,8 +44,8 @@ public class ForeignCountryRideClient {
             double totalPrice) {
         
         ForeignCountryRide foreignCountryRide = new ForeignCountryRide();
-        foreignCountryRide.foreignCountryRideId = foreignCountryRideId; 
-        foreignCountryRide.totalPrice = totalPrice;
+        foreignCountryRide.setForeignCountryRideId(foreignCountryRideId); 
+        foreignCountryRide.setTotalPrice(totalPrice);
                 
         // Get response
         Response response = this.client.target(BASE_URL)
@@ -58,7 +58,6 @@ public class ForeignCountryRideClient {
                         MediaType.APPLICATION_JSON));
         
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
-            // TODO choose exception
             throw new RuntimeException("Request not accepted: " + 
                     response.getStatus());
         }

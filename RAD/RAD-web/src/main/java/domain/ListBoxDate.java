@@ -19,6 +19,5 @@ public class ListBoxDate {
 
     public String getMonths() {
         return this.months;
-    }
-    
+    }    
 }
