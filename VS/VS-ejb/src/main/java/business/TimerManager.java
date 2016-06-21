@@ -6,7 +6,9 @@
 package business;
 
 import dao.CarPositionDao;
+import domain.CarPosition;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import javax.ejb.Stateless;
@@ -23,10 +25,13 @@ public class TimerManager {
     
     private final Timer timer;
     private final SenderTask task;
+    private final CarPositionManager manager;
           
     
     public TimerManager(SendMissingCarpositions sender, String cartrackerId,
-            Long serialnumber, Integer rideId, CarPositionDao dao) {
+            Long serialnumber, Integer rideId, CarPositionDao dao,
+            CarPositionManager manager) {
+        this.manager = manager;
         this.timer = new Timer();
         this.task = new SenderTask(cartrackerId, serialnumber, 
             this, sender, rideId, dao);
@@ -36,9 +41,10 @@ public class TimerManager {
         this.timer.schedule(this.task, TIME);
     }
     
-    public void stopTimer(){
+    public void stopTimer(List<CarPosition> positions, String cartrackerId){
         this.timer.cancel();
         this.timer.purge();
+        this.manager.processRideForForeignCountry(positions, cartrackerId);
     }
 
 }

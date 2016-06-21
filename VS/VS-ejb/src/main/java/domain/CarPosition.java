@@ -76,6 +76,7 @@ public class CarPosition implements Serializable {
     private Long foreignCountryRideId;
 
     private Boolean lastOfRide;
+    private Boolean firstOfRide;
 
     @ManyToOne
     private Road road;
@@ -110,11 +111,12 @@ public class CarPosition implements Serializable {
      * is part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
      * not.
+     * @param firstOfRide Whether this carposition is first of the ride or not.
      * @param serialNumber serial number from simulator.
      */
     public CarPosition(Cartracker cartracker, Date moment,
             Coordinate coordinate, Road road, Double meter, Integer rideId,
-            Long foreignCountryRideId, Boolean lastOfRide,
+            Long foreignCountryRideId, Boolean lastOfRide, Boolean firstOfRide,
             Long serialNumber) {
         if (cartracker == null) {
             throw new IllegalArgumentException("cartracker null");
@@ -136,6 +138,7 @@ public class CarPosition implements Serializable {
         this.rideId = rideId;
         this.foreignCountryRideId = foreignCountryRideId;
         this.lastOfRide = lastOfRide;
+        this.firstOfRide = firstOfRide;
         this.serialNumber = serialNumber;
     }
 
@@ -211,6 +214,14 @@ public class CarPosition implements Serializable {
         this.lastOfRide = lastOfRide;
     }
 
+    public Boolean getFirstOfRide() {
+        return firstOfRide;
+    }
+
+    public void setFirstOfRide(Boolean firstOfRide) {
+        this.firstOfRide = firstOfRide;
+    }
+    
     public Long getSerialNumber() {
         return this.serialNumber;
     }

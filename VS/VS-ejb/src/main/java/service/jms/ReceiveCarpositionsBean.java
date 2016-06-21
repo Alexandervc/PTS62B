@@ -69,13 +69,14 @@ public class ReceiveCarpositionsBean implements MessageListener {
                     yCoordinate);
             Double meter = (Double) position.get("meter");
             Boolean lastOfRide = (Boolean) position.get("last");
+            Boolean firstOfRide = (Boolean) position.get("first");
 
             // TODO road op andere manier??
             String roadName = "test";
 
             this.carPositionService.processCarPosition(cartrackerId, moment,
                     coordinate, roadName, meter,
-                    rideId, null, lastOfRide, serialNumber);
+                    rideId, null, lastOfRide, firstOfRide, serialNumber);
 
         } catch (JMSException | ParseException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

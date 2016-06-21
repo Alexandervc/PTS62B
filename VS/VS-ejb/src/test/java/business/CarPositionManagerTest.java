@@ -77,6 +77,7 @@ public class CarPositionManagerTest {
     private Double meters;
     private Integer rideId;
     private Boolean lastOfRide;
+    private Boolean firstOfRide;
     
     private CarPosition carPosition;
     
@@ -110,6 +111,7 @@ public class CarPositionManagerTest {
         this.meters = 3.0;
         this.rideId = 1;
         this.lastOfRide = false;
+        this.firstOfRide = true;
         
         this.foreignRideId = 2L;
         this.foreignNotLastLastOfRide = false;
@@ -117,15 +119,15 @@ public class CarPositionManagerTest {
         
         this.carPosition = new CarPosition(this.cartracker, this.moment,
                 this.coordinate, road, this.meters,
-                this.rideId, null, this.lastOfRide, 0L);        
+                this.rideId, null, this.lastOfRide, this.firstOfRide, 0L);        
         this.foreignNotLastCarPosition = new CarPosition(this.foreignCartracker,
                 this.moment, this.coordinate, road, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignNotLastLastOfRide, 0L);
+                this.foreignNotLastLastOfRide, this.firstOfRide,  0L);
         this.foreignLastCarPosition = new CarPosition(this.foreignCartracker,
                 this.moment, this.coordinate, road,
                 this.meters, null, this.foreignRideId, 
-                this.foreignLastLastOfRide, 0L);
+                this.foreignLastLastOfRide,this.firstOfRide, 0L);
     }
     
     @Test
@@ -139,7 +141,8 @@ public class CarPositionManagerTest {
         // Call method
         this.carPositionManager.processCarPosition(this.cartrackerId, 
                 this.moment, this.coordinate, this.roadName, 
-                this.meters, this.rideId, null, this.lastOfRide, 0L);
+                this.meters, this.rideId, null, this.lastOfRide, 
+                this.firstOfRide,  0L);
         
         // Verify
         verify(this.carPositionDao)
@@ -158,7 +161,7 @@ public class CarPositionManagerTest {
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
                 this.moment, this.coordinate, this.roadName, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignLastLastOfRide, 0L);
+                this.foreignLastLastOfRide, this.firstOfRide, 0L);
         
         // Verify
         verify(this.carPositionDao)
@@ -183,7 +186,7 @@ public class CarPositionManagerTest {
         this.carPositionManager.processCarPosition(this.foreignCartrackerId, 
                 this.moment, this.coordinate, this.roadName, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignNotLastLastOfRide, 0L);
+                this.foreignNotLastLastOfRide, this.firstOfRide, 0L);
         
         // Verify
         verify(this.carPositionDao)

@@ -73,8 +73,8 @@ public class CarPositionManager {
     /**
      * Process the given information of a CarPosition.
      *
-     * @param cartrackerId The unique identifier of a cartracker. Cannot be 
-     * null or empty.
+     * @param cartrackerId The unique identifier of a cartracker. Cannot be null
+     * or empty.
      * @param moment The moment in which the cartracker was at the given
      * coordinates.
      * @param coordinate The coordinate of this carposition.
@@ -86,42 +86,21 @@ public class CarPositionManager {
      * carposition is a part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
      * not.
+     * @param firstOfRide Whether this carposition is first of the ride or not.
      * @param serialNumber serial number from simulator.
      */
     public void processCarPosition(String cartrackerId, Date moment,
             Coordinate coordinate, String roadName,
             Double meter, Integer rideId, Long foreignCountryRideId,
-            Boolean lastOfRide, Long serialNumber) {
+            Boolean lastOfRide, Boolean firstOfRide, Long serialNumber) {
         try {
 
             this.saveCarPosition(cartrackerId, moment, coordinate,
                     roadName, meter, rideId, foreignCountryRideId, lastOfRide,
-                    serialNumber);
+                    firstOfRide, serialNumber);
 
-            // Get countryCode
-            String countryCodeTo = cartrackerId
-                    .substring(0, COUNTRYCODE_LENGTH);
-
-            // If foreign and last of ride
-            // TODO: check if ride is complete in db
-            if (!MY_COUNTRYCODE.equals(countryCodeTo) && lastOfRide) {
-//                // Get carpostions and roadusages of ride
-//                List<CarPosition> carPositions = this.carPositionDao
-//                        .getPositionsOfRide(rideId);
-//                List<RoadUsage> roadUsages = this.roadUsageManager
-//                        .convertToRoadUsages(carPositions);
-//
-//                // Get total price
-//                double totalPrice = this.totalPriceService
-//                        .getTotalPrice(roadUsages);
-//
-//                // Send
-//                this.foreignRideService.sendForeignRide(cartrackerId,
-//                        totalPrice, carPositions, countryCodeTo,
-//                        MY_COUNTRYCODE);
-            }
             TimerManager tm = new TimerManager(this.jmsSender, cartrackerId,
-                    serialNumber, rideId, this.carPositionDao);
+                    serialNumber, rideId, this.carPositionDao, this);
             tm.startTimer();
         } catch (IllegalArgumentException iaEx) {
             LOGGER.log(Level.SEVERE, null, iaEx);
@@ -152,6 +131,32 @@ public class CarPositionManager {
 
     }
 
+    public void processRideForForeignCountry(List<CarPosition> carPositions,
+            String cartrackerId) {
+        if (carPositions == null) {
+            // Get countryCode
+            String countryCodeTo = cartrackerId
+                    .substring(0, COUNTRYCODE_LENGTH);
+
+            // If foreign and last of ride
+            if (!MY_COUNTRYCODE.equals(countryCodeTo)) {
+
+                // Check if all rides are in list
+                List<RoadUsage> roadUsages = this.roadUsageManager
+                        .convertToRoadUsages(carPositions);
+
+                // Get total price
+                double totalPrice = this.totalPriceService
+                        .getTotalPrice(roadUsages);
+
+                // Send
+                this.foreignRideService.sendForeignRide(cartrackerId,
+                        totalPrice, carPositions, countryCodeTo,
+                        MY_COUNTRYCODE);
+            }
+        }
+    }
+
     /**
      * Save the given information into a CarPosition.
      *
@@ -162,11 +167,18 @@ public class CarPositionManager {
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
      * last carPosition.
+     * @param rideId The id of the ride this carposition is a part of.
+     * @param foreignCountryRideId The id of the foreign country ride this
+     * carposition is a part of.
+     * @param lastOfRide Whether this carposition is the last of the ride or
+     * not.
+     * @param firstOfRide Whether this carposition is first of the ride or not.
+     * @param serialNumber serial number from simulator.
      */
     private void saveCarPosition(String cartrackerId, Date moment,
             Coordinate coordinate, String roadName, Double meter,
             Integer rideId, Long foreignCountryRideId, Boolean lastOfRide,
-            Long serialNumber) {
+            Boolean firstOfRide, Long serialNumber) {
 
         // Check if position already exists
         CarPosition cp = null;
@@ -184,7 +196,7 @@ public class CarPositionManager {
             // Make carPosition
             cp = new CarPosition(cartracker, moment, coordinate,
                     road, meter, rideId, foreignCountryRideId,
-                    lastOfRide, serialNumber);
+                    lastOfRide, firstOfRide, serialNumber);
 
             this.carPositionDao.create(cp);
         }

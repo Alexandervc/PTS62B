@@ -194,6 +194,7 @@ public class PathService implements Serializable {
                 List<Point> points = this.getCoordinatesFromGoogle(input);
 
                 Point previous = null;
+                Boolean firstOfRide = true;
 
                 for (Point p : points) {
                     //Get parameters.
@@ -226,6 +227,7 @@ public class PathService implements Serializable {
                     position.put("yCoordinate", yCoordinate);
                     position.put("meter", meter);
                     position.put("last", last);
+                    position.put("first", firstOfRide);
 
                     //Create file for point.
                     String fileName = cartrackerId + "-" + fileIndex + ".json";
@@ -247,6 +249,7 @@ public class PathService implements Serializable {
 
                     previous = p;
                     fileIndex++;
+                    firstOfRide = false;
                 }
                 //Update config file.
                 rideId++;
