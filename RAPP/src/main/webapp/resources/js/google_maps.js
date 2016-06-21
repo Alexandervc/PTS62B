@@ -78,8 +78,9 @@ function initMap() {
             }
         };
 
-        //Send request
+        //Send request        
         xhttp.open("GET", apiurl, true);
+        xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
         xhttp.send();
     });
 }
