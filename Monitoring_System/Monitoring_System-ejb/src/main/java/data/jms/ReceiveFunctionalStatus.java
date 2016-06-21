@@ -48,8 +48,11 @@ public class ReceiveFunctionalStatus implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
+        LOGGER.log(Level.INFO, "MESSAGED RECEIVED!!!");
+
         try {
             MapMessage mapMessage = (MapMessage) message;
+            LOGGER.log(Level.INFO, "message from : {0]",mapMessage.getString("system"));
 
             // Get message values
             String systemName = mapMessage.getString("system");
