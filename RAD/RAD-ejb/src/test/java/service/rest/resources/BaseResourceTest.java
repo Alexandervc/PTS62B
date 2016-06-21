@@ -16,17 +16,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
+ * Test class which tests the BaseResource class.
  * @author Jesse
  */
 public class BaseResourceTest {
     private TestResource testResource;
     
+    /**
+     * Instantiates the BaseResourceTests.
+     */
     @Before
     public void setUp() {
         this.testResource = new TestResource();
     }
     
+    /**
+     * Test encryption and decription of a message.
+     * @throws NoSuchAlgorithmException The exception.
+     * @throws NoSuchPaddingException The exception.
+     * @throws InvalidKeyException The exception.
+     * @throws IllegalBlockSizeException The exception.
+     * @throws BadPaddingException The exception.
+     */
     @Test
     public void encryptDecryptTest() 
             throws NoSuchAlgorithmException,
