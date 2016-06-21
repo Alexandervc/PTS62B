@@ -55,6 +55,7 @@ public class BillClient extends BaseClient {
         // Get Response
         Response response = this.client.target(BASE_URL)
                 .path(restLink)
+                .queryParam("key", this.radApiKey)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
 
@@ -89,6 +90,7 @@ public class BillClient extends BaseClient {
                 .resolveTemplate("cartrackerId", cartrackerId)
                 .queryParam("month", month)
                 .queryParam("year", year)
+                .queryParam("key", this.radApiKey)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
 

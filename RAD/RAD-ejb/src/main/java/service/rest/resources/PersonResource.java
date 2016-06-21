@@ -14,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.PersonService;
@@ -30,7 +31,8 @@ public class PersonResource extends BaseResource {
     private PersonService service;
 
     /**
-     * Instantiates the PersonResource class.
+     * Instantiates the PersonResource class. This also reads all the keys 
+     * needed for encryption and decryption.
      */
     public PersonResource() {
         super();
@@ -40,11 +42,19 @@ public class PersonResource extends BaseResource {
      * Get the person with the given username
      *
      * @param username The username of the person.
+     * @param key The api key.
      * @return The found person.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("username") String username) {        
+    public Response getPerson(@PathParam("username") String username,
+                              @QueryParam("key") String key) { 
+        // Check api key.
+        if (!this.radApiKey.equals(key)) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                           .build();
+        }
+        
         // Search person
         Person person = this.service.findPersonByUsername(username);
         

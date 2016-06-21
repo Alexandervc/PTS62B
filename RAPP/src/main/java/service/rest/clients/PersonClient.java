@@ -48,6 +48,7 @@ public class PersonClient extends BaseClient {
         Response response = this.client.target(BASE_URL)
                 .path("/persons/{username}")
                 .resolveTemplate("username", username)
+                .queryParam("key", this.radApiKey)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
 

@@ -1,3 +1,4 @@
+var key = "AIzaSyDLsAkb6W8XFkcN-Cw3C38JawrqkN04oCU";
 var map;
 var month;
 var year;
@@ -12,9 +13,9 @@ function setupEvents() {
     
     Array.prototype.forEach.call(divs, function(div) {
         //Create event for collapsible panel
-        var div_acc = div.id.replace('map_', '#');
+        var div_acc = div.id.replace("map_", "#");
 
-        $(div_acc).on('shown.bs.collapse', function() {
+        $(div_acc).on("shown.bs.collapse", function() {
             initMap();
         });
     });
@@ -59,7 +60,7 @@ function initMap() {
                     var path = new google.maps.Polyline({
                         path: coordinates,
                         geodesic: true,
-                        strokeColor: '#FF0000',
+                        strokeColor: "#FF0000",
                         strokeOpacity: 1.0,
                         strokeWeight: 2
                     });
@@ -95,7 +96,7 @@ function setDefaultView() {
     map.setZoom(zoomEU);    
 }
 
-google.maps.event.addDomListener(window, 'load', setupEvents);
-google.maps.event.addDomListener(window, 'resize', function() {
+google.maps.event.addDomListener(window, "load", setupEvents);
+google.maps.event.addDomListener(window, "resize", function() {
     setDefaultView() 
 });

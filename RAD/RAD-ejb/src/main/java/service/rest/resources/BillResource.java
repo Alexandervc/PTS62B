@@ -31,7 +31,8 @@ public class BillResource extends BaseResource {
     private BillService billService;
 
     /**
-     * Instantiates the BillResource.
+     * Instantiates the BillResource. This also reads all the keys needed for
+     * encryption and decryption.
      */
     public BillResource() {
         super();
@@ -42,13 +43,21 @@ public class BillResource extends BaseResource {
      * @param cartrackerId The id of the cartracker to generate the bill for.
      * @param month The number of the month to generate the bill for.
      * @param year The number of the year to generate the bill for.
+     * @param key The api key.
      * @return A list of Bills, one Bill for each car of the person.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBill(@PathParam("cartrackerId") String cartrackerId,
                             @QueryParam("month") int month, 
-                            @QueryParam("year") int year) {
+                            @QueryParam("year") int year,
+                            @QueryParam("key") String key) {
+        // Check api key.
+        if (!this.radApiKey.equals(key)) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                           .build();
+        }
+        
         Bill bill = this.billService.generateBill(cartrackerId, 
                                                   month, 
                                                   year);
