@@ -30,6 +30,7 @@ public class RoadUsageService {
     */
     public List<RoadUsage> generateRoadUsages(String cartrackerId, int month, 
             int year) {
+        System.out.println("service layer");
         return this.roadUsageManager.generateRoadUsagesOfMonth(month, year, 
                 cartrackerId);
     }
