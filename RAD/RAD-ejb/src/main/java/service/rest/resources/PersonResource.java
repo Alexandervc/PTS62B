@@ -24,11 +24,18 @@ import service.PersonService;
  */
 @Path("/persons/{username}")
 @Stateless
-public class PersonResource {
+public class PersonResource extends BaseResource {
     
     @Inject
     private PersonService service;
 
+    /**
+     * Instantiates the PersonResource class.
+     */
+    public PersonResource() {
+        super();
+    }
+    
     /**
      * Get the person with the given username
      *
@@ -46,10 +53,17 @@ public class PersonResource {
                     .build();
         }
         
+        // Encrypt the message.
         PersonDto personDto = DtoConverter.convertPersonToDto(person);
-        
-        return Response.status(Response.Status.OK)
-                .entity(personDto)
-                .build();
+        String encrypted = this.encrypt(this.gson.toJson(personDto));
+
+        if (encrypted != null) {
+            return Response.status(Response.Status.OK)
+                           .entity(encrypted)
+                           .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .build();
+        }
     }
 }

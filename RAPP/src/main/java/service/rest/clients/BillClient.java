@@ -16,7 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,6 +28,7 @@ public class BillClient extends BaseClient {
 
     private static final Logger LOG = Logger.
             getLogger(BillClient.class.getName());
+    
     private static final String BASE_URL
             = "http://localhost:8080/RAD-web/radapi";
     
