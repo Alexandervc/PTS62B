@@ -273,7 +273,7 @@ public class MonitoringManager {
         }
         // Sends a message into the topic so the systems can send their test
         // results.
-        this.checkRequestSender.requestChecks(date);
+        this.checkRequestSender.requestChecks(currentDate);
     }
     
     /**
