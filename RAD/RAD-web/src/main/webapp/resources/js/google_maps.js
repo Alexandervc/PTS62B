@@ -7,11 +7,6 @@ $(document).ready(function() {
     setDate(date.getMonth(), date.getYear());
 });
 
-google.maps.event.addDomListener(window, "load", setupEvents);
-google.maps.event.addDomListener(window, "resize", function() {
-    setDefaultView() 
-});
-
 function setupEvents() {
     var divs = document.getElementsByClassName("map");
     
@@ -30,6 +25,25 @@ function setDate(month, year) {
     this.year = year;    
 }
 
+// Create the XHR object.
+function createCORSRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    
+    if ("withCredentials" in xhr) {
+        // XHR for Chrome/Firefox/Opera/Safari.
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined") {
+        // XDomainRequest for IE.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        // CORS not supported.
+        xhr = null;
+    }
+    
+    return xhr;
+}
+
 function initMap() {    
     var divs = document.getElementsByClassName("map");
     
@@ -44,10 +58,10 @@ function initMap() {
                 + year;
         
         //HTTP request
-        var xhttp = new XMLHttpRequest();
+        var xhttp = createCORSRequest();
 
         //Get response
-        xhttp.onreadystatechange = function() {
+        xhttp.onload = function() {
             if (xhttp.readyState === 4 && xhttp.status === 200) {               
                 var data = xhttp.responseText;
                 
@@ -78,10 +92,11 @@ function initMap() {
             }
         };
 
-        //Send request        
-        xhttp.open("GET", apiurl, true);
-        xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-        xhttp.send();
+        //Send request      
+        if (xhttp !== null) {
+            xhttp.open("GET", apiurl, true);
+            xhttp.send();
+        }
     });
 }
 
@@ -100,3 +115,8 @@ function setDefaultView() {
     map.setCenter(centerEU);
     map.setZoom(zoomEU);    
 }
+
+google.maps.event.addDomListener(window, "load", setupEvents);
+google.maps.event.addDomListener(window, "resize", function() {
+    setDefaultView() 
+});
