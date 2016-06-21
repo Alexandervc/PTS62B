@@ -28,15 +28,15 @@ public class BaseClient {
     private static final Logger LOGGER 
             = Logger.getLogger(BaseClient.class.getName());
     
+    protected final Gson gson;
+    protected String radApiKey;
+    
     private static final String RAD_KEY_FILE  = "rad.key";
     private static final String RAPP_KEY_FILE = "rapp.key";
     private static final String RAD_API_KEY_FILE = "radapi.key";
     
     private Key radKey;
     private Key rappKey;
-    
-    protected final Gson gson;
-    protected String radApiKey;
     
     /**
      * Instantiates the BaseResource.
@@ -92,15 +92,11 @@ public class BaseClient {
             }
             
             return sb.toString();
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (InvalidKeyException 
+                 | NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
@@ -125,15 +121,11 @@ public class BaseClient {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, this.radKey);
             return new String(cipher.doFinal(encryptedBytes));
-        } catch (NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | InvalidKeyException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
