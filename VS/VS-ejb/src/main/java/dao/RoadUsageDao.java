@@ -11,10 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
-import domain.Coordinate;
 import domain.RoadType;
 import dto.RoadUsage;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The dao for road usages.
@@ -22,6 +23,10 @@ import java.util.ArrayList;
  */
 @Stateless
 public class RoadUsageDao extends AbstractDaoFacade<CarPosition> {
+    
+    private static final Logger LOGGER
+            = Logger.getLogger(RoadUsageDao.class.getName());
+    
     @PersistenceContext
     private EntityManager em;
 
@@ -38,20 +43,20 @@ public class RoadUsageDao extends AbstractDaoFacade<CarPosition> {
     }
     
     /**
-     * Gets RoadUsages from the materializedView based on a cartracker_id, a
-     * month and a year.
-     * @param cartracker_id The id of the cartracker with the roadusages that 
-     * are requested.
+     * Gets RoadUsages from the materializedView based on a cartrackerid, a
+ month and a year.
+     * @param cartrackerid The id of the cartracker with the roadusages that 
+     *      are requested.
      * @param month The month that is being requested.
      * @param year The year the month is in.
      * @return A list of RoadUsages from the person.
      */
-    public List<RoadUsage> getRoadUsages(String cartracker_id,
+    public List<RoadUsage> getRoadUsages(String cartrackerid,
             String month, String year ) {
         Query query = this.em.createNativeQuery(
                 "select * from MV_roadusage"
                 + " WHERE cartracker_id = ? AND month = ? AND year = ?");
-        query.setParameter(1, cartracker_id);
+        query.setParameter(1, cartrackerid);
         query.setParameter(2, month);
         query.setParameter(3, year);
 
@@ -64,8 +69,9 @@ public class RoadUsageDao extends AbstractDaoFacade<CarPosition> {
             Long foreignCountryRoadId;
             try {
                 foreignCountryRoadId = Long.valueOf(o[6].toString());
-            } catch (Exception e) {
+            } catch (NumberFormatException ex) {
                 foreignCountryRoadId = null;
+                LOGGER.log(Level.INFO,null,ex);
             }
             RoadUsage usage = new RoadUsage(roadName
                     ,type
