@@ -1,3 +1,4 @@
+service\jms\ReceiveMissingPositionsBean$1$1.class
 model\DirectionInput.class
 service\jms\ReceiveTestRequestBean.class
 service\SearchMissingPosition.class

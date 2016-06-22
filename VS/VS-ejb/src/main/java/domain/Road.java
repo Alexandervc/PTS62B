@@ -26,7 +26,7 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     @NamedQuery(name="Road.findAllInternal", query = "SELECT r "
             + "FROM Road r "
-            + "WHERE FUNC('TO_CHAR', r.roadType) != 'FOREIGN_COUNTRY_ROAD'"),
+            + "WHERE r.roadType != 'FOREIGN_COUNTRY_ROAD'"),
     @NamedQuery(name="Road.findByName", query = "SELECT r "
             + "FROM Road r "
             + "WHERE UPPER(r.name) = UPPER(:name)")
@@ -41,8 +41,8 @@ public class Road implements Serializable, Comparable<Road> {
     @OneToMany(mappedBy = "road")
     private List<CarPosition> carPositions;
     
-    @Enumerated(EnumType.STRING)
-    private RoadType roadType;
+    //@Enumerated(EnumType.STRING)
+    private String roadType;
     
     /**
      * Empty constructor.
@@ -63,15 +63,15 @@ public class Road implements Serializable, Comparable<Road> {
             throw new IllegalArgumentException("name null");
         }
         this.name = name;
-        this.roadType = roadType;
+        this.roadType = roadType.name();
         this.carPositions = new ArrayList<>();
     }
 
-    public RoadType getRoadType() {
+    public String getRoadType() {
         return this.roadType;
     }
 
-    public void setRoadType(RoadType roadType) {
+    public void setRoadType(String roadType) {
         this.roadType = roadType;
     }
 

@@ -31,6 +31,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.LatLng;
 import model.DirectionInput;
 import model.Point;
+import service.jms.ReceiveMissingPositionsBean;
 import service.jms.SendPositionBean;
 import support.NavUtils;
 
@@ -55,6 +56,9 @@ public class PathService implements Serializable {
 
     @Inject
     private SendPositionBean sendPositionBean;
+    
+    @Inject
+    private SearchMissingPosition searchPosition;
 
     /**
      * Setup location info.
@@ -85,6 +89,12 @@ public class PathService implements Serializable {
         this.locations.add("R. Marquês de Pombal,4560-682 Penafiel,Portugal");
         this.locations.add("Largo da Estação,4700-223 Maximinos - "
                 + "Braga,Portugal");
+        
+        // Start threads for recievers
+        for(String ct : this.cartrackers){
+            new Thread(new ReceiveMissingPositionsBean(ct, 
+                    this.searchPosition)).start();
+        }
     }
 
     /**

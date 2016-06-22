@@ -151,10 +151,12 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
         return q.getResultList();
     }
 
-    public CarPosition findBySerialnumber(Long serialNumber) {
+    public CarPosition findBySerialnumber(Long serialNumber, 
+            String cartracker) {
         Query q = this.em
                 .createNamedQuery("CarPosition.getPositionsWithSerialnumber");
         q.setParameter("serialnumber", serialNumber);
+        q.setParameter("cartrackerId", cartracker);
 
         CarPosition cp = null;
         try {
