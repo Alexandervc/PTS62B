@@ -61,9 +61,9 @@ function drawCharts() {
 }
 
 var wsUri = getRootUri() +
-    "/LMS/endpoint";
+    "/Monitoring_System-web/endpoint";
     function getRootUri() {
-        return "ws://192.168.24.70:8080";
+        return "ws://localhost:8080";
     }
 
 var websocket;
