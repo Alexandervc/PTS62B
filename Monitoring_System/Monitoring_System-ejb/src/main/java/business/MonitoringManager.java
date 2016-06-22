@@ -161,8 +161,9 @@ public class MonitoringManager {
      * @param newTime The correct time that should be used to update.
      */
     public void updateTest(String systemName, boolean result
-            , TestType type, Timestamp time, Timestamp newTime) {
+            , TestType type, Timestamp time, Timestamp newTime){
         // Gets the system based on its name.
+        
         System system = this.systemDao.getSystemByName(systemName);
 
 
@@ -171,8 +172,8 @@ public class MonitoringManager {
         List<Test> filteredTests = tests.stream()
                 .filter(x -> x.getDate().equals(time)
                         && x.getTestType() == type)
-                .collect(Collectors.toList());        
-   
+                .collect(Collectors.toList());       
+           
         Test test = filteredTests.get(0);
         test.setDate(newTime);
         test.setResult(result);
@@ -272,7 +273,7 @@ public class MonitoringManager {
         }
         // Sends a message into the topic so the systems can send their test
         // results.
-        this.checkRequestSender.requestChecks(date);
+        this.checkRequestSender.requestChecks(currentDate);
     }
     
     /**

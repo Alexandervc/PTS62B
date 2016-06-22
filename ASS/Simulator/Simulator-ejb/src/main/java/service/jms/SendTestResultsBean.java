@@ -31,7 +31,7 @@ public class SendTestResultsBean {
             .getLogger(SendTestResultsBean.class.getName());
     
     // The timeout time for messages send from this class.
-    private static final long TIMEOUT = 60000;
+    private static final long TIMEOUT = 180000;
 
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")
