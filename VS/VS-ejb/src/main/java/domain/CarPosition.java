@@ -27,17 +27,6 @@ import org.eclipse.persistence.config.QueryHints;
 @Entity
 @Cache
 @NamedQueries({
-    @NamedQuery(name="CarPosition.getPositionsOfMonth", query = "SELECT cp "
-            + "FROM CarPosition cp "
-            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
-            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
-            + "AND cp.cartracker.id = :cartrackerId "
-            + "ORDER BY cp.road.roadType", 
-            hints = {
-                @QueryHint(name = QueryHints.QUERY_RESULTS_CACHE, value = HintValues.TRUE)
-            })
-        ,
-    
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
@@ -56,9 +45,8 @@ import org.eclipse.persistence.config.QueryHints;
     @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
             + "cp.coordinate "
             + "FROM CarPosition cp "
-            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
-            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
-            + "AND cp.cartracker.id = :cartrackerId "
+            + "WHERE cp.cartracker.id = :cartrackerId  "
+            + "AND cp.moment BETWEEN :beginDate AND :endDate  "
             + "ORDER BY cp.moment, cp.serialNumber", 
             hints = {
                 @QueryHint(name = QueryHints.QUERY_RESULTS_CACHE, value = HintValues.TRUE)

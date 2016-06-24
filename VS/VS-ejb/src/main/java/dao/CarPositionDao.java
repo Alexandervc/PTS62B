@@ -12,6 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
 import domain.Coordinate;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * The dao for carPosition.
@@ -32,22 +34,6 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
     @Override
     protected EntityManager getEntityManager() {
         return this.em;
-    }
-    
-    /**
-     * Get the carpositions for the given month for the given cartracker.
-     * @param month The month to get the carpositions for.
-     * @param year The year to get the carpositions for.
-     * @param cartrackerId The cartracker to get the carpositions for.
-     * @return A list of carpositions.
-     */
-    public List<CarPosition> getPositionsOfMonth(int month, int year, 
-            String cartrackerId) {
-        Query q = this.em.createNamedQuery("CarPosition.getPositionsOfMonth");
-        q.setParameter("month", month);
-        q.setParameter("year", year);
-        q.setParameter("cartrackerId", cartrackerId);
-        return q.getResultList();
     }
     
     /**
@@ -102,11 +88,34 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      */
     public List<Coordinate> getCoordinates(int month, int year,
             String cartrackerId) {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.add(Calendar.MONTH, -1);
+        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE)); // changed calendar to cal
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, cal.getActualMinimum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND, cal.getActualMinimum(Calendar.SECOND));
+        Date beginDate = cal.getTime();
+
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE)); // changed calendar to cal
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMaximum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, cal.getActualMaximum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND, cal.getActualMaximum(Calendar.SECOND));
+
+        
+        Date endDate = cal.getTime();
+        
+        System.out.println(beginDate);
+        System.out.println(endDate);
         Query q = this.em.createNamedQuery("CarPosition.getCoordinates");
-        q.setParameter("month", month);
-        q.setParameter("year", year);
+        q.setParameter("beginDate", beginDate);
+        q.setParameter("endDate", endDate);
         q.setParameter("cartrackerId", cartrackerId);
         
-        return q.getResultList();
+        List<Coordinate> returnValue = q.getResultList();
+        System.out.println(new Date().getTime() - date.getTime());
+        return returnValue;
     }
 }
