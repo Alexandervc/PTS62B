@@ -41,15 +41,6 @@ import org.eclipse.persistence.config.QueryHints;
             + "ORDER BY cp.moment, cp.serialNumber", 
             hints = {
                 @QueryHint(name = QueryHints.QUERY_RESULTS_CACHE, value = HintValues.TRUE)
-            }),
-    @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
-            + "cp.coordinate "
-            + "FROM CarPosition cp "
-            + "WHERE cp.cartracker.id = :cartrackerId  "
-            + "AND cp.moment BETWEEN :beginDate AND :endDate  "
-            + "ORDER BY cp.moment, cp.serialNumber", 
-            hints = {
-                @QueryHint(name = QueryHints.QUERY_RESULTS_CACHE, value = HintValues.TRUE)
             })
 })
 public class CarPosition implements Serializable {

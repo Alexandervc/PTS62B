@@ -44,7 +44,7 @@ public class CoordinatesResource {
             @QueryParam("year") int year) {
         
         // Get coordinates
-        List<Coordinate> coordinates = this.carPositionService
+        String coordinates = this.carPositionService
                 .getCoordinates(month, year, cartrackerId);
         
         // Make response

@@ -11,9 +11,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
-import domain.Coordinate;
-import java.util.Calendar;
+import java.io.IOException;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
+import util.ClobUtil;
+import util.DateUtil;
 
 /**
  * The dao for carPosition.
@@ -21,6 +29,9 @@ import java.util.Date;
  */
 @Stateless
 public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
+    private static final Logger LOGGER = Logger
+            .getLogger(CarPositionDao.class.getName());
+    
     @PersistenceContext
     private EntityManager em;
 
@@ -84,38 +95,51 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      * @param month The month to get the coordinates for.
      * @param year The year to get the coordinates for.
      * @param cartrackerId The cartracker to get the coordinates for.
-     * @return A list of coordinates.
+     * @return A JSON-string of coordinates.
      */
-    public List<Coordinate> getCoordinates(int month, int year,
+    public String getCoordinates(int month, int year,
             String cartrackerId) {
-        Date date = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.add(Calendar.MONTH, -1);
-        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE)); // changed calendar to cal
-        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, cal.getActualMinimum(Calendar.MINUTE));
-        cal.set(Calendar.SECOND, cal.getActualMinimum(Calendar.SECOND));
-        Date beginDate = cal.getTime();
-
-        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE)); // changed calendar to cal
-        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMaximum(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, cal.getActualMaximum(Calendar.MINUTE));
-        cal.set(Calendar.SECOND, cal.getActualMaximum(Calendar.SECOND));
-
-        
-        Date endDate = cal.getTime();
-        
-        System.out.println(beginDate);
-        System.out.println(endDate);
-        Query q = this.em.createNamedQuery("CarPosition.getCoordinates");
-        q.setParameter("beginDate", beginDate);
-        q.setParameter("endDate", endDate);
-        q.setParameter("cartrackerId", cartrackerId);
-        
-        List<Coordinate> returnValue = q.getResultList();
-        System.out.println(new Date().getTime() - date.getTime());
-        return returnValue;
+        try {
+            // Get begin date and end date
+            Date beginDate = DateUtil.getFirstOfMonth(month, year);   
+            Date endDate = DateUtil.getLastOfMonth(month, year);
+            
+            // Create stored procedure
+            StoredProcedureQuery spq = em
+                    .createStoredProcedureQuery("get_coordinates");
+            
+            // Register parameters
+            spq.registerStoredProcedureParameter("v_return", 
+                    Clob.class, ParameterMode.OUT);
+            spq.registerStoredProcedureParameter("p_cartracker_id", 
+                    String.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("p_begin_date", 
+                    Date.class, ParameterMode.IN);
+            spq.registerStoredProcedureParameter("p_end_date", 
+                    Date.class, ParameterMode.IN);
+            
+            // Create CLOB
+            Connection conn = em.unwrap(Connection.class);
+            Clob clob = conn.createClob();
+            
+            // Set parameters
+            spq.setParameter("v_return", clob);
+            spq.setParameter("p_cartracker_id", cartrackerId);
+            spq.setParameter("p_begin_date", beginDate);
+            spq.setParameter("p_end_date", endDate);
+            
+            // Execute stored procedure
+            spq.execute();
+            
+            // Get output
+            Clob coordinatesClob = 
+                    (Clob) spq.getOutputParameterValue("v_return");
+            
+            // Convert and return output
+            return ClobUtil.convertClobToString(coordinatesClob);
+        } catch (SQLException | IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
