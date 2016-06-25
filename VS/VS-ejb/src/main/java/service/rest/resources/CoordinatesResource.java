@@ -5,8 +5,6 @@
  */
 package service.rest.resources;
 
-import domain.Coordinate;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -44,7 +42,7 @@ public class CoordinatesResource {
             @QueryParam("year") int year) {
         
         // Get coordinates
-        List<Coordinate> coordinates = this.carPositionService
+        String coordinates = this.carPositionService
                 .getCoordinates(month, year, cartrackerId);
         
         // Make response
