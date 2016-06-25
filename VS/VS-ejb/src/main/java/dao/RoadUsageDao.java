@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * The dao for road usages.
+ *
  * @author Edwin
  */
 @Stateless
@@ -35,41 +36,37 @@ public class RoadUsageDao extends AbstractDaoFacade<CarPosition> {
     protected EntityManager getEntityManager() {
         return this.em;
     }
-    
+
     /**
-     * Gets RoadUsages from the materializedView based on a cartracker_id, a
+     * Gets RoadUsages from the materializedView based on a cartrackerid, a
      * month and a year.
-     * @param cartracker_id The id of the cartracker with the roadusages that 
-     * are requested.
+     *
+     * @param cartrackerid The id of the cartracker with the roadusages that are
+     * requested.
      * @param month The month that is being requested.
      * @param year The year the month is in.
      * @return A list of RoadUsages from the person.
      */
-    public List<RoadUsage> getRoadUsages(String cartracker_id,
-            String month, String year ) {
+    public List<RoadUsage> getRoadUsages(String cartrackerid,
+            String month, String year) {
         Query query = this.em.createNativeQuery(
                 "select * from MV_roadusage"
                 + " WHERE cartracker_id = ? AND month = ? AND year = ?");
-        query.setParameter(1, cartracker_id);
+        query.setParameter(1, cartrackerid);
         query.setParameter(2, month);
         query.setParameter(3, year);
 
         List<RoadUsage> returnList = new ArrayList<>();
-        List<Object[]> roadUsages = query.getResultList(); 
-        for(Object[] o : roadUsages) {
+        List<Object[]> roadUsages = query.getResultList();
+        for (Object[] o : roadUsages) {
             String roadName = o[3].toString();
             Double km = Double.valueOf(o[5].toString());
             RoadType type = RoadType.valueOf(o[4].toString());
-            Long foreignCountryRoadId;
-            try {
+            Long foreignCountryRoadId = null;
+            if (o[6] != null) {
                 foreignCountryRoadId = Long.valueOf(o[6].toString());
-            } catch (Exception e) {
-                foreignCountryRoadId = null;
             }
-            RoadUsage usage = new RoadUsage(roadName
-                    ,type
-                    ,km
-                    ,foreignCountryRoadId);
+            RoadUsage usage = new RoadUsage(roadName, type, km, foreignCountryRoadId);
             returnList.add(usage);
         }
         return returnList;

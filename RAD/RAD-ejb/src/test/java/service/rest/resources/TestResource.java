@@ -20,7 +20,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *
+ * Exposes encryption and decryption functionality.
  * @author Jesse
  */
 public class TestResource extends BaseResource {
@@ -31,15 +31,26 @@ public class TestResource extends BaseResource {
     
     private Key radKey;
     
+    /**
+     * Instantiates the TestResource class.
+     */
     public TestResource() {
         super();
         this.readRadKey();
     }
     
+    /**
+     * Exposes the encrypt method of the BaseResource.
+     * @param plain Plain text to encrypt.
+     * @return Encrypted text.
+     */
     public String exposeEncrypt(String plain) {
         return super.encrypt(plain);
     }
     
+    /**
+     * Reads the RAD key from file.
+     */
     private void readRadKey() {
         String filePath = String.format("C:/Proftaak/certificates/%s",
                                         RAD_KEY_FILE);
@@ -59,11 +70,18 @@ public class TestResource extends BaseResource {
         }
     }
     
+    /**
+     * Overrides the decrypt method from the BaseResource class. This allows for
+     * the decryption with the RAD key.
+     * @param encrypted The encrypted String.
+     * @return The decrypted String.
+     */
     @Override
     protected String decrypt(String encrypted) {
         
         try {
-            // Convert encrypted string to bytes in order to decrypt the message.
+            // Convert encrypted string to bytes in order to decrypt the
+            // message.
             byte[] bb = new byte[encrypted.length()];
             for (int i = 0; i < encrypted.length(); i++) {
                 bb[i] = (byte) encrypted.charAt(i);
@@ -73,15 +91,11 @@ public class TestResource extends BaseResource {
             cipher.init(Cipher.DECRYPT_MODE, this.radKey);
             return new String(cipher.doFinal(bb));
             
-        } catch (NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | InvalidKeyException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         

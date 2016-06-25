@@ -30,67 +30,47 @@ public class BaseClient {
     
     private static final String RAD_KEY_FILE  = "rad.key";
     private static final String RAPP_KEY_FILE = "rapp.key";
+    private static final String RAD_API_KEY_FILE = "radapi.key";
+    
+    protected final Gson gson;
+    protected String radApiKey;
     
     private Key radKey;
     private Key rappKey;
-    
-    protected final Gson gson;
     
     /**
      * Instantiates the BaseResource.
      */
     public BaseClient() {
         this.gson = new Gson();
+        this.readRadApiKey();
         this.readRadKey();
         this.readRappKey();
+    }
+    
+    /**
+     * Reads the RAD api key from file.
+     */
+    private void readRadApiKey() {
+        this.radApiKey = this.readStringFromFile(RAD_API_KEY_FILE);
     }
     
     /**
      * Reads the rad key from file and creates the radKey.
      */
     private void readRadKey() {
-        String filePath = String.format("C:/Proftaak/certificates/%s",
-                                        RAD_KEY_FILE);
-        // Read the file.
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                line = br.readLine();
-            }
-            
-            String key = sb.toString();
-            // Create the key.
-            this.radKey = new SecretKeySpec(key.getBytes(), "AES");
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
+        this.radKey = new SecretKeySpec(
+                this.readStringFromFile(RAD_KEY_FILE).getBytes(),
+                "AES");
     }
     
     /**
      * Reads the rapp key from file and creates the rappKey.
      */
     private void readRappKey() {
-        String filePath = String.format("C:/Proftaak/certificates/%s",
-                                        RAPP_KEY_FILE);
-        // Read the file.
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                line = br.readLine();
-            }
-            
-            String key = sb.toString();
-            // Create the key.
-            this.rappKey = new SecretKeySpec(key.getBytes(), "AES");
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
+        this.rappKey = new SecretKeySpec(
+                this.readStringFromFile(RAPP_KEY_FILE).getBytes(),
+                "AES");
     }
     
     /**
@@ -112,15 +92,11 @@ public class BaseClient {
             }
             
             return sb.toString();
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (InvalidKeyException 
+                 | NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         
@@ -145,15 +121,36 @@ public class BaseClient {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, this.radKey);
             return new String(cipher.doFinal(encryptedBytes));
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (NoSuchAlgorithmException 
+                 | NoSuchPaddingException 
+                 | InvalidKeyException 
+                 | IllegalBlockSizeException 
+                 | BadPaddingException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Reads a string value from a file.
+     * @param path The absolute path of the file.
+     * @return The string read from file. Returns null if something went wrong.
+     */
+    private String readStringFromFile(String file) {
+        String path = String.format("C:/Proftaak/certificates/%s", file);
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
+            }
+            
+            return sb.toString();
+        } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         

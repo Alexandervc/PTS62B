@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.PersonService;
@@ -25,6 +26,10 @@ public class CarResource extends BaseResource {
     @Inject
     private PersonService personService;
 
+    /**
+     * Instantiates the CarResource class. This also reads all the keys needed
+     * for encryption and decryption.
+     */
     public CarResource() {
         super();
     }
@@ -32,11 +37,19 @@ public class CarResource extends BaseResource {
     /**
      * Get cars for person.
      * @param personId id for person.
+     * @param key The api key.
      * @return Response, with list of cars.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCars(@PathParam("personId") long personId) {
+    public Response getCars(@PathParam("personId") long personId,
+                            @QueryParam("key") String key) {
+        // Check api key.
+        if (!this.radApiKey.equals(key)) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                           .build();
+        }
+        
         Person person = this.personService.findPersonById(personId);
         List<Car> cars = person.getCars();
         

@@ -48,6 +48,8 @@ public class ReceiveFunctionalStatus implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
+        LOGGER.log(Level.INFO, "MESSAGED RECEIVED!!!");
+
         try {
             MapMessage mapMessage = (MapMessage) message;
 
@@ -58,6 +60,7 @@ public class ReceiveFunctionalStatus implements MessageListener {
     
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         
+
             Date date = null;
             Date newDate = null;
             try {

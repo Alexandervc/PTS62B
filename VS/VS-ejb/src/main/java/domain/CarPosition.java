@@ -22,12 +22,6 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="CarPosition.getPositionsOfMonth", query = "SELECT cp "
-            + "FROM CarPosition cp "
-            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
-            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
-            + "AND cp.cartracker.id = :cartrackerId "
-            + "ORDER BY cp.road.roadType"),
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
@@ -36,13 +30,6 @@ import javax.persistence.NamedQuery;
             "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.foreignCountryRideId = :foreignCountryRideId "
-            + "ORDER BY cp.moment, cp.serialNumber"),
-    @NamedQuery(name="CarPosition.getCoordinates", query = "SELECT "
-            + "cp.coordinate "
-            + "FROM CarPosition cp "
-            + "WHERE FUNC('TO_CHAR', cp.moment, 'YYYY') = :year "
-            + "AND FUNC('TO_CHAR', cp.moment, 'MM') = :month "
-            + "AND cp.cartracker.id = :cartrackerId "
             + "ORDER BY cp.moment, cp.serialNumber")
 })
 public class CarPosition implements Serializable {
