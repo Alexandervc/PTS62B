@@ -15,33 +15,22 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.QueryHint;
-import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.config.HintValues;
-import org.eclipse.persistence.config.QueryHints;
 
 /**
  * A position of the cartracker.
  * @author Alexander
  */
 @Entity
-@Cache
 @NamedQueries({
     @NamedQuery(name="CarPosition.getPositionsOfRide", query = "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.rideId = :rideId "
-            + "ORDER BY cp.moment, cp.serialNumber", 
-            hints = {
-                @QueryHint(name = QueryHints.QUERY_RESULTS_CACHE, value = HintValues.TRUE)
-            }),
+            + "ORDER BY cp.moment, cp.serialNumber"),
     @NamedQuery(name="CarPosition.getPositionsOfForeignCountryRide", query = 
             "SELECT cp "
             + "FROM CarPosition cp "
             + "WHERE cp.foreignCountryRideId = :foreignCountryRideId "
-            + "ORDER BY cp.moment, cp.serialNumber", 
-            hints = {
-                @QueryHint(name = QueryHints.QUERY_RESULTS_CACHE, value = HintValues.TRUE)
-            })
+            + "ORDER BY cp.moment, cp.serialNumber")
 })
 public class CarPosition implements Serializable {
     @Id
@@ -50,14 +39,14 @@ public class CarPosition implements Serializable {
     
     private Date moment;
     
-    @Embedded
-    private Coordinate coordinate;
-    
     private Double meter;
     private Integer rideId;
     private Long foreignCountryRideId;
     
     private Boolean lastOfRide;
+    
+    @Embedded
+    private Coordinate coordinate;
     
     @ManyToOne
     private Road road;
