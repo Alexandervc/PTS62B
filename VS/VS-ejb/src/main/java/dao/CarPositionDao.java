@@ -105,35 +105,35 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
             Date endDate = DateUtil.getLastOfMonth(month, year);
             
             // Create stored procedure
-            StoredProcedureQuery spq = em
+            StoredProcedureQuery procedure = this.em
                     .createStoredProcedureQuery("get_coordinates");
             
             // Register parameters
-            spq.registerStoredProcedureParameter("v_return", 
+            procedure.registerStoredProcedureParameter("v_return", 
                     Clob.class, ParameterMode.OUT);
-            spq.registerStoredProcedureParameter("p_cartracker_id", 
+            procedure.registerStoredProcedureParameter("p_cartracker_id", 
                     String.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("p_begin_date", 
+            procedure.registerStoredProcedureParameter("p_begin_date", 
                     Date.class, ParameterMode.IN);
-            spq.registerStoredProcedureParameter("p_end_date", 
+            procedure.registerStoredProcedureParameter("p_end_date", 
                     Date.class, ParameterMode.IN);
             
             // Create CLOB
-            Connection conn = em.unwrap(Connection.class);
+            Connection conn = this.em.unwrap(Connection.class);
             Clob clob = conn.createClob();
             
             // Set parameters
-            spq.setParameter("v_return", clob);
-            spq.setParameter("p_cartracker_id", cartrackerId);
-            spq.setParameter("p_begin_date", beginDate);
-            spq.setParameter("p_end_date", endDate);
+            procedure.setParameter("v_return", clob);
+            procedure.setParameter("p_cartracker_id", cartrackerId);
+            procedure.setParameter("p_begin_date", beginDate);
+            procedure.setParameter("p_end_date", endDate);
             
             // Execute stored procedure
-            spq.execute();
+            procedure.execute();
             
             // Get output
             Clob coordinatesClob = 
-                    (Clob) spq.getOutputParameterValue("v_return");
+                    (Clob) procedure.getOutputParameterValue("v_return");
             
             // Convert and return output
             return ClobUtil.convertClobToString(coordinatesClob);

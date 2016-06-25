@@ -39,10 +39,10 @@ public class RoadUsageDao extends AbstractDaoFacade<CarPosition> {
 
     /**
      * Gets RoadUsages from the materializedView based on a cartrackerid, a
-     * month and a year.
+     *      month and a year.
      *
      * @param cartrackerid The id of the cartracker with the roadusages that are
-     * requested.
+     *      requested.
      * @param month The month that is being requested.
      * @param year The year the month is in.
      * @return A list of RoadUsages from the person.
@@ -66,7 +66,8 @@ public class RoadUsageDao extends AbstractDaoFacade<CarPosition> {
             if (o[6] != null) {
                 foreignCountryRoadId = Long.valueOf(o[6].toString());
             }
-            RoadUsage usage = new RoadUsage(roadName, type, km, foreignCountryRoadId);
+            RoadUsage usage = new RoadUsage(roadName, type, km, 
+                    foreignCountryRoadId);
             returnList.add(usage);
         }
         return returnList;
