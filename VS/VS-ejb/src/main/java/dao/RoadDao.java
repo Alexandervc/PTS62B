@@ -5,7 +5,6 @@
  */
 package dao;
 
-import business.RoadManager;
 import domain.Road;
 import java.util.List;
 import java.util.logging.Level;

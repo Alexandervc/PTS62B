@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.Destination;
