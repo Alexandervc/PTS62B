@@ -39,12 +39,11 @@ public class SendMissingCarpositions {
             
             // Create MapMessage
             MapMessage mapMessage = this.context.createMapMessage();
-            mapMessage.setStringProperty("method", "receiveMissingPositions");
-            mapMessage.setString("CartrackerId", cartrackerId);
+            System.out.println(cartrackerId);
+            mapMessage.setStringProperty("cartrackerid", cartrackerId);
             Gson gson = new Gson();
             String jsonlist = gson.toJson(serialnumbers);
             mapMessage.setString("listNumbers", jsonlist);
-            
             // Send message
             this.context.createProducer().send(this.queue, mapMessage);
             

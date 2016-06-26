@@ -119,15 +119,15 @@ public class CarPositionManagerTest {
         
         this.carPosition = new CarPosition(this.cartracker, this.moment,
                 this.coordinate, road, this.meters,
-                this.rideId, null, this.lastOfRide, this.firstOfRide, 0L);        
+                this.rideId, null, this.lastOfRide,  0L);        
         this.foreignNotLastCarPosition = new CarPosition(this.foreignCartracker,
                 this.moment, this.coordinate, road, 
                 this.meters, null, this.foreignRideId, 
-                this.foreignNotLastLastOfRide, this.firstOfRide,  0L);
+                this.foreignNotLastLastOfRide,  0L);
         this.foreignLastCarPosition = new CarPosition(this.foreignCartracker,
                 this.moment, this.coordinate, road,
                 this.meters, null, this.foreignRideId, 
-                this.foreignLastLastOfRide,this.firstOfRide, 0L);
+                this.foreignLastLastOfRide, 0L);
     }
     
     @Test

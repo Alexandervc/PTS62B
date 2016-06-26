@@ -16,11 +16,14 @@ import domain.Road;
 import domain.Coordinate;
 import domain.PreprocessCarposition;
 import dto.RoadUsage;
+import java.lang.reflect.Array;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -82,12 +85,17 @@ public class CarPositionManager {
     @Resource
     private ManagedThreadFactory threadFactory;
 
+    @Inject
+    private SendTask timer;
+
     //@Schedule(hour = "*")
     public void generate() {
         Thread thread = this.threadFactory.newThread(new Runnable() {
             @Override
             public void run() {
+                System.out.println("start timer");
                 searchForMissingPositions();
+                extraSearchForCompleteRides();
             }
         });
         thread.start();
@@ -116,8 +124,8 @@ public class CarPositionManager {
             Coordinate coordinate, String roadName,
             Double meter, Integer rideId, Long foreignCountryRideId,
             Boolean lastOfRide, Boolean firstOfRide, Long serialNumber) {
+        
         try {
-
             // save to preprocessCpDao
             this.saveCarPosition(cartrackerId, moment, coordinate,
                     roadName, meter, rideId, foreignCountryRideId, lastOfRide,
@@ -153,11 +161,33 @@ public class CarPositionManager {
     }
 
     public void searchForMissingPositions() {
-        // search for missing serialnumbers in preprocessCarpositions database
-        // Get all cartrackerid in preprocessCarpositions database
-        
-        // foreach found cartrackerid
+        System.out.println("test timer");
+        Map<String, List<Long>> hash = this.preprocessCpDao
+                .searchForMissingNumbers();
+        if (!hash.isEmpty()) {
+            for (Map.Entry<String, List<Long>> entry : hash.entrySet()) {
+                // Get cartracker id
+                String cartrackerid = entry.getKey();
 
+                //Get serialnumbers
+                List<Long> serialnumbers = entry.getValue();
+
+                // send cartrackerid and serialnumbers to ASS
+                this.jmsSender.sendMissingNumbers(cartrackerid, serialnumbers);
+            }
+        }
+        this.extraSearchForCompleteRides();
+    }
+    
+    public void extraSearchForCompleteRides(){
+        List<String> cartrackers = this.preprocessCpDao.getAllCartrackers();
+        for(String s : cartrackers){
+            List<Integer> rideids = this.preprocessCpDao
+                    .getAllRideIdFromCartracker(s);
+            for(Integer l : rideids){
+                this.checkIfRideIsCompleet(s, l);
+            }
+        }
     }
 
     public void processRideForForeignCountry(List<CarPosition> carPositions,
@@ -174,7 +204,7 @@ public class CarPositionManager {
 
                 // Check if all rides are in list
                 List<RoadUsage> roadUsages = this.roadUsageManager
-                    .convertToRoadUsages(carPositions);
+                        .convertToRoadUsages(carPositions);
 
                 // Get total price
                 double totalPrice = this.totalPriceService
@@ -255,22 +285,27 @@ public class CarPositionManager {
                 cpLast = cp;
             }
         }
-
+        
         // If first and last position are found.
         if (cpFirst != null && cpLast != null) {
+            positions = this.preprocessCpDao
+                .getPositionsOfRide(rideId, cartrackerId);
             // Check if list-Size is complete.
             int completeSize = (cpLast.getSerialNumber()
                     .intValue() + 1) - cpFirst.getSerialNumber().intValue();
             Boolean complete = completeSize == positions.size();
-
+            LOGGER.log(Level.INFO, "complete size: " + completeSize);
+            LOGGER.log(Level.INFO, "positions size: " + positions.size());
+            
             // If complete stop timer and send carPosition list for check
             // foreign country ride.
             if (complete) {
                 // save carpositions to carpositionsDb.
                 List<CarPosition> cp = this.
                         processCompleteListOfCarpositions(positions);
-                
+
                 // Check for ForeignCountry
+                LOGGER.log(Level.INFO, "check foreign country");
                 this.processRideForForeignCountry(cp, cartrackerId);
             }
         }
@@ -278,6 +313,7 @@ public class CarPositionManager {
 
     private List<CarPosition> processCompleteListOfCarpositions(
             List<PreprocessCarposition> positions) {
+        LOGGER.log(Level.INFO, "proces complete carposition rideid");
         List<CarPosition> temp = new ArrayList<>();
 
         Road road = null;
@@ -285,18 +321,18 @@ public class CarPositionManager {
         for (PreprocessCarposition pcp : positions) {
             // remove from database PreprocessCarposition
             this.preprocessCpDao.remove(pcp);
-            
+
             // convert preprocessCarposition to Carposition
             road = this.roadDao.findRoadByName(pcp.getRoadName());
             Cartracker car = this.findCartracker(pcp.getCartrackerid());
-            
+
             CarPosition cp = new CarPosition(car,
                     pcp.getMoment(), pcp.getCoordinate(), road,
-                    pcp.getMeter(), pcp.getRideId(), 
+                    pcp.getMeter(), pcp.getRideId(),
                     pcp.getForeignCountryRideId(), pcp.getLastOfRide(),
-                    pcp.getFirstOfRide(), pcp.getSerialNumber());
+                    pcp.getSerialNumber());
             temp.add(cp);
-            
+
             // Save in database Carposition
             this.carPositionDao.create(cp);
         }

@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -22,7 +21,7 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "PreprocessCarposition.getPositionsOfRide", 
+    @NamedQuery(name = "PreprocessCarposition.getPositionsOfRide",
             query = "SELECT cp "
             + "FROM PreprocessCarposition cp "
             + "WHERE cp.rideId = :rideId "
@@ -32,12 +31,19 @@ import javax.persistence.NamedQuery;
             query = "SELECT cp FROM PreprocessCarposition cp WHERE "
             + "cp.serialNumber = :serialnumber"
             + " AND cp.cartrackerid = :cartrackerId"),
-    @NamedQuery(name = "PreprocessCarposition.getCartrackerIds",
+    @NamedQuery(name = "PreprocessCarposition.getPositionByCartracker",
             query = "SELECT cp FROM PreprocessCarposition cp WHERE "
             + " cp.cartrackerid = :cartrackerId"),
     @NamedQuery(name = "PreprocessCarposition.getMissingSerialNumbers",
             query = "SELECT cp FROM PreprocessCarposition cp WHERE "
-            + " cp.cartrackerid = :cartrackerId")
+            + " cp.cartrackerid = :cartrackerId"),
+    @NamedQuery(name = "PreprocessCarposition.getCartrackerIds",
+            query = "SELECT cp.cartrackerid FROM PreprocessCarposition cp "
+                    + "GROUP BY cp.cartrackerid"),
+    @NamedQuery(name = "PreprocessCarposition.getRideids",
+            query = "SELECT cp.rideId FROM PreprocessCarposition cp "
+                    + " WHERE cp.cartrackerid = :cartrackerId " 
+                    + "GROUP BY cp.rideId")
 })
 public class PreprocessCarposition implements Serializable {
 
@@ -150,7 +156,7 @@ public class PreprocessCarposition implements Serializable {
     public void setCartrackerid(String cartrackerid) {
         this.cartrackerid = cartrackerid;
     }
-    
+
     public Coordinate getCoordinate() {
         return this.coordinate;
     }

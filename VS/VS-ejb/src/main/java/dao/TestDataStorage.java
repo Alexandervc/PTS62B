@@ -5,10 +5,12 @@
  */
 package dao;
 
+import business.SendTask;
 import domain.Cartracker;
 import domain.Road;
 import domain.RoadType;
 import javax.annotation.PostConstruct;
+import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;

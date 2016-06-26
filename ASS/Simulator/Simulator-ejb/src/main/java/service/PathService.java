@@ -29,6 +29,8 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.LatLng;
+import javax.annotation.Resource;
+import javax.enterprise.concurrent.ManagedThreadFactory;
 import model.DirectionInput;
 import model.Point;
 import service.jms.ReceiveMissingPositionsBean;
@@ -56,9 +58,12 @@ public class PathService implements Serializable {
 
     @Inject
     private SendPositionBean sendPositionBean;
-    
+
     @Inject
     private SearchMissingPosition searchPosition;
+
+    @Resource
+    private ManagedThreadFactory threadFactory;
 
     /**
      * Setup location info.
@@ -89,11 +94,12 @@ public class PathService implements Serializable {
         this.locations.add("R. Marquês de Pombal,4560-682 Penafiel,Portugal");
         this.locations.add("Largo da Estação,4700-223 Maximinos - "
                 + "Braga,Portugal");
-        
+
         // Start threads for recievers
-        for(String ct : this.cartrackers){
-            new Thread(new ReceiveMissingPositionsBean(ct, 
-                    this.searchPosition)).start();
+        for (String ct : this.cartrackers) {
+            Thread thread = this.threadFactory.newThread(new ReceiveMissingPositionsBean(ct,
+                    this.searchPosition));
+            thread.start();
         }
     }
 
@@ -231,7 +237,7 @@ public class PathService implements Serializable {
                     Map<String, Object> position = new HashMap<>();
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     String momentString = df.format(moment);
-                    position.put("rideId",rideId.toString());
+                    position.put("rideId", rideId.toString());
                     position.put("moment", momentString);
                     position.put("xCoordinate", xCoordinate);
                     position.put("yCoordinate", yCoordinate);
@@ -252,9 +258,8 @@ public class PathService implements Serializable {
                             = new BufferedWriter(fileWriter)) {
                         writer.write(output);
                     }
-                    
-                    
-                    this.sendPositionBean.sendPosition(output, 
+
+                    this.sendPositionBean.sendPosition(output,
                             cartrackerId, Integer.toUnsignedLong(fileIndex));
 
                     previous = p;

@@ -1,4 +1,3 @@
-service\jms\ReceiveMissingPositionsBean$1$1.class
 model\DirectionInput.class
 service\jms\ReceiveTestRequestBean.class
 service\SearchMissingPosition.class
@@ -9,3 +8,4 @@ service\jms\SendTestResultsBean.class
 support\NavUtils.class
 service\jms\ReceiveMissingPositionsBean$1.class
 service\jms\ReceiveMissingPositionsBean.class
+.netbeans_automatic_build
