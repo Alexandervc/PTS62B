@@ -16,18 +16,15 @@ import domain.Road;
 import domain.Coordinate;
 import domain.PreprocessCarposition;
 import dto.RoadUsage;
-import java.lang.reflect.Array;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
-import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.enterprise.concurrent.ManagedThreadFactory;
 import javax.inject.Inject;
@@ -85,11 +82,11 @@ public class CarPositionManager {
     @Resource
     private ManagedThreadFactory threadFactory;
 
-    @Inject
-    private SendTask timer;
-
+    /**
+     * Start timer class with @Schedule.
+     */
     //@Schedule(hour = "*")
-    public void generate() {
+    public void startTimer() {
         Thread thread = this.threadFactory.newThread(new Runnable() {
             @Override
             public void run() {
@@ -160,6 +157,9 @@ public class CarPositionManager {
 
     }
 
+    /**
+     * Search for missing positions in database.
+     */
     public void searchForMissingPositions() {
         Map<String, List<Long>> hash = this.preprocessCpDao
                 .searchForMissingNumbers();
@@ -191,7 +191,7 @@ public class CarPositionManager {
 
     public void processRideForForeignCountry(List<CarPosition> carPositions,
             String cartrackerId) {
-        if (carPositions == null) {
+        if (carPositions != null) {
             // convert PreprocessCarposition to Carpositions;
 
             // Get countryCode
@@ -310,7 +310,7 @@ public class CarPositionManager {
         }
     }
 
-    private List<CarPosition> processCompleteListOfCarpositions(
+    public List<CarPosition> processCompleteListOfCarpositions(
             List<PreprocessCarposition> positions) {
         LOGGER.log(Level.INFO, "proces complete carposition rideid");
         List<CarPosition> temp = new ArrayList<>();
@@ -382,5 +382,5 @@ public class CarPositionManager {
     public List<Coordinate> getCoordinates(int month, int year,
             String cartrackerId) {
         return this.carPositionDao.getCoordinates(month, year, cartrackerId);
-    }
+    }    
 }

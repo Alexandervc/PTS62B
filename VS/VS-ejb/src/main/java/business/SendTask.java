@@ -16,8 +16,8 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 
 /**
- *
- * @author Linda
+ * Timer task class.
+ * @author Linda.
  */
 @Startup
 @Singleton
@@ -33,6 +33,10 @@ public class SendTask extends TimerTask {
     private Timer timer;
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
+    /**
+     * Constructor for this class.
+     * Must run when application is started.
+     */
     @PostConstruct
     public void startTimer() {
         if (isRunning.compareAndSet(false, true)) {
@@ -42,6 +46,9 @@ public class SendTask extends TimerTask {
         }
     }
 
+    /**
+     * Task for timer.
+     */
     @Override
     public void run() {
         this.manager.searchForMissingPositions();
