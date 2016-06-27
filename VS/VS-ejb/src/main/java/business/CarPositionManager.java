@@ -161,7 +161,6 @@ public class CarPositionManager {
     }
 
     public void searchForMissingPositions() {
-        System.out.println("test timer");
         Map<String, List<Long>> hash = this.preprocessCpDao
                 .searchForMissingNumbers();
         if (!hash.isEmpty()) {
