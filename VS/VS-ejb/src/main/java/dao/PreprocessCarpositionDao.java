@@ -117,9 +117,9 @@ public class PreprocessCarpositionDao extends
                 }
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FINE, e.getMessage());
+            LOGGER.log(Level.INFO, e.getMessage());
         }
-        System.out.println(map);
+        LOGGER.log(Level.INFO, "searchForMissingNumbers: " + map);
         return map;
     }
 

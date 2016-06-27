@@ -39,7 +39,6 @@ public class SendMissingCarpositions {
             
             // Create MapMessage
             MapMessage mapMessage = this.context.createMapMessage();
-            System.out.println(cartrackerId);
             mapMessage.setStringProperty("cartrackerid", cartrackerId);
             Gson gson = new Gson();
             String jsonlist = gson.toJson(serialnumbers);

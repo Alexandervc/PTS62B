@@ -91,6 +91,8 @@ public class CarPositionManager {
         Thread thread = this.threadFactory.newThread(new Runnable() {
             @Override
             public void run() {
+                LOGGER.log(Level.INFO, 
+                        "Start search for missing serialnumbers");
                 searchForMissingPositions();
             }
         });
