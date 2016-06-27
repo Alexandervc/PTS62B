@@ -41,7 +41,7 @@ import javax.jms.TextMessage;
     @ActivationConfigProperty(propertyName = "messageSelector",
             propertyValue = "countryCodeTo='PT'")
 // TODO DEPLOY: UNCOMMENT
-//    ,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.68:7676")
+    //,@ActivationConfigProperty(propertyName = "addressList", propertyValue = "192.168.24.68:7676")
 })
 public class ReceiveForeignCountryMessagesBean implements MessageListener {
     
@@ -123,6 +123,9 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                            "[Received] " + foreignMessage.getCartrackerId() 
                            + " - received cartracker");
                 
+                // True if last element of carPositions.
+                Boolean isLastCarPosition = i >= foreignPositions.size() - 1;
+                
                 // Map the foreign position to the carPosition.
                 CarPosition carPosition = new CarPosition(
                         carTracker,
@@ -133,8 +136,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
                         0D,
                         null,
                         foreignCountryRideId,
-                        // True if last element of carPositions.
-                        i >= foreignPositions.size() - 1,
+                        isLastCarPosition,
                         0L); 
 
                 carPositions.add(carPosition);
@@ -155,7 +157,7 @@ public class ReceiveForeignCountryMessagesBean implements MessageListener {
             // Parsing the message was not successfull.
             LOGGER.log(Level.SEVERE, null, ex);
         }
-    }    
+    }
     
     private Road findOrReplaceRoadByName(String name) {
         Road road = this.roadManager.findRoadByName(name);

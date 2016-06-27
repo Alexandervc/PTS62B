@@ -12,9 +12,9 @@ function setupEvents() {
     
     Array.prototype.forEach.call(divs, function(div) {
         //Create event for collapsible panel
-        var div_acc = div.id.replace('map_', '#');
+        var div_acc = div.id.replace("map_", "#");
 
-        $(div_acc).on('shown.bs.collapse', function() {
+        $(div_acc).on("shown.bs.collapse", function() {
             initMap();
         });
     });
@@ -23,6 +23,25 @@ function setupEvents() {
 function setDate(month, year) {
     this.month = month;
     this.year = year;    
+}
+
+// Create the XHR object.
+function createCORSRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    
+    if ("withCredentials" in xhr) {
+        // XHR for Chrome/Firefox/Opera/Safari.
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined") {
+        // XDomainRequest for IE.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        // CORS not supported.
+        xhr = null;
+    }
+    
+    return xhr;
 }
 
 function initMap() {    
@@ -39,10 +58,10 @@ function initMap() {
                 + year;
         
         //HTTP request
-        var xhttp = new XMLHttpRequest();
+        var xhttp = createCORSRequest();
 
         //Get response
-        xhttp.onreadystatechange = function() {
+        xhttp.onload = function() {
             if (xhttp.readyState === 4 && xhttp.status === 200) {               
                 var data = xhttp.responseText;
                 
@@ -59,7 +78,7 @@ function initMap() {
                     var path = new google.maps.Polyline({
                         path: coordinates,
                         geodesic: true,
-                        strokeColor: '#FF0000',
+                        strokeColor: "#FF0000",
                         strokeOpacity: 1.0,
                         strokeWeight: 2
                     });
@@ -73,9 +92,11 @@ function initMap() {
             }
         };
 
-        //Send request
-        xhttp.open("GET", apiurl, true);
-        xhttp.send();
+        //Send request      
+        if (xhttp !== null) {
+            xhttp.open("GET", apiurl, true);
+            xhttp.send();
+        }
     });
 }
 
@@ -95,7 +116,7 @@ function setDefaultView() {
     map.setZoom(zoomEU);    
 }
 
-google.maps.event.addDomListener(window, 'load', setupEvents);
-google.maps.event.addDomListener(window, 'resize', function() {
+google.maps.event.addDomListener(window, "load", setupEvents);
+google.maps.event.addDomListener(window, "resize", function() {
     setDefaultView() 
 });

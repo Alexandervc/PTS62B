@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.Destination;
@@ -31,7 +30,7 @@ public class SendTestResultsBean {
             .getLogger(SendTestResultsBean.class.getName());
     
     // The timeout time for messages send from this class.
-    private static final long TIMEOUT = 60000;
+    private static final long TIMEOUT = 180000;
 
     @Inject
     @JMSConnectionFactory("jms/LMSConnectionFactory")

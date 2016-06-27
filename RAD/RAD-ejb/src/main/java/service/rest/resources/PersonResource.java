@@ -5,61 +5,75 @@
  */
 package service.rest.resources;
 
-import com.google.gson.Gson;
 import domain.Person;
-import static dto.DtoConverter.convertPersonToDto;
-import dto.LoginUserDto;
+import dto.DtoConverter;
 import dto.PersonDto;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import service.PersonService;
 
 /**
  * The Rest resource for person.
- * @author Linda.
+ * @author Alexander.
  */
-@Path("/login")
+@Path("/persons/{username}")
 @Stateless
-public class PersonResource {
+public class PersonResource extends BaseResource {
     
     @Inject
     private PersonService service;
 
     /**
-     * Get the person with the given password and username.
-     *
-     * @param loginUserJson Json-string with username and password.
-     * @return If successfull Response with OK and person object;
+     * Instantiates the PersonResource class. This also reads all the keys 
+     * needed for encryption and decryption.
      */
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(String loginUserJson) {
-        // read from Json.
-        Gson gson = new Gson();
-        LoginUserDto loginUser = gson.fromJson(loginUserJson, 
-                LoginUserDto.class);
-        Person person = null;
-        // search for Person.
-        if (loginUser != null) {
-            person = this.service.findPersonLogin(loginUser.getUsername(), 
-                    loginUser.getPassword());
+    public PersonResource() {
+        super();
+    }
+    
+    /**
+     * Get the person with the given username
+     *
+     * @param username The username of the person.
+     * @param key The api key.
+     * @return The found person.
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPerson(@PathParam("username") String username,
+                              @QueryParam("key") String key) { 
+        // Check api key.
+        if (!this.radApiKey.equals(key)) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                           .build();
         }
-
-        // create Json-string from person.
-        PersonDto dto = convertPersonToDto(person);
-        String jsonPerson = gson.toJson(dto);
-        if (person != null) {
-            return Response.status(Response.Status.OK)
-                    .entity(jsonPerson)
+        
+        // Search person
+        Person person = this.service.findPersonByUsername(username);
+        
+        if(person == null) {
+            return Response.status(Response.Status.NOT_FOUND)
                     .build();
         }
+        
+        // Encrypt the message.
+        PersonDto personDto = DtoConverter.convertPersonToDto(person);
+        String encrypted = this.encrypt(this.gson.toJson(personDto));
 
-        return Response.status(Response.Status.BAD_REQUEST)
-                .build();
+        if (encrypted != null) {
+            return Response.status(Response.Status.OK)
+                           .entity(encrypted)
+                           .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .build();
+        }
     }
 }

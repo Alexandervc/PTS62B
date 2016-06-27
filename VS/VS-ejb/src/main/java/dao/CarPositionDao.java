@@ -11,7 +11,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import domain.CarPosition;
-import domain.Coordinate;
+import java.io.IOException;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
+import util.ClobUtil;
+import util.DateUtil;
 
 /**
  * The dao for carPosition.
@@ -19,6 +29,9 @@ import domain.Coordinate;
  */
 @Stateless
 public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
+    private static final Logger LOGGER = Logger
+            .getLogger(CarPositionDao.class.getName());
+    
     @PersistenceContext
     private EntityManager em;
 
@@ -32,22 +45,6 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
     @Override
     protected EntityManager getEntityManager() {
         return this.em;
-    }
-    
-    /**
-     * Get the carpositions for the given month for the given cartracker.
-     * @param month The month to get the carpositions for.
-     * @param year The year to get the carpositions for.
-     * @param cartrackerId The cartracker to get the carpositions for.
-     * @return A list of carpositions.
-     */
-    public List<CarPosition> getPositionsOfMonth(int month, int year, 
-            String cartrackerId) {
-        Query q = this.em.createNamedQuery("CarPosition.getPositionsOfMonth");
-        q.setParameter("month", month);
-        q.setParameter("year", year);
-        q.setParameter("cartrackerId", cartrackerId);
-        return q.getResultList();
     }
     
     /**
@@ -98,15 +95,51 @@ public class CarPositionDao extends AbstractDaoFacade<CarPosition> {
      * @param month The month to get the coordinates for.
      * @param year The year to get the coordinates for.
      * @param cartrackerId The cartracker to get the coordinates for.
-     * @return A list of coordinates.
+     * @return A JSON-string of coordinates.
      */
-    public List<Coordinate> getCoordinates(int month, int year,
+    public String getCoordinates(int month, int year,
             String cartrackerId) {
-        Query q = this.em.createNamedQuery("CarPosition.getCoordinates");
-        q.setParameter("month", month);
-        q.setParameter("year", year);
-        q.setParameter("cartrackerId", cartrackerId);
-        
-        return q.getResultList();
+        try {
+            // Get begin date and end date
+            Date beginDate = DateUtil.getFirstOfMonth(month, year);   
+            Date endDate = DateUtil.getLastOfMonth(month, year);
+            
+            // Create stored procedure
+            StoredProcedureQuery procedure = this.em
+                    .createStoredProcedureQuery("get_coordinates");
+            
+            // Register parameters
+            procedure.registerStoredProcedureParameter("v_return", 
+                    Clob.class, ParameterMode.OUT);
+            procedure.registerStoredProcedureParameter("p_cartracker_id", 
+                    String.class, ParameterMode.IN);
+            procedure.registerStoredProcedureParameter("p_begin_date", 
+                    Date.class, ParameterMode.IN);
+            procedure.registerStoredProcedureParameter("p_end_date", 
+                    Date.class, ParameterMode.IN);
+            
+            // Create CLOB
+            Connection conn = this.em.unwrap(Connection.class);
+            Clob clob = conn.createClob();
+            
+            // Set parameters
+            procedure.setParameter("v_return", clob);
+            procedure.setParameter("p_cartracker_id", cartrackerId);
+            procedure.setParameter("p_begin_date", beginDate);
+            procedure.setParameter("p_end_date", endDate);
+            
+            // Execute stored procedure
+            procedure.execute();
+            
+            // Get output
+            Clob coordinatesClob = 
+                    (Clob) procedure.getOutputParameterValue("v_return");
+            
+            // Convert and return output
+            return ClobUtil.convertClobToString(coordinatesClob);
+        } catch (SQLException | IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

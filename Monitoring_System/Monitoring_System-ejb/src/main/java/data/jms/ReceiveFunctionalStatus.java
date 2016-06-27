@@ -5,6 +5,7 @@
  */
 package data.jms;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,7 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import service.MonitoringService;
+import service.websockets.MonitoringServerSockets;
 
 /**
  *
@@ -35,6 +37,9 @@ public class ReceiveFunctionalStatus implements MessageListener {
     
     @Inject
     private MonitoringService service;
+    
+    @Inject
+    private MonitoringServerSockets sockets;
 
     /**
      * receives message from system VS, RAD, ASS
@@ -43,6 +48,8 @@ public class ReceiveFunctionalStatus implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
+        LOGGER.log(Level.INFO, "MESSAGED RECEIVED!!!");
+
         try {
             MapMessage mapMessage = (MapMessage) message;
 
@@ -53,6 +60,7 @@ public class ReceiveFunctionalStatus implements MessageListener {
     
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         
+
             Date date = null;
             Date newDate = null;
             try {
@@ -62,9 +70,15 @@ public class ReceiveFunctionalStatus implements MessageListener {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
             this.service.processTestResults(systemName, date, newDate);
-
         } catch (JMSException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
+        
+        try {
+            this.sockets.updateMonitoring();
+        } catch (IOException ex) {
+           LOGGER.log(Level.SEVERE, null, ex);
+        } 
+        
     }
 }

@@ -8,7 +8,6 @@ package service;
 import business.CarPositionManager;
 import domain.Coordinate;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -51,9 +50,9 @@ public class CarPositionService {
      * @param month The month to get the coordinates for.
      * @param year The year to get the coordinates for.
      * @param cartrackerId The cartracker to get the coordinates for.
-     * @return A list of coordinates.
+     * @return A JSON-string of coordinates.
      */
-    public List<Coordinate> getCoordinates(int month, int year,
+    public String getCoordinates(int month, int year,
             String cartrackerId) {
         return this.carPositionManager.getCoordinates(month, year, 
                 cartrackerId);
