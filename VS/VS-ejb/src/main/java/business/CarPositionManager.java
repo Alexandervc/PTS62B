@@ -86,12 +86,12 @@ public class CarPositionManager {
     /**
      * Start timer class with @Schedule.
      */
-    @Schedule(minute = "*/5", hour="*")
+    @Schedule(minute = "*/5", hour = "*")
     public void startTimer() {
         Thread thread = this.threadFactory.newThread(new Runnable() {
             @Override
             public void run() {
-                LOGGER.log(Level.INFO, 
+                LOGGER.log(Level.INFO,
                         "Start search for missing serialnumbers");
                 searchForMissingPositions();
             }
@@ -102,19 +102,19 @@ public class CarPositionManager {
     /**
      * Process the given information of a CarPosition.
      *
-     * @param cartrackerId The unique identifier of a cartracker. Cannot be null
-     * or empty.
+     * @param cartrackerId The unique identifier of a cartracker. Cannot be 
+     *      null or empty.
      * @param moment The moment in which the cartracker was at the given
-     * coordinates.
+     *      coordinates.
      * @param coordinate The coordinate of this carposition.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
-     * last carPosition.
+     *      last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
      * @param foreignCountryRideId The id of the foreign country ride this
-     * carposition is a part of.
+     *      carposition is a part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
-     * not.
+     *      not.
      * @param firstOfRide Whether this carposition is first of the ride or not.
      * @param serialNumber serial number from simulator.
      */
@@ -122,7 +122,7 @@ public class CarPositionManager {
             Coordinate coordinate, String roadName,
             Double meter, Integer rideId, Long foreignCountryRideId,
             Boolean lastOfRide, Boolean firstOfRide, Long serialNumber) {
-        
+
         try {
             // save to preprocessCpDao
             this.saveCarPosition(cartrackerId, moment, coordinate,
@@ -140,7 +140,7 @@ public class CarPositionManager {
      *
      * @param carPositions The car positions of the ForeignCountryRide.
      * @param foreignCountryRideId The id of the ForeignCountryRide, this is
-     * equal to the RideId of the CarPositions.
+     *      equal to the RideId of the CarPositions.
      * @param totalPrice The total price of the ForeignCountryRide.
      */
     public void processForeignCarRide(
@@ -178,23 +178,32 @@ public class CarPositionManager {
         }
         this.extraSearchForCompleteRides();
     }
-    
-    public void extraSearchForCompleteRides(){
+
+    /**
+     * Extra search for complete rides in Database.
+     */
+    public void extraSearchForCompleteRides() {
+        // Search for all cartrackers.
         List<String> cartrackers = this.preprocessCpDao.getAllCartrackers();
-        for(String s : cartrackers){
+        for (String s : cartrackers) {
+            // Search for all ride-id's.
             List<Integer> rideids = this.preprocessCpDao
                     .getAllRideIdFromCartracker(s);
-            for(Integer l : rideids){
+            for (Integer l : rideids) {
+                // Run check.
                 this.checkIfRideIsCompleet(s, l);
             }
         }
     }
-
+    
+    /**
+     * Process Complete Ride for cartracker foreignCountry.
+     * @param carPositions, List of carpositions.
+     * @param cartrackerId String of cartracker.
+     */
     public void processRideForForeignCountry(List<CarPosition> carPositions,
             String cartrackerId) {
         if (carPositions != null) {
-            // convert PreprocessCarposition to Carpositions;
-
             // Get countryCode
             String countryCodeTo = cartrackerId
                     .substring(0, COUNTRYCODE_LENGTH);
@@ -223,16 +232,16 @@ public class CarPositionManager {
      *
      * @param cartrackerId The unique identifier of a cartracker.
      * @param moment The moment in which the cartracker was at the given
-     * coordinates.
+     *      coordinates.
      * @param coordinate The coordinate of this carpostion.
      * @param roadName The name of the road on which the cartracker was.
      * @param meter The number of meters the cartracker has measured since the
-     * last carPosition.
+     *      last carPosition.
      * @param rideId The id of the ride this carposition is a part of.
      * @param foreignCountryRideId The id of the foreign country ride this
-     * carposition is a part of.
+     *      carposition is a part of.
      * @param lastOfRide Whether this carposition is the last of the ride or
-     * not.
+     *      not.
      * @param firstOfRide Whether this carposition is first of the ride or not.
      * @param serialNumber serial number from simulator.
      */
@@ -267,6 +276,11 @@ public class CarPositionManager {
         }
     }
 
+    /**
+     * Check if ride is complete.
+     * @param cartrackerId, String of cartrackerid.
+     * @param rideId, Integer of ride id.
+     */
     public void checkIfRideIsCompleet(String cartrackerId, Integer rideId) {
         List<PreprocessCarposition> positions;
 
@@ -285,18 +299,18 @@ public class CarPositionManager {
                 cpLast = cp;
             }
         }
-        
+
         // If first and last position are found.
         if (cpFirst != null && cpLast != null) {
             positions = this.preprocessCpDao
-                .getPositionsOfRide(rideId, cartrackerId);
+                    .getPositionsOfRide(rideId, cartrackerId);
             // Check if list-Size is complete.
             int completeSize = (cpLast.getSerialNumber()
                     .intValue() + 1) - cpFirst.getSerialNumber().intValue();
             Boolean complete = completeSize == positions.size();
             LOGGER.log(Level.INFO, "complete size: " + completeSize);
             LOGGER.log(Level.INFO, "positions size: " + positions.size());
-            
+
             // If complete stop timer and send carPosition list for check
             // foreign country ride.
             if (complete) {
@@ -305,15 +319,18 @@ public class CarPositionManager {
                         processCompleteListOfCarpositions(positions);
 
                 // Check for ForeignCountry
-                LOGGER.log(Level.INFO, "check foreign country");
                 this.processRideForForeignCountry(cp, cartrackerId);
             }
         }
     }
 
+    /**
+     * Process complete list of carpositions.
+     * @param positions, List of preprocessCarpositions.
+     * @return List of CarPositions.
+     */
     public List<CarPosition> processCompleteListOfCarpositions(
             List<PreprocessCarposition> positions) {
-        LOGGER.log(Level.INFO, "proces complete carposition rideid");
         List<CarPosition> temp = new ArrayList<>();
 
         Road road = null;
@@ -383,5 +400,5 @@ public class CarPositionManager {
     public List<Coordinate> getCoordinates(int month, int year,
             String cartrackerId) {
         return this.carPositionDao.getCoordinates(month, year, cartrackerId);
-    }    
+    }
 }

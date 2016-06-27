@@ -16,8 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
- *
- * @author Linda
+ * Preprocess class.
+ * @author Linda.
  */
 @Entity
 @NamedQueries({

@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,16 +20,16 @@ import javax.inject.Inject;
 import service.jms.SendPositionBean;
 
 /**
- *
- * @author Linda
+ * Bean for searching missing serialnumbers.
+ * @author Linda.
  */
 @Stateless
-public class SearchMissingPosition {
+public class SearchMissingPosition implements Serializable{
 
     private static final Logger LOGGER = Logger
             .getLogger(SearchMissingPosition.class.getName());
     
-    private final static String PROJECT_ROOT
+    private static final String PROJECT_ROOT
             = "C:\\Proftaak";
 
     @Inject
@@ -50,29 +51,30 @@ public class SearchMissingPosition {
         );
     }
 
+    /**
+     * Search Missing numbers for cartrackerid.
+     * @param cartrackerId, String cartrackerid.
+     * @param positions List serialnumbers.
+     */
     public void searchPositions(String cartrackerId, List<Long> positions) {
-
-        Long id= new Long(0);
         // for each positions search file
         for (Long l : positions) {
             try {
-                id = l;
                 //Setup stream for configId.                
-                setupStream(cartrackerId, l);
+                this.setupStream(cartrackerId, l);
 
                 //Read config file.
                 String jsonposition = this.reader.readLine();
                 
                 this.sendPositionBean.sendPosition(jsonposition,
                         cartrackerId, l);
+                this.reader.close();
             } catch (IOException ex) {
                 LOGGER.log(Level.WARNING, "Carposition file not found with "
                         + "cartrackerId = "+ cartrackerId + " and position= "
-                + l.toString());
+                + l.toString(), ex);
             }
         }
-        // read file and send to VS
-
     }
 
 }

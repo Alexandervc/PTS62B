@@ -22,8 +22,9 @@ import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 
 /**
+ * Dao class for preprocesDarposition.
  *
- * @author Linda
+ * @author Linda.
  */
 @Stateless
 public class PreprocessCarpositionDao extends
@@ -63,6 +64,13 @@ public class PreprocessCarpositionDao extends
         return q.getResultList();
     }
 
+    /**
+     * Find carposition with serialnumber and cartrackerid.
+     *
+     * @param serialNumber Long of carposition number.
+     * @param cartracker String of cartrackerid.
+     * @return PreprocessCarposition, when not found return null;
+     */
     public PreprocessCarposition findBySerialnumber(Long serialNumber,
             String cartracker) {
         Query q = this.em
@@ -84,59 +92,86 @@ public class PreprocessCarpositionDao extends
         return cp;
     }
 
+    /**
+     * Search for missing serialnumbers in database.
+     *
+     * @return Map of cartrackers with missing serialnumbers.
+     */
     public Map<String, List<Long>> searchForMissingNumbers() {
         String missingNumbers = "";
         Map<String, List<Long>> map = new HashMap<>();
-        try {
-            StoredProcedureQuery query = this.em.
-                    createStoredProcedureQuery("searchMissingNumber");
-            query.registerStoredProcedureParameter("numbers", String.class,
-                    ParameterMode.OUT);
-            query.setParameter("numbers", missingNumbers);
+        // call procedure in database.
+        StoredProcedureQuery query = this.em.
+                createStoredProcedureQuery("searchMissingNumber");
+        query.registerStoredProcedureParameter("numbers", String.class,
+                ParameterMode.OUT);
+        query.setParameter("numbers", missingNumbers);
 
-            query.execute();
-            missingNumbers = (String) query.getOutputParameterValue("numbers");
-            if (!missingNumbers.isEmpty()) {
-                String[] array = missingNumbers.split(",");
-
-                for (String s : array) {
-                    if (!s.isEmpty()) {
-                        String[] object = s.split(":");
-                        String cartracker = object[0];
-                        String number = object[1];
-                        if (map.containsKey(cartracker)) {
-                            List<Long> newObject = map.get(cartracker);
-                            newObject.add(Long.parseLong(number));
-                            map.replace(cartracker, newObject);
-                        } else {
-                            List<Long> newObject = new ArrayList<>();
-                            newObject.add(Long.parseLong(number));
-                            map.put(cartracker, newObject);
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.INFO, e.getMessage());
+        query.execute();
+        // Get return string.
+        missingNumbers = (String) query.getOutputParameterValue("numbers");
+        // convert string to map.
+        if (!missingNumbers.isEmpty()) {
+            map = this.convertStringToMap(missingNumbers);
         }
         LOGGER.log(Level.INFO, "searchForMissingNumbers: " + map);
         return map;
     }
 
+    /**
+     * Get all cartrackers from preprocessDatabase.
+     * @return List of cartrackerid's.
+     */
     public List<String> getAllCartrackers() {
-        List<String> cartrackers = new ArrayList<>();
         Query q = this.em.createNamedQuery("PreprocessCarposition."
                 + "getCartrackerIds");
-        cartrackers = (List<String>) q.getResultList();
+        List<String> cartrackers = (List<String>) q.getResultList();
         return cartrackers;
     }
 
+    /**
+     * Get all ride-id's from cartracker inside PreprocessDatabase.
+     * @param cartracker String of cartrackerid.
+     * @return Lint of integers with ride-id's
+     */
     public List<Integer> getAllRideIdFromCartracker(String cartracker) {
-        List<Integer> cartrackers = new ArrayList<>();
         Query q = this.em.createNamedQuery("PreprocessCarposition."
                 + "getRideids");
         q.setParameter("cartrackerId", cartracker);
-        cartrackers = (List<Integer>) q.getResultList();
+        List<Integer> cartrackers = (List<Integer>) q.getResultList();
         return cartrackers;
+    }
+
+    private Map<String, List<Long>> convertStringToMap(String message) {
+        Map<String, List<Long>> map = new HashMap<>();
+        // Split for cartrackers
+        String[] array = message.split(",");
+        for (String s : array) {
+            if (!s.isEmpty()) {
+                // Split for serialnumbers
+                String[] object = s.split(":");
+                String cartracker = object[0];
+                String number = object[1];
+                // Add serialnumber to existing cartracker.
+                map = this.addObjectToMap(map, cartracker, number);
+            }
+        }
+        return map;
+    }
+
+    private Map<String, List<Long>> addObjectToMap(Map<String, List<Long>> map,
+            String cartracker, String serialnumber) {
+        Map<String, List<Long>> temp = map;
+        if (temp.containsKey(cartracker)) {
+            List<Long> newObject = temp.get(cartracker);
+            newObject.add(Long.parseLong(serialnumber));
+            temp.replace(cartracker, newObject);
+        } else {
+            // Else create new key.
+            List<Long> newObject = new ArrayList<>();
+            newObject.add(Long.parseLong(serialnumber));
+            temp.put(cartracker, newObject);
+        }
+        return temp;
     }
 }

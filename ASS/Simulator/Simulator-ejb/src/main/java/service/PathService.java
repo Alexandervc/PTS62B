@@ -45,11 +45,14 @@ import support.NavUtils;
 @Stateless
 public class PathService implements Serializable {
 
-    private final static String PROJECT_ROOT
-            = "C:\\Proftaak";
-
     private static final String API_KEY
             = "AIzaSyCDUV1tIzDx5or4V-wrAsSN9lc8Gvpsz6Y";
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(PathService.class.getName());
+
+    private static final String PROJECT_ROOT
+            = "C:\\Proftaak";
 
     private transient BufferedReader reader;
 
@@ -97,8 +100,8 @@ public class PathService implements Serializable {
 
         // Start threads for recievers
         for (String ct : this.cartrackers) {
-            Thread thread = this.threadFactory.newThread(new ReceiveMissingPositionsBean(ct,
-                    this.searchPosition));
+            Thread thread = this.threadFactory.newThread(
+                    new ReceiveMissingPositionsBean(ct, this.searchPosition));
             thread.start();
         }
     }
@@ -209,63 +212,10 @@ public class PathService implements Serializable {
                 //Get points from google.
                 List<Point> points = this.getCoordinatesFromGoogle(input);
 
-                Point previous = null;
-                Boolean firstOfRide = true;
-
-                for (Point p : points) {
-                    //Get parameters.
-                    Date moment = new Date();
-                    Double xCoordinate = p.getLatitude();
-                    Double yCoordinate = p.getLongitude();
-                    Double meter = 0.0;
-                    Boolean last = false;
-
-                    //Chech if current position is last in list.
-                    if (points.indexOf(p) == (points.size() - 1)) {
-                        last = true;
-                    }
-
-                    //Calculate meters between this point and previous point.
-                    if (previous != null) {
-                        List<Point> ps = new ArrayList<>();
-                        ps.add(previous);
-                        ps.add(p);
-                        meter = NavUtils.getTotalDistance(ps);
-                    }
-
-                    //Create json array.
-                    Map<String, Object> position = new HashMap<>();
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    String momentString = df.format(moment);
-                    position.put("rideId", rideId.toString());
-                    position.put("moment", momentString);
-                    position.put("xCoordinate", xCoordinate);
-                    position.put("yCoordinate", yCoordinate);
-                    position.put("meter", meter);
-                    position.put("last", last);
-                    position.put("first", firstOfRide);
-
-                    //Create file for point.
-                    String fileName = cartrackerId + "-" + fileIndex + ".json";
-                    FileWriter fileWriter = new FileWriter(
-                            PathService.PROJECT_ROOT + "\\output\\" + fileName);
-                    String output;
-
-                    //Write file.
-                    Gson gson = new Gson();
-                    output = gson.toJson(position);
-                    try (BufferedWriter writer
-                            = new BufferedWriter(fileWriter)) {
-                        writer.write(output);
-                    }
-
-                    this.sendPositionBean.sendPosition(output,
-                            cartrackerId, Integer.toUnsignedLong(fileIndex));
-
-                    previous = p;
-                    fileIndex++;
-                    firstOfRide = false;
-                }
+                //TODO call other function proces points
+                fileIndex = this.processPoints(points, rideId, 
+                        cartrackerId, fileIndex);
+                
                 //Update config file.
                 rideId++;
                 String output = "cartrackerID=" + cartrackerId
@@ -277,13 +227,83 @@ public class PathService implements Serializable {
 
                 try (BufferedWriter writer2 = new BufferedWriter(fileWritter)) {
                     writer2.write(output);
+                    writer2.close();
+                    fileWritter.close();
                 }
+                this.reader.close();
             } catch (IOException ex) {
-                Logger.getLogger(PathService.class.getName())
-                        .log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         } else {
             throw new IllegalArgumentException("Parameters not valid");
         }
+
+    }
+
+    private Integer processPoints(List<Point> points, Integer rideId, 
+            String cartrackerId, Integer fileIndex) {
+        try {
+            Point previous = null;
+            Boolean firstOfRide = true;
+            for (Point p : points) {
+                //Get parameters.
+                Date moment = new Date();
+                Double xCoordinate = p.getLatitude();
+                Double yCoordinate = p.getLongitude();
+                Double meter = 0.0;
+                Boolean last = false;
+
+                //Chech if current position is last in list.
+                if (points.indexOf(p) == (points.size() - 1)) {
+                    last = true;
+                }
+
+                //Calculate meters between this point and previous point.
+                if (previous != null) {
+                    List<Point> ps = new ArrayList<>();
+                    ps.add(previous);
+                    ps.add(p);
+                    meter = NavUtils.getTotalDistance(ps);
+                }
+
+                //Create json array.
+                Map<String, Object> position = new HashMap<>();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String momentString = df.format(moment);
+                position.put("rideId", rideId.toString());
+                position.put("moment", momentString);
+                position.put("xCoordinate", xCoordinate);
+                position.put("yCoordinate", yCoordinate);
+                position.put("meter", meter);
+                position.put("last", last);
+                position.put("first", firstOfRide);
+
+                //Create file for point.
+                String fileName = cartrackerId + "-" + fileIndex + ".json";
+                FileWriter fileWriter = new FileWriter(
+                        PathService.PROJECT_ROOT + "\\output\\" + fileName);
+                String output;
+
+                //Write file.
+                Gson gson = new Gson();
+                output = gson.toJson(position);
+                try (BufferedWriter writer
+                        = new BufferedWriter(fileWriter)) {
+                    writer.write(output);
+                    writer.close();
+                    fileWriter.close();
+                }
+
+                this.sendPositionBean.sendPosition(output,
+                        cartrackerId, Integer.toUnsignedLong(fileIndex));
+
+                previous = p;
+                fileIndex++;
+                firstOfRide = false;
+            }
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+        return fileIndex;
     }
 }

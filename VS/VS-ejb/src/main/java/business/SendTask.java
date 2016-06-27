@@ -10,10 +10,6 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
 
 /**
  * Timer task class.
@@ -37,8 +33,8 @@ public class SendTask extends TimerTask {
     public void startTimer() {
         if (isRunning.compareAndSet(false, true)) {
             LOGGER.log(Level.INFO, "Timer is start");
-            this.timer = new Timer();
-            this.timer.schedule(this, MINUTE, MINUTE);
+//            this.timer = new Timer();
+//            this.timer.schedule(this, MINUTE, MINUTE);
         }
     }
 
@@ -47,6 +43,6 @@ public class SendTask extends TimerTask {
      */
     @Override
     public void run() {
-        this.manager.searchForMissingPositions();
+        //this.manager.searchForMissingPositions();
     }
 }
