@@ -48,6 +48,9 @@ public class InvoiceBean {
 
     @Inject
     private BillClient client;
+    
+    @Inject
+    private PDFCreator pdfCreator;
 
     private List<BillDto> bills;
     private List<CarDto> cars;
@@ -98,166 +101,8 @@ public class InvoiceBean {
      * Generate pdf for given bill.
      * @param bill choosen bill.
      */
-    public void generatePdf(BillDto bill) {
-        String name = this.session.getPersonName();
-        String address = this.session.getPersonAddress();
-        String monthString = new DateFormatSymbols(Locale.ENGLISH)
-                .getMonths()[this.session.getMonth()-1];
-        
-        String fileName = "invoice_" + bill.getCartrackerId() + "_" + 
-                this.session.getYear() + "-" + this.session.getMonth() + ".pdf";
-        File outputPath = new File("C:\\Proftaak\\invoices\\" + fileName);
-        
-        Logger.getLogger(InvoiceBean.class.getName())
-                    .log(Level.INFO, null, "Generating pdf: " + fileName);
-        
-        try {
-            //Create pdf
-            PDDocument document = new PDDocument();
-            PDPage page = new PDPage();
-
-            //Adding page to document
-            document.addPage(page);
-
-            //Adding font to document
-            PDFont font = PDType1Font.HELVETICA;
-            PDFont fontBold = PDType1Font.HELVETICA_BOLD;
-        
-            //Retrieve image to be added to the PDF             
-            File brand = new File("C:\\Proftaak\\rekeningrijden.png");
-            PDImageXObject imageObject = PDImageXObject
-                    .createFromFileByContent(brand, document);
-
-            //Define the content stream
-            //A4 size pixels 75 dpi: 620 x 877
-            PDPageContentStream contentStream = 
-                    new PDPageContentStream(document, page);
-            
-            //Draw brand image
-            contentStream.drawImage(imageObject, 238F, 740F, 144F, 38F);
-            
-            //Keep track of yposition
-            Float ypos = 700F;
-            
-            //Info
-            this.writeText(contentStream, font, 11, 75F, ypos, "Name:");
-            this.writeText(contentStream, font, 11, 175F, ypos, name);
-            ypos -= 15F;
-            this.writeText(contentStream, font, 11, 75F, ypos, "Address:");
-            this.writeText(contentStream, font, 11, 175F, ypos, address);
-            ypos -= 15F;
-            this.writeText(contentStream, font, 11, 75F, ypos, "Cartracker:");
-            this.writeText(contentStream, font, 11, 175F, ypos, 
-                    bill.getCartrackerId());            
-            ypos -= 15F;
-            this.writeText(contentStream, font, 11, 75F, ypos, "Fuel:");
-            this.writeText(contentStream, font, 11, 175F, ypos, 
-                    this.getCar(bill.getCartrackerId()).getFuel().toString());
-            ypos -= 15F;
-            this.writeText(contentStream, font, 11, 75F, ypos, "Date:");
-            this.writeText(contentStream, font, 11, 175F, ypos, 
-                    monthString + " " + this.session.getYear());
-            ypos -= 30F;
-            
-            //Invoice title
-            this.writeText(contentStream, font, 16, 75F, ypos, "Invoice");
-            ypos -= 25F;
-            
-            //Invoice
-            this.writeText(contentStream, fontBold, 11, 75F, ypos, "RoadType");
-            this.writeText(contentStream, fontBold, 11, 200F, ypos, "RoadName");
-            this.writeText(contentStream, fontBold, 11, 325F, ypos, "Km");
-            this.writeText(contentStream, fontBold, 11, 400F, ypos, "Price/km");
-            this.writeText(contentStream, fontBold, 11, 475F, ypos, "Price");
-            ypos -= 15F;
-            
-            if (bill.getRoadUsages().size() > 0) {                
-                for (BillRoadUsage ru : bill.getRoadUsages()) {
-                    Float yposLine = ypos + 11F;
-                    contentStream.drawLine(75F, yposLine, 545F, yposLine);
-                    this.writeText(contentStream, font, 11, 75F, ypos, 
-                            this.getRoadType(ru));
-                    this.writeText(contentStream, font, 11, 200F, ypos, 
-                            ru.getRoadName());
-                    this.writeText(contentStream, font, 11, 325F, ypos, 
-                            this.getKm(ru));
-                    this.writeText(contentStream, font, 11, 400F, ypos, 
-                            this.getRate(ru));
-                    this.writeText(contentStream, font, 11, 475F, ypos, 
-                            this.getPrice(ru));
-                    ypos -= 15F;
-                }
-            }
-            
-            Float yposLine = ypos + 11F;
-            contentStream.drawLine(75F, yposLine, 545F, yposLine);
-            this.writeText(contentStream, fontBold, 11, 75F, ypos, "Total:");  
-            this.writeText(contentStream, font, 11, 475F, ypos, 
-                    this.getTotalPrice(bill));
-            
-            //Close content stream
-            contentStream.close();
-            
-            //Save the PDF
-            OutputStream output = new FileOutputStream(outputPath); 
-            document.save(output);
-            document.close();
-            output.close(); 
-            
-            InputStream input = new FileInputStream(outputPath);
-            this.download(IOUtils.toByteArray(input), "application/pdf", 
-                    fileName);
-            
-            Logger.getLogger(InvoiceBean.class.getName())
-                    .log(Level.INFO, null, "Pdf done");
-        } catch (IOException ex) {
-            Logger.getLogger(InvoiceBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }        
-    }
-
-    /**
-     * Write a line in the given pdf file.
-     * @param contentStream pdf file.
-     * @param font font style.
-     * @param fontsize font size.
-     * @param x pixels of page.
-     * @param y pixels of page.
-     * @param text text to write.
-     * @throws IOException if process fails.
-     */
-    private void writeText(PDPageContentStream contentStream, PDFont font, 
-            Integer fontsize, Float x, Float y, String text) 
-            throws IOException {
-        contentStream.beginText();
-        contentStream.setFont(font, fontsize);
-        contentStream.newLineAtOffset(x, y);
-        contentStream.showText(text);
-        contentStream.endText();
-    }
-
-    /**
-     * Put file in downloads folder by sending response.
-     * @param exportContent file to byte array.
-     * @param contentType type of content.
-     * @param fileName name of file.
-     * @throws IOException if process fails.
-     */
-    public void download(byte[] exportContent, String contentType, 
-            String fileName) throws IOException {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext ec = fc.getExternalContext();
-
-        ec.responseReset(); 
-        ec.setResponseContentType(contentType);
-        ec.setResponseContentLength(exportContent.length);
-        ec.setResponseHeader("Content-Disposition",
-                "attachment; filename=\"" + fileName + "\"");
-
-        OutputStream output = ec.getResponseOutputStream();        
-        output.write(exportContent);
-
-        fc.responseComplete();
+    public void generatePdf(BillDto bill) {        
+        this.pdfCreator.generatePdf(bill);
     }
     
     /**
