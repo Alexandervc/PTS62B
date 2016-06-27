@@ -80,18 +80,13 @@ public class BaseClient {
      */
     protected String encrypt(String plain) {
         try {
-            // Encrypt the json string.
+            // Encrypt the JSON string.
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, this.rappKey);
             byte[] encrypted = cipher.doFinal(plain.getBytes());
-            
-            // Create a string of the encrypted bytes.
-            StringBuilder sb = new StringBuilder();
-            for (byte b: encrypted) {
-                sb.append((char)b);
-            }
-            
-            return sb.toString();
+
+            // Return encrypted bytes as string.
+            return new String(encrypted);
         } catch (InvalidKeyException 
                  | NoSuchAlgorithmException 
                  | NoSuchPaddingException 
