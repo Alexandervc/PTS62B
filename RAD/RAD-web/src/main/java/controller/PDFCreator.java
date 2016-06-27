@@ -25,7 +25,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 /**
- *
+ * Class to handle pdf creation.
  * @author Melanie
  */
 @Named
