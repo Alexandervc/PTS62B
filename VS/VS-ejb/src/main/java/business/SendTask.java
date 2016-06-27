@@ -19,15 +19,12 @@ import javax.inject.Inject;
  * Timer task class.
  * @author Linda.
  */
-@Startup
-@Singleton
 public class SendTask extends TimerTask {
 
     private static final Logger LOGGER
             = Logger.getLogger(SendTask.class.getName());
     private static final Long MINUTE = new Long(60 * 1000);
 
-    @Inject
     private CarPositionManager manager;
 
     private Timer timer;
@@ -37,7 +34,6 @@ public class SendTask extends TimerTask {
      * Constructor for this class.
      * Must run when application is started.
      */
-    @PostConstruct
     public void startTimer() {
         if (isRunning.compareAndSet(false, true)) {
             LOGGER.log(Level.INFO, "Timer is start");

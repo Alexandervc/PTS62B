@@ -25,6 +25,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.enterprise.concurrent.ManagedThreadFactory;
 import javax.inject.Inject;
@@ -85,14 +86,12 @@ public class CarPositionManager {
     /**
      * Start timer class with @Schedule.
      */
-    //@Schedule(hour = "*")
+    @Schedule(minute = "*/5")
     public void startTimer() {
         Thread thread = this.threadFactory.newThread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("start timer");
                 searchForMissingPositions();
-                extraSearchForCompleteRides();
             }
         });
         thread.start();
