@@ -7,6 +7,8 @@
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.enterprise.concurrent.ManagedThreadFactory;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
@@ -16,40 +18,54 @@ import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import service.PathService;
+import service.SearchMissingPosition;
 import service.jms.SendPositionBean;
 import support.NavUtils;
 
 /**
  * NavUtilTests2 Class.
+ *
  * @author Melanie
  */
 @RunWith(CdiRunner.class)
 @AdditionalClasses(value = PathService.class)
 public class NavUtilsTest {
-    private static final Logger LOGGER =
-            Logger.getLogger(NavUtilsTest.class.getCanonicalName());
 
-    @Inject
-    private PathService pathService;
+    private static final Logger LOGGER
+            = Logger.getLogger(NavUtilsTest.class.getCanonicalName());
+
+    @Mock
+    @Produces
+    private ManagedThreadFactory threadFactory;
     
     @Mock
     @Produces
     private SendPositionBean sendPositionBean;
     
+    @Mock
+    @Produces
+    private SearchMissingPosition searchPosition;
+    
+    @InjectMocks
+    private PathService pathService;
+
+    
     /**
-     * Test method for
-     * {@link frk.gpssimulator.service.impl.DefaultKmlService
+     * Test method for      {@link frk.gpssimulator.service.impl.DefaultKmlService
      * #getCoordinates(java.io.File)}.
      *
      * @throws JAXBException .
      * @throws NumberFormatException .
      */
     @Test
-    public void testTotalDistance() 
+    public void testTotalDistance()
             throws JAXBException {
+        
         DirectionInput directionInput = new DirectionInput(
                 "73-2020 Kaloko Dr, Kailua-Kona, HI 96740",
                 "73-1249 Kaloko Dr, Kailua-Kona, HI 96740");
@@ -61,54 +77,52 @@ public class NavUtilsTest {
 
         String output = "totalDistance: " + totalDistance;
         LOGGER.log(Level.INFO, output);
-        
+
         assertTrue(totalDistance > 0);
     }
 
     /**
-     * Test method for
-     * {@link frk.gpssimulator.service.impl.DefaultKmlService
+     * Test method for      {@link frk.gpssimulator.service.impl.DefaultKmlService
      * #getCoordinates(java.io.File)}.
-     * 
-     * @throws NumberFormatException .
-     * @throws JAXBException . 
-     */
-    @Test
-    public void testTotalDistance2() 
-            throws JAXBException {
-        DirectionInput directionInput = new DirectionInput(
-                "Polderzicht 5, 4261 KK Wijk en Aalburg", 
-                "Rachelsmolen 1, Eindhoven");
-
-        List<Point> points = this.pathService.
-                getCoordinatesFromGoogle(directionInput);
-        
-        int expected = 51;
-        this.checkDistance(points, expected);
-    }
-    
-    /**
-     * Test method for
-     * {@link frk.gpssimulator.service.impl.DefaultKmlService
-     * #getCoordinates(java.io.File)}.
-     * 
+     *
      * @throws NumberFormatException .
      * @throws JAXBException .
      */
     @Test
-    public void testTotalDistance3() 
+    public void testTotalDistance2()
             throws JAXBException {
         DirectionInput directionInput = new DirectionInput(
-                "Parallelweg 88, 4283 GS Giessen", 
+                "Polderzicht 5, 4261 KK Wijk en Aalburg",
+                "Rachelsmolen 1, Eindhoven");
+
+        List<Point> points = this.pathService.
+                getCoordinatesFromGoogle(directionInput);
+
+        int expected = 51;
+        this.checkDistance(points, expected);
+    }
+
+    /**
+     * Test method for      {@link frk.gpssimulator.service.impl.DefaultKmlService
+     * #getCoordinates(java.io.File)}.
+     *
+     * @throws NumberFormatException .
+     * @throws JAXBException .
+     */
+    @Test
+    public void testTotalDistance3()
+            throws JAXBException {
+        DirectionInput directionInput = new DirectionInput(
+                "Parallelweg 88, 4283 GS Giessen",
                 "Veensesteeg 19, 4264 KG Veen");
 
         List<Point> points = this.pathService.
                 getCoordinatesFromGoogle(directionInput);
-        
+
         int expected = 4;
         this.checkDistance(points, expected);
     }
-    
+
     private void checkDistance(List<Point> points, int expected) {
         String output1 = "Number of points: " + points.size();
         LOGGER.log(Level.INFO, output1);
@@ -117,10 +131,10 @@ public class NavUtilsTest {
 
         String output2 = "totalDistance: " + totalDistance;
         LOGGER.log(Level.INFO, output2);
-        
+
         int distance = totalDistance.intValue();
         int distanceKM = distance / 1000;
-        
+
         assertEquals(expected, distanceKM);
     }
 }
