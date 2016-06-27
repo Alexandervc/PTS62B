@@ -86,7 +86,7 @@ public class CarPositionManager {
     /**
      * Start timer class with @Schedule.
      */
-    @Schedule(minute = "*/5")
+    @Schedule(minute = "*/5", hour="*")
     public void startTimer() {
         Thread thread = this.threadFactory.newThread(new Runnable() {
             @Override
